@@ -1,0 +1,18 @@
+{
+    "name": "OliverBeebe.UnityUtilities.Editor",
+    "rootNamespace": "OliverBeebe.UnityUtilities.Editor",
+    "references": [
+        "GUID:3608f396ec3a11743a7a54e458d45088"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -8,31 +8,72 @@ using UnityEngine.Tilemaps;
 public class TilePlacer : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private Grid grid;
+    // [SerializeField] private Tilemap tilemap;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private SpriteRenderer selectionOutline;
 
-    private Vector3Int? dragStart;
-    private bool mouseDown;
-
-    private BoundsInt selection;
-    private bool selecting;
-
-    private Vector3 moveStart;
+    private Dictionary<Tilemap, Tilemap> tilemaps;
     
-    public Vector3Int? DragStart => dragStart;
+    private bool mouseDown;
+    private Vector3Int dragStart;
+    private BoundsInt selection;
+    private PlacerState state;
+    
+    public enum PlacerState
+    {
+        None,
+        DrawingRect,
+        Selecting,
+        MovingSelection,
+    }
+    
+    public Vector3Int DragStart => dragStart;
+    public PlacerState State => state;
+    public Tilemap[] Tilemaps => tilemaps.Values.ToArray();
     
     private void Awake()
     {
-        dragStart = null;
-        selecting = false;
+        tilemaps = new();
+    }
+
+    private void OnEnable()
+    {
+        editorState.LevelLoaded += OnLevelLoaded;
+    }
+
+    private void OnDisable()
+    {
+        editorState.LevelLoaded -= OnLevelLoaded;
+    }
+
+    private void OnLevelLoaded(LevelData levelData)
+    {
+        var tilePositions = Enumerable.Range(0, levelData.positions.Length)
+            .Select(i => (levelData.positions[i], editorState.Palette.Tiles[levelData.ids[i]]))
+            .ToArray();
+
+        foreach (var tilemap in tilemaps.Values)
+        {
+            tilemap.ClearAllTiles();
+        }        
+        
+        SetTiles(tilePositions);
     }
 
     private void Update()
     {
-        Vector3Int mouseCell = tilemap.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+        if (editorState.GameState == GameState.Playing)
+        {
+            state = PlacerState.None;
+            mouseDown = false;
 
-        print(selection.Contains(mouseCell));
+            selectionOutline.gameObject.SetActive(false);
+            
+            return;
+        }
+
+        Vector3Int mouseCell = grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
         
         if (PointerOverUI() && !mouseDown)
         {
@@ -45,30 +86,27 @@ public class TilePlacer : MonoBehaviour
         {
             mouseDown = true;
 
-            if (editorState.ActiveTool != ToolType.Selection)
+            if (state != PlacerState.Selecting && state != PlacerState.MovingSelection || editorState.ActiveTool != ToolType.Selection)
             {
-                selecting = false;
+                state = PlacerState.None;
             }
             
             switch (editorState.ActiveTool)
             {
                 case ToolType.RectBrush:
                     dragStart = mouseCell;
+                    state = PlacerState.DrawingRect;
                     break;
                 
                 case ToolType.Selection:
 
-                    if (selecting && selection.Contains(mouseCell))
+                    dragStart = mouseCell;
+
+                    if (state != PlacerState.MovingSelection || !selection.Contains(mouseCell))
                     {
-                        selecting = true;
-                        moveStart = mouseCell;
+                        state = PlacerState.Selecting;
                     }
-                    else
-                    {
-                        dragStart = mouseCell;
-                        selecting = false;
-                    }
-                    
+
                     break;
             }
         }
@@ -77,11 +115,11 @@ public class TilePlacer : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             mouseDown = true;
-            selecting = false;
             
             switch (editorState.ActiveTool)
             {
                 case ToolType.RectBrush:
+                    state = PlacerState.DrawingRect;
                     dragStart = mouseCell;
                     break;
             }
@@ -93,27 +131,27 @@ public class TilePlacer : MonoBehaviour
             switch (editorState.ActiveTool)
             {
                 case ToolType.Brush:
-                    tilemap.SetTile(mouseCell, editorState.ActiveTile);
+                    SetTile(mouseCell, editorState.ActiveTile);
                     break;
                 
                 case ToolType.Eraser:
-                    tilemap.SetTile(mouseCell, null);
+                    SetTile(mouseCell, null);
                     break;
                 
                 case ToolType.Picker:
-                    editorState.ActiveTile = tilemap.GetTile(mouseCell);
+                    editorState.ActiveTile = GetTile(mouseCell);
                     break;
             }
         }
 
-        // Secondary Presed
+        // Secondary Pressed
         if (Input.GetMouseButton(1))
         {
             switch (editorState.ActiveTool)
             {
                 case ToolType.Brush:
                 case ToolType.Eraser:
-                    tilemap.SetTile(mouseCell, null);
+                    SetTile(mouseCell, null);
                     break;
             }
         }
@@ -134,29 +172,31 @@ public class TilePlacer : MonoBehaviour
                 
                 case ToolType.Selection:
 
-                    // Move Selection
-                    if (selecting)
+                    switch (state)
                     {
+                        case PlacerState.Selecting:
+                            
+                            if (dragStart != mouseCell)
+                            {
+                                Vector3Int min = Vector3Int.Min(dragStart, mouseCell);
+                                Vector3Int max = Vector3Int.Max(dragStart, mouseCell);
+
+                                selection = new(min, max - min + Vector3Int.one);
+                                
+                                state = PlacerState.MovingSelection;
+                            }
+                            else
+                            {
+                                state = PlacerState.None;
+                            }
+                            
+                            break;
                         
+                        case PlacerState.MovingSelection:
+                            MoveSelection();
+                            break;
                     }
                     
-                    // Build Selection
-                    else
-                    {
-                        Vector3Int start = dragStart ?? default;
-
-                        if (start != mouseCell)
-                        {
-                            Vector3Int min = Vector3Int.Min(start, mouseCell);
-                            Vector3Int max = Vector3Int.Max(start, mouseCell);
-
-                            selection = new(min, max - min + Vector3Int.one);
-                            Debug.Log(selection.position + " : " + selection.size);
-                            selecting = true;
-                        }
-                        
-                        dragStart = null;
-                    }
                     break;
             }
         }
@@ -173,33 +213,62 @@ public class TilePlacer : MonoBehaviour
         }
         
         // Selection outline
-        selectionOutline.gameObject.SetActive(selecting);
-        
-        if (selecting)
+        if (state == PlacerState.MovingSelection)
         {
+            selectionOutline.gameObject.SetActive(true);
+            
             selectionOutline.size = (Vector2Int)selection.size;
 
             selectionOutline.transform.position =
-                (tilemap.GetCellCenterWorld(selection.min) + tilemap.GetCellCenterWorld(selection.max)) / 2f - new Vector3(0.5f, 0.5f, 0);
+                (grid.GetCellCenterWorld(selection.min) + grid.GetCellCenterWorld(selection.max)) / 2f - new Vector3(0.5f, 0.5f, 0);
+        }
+        else
+        {
+            selectionOutline.gameObject.SetActive(false);
         }
         
-        void SetTilemapRect(TileBase tile)
+        void SetTilemapRect(GameTile tile)
         {
-            Vector3Int rectStart = dragStart ?? default;
-            Vector3Int start = Vector3Int.Min(rectStart, mouseCell);
-            Vector3Int end = Vector3Int.Max(rectStart, mouseCell);
+            Vector3Int start = Vector3Int.Min(dragStart, mouseCell);
+            Vector3Int end = Vector3Int.Max(dragStart, mouseCell);
             Vector3Int size = end - start + new Vector3Int(1, 1, 0);
 
             var positions = Enumerable.Range(0, size.x * size.y)
                 .Select(i => new Vector3Int(start.x + i % size.x, start.y + i / size.x))
                 .ToArray();
             
-            var tiles = new TileBase[positions.Length];
-            Array.Fill(tiles, tile);
-            
-            tilemap.SetTiles(positions, tiles);
+            SetTiles(positions
+                .Select(position => (position, tile))
+                .ToArray());
 
-            dragStart = null;
+            state = PlacerState.None;
+        }
+
+        void MoveSelection()
+        {
+            var fromPositions = ToEnumerable(selection.allPositionsWithin).ToArray();
+            
+            Vector3Int delta = mouseCell - dragStart;
+            var toTiles = fromPositions
+                .Select(position => (position + delta, GetTile(position)))
+                .ToArray();
+            
+            var holeTiles = fromPositions
+                .Select(position => (position, (GameTile)null))
+                .ToArray();
+            
+            SetTiles(holeTiles);
+            SetTiles(toTiles);
+
+            selection.position += delta;
+        }
+    }
+
+    private IEnumerable<T> ToEnumerable<T>(IEnumerator<T> enumerator)
+    {
+        while (enumerator.MoveNext())
+        {
+            yield return enumerator.Current;
         }
     }
 
@@ -216,5 +285,76 @@ public class TilePlacer : MonoBehaviour
         EventSystem.current.RaycastAll(eventData, results);
 
         return results.Any(result => result.gameObject.layer == uiLayer);
+    }
+
+    private Tilemap GetTilemap(GameTile gameTile)
+    {
+        if (gameTile == null || gameTile.TilemapPrefab == null)
+        {
+            return null;
+        }
+        
+        if (tilemaps.TryGetValue(gameTile.TilemapPrefab, out var tilemap)) return tilemap;
+        
+        tilemap = Instantiate(gameTile.TilemapPrefab, grid.transform);
+        tilemaps[gameTile.TilemapPrefab] = tilemap;
+
+        return tilemap;
+    }
+
+    private GameTile GetTile(Vector3Int position) => editorState.GetTile(position);
+    
+    private void SetTile(Vector3Int position, GameTile tile)
+    {
+        editorState.SetTile(position, tile);
+        var selfTilemap = GetTilemap(tile); 
+        
+        if (selfTilemap != null)
+        {
+            selfTilemap.SetTile(position, tile.TileBase);
+        }
+        
+        foreach (var tilemap in tilemaps.Values)
+        {
+            if (tilemap == selfTilemap) continue;
+            
+            tilemap.SetTile(position, null);
+        }
+    }
+
+    private void SetTiles((Vector3Int position, GameTile tile)[] tilePositions)
+    {
+        foreach (var tilePosition in tilePositions)
+        {
+            editorState.SetTile(tilePosition.position, tilePosition.tile);
+        }
+        
+        var tilemapGroups = tilePositions
+            .Select(item => (item.position, item.tile, tilemap: GetTilemap(item.tile)))
+            .GroupBy(item => item.tilemap)
+            .ToArray();
+
+        var allTilemaps = tilemaps.Values.ToArray();
+        
+        foreach (var group in tilemapGroups)
+        {
+            var positionArray = group.Select(item => item.position).ToArray();
+            var nullTiles = new TileBase[positionArray.Length];
+            Array.Fill(nullTiles, null);
+            
+            if (group.Key != null)
+            {
+                var tileArray = group.Select(item => item.tile.TileBase).ToArray();
+                group.Key.SetTiles(positionArray, tileArray);
+                
+            }
+            
+            foreach (var tilemap in allTilemaps)
+            {
+                if (tilemap == group.Key) continue;
+                
+                tilemap.SetTiles(positionArray, nullTiles);
+            }
+        }
     }
 }

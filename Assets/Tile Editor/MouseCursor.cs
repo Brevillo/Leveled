@@ -2,14 +2,16 @@ using System;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static TilePlacer;
 
 public class MouseCursor : MonoBehaviour
 {
     [SerializeField] private Transform gridSpace;
-    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private Grid grid;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private TilePlacer tilePlacer;
     [SerializeField] private TileEditorState editorState;
+    [SerializeField] private float moveSpeed;
     [SerializeField] private CursorType[] cursorTypes;
     
     [Serializable]
@@ -17,27 +19,32 @@ public class MouseCursor : MonoBehaviour
     {
         public ToolType tool;
         public Sprite cursorSprite;
-    }    
+    }
+
+    private Vector3 positionVelocity;
+    private Vector3 sizeVelocity;
     
     private void LateUpdate()
     {
-        Vector3Int mouseCell = tilemap.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+        Vector3Int mouseCell = grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+        Vector3 mouseWorld = grid.GetCellCenterWorld(mouseCell);
         
-        if (tilePlacer.DragStart != null)
+        (Vector3 position, Vector3 size) = tilePlacer.State switch
         {
-            var rectStart = (Vector3Int)tilePlacer.DragStart;
-            
-            gridSpace.localScale = new(
-                Mathf.Abs(mouseCell.x - rectStart.x) + 1,
-                Mathf.Abs(mouseCell.y - rectStart.y) + 1,
-                1);
-            gridSpace.position = (tilemap.GetCellCenterWorld(mouseCell) +
-                                  tilemap.GetCellCenterWorld(rectStart)) / 2f;
-        }
-        else
-        {
-            gridSpace.localScale = Vector3.one;
-            gridSpace.position = tilemap.GetCellCenterWorld(mouseCell);
-        }
+            PlacerState.DrawingRect or PlacerState.Selecting => (
+                position: (mouseWorld + grid.GetCellCenterWorld(tilePlacer.DragStart)) / 2f,
+                size: new Vector3(
+                    Mathf.Abs(mouseCell.x - tilePlacer.DragStart.x) + 1,
+                    Mathf.Abs(mouseCell.y - tilePlacer.DragStart.y) + 1,
+                    1)),
+
+            _ => (
+                position: mouseWorld,
+                size: Vector3.one),
+        };
+
+        gridSpace.localScale = Vector3.SmoothDamp(gridSpace.localScale, size, ref sizeVelocity, moveSpeed);
+        gridSpace.localPosition =
+            Vector3.SmoothDamp(gridSpace.localPosition, position, ref positionVelocity, moveSpeed);
     }
 }

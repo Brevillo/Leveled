@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 5275420796637811940}
   - component: {fileID: 3275246838468309653}
   - component: {fileID: 6119901852191877445}
+  - component: {fileID: 3083650495915813684}
   m_Layer: 5
   m_Name: Palette Item
   m_TagString: Untagged
@@ -165,8 +166,9 @@ MonoBehaviour:
   background: {fileID: 3752113063257388990}
   selectedColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
   regularColor: {r: 0, g: 0, b: 0, a: 0}
-  tile: {fileID: 11400000, guid: 441360bb452ee474680c2e2ad3206d4c, type: 2}
   editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
+  iconImage: {fileID: 1910517465757237918}
+  tooltip: {fileID: 3083650495915813684}
 --- !u!114 &6119901852191877445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +225,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3083650495915813684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762981873955814362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859a908489f90490d9be0242823392b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: 
 --- !u!1 &2275393166178213873
 GameObject:
   m_ObjectHideFlags: 0
