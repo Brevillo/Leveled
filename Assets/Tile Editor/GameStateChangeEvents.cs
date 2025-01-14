@@ -4,22 +4,25 @@ using UnityEngine.Events;
 
 public class GameStateChangeEvents : MonoBehaviour
 {
-    [SerializeField] private TileEditorState editorState;
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private UnityEvent enteringPlayMode;
     [SerializeField] private UnityEvent exitingPlayMode;
-
+    [SerializeField] private UnityEvent<GameState> gameStateChanged;
+    
     private void OnEnable()
     {
-        editorState.GameStateChanged += OnGameStateChanged;
+        gameStateManager.GameStateChanged += OnGameStateChanged;
     }
 
     private void OnDisable()
     {
-        editorState.GameStateChanged -= OnGameStateChanged;
+        gameStateManager.GameStateChanged -= OnGameStateChanged;
     }
 
     private void OnGameStateChanged(GameState gameState)
     {
+        gameStateChanged.Invoke(gameState);
+        
         switch (gameState)
         {
             case GameState.Playing:

@@ -5,10 +5,12 @@ using UnityEngine.Tilemaps;
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float zoomSpeed;
     [SerializeField] private float zoomFactor;
     [SerializeField] private float maxZoom;
+    [SerializeField] private float minZoom;
     [SerializeField] private float zoomSmoothing;
     [SerializeField] private float defaultZoom;
     [SerializeField] private TilePlacer placer;
@@ -30,7 +32,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        switch (editorState.GameState)
+        switch (gameStateManager.GameState)
         {
             case GameState.Editing:
                 
@@ -41,7 +43,7 @@ public class CameraMovement : MonoBehaviour
                 }
                 prevMousePosition = Input.mousePosition;
                 
-                zoomTarget = Mathf.Max(Mathf.Pow(maxZoom, 1f / zoomFactor), zoomTarget - Input.mouseScrollDelta.y * zoomSpeed);
+                zoomTarget = Mathf.Pow(Mathf.Clamp(Mathf.Pow(zoomTarget - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor), maxZoom, minZoom), 1f / zoomFactor);
                 
                 Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
                 

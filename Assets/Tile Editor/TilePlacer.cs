@@ -9,8 +9,8 @@ public class TilePlacer : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Grid grid;
-    // [SerializeField] private Tilemap tilemap;
     [SerializeField] private TileEditorState editorState;
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private SpriteRenderer selectionOutline;
 
     private Dictionary<Tilemap, Tilemap> tilemaps;
@@ -31,6 +31,8 @@ public class TilePlacer : MonoBehaviour
     public Vector3Int DragStart => dragStart;
     public PlacerState State => state;
     public Tilemap[] Tilemaps => tilemaps.Values.ToArray();
+
+    private Vector3Int MouseCell => grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
     
     private void Awake()
     {
@@ -39,31 +41,78 @@ public class TilePlacer : MonoBehaviour
 
     private void OnEnable()
     {
-        editorState.LevelLoaded += OnLevelLoaded;
+        editorState.EditorChanged += OnEditorChanged;
     }
 
     private void OnDisable()
     {
-        editorState.LevelLoaded -= OnLevelLoaded;
+        editorState.EditorChanged -= OnEditorChanged;
     }
 
-    private void OnLevelLoaded(LevelData levelData)
+    private void OnEditorChanged(ChangeInfo changeInfo)
     {
-        var tilePositions = Enumerable.Range(0, levelData.positions.Length)
-            .Select(i => (levelData.positions[i], editorState.Palette.Tiles[levelData.ids[i]]))
-            .ToArray();
-
-        foreach (var tilemap in tilemaps.Values)
+        switch (changeInfo)
         {
-            tilemap.ClearAllTiles();
-        }        
+            case TileChangeInfo tileChangeInfo:
+
+                var position = tileChangeInfo.position;
+                var tile = tileChangeInfo.newTile;
+                var selfTilemap = GetTilemap(tile);
         
-        SetTiles(tilePositions);
+                if (tile != null)
+                {
+                    selfTilemap.SetTile(position, tile.TileBase);
+                }
+        
+                foreach (var tilemap in tilemaps.Values)
+                {
+                    if (tilemap == selfTilemap) continue;
+            
+                    tilemap.SetTile(position, null);
+                }
+                break;
+            
+            case MultiTileChangeInfo multiTileChangeInfo:
+                
+                var tilemapGroups = Enumerable.Range(0, multiTileChangeInfo.positions.Length)
+                    .Select(i =>
+                    {
+                        var position = multiTileChangeInfo.positions[i];
+                        var tile = multiTileChangeInfo.newTiles[i];
+                        var tilemap = GetTilemap(tile);
+                        
+                        return (position, tile, tilemap);
+                    })
+                    .GroupBy(item => item.tilemap)
+                    .ToArray();
+                
+                foreach (var group in tilemapGroups)
+                {
+                    var positionArray = group.Select(item => item.position).ToArray();
+                    var nullTiles = new TileBase[positionArray.Length];
+                    Array.Fill(nullTiles, null);
+                    
+                    if (group.Key != null)
+                    {
+                        var tileArray = group.Select(item => item.tile.TileBase).ToArray();
+                        group.Key.SetTiles(positionArray, tileArray);
+                    }
+                    
+                    foreach (var tilemap in tilemaps.Values)
+                    {
+                        if (tilemap == group.Key) continue;
+                
+                        tilemap.SetTiles(positionArray, nullTiles);
+                    }
+                }
+                
+                break;
+        }
     }
 
     private void Update()
     {
-        if (editorState.GameState == GameState.Playing)
+        if (gameStateManager.GameState == GameState.Playing)
         {
             state = PlacerState.None;
             mouseDown = false;
@@ -73,7 +122,7 @@ public class TilePlacer : MonoBehaviour
             return;
         }
 
-        Vector3Int mouseCell = grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+        Vector3Int mouseCell = MouseCell;
         
         if (PointerOverUI() && !mouseDown)
         {
@@ -131,15 +180,15 @@ public class TilePlacer : MonoBehaviour
             switch (editorState.ActiveTool)
             {
                 case ToolType.Brush:
-                    SetTile(mouseCell, editorState.ActiveTile);
+                    editorState.SetTile(mouseCell, editorState.ActiveTile);
                     break;
                 
                 case ToolType.Eraser:
-                    SetTile(mouseCell, null);
+                    editorState.SetTile(mouseCell, null);
                     break;
                 
                 case ToolType.Picker:
-                    editorState.ActiveTile = GetTile(mouseCell);
+                    editorState.ActiveTile = editorState.GetTile(mouseCell);
                     break;
             }
         }
@@ -151,7 +200,7 @@ public class TilePlacer : MonoBehaviour
             {
                 case ToolType.Brush:
                 case ToolType.Eraser:
-                    SetTile(mouseCell, null);
+                    editorState.SetTile(mouseCell, null);
                     break;
             }
         }
@@ -226,45 +275,57 @@ public class TilePlacer : MonoBehaviour
         {
             selectionOutline.gameObject.SetActive(false);
         }
+    }
+    
+    private void SetTilemapRect(GameTile tile)
+    {
+        Vector3Int dragEnd = MouseCell;
+        Vector3Int min = Vector3Int.Min(dragStart, dragEnd);
+        Vector3Int max = Vector3Int.Max(dragStart, dragEnd);
+        Vector3Int size = max - min + new Vector3Int(1, 1, 0);
+
+        var positions = Enumerable.Range(0, size.x * size.y)
+            .Select(i => new Vector3Int(min.x + i % size.x, min.y + i / size.x))
+            .ToArray();
+
+        var tiles = new GameTile[positions.Length];
+        Array.Fill(tiles, tile);
         
-        void SetTilemapRect(GameTile tile)
-        {
-            Vector3Int start = Vector3Int.Min(dragStart, mouseCell);
-            Vector3Int end = Vector3Int.Max(dragStart, mouseCell);
-            Vector3Int size = end - start + new Vector3Int(1, 1, 0);
+        editorState.SetTiles(positions, tiles);
 
-            var positions = Enumerable.Range(0, size.x * size.y)
-                .Select(i => new Vector3Int(start.x + i % size.x, start.y + i / size.x))
-                .ToArray();
-            
-            SetTiles(positions
-                .Select(position => (position, tile))
-                .ToArray());
-
-            state = PlacerState.None;
-        }
-
-        void MoveSelection()
-        {
-            var fromPositions = ToEnumerable(selection.allPositionsWithin).ToArray();
-            
-            Vector3Int delta = mouseCell - dragStart;
-            var toTiles = fromPositions
-                .Select(position => (position + delta, GetTile(position)))
-                .ToArray();
-            
-            var holeTiles = fromPositions
-                .Select(position => (position, (GameTile)null))
-                .ToArray();
-            
-            SetTiles(holeTiles);
-            SetTiles(toTiles);
-
-            selection.position += delta;
-        }
+        state = PlacerState.None;
     }
 
-    private IEnumerable<T> ToEnumerable<T>(IEnumerator<T> enumerator)
+    private void MoveSelection()
+    {
+        var originPositions = ToEnumerable(selection.allPositionsWithin).ToArray();
+
+        var nullTiles = new GameTile[originPositions.Length];
+        Array.Fill(nullTiles, null);
+        
+        var originTiles = originPositions
+            .Select(editorState.GetTile)
+            .ToArray();
+        
+        Vector3Int delta = MouseCell - dragStart;
+        var destinationPositions = originPositions
+            .Select(position => position + delta)
+            .ToArray();
+
+        var deleteTiles = editorState.GetMultiTileChangeInfo(originPositions, nullTiles);
+        var moveTiles = editorState.GetMultiTileChangeInfo(destinationPositions, originTiles);
+        var bundle = new ChangeInfoBundle("Moved tile selection", new[]
+        {
+            deleteTiles,
+            moveTiles,
+        });
+        
+        editorState.SendEditorChange(bundle);
+
+        selection.position += delta;
+    }
+
+    private static IEnumerable<T> ToEnumerable<T>(IEnumerator<T> enumerator)
     {
         while (enumerator.MoveNext())
         {
@@ -272,7 +333,7 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
-    public bool PointerOverUI()
+    private static bool PointerOverUI()
     {
         int uiLayer = LayerMask.NameToLayer("UI");
         
@@ -293,68 +354,15 @@ public class TilePlacer : MonoBehaviour
         {
             return null;
         }
-        
-        if (tilemaps.TryGetValue(gameTile.TilemapPrefab, out var tilemap)) return tilemap;
+
+        if (tilemaps.TryGetValue(gameTile.TilemapPrefab, out var tilemap))
+        {
+            return tilemap;
+        }
         
         tilemap = Instantiate(gameTile.TilemapPrefab, grid.transform);
         tilemaps[gameTile.TilemapPrefab] = tilemap;
 
         return tilemap;
-    }
-
-    private GameTile GetTile(Vector3Int position) => editorState.GetTile(position);
-    
-    private void SetTile(Vector3Int position, GameTile tile)
-    {
-        editorState.SetTile(position, tile);
-        var selfTilemap = GetTilemap(tile); 
-        
-        if (selfTilemap != null)
-        {
-            selfTilemap.SetTile(position, tile.TileBase);
-        }
-        
-        foreach (var tilemap in tilemaps.Values)
-        {
-            if (tilemap == selfTilemap) continue;
-            
-            tilemap.SetTile(position, null);
-        }
-    }
-
-    private void SetTiles((Vector3Int position, GameTile tile)[] tilePositions)
-    {
-        foreach (var tilePosition in tilePositions)
-        {
-            editorState.SetTile(tilePosition.position, tilePosition.tile);
-        }
-        
-        var tilemapGroups = tilePositions
-            .Select(item => (item.position, item.tile, tilemap: GetTilemap(item.tile)))
-            .GroupBy(item => item.tilemap)
-            .ToArray();
-
-        var allTilemaps = tilemaps.Values.ToArray();
-        
-        foreach (var group in tilemapGroups)
-        {
-            var positionArray = group.Select(item => item.position).ToArray();
-            var nullTiles = new TileBase[positionArray.Length];
-            Array.Fill(nullTiles, null);
-            
-            if (group.Key != null)
-            {
-                var tileArray = group.Select(item => item.tile.TileBase).ToArray();
-                group.Key.SetTiles(positionArray, tileArray);
-                
-            }
-            
-            foreach (var tilemap in allTilemaps)
-            {
-                if (tilemap == group.Key) continue;
-                
-                tilemap.SetTiles(positionArray, nullTiles);
-            }
-        }
     }
 }

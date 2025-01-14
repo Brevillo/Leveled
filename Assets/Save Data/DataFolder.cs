@@ -11,8 +11,8 @@ public class SODataFolder<TData> : DataFolder<TData> where TData : ScriptableObj
     /// <param name="extension">The file extension to append to created files. Must include the "." <para>Example: .save</para></param>
     /// <param name="folderName"> The name of the folder to read and write files from. Will be a sub folder under Application.persistentData</param>
     /// <param name="getFileName"> Method for deriving file names based on each data object. </param>
-    public SODataFolder(string extension, string folderName, Func<TData, string> getFileName)
-        : base(extension, folderName, getFileName, SaveDataConstructor, SaveDataDestructor)
+    public SODataFolder(string extension, string folderName, Func<TData, string> getFileName = null)
+        : base(extension, folderName, SaveDataConstructor, SaveDataDestructor, getFileName)
     {
     }
 
@@ -33,23 +33,22 @@ public class DataFolder<TData>
     /// <summary> Constructs a new DataFolder. </summary>
     /// <param name="extension"> The file extension to append to created files. Must include the "." <para>Example: .save</para></param>
     /// <param name="folderName"> The name of the folder to read and write files from. Will be a sub folder under Application.persistentData</param>
-    /// <param name="getFileName"> Method for deriving file names based on each data object. </param>
     /// <param name="dataConstructor"> Method for constructing new objects to fill with Json data. </param>
     /// <param name="dataDestructor"> Method for destroying objects when their file counterpart is being deleted. <para> Can be left as null if you don't need one. </para></param>
+    /// <param name="getFileName"> Method for deriving file names based on each data object. </param>
     public DataFolder(
-
         string extension,
         string folderName,
-        Func<TData, string> getFileName,
         Func<TData> dataConstructor,
-        Action<TData> dataDestructor = null)
+        Action<TData> dataDestructor = null,
+        Func<TData, string> getFileName = null)
     {
         this.extension = extension;
         this.folderName = folderName;
 
-        this.getFileName = getFileName ?? throw new Exception("Tried to construct a DataFolder with a null getFileName paramater");
         this.dataConstructor = dataConstructor ?? throw new Exception("Tried to construct a DataFolder with a null dataConstructor parameter");
         this.dataDestructor = dataDestructor;
+        this.getFileName = getFileName;
 
         directory = new(FolderPath);
         if (!directory.Exists) directory.Create();
@@ -63,11 +62,25 @@ public class DataFolder<TData>
         .Where(data => data != null)                                 // get rid of nulls
         .ToArray();
 
+    /// <summary> Retrieves all data in the folder as FileInfos. </summary>
+    public FileInfo[] GetAllFiles()
+        => directory.GetFiles()
+            .Where(file => file.Extension == extension)
+            .ToArray();
+
+    /// <summary> Reads from the file and creates a data object. </summary>
+    /// <param name="file"> The file to read from. </param>
+    public TData GetDataFromFile(FileInfo file) => JsonToData(File.ReadAllText(file.FullName));
+
     /// <summary> Adds or updates the file corresponding to the given data </summary>
     /// <param name="data"> The data to be saved. </param>
-    public void Save(TData data)
+    public void Save(TData data) => Save(data, getFileName.Invoke(data));
+    /// <summary> Adds or updates the file corresponding to the given data </summary>
+    /// <param name="data"> The data to be saved. </param>
+    /// <param name="name"> The name of file. </param>
+    public void Save(TData data, string name)
     {
-        var file = new FileInfo(DataPath(data));
+        var file = new FileInfo(DataPath(data, name));
         file.Directory.Create();
         File.WriteAllText(file.FullName, DataToJson(data));
     }
@@ -90,7 +103,8 @@ public class DataFolder<TData>
     #region Internals
 
     private string FolderPath => $"{Application.persistentDataPath}/{folderName}";
-    private string DataPath(TData data) => $"{FolderPath}/{getFileName.Invoke(data)}{extension}";
+    private string DataPath(TData data) => DataPath(data, getFileName.Invoke(data));
+    private string DataPath(TData data, string name) => $"{FolderPath}/{name}{extension}";
 
     private TData JsonToData(string jsonText)
     {

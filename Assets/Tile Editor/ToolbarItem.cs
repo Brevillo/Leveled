@@ -15,25 +15,27 @@ public class ToolbarItem : MonoBehaviour
         editorState.ActiveTool = toolType;
     }
 
-    private void Awake()
-    {
-        OnActiveToolChanged(editorState.ActiveTool);
-    }
-
     private void OnEnable()
     {
-        editorState.ActiveToolChanged += OnActiveToolChanged;
+        editorState.EditorChanged += OnEditorChanged;
     }
 
     private void OnDisable()
     {
-        editorState.ActiveToolChanged -= OnActiveToolChanged;
+        editorState.EditorChanged -= OnEditorChanged;
     }
 
-    private void OnActiveToolChanged(ToolType activeTool)
+    private void OnEditorChanged(ChangeInfo changeInfo)
     {
-        background.color = activeTool == toolType
-            ? selectedColor
-            : regularColor;
+        switch (changeInfo)
+        {
+            case ToolbarChangeInfo toolbarChangeInfo:
+                
+                background.color = toolbarChangeInfo.newTool == toolType
+                    ? selectedColor
+                    : regularColor;
+                
+                break;
+        }
     }
 }

@@ -6,15 +6,15 @@ public class GameStateToggle : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private Sprite playIcon;
     [SerializeField] private Sprite editIcon;
-    [SerializeField] private TileEditorState editorState;
+    [SerializeField] private GameStateManager gameStateManager;
 
     public void ToggleGameState()
     {
-        var newGameState = editorState.GameState == GameState.Editing
+        var newGameState = gameStateManager.GameState == GameState.Editing
             ? GameState.Playing
             : GameState.Editing;
 
-        editorState.GameState = newGameState;
+        gameStateManager.GameState = newGameState;
 
         icon.sprite = newGameState == GameState.Playing
             ? editIcon

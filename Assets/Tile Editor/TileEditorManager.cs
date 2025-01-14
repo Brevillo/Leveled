@@ -17,19 +17,14 @@ public class TileEditorManager : MonoBehaviour
     
     private void Awake()
     {
-        saveFolder = new(".level", LevelFolder, data => data.name, () => new LevelData());
+        saveFolder = new(".level", LevelFolder, () => new LevelData());
         
-        editorState.GameState = GameState.Editing;
-        editorState.ActiveTile = palette.Tiles.FirstOrDefault(tile => tile.TileBase != null);
-        editorState.ActiveTool = ToolType.Brush;
-        
-        editorState.ResetTiles();
-
         folderPath.text = PlayerPrefs.GetString(LastFolderPathKey, "");
     }
 
     private void Start()
     {
+        editorState.ActiveTile = palette.Tiles.FirstOrDefault(tile => tile.TileBase != null);
         Load();
     }
 
@@ -42,17 +37,7 @@ public class TileEditorManager : MonoBehaviour
             return;
         }
 
-        string path = $"{Application.persistentDataPath}/Levels/{folderPath.text}";
-        
-        var saveData = new LevelData
-        {
-            name = Path.GetFileNameWithoutExtension(path), 
-            positions = editorState.Tiles.Keys.ToArray(),
-            ids = editorState.Tiles.Values.ToArray(),
-        };
-        
-        saveFolder.Save(saveData); 
-        
+        saveFolder.Save(editorState.GetLevelData(palette), folderPath.text); 
         PlayerPrefs.SetString(LastFolderPathKey, folderPath.text);
     }
 
@@ -60,20 +45,26 @@ public class TileEditorManager : MonoBehaviour
     {
         string loadingName = Path.GetFileNameWithoutExtension(folderPath.text);
 
-        var save = saveFolder.GetAllSavedData()
-            .FirstOrDefault(save => save.name == loadingName);
+        var levelData = saveFolder.GetDataFromFile(saveFolder.GetAllFiles()
+            .FirstOrDefault(file => Path.GetFileNameWithoutExtension(file.FullName) == loadingName));
 
-        if (save == null) return;
+        if (levelData == null) return;
         
+        editorState.SetLevelData(levelData, palette);
         PlayerPrefs.SetString(LastFolderPathKey, folderPath.text);
-        
-        editorState.LoadLevel(save);
     }
-
+    
     public void OpenLevelFolder()
     {
         OpenInFileBrowser($"{Application.persistentDataPath}/{LevelFolder}");
     }
+
+    public void New()
+    {
+        editorState.ClearLevelData();
+    }
+    
+    #region Open File Browser
     
     public static void OpenInMacFileBrowser(string path)
     {
@@ -142,4 +133,6 @@ public class TileEditorManager : MonoBehaviour
         OpenInWinFileBrowser(path);
         OpenInMacFileBrowser(path);
     }
+    
+    #endregion
 }

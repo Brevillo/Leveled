@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class TilePaletteItem : MonoBehaviour
@@ -19,8 +18,6 @@ public class TilePaletteItem : MonoBehaviour
         iconImage.sprite = tile.PaletteIcon;
         gameTile = tile;
         tooltip.Contents = tile.Tooltip;
-        
-        OnActiveTileChanged(editorState.ActiveTile);
     }
     
     public void SetActiveTile()
@@ -30,24 +27,31 @@ public class TilePaletteItem : MonoBehaviour
 
     private void OnEnable()
     {
-        editorState.ActiveTileChanged += OnActiveTileChanged;
+        editorState.EditorChanged += OnEditorChanged;
     }
 
     private void OnDisable()
     {
-        editorState.ActiveTileChanged -= OnActiveTileChanged;
+        editorState.EditorChanged -= OnEditorChanged;
     }
 
-    private void OnActiveTileChanged(GameTile activeTile)
+    private void OnEditorChanged(ChangeInfo changeInfo)
     {
-        background.color = activeTile == gameTile
-            ? selectedColor
-            : regularColor;
-
-        if (editorState.ActiveTool != ToolType.Brush
-            && editorState.ActiveTool != ToolType.RectBrush)
+        switch (changeInfo)
         {
-            editorState.ActiveTool = ToolType.Brush;
+            case PaletteChangeInfo paletteChangeInfo:
+                
+                background.color = paletteChangeInfo.newTile == gameTile
+                    ? selectedColor
+                    : regularColor;
+
+                if (editorState.ActiveTool != ToolType.Brush
+                    && editorState.ActiveTool != ToolType.RectBrush)
+                {
+                    editorState.ActiveTool = ToolType.Brush;
+                }
+
+                break;
         }
     }
 }
