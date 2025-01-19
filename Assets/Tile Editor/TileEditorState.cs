@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Leveled/GameTile Editor State")]
 public class TileEditorState : GameService
