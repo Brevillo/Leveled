@@ -2,38 +2,72 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Leveled/GameTile Editor State")]
-public class TileEditorState : ScriptableObject
+public class TileEditorState : GameService
 {
+    [SerializeField] private Changelog changelog;
+    
+    #region State
+    
     private GameTile activeTile = null;
     private ToolType activeTool = ToolType.Brush;
     
     private Dictionary<Vector3Int, GameTile> tiles = new();
 
-    private Stack<ChangeInfo> undoLog = new();
-    private Stack<ChangeInfo> redoLog = new();
-
-    public Stack<ChangeInfo> UndoLog => undoLog;
-    public Stack<ChangeInfo> RedoLog => redoLog;
+    private string changeInfoBundleDescription;
+    private List<ChangeInfo> changeInfoBundle; 
     
+    #endregion
+
+    protected override void Initialize()
+    {
+        changelog.ChangeEvent += OnChangelogChangeEvent;
+    }
+
+    private void OnChangelogChangeEvent(ChangeInfo changeInfo)
+    {
+        SendEditorChange(changeInfo, false);
+    }
+
     public event Action<ChangeInfo> EditorChanged;
 
-    public void SendEditorChange(ChangeInfo changeInfo, bool logChange = true)
+    public void StartChangeBundle(string description)
     {
-        if (logChange)
+        changeInfoBundleDescription = description;
+        changeInfoBundle = new();
+    }
+
+    public void EndChangeBundle()
+    {
+        if (changeInfoBundle != null)
         {
-            undoLog.Push(changeInfo);
-            redoLog.Clear();
+            changelog.LogChange(new ChangeInfoBundle(changeInfoBundleDescription, changeInfoBundle.ToArray()));
+        }
+
+        changeInfoBundle = null;
+        changeInfoBundleDescription = "";
+    }
+    
+    private void SendEditorChange(ChangeInfo changeInfo, bool logChange = true)
+    {
+        if (changeInfoBundle != null)
+        {
+            changeInfoBundle.Add(changeInfo);
+        }
+        else if (logChange)
+        {
+            changelog.LogChange(changeInfo);
         }
         
         EditorChanged?.Invoke(changeInfo);
         
         switch (changeInfo)
         {
-            case ChangeInfoBundle editorChangeInfoBundle:
+            case ChangeInfoBundle changeInfoBundle:
 
-                foreach (var info in editorChangeInfoBundle.changeInfos)
+                foreach (var info in changeInfoBundle.changeInfos)
                 {
                     SendEditorChange(info, false);
                 }
@@ -79,31 +113,6 @@ public class TileEditorState : ScriptableObject
                 break;
         }
     }
-
-    public void Undo()
-    {
-        if (!undoLog.TryPop(out var change)) return;
-        
-        var undoChange = change.Reverted;
-        redoLog.Push(undoChange);
-        SendEditorChange(undoChange, false);
-    }
-
-    public void Redo()
-    {
-        if (!redoLog.TryPop(out var change)) return;
-        
-        var redoChange = change.Reverted;
-        undoLog.Push(redoChange);
-        SendEditorChange(redoChange, false);
-    }
-
-    public void ClearChangelog()
-    {
-        undoLog.Clear();
-        redoLog.Clear();
-        EditorChanged?.Invoke(null);
-    }
     
     #region State Modification
     
@@ -122,10 +131,7 @@ public class TileEditorState : ScriptableObject
     }
 
     public void SetTiles(Vector3Int[] positions, GameTile[] tiles) =>
-        SendEditorChange(GetMultiTileChangeInfo(positions, tiles));
-
-    public ChangeInfo GetMultiTileChangeInfo(Vector3Int[] positions, GameTile[] tiles) =>
-        new MultiTileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles);
+        SendEditorChange(new MultiTileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles));
     
     public GameTile ActiveTile
     {
@@ -133,6 +139,14 @@ public class TileEditorState : ScriptableObject
         set => SendEditorChange(new PaletteChangeInfo(activeTile, value), false);
     }
 
+    public void SetActiveTool(string toolTypeName)
+    {
+        if (Enum.TryParse(typeof(ToolType), toolTypeName, true, out var toolType))
+        {
+            ActiveTool = (ToolType)toolType;
+        }
+    }
+    
     public ToolType ActiveTool
     {
         get => activeTool;
@@ -149,7 +163,7 @@ public class TileEditorState : ScriptableObject
         ids = tiles.Values.Select(palette.GetID).ToArray(),
     };
 
-    public void ClearLevelData()
+    public void ClearAllTiles()
     {
         // Clear Tiles
         var nullTiles = new GameTile[tiles.Count];
@@ -158,24 +172,23 @@ public class TileEditorState : ScriptableObject
         SetTiles(tiles.Keys.ToArray(), nullTiles);
         
         // Reset editor state
-        ClearChangelog();
+        changelog.ClearChangelog();
         tiles.Clear();
     }
     
     public void SetLevelData(LevelData levelData, GameTilePalette palette)
     {
-        // Clear changelog
-        ClearChangelog();
-
-        // Clear current level, then fill in new level
+        // Clear current level
         var nullTiles = new GameTile[tiles.Count];
         Array.Fill(nullTiles, null);
         
-        SendEditorChange(new ChangeInfoBundle($"Loaded Level", new ChangeInfo[]
-        {
-            new MultiTileChangeInfo(tiles.Keys.ToArray(), tiles.Keys.Select(GetTile).ToArray(), nullTiles),
-            new MultiTileChangeInfo(levelData.positions, levelData.positions.Select(GetTile).ToArray(), levelData.ids.Select(palette.GetTile).ToArray()),
-        }), false);
+        SetTiles(tiles.Keys.ToArray(), nullTiles);
+        
+        // Fill new level
+        SetTiles(levelData.positions, levelData.ids.Select(palette.GetTile).ToArray());
+        
+        // Clear changelog
+        changelog.ClearChangelog();
     }
     
     #endregion

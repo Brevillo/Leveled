@@ -8,6 +8,13 @@ public class GameStateManager : ScriptableObject
 
     public event Action<GameState> GameStateChanged;
 
+    public void ToggleGameState()
+    {
+        GameState = GameState == GameState.Editing
+            ? GameState.Playing
+            : GameState.Editing;
+    }
+    
     public GameState GameState
     {
         get => gameState;

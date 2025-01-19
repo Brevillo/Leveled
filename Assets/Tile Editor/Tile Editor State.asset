@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02b8cdc42acea47da9f930bb6200d03f, type: 3}
   m_Name: Tile Editor State
   m_EditorClassIdentifier: 
-  palette: {fileID: 11400000, guid: a173a35d3d2ae43e8b5389cc1f04a55d, type: 2}
+  changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}

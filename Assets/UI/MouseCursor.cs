@@ -1,15 +1,14 @@
 using System;
-using UnityEditor.Tilemaps;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using static TilePlacer;
+using static ToolbarActionsManager;
 
 public class MouseCursor : MonoBehaviour
 {
     [SerializeField] private Transform gridSpace;
     [SerializeField] private Grid grid;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private TilePlacer tilePlacer;
+    [SerializeField] private ToolbarActionsManager toolbarActions;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private float moveSpeed;
     [SerializeField] private CursorType[] cursorTypes;
@@ -29,15 +28,22 @@ public class MouseCursor : MonoBehaviour
         Vector3Int mouseCell = grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
         Vector3 mouseWorld = grid.GetCellCenterWorld(mouseCell);
         
-        (Vector3 position, Vector3 size) = tilePlacer.State switch
+        (Vector3 position, Vector3 size) = toolbarActions.CurrentState switch
         {
-            PlacerState.DrawingRect or PlacerState.Selecting => (
-                position: (mouseWorld + grid.GetCellCenterWorld(tilePlacer.DragStart)) / 2f,
+            State.DrawingRect or State.Selecting => (
+                position: (mouseWorld + grid.GetCellCenterWorld(toolbarActions.DragStart)) / 2f,
                 size: new Vector3(
-                    Mathf.Abs(mouseCell.x - tilePlacer.DragStart.x) + 1,
-                    Mathf.Abs(mouseCell.y - tilePlacer.DragStart.y) + 1,
+                    Mathf.Abs(mouseCell.x - toolbarActions.DragStart.x) + 1,
+                    Mathf.Abs(mouseCell.y - toolbarActions.DragStart.y) + 1,
                     1)),
 
+            State.MovingSelection => (
+                position: toolbarActions.Selection.center + mouseWorld - grid.GetCellCenterWorld(toolbarActions.DragStart),
+                size: new Vector3(
+                    toolbarActions.Selection.size.x * grid.cellSize.x,
+                    toolbarActions.Selection.size.y * grid.cellSize.y,
+                    1)),
+            
             _ => (
                 position: mouseWorld,
                 size: Vector3.one),

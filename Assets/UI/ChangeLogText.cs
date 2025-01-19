@@ -1,31 +1,36 @@
-using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class ChangeLogText : MonoBehaviour
 {
-    [SerializeField] private TileEditorState editorState;
+    [SerializeField] private Changelog changelog;
     [SerializeField] private TextMeshProUGUI textMesh;
+    [SerializeField] private GameObject content;
 
+    public void ToggleVisibility()
+    {
+        content.SetActive(!content.activeSelf);
+    }
+    
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.LogUpdated += OnChangelogUpdated;
     }
 
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
+        changelog.LogUpdated -= OnChangelogUpdated;
     }
 
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnChangelogUpdated()
     {
-        string redoText = editorState.RedoLog.Count > 0
-            ? $"\n{string.Join("\n", editorState.RedoLog.Reverse())}"
+        string redoText = changelog.RedoLog.Count > 0
+            ? $"\n{string.Join("\n", changelog.RedoLog.Reverse())}"
             : "";
         
-        string undoText = editorState.UndoLog.Count > 0
-            ? $"\n>> {string.Join("\n", editorState.UndoLog)}"
+        string undoText = changelog.UndoLog.Count > 0
+            ? $"\n>> {string.Join("\n", changelog.UndoLog)}"
             : ""; 
         
         textMesh.text =
