@@ -184,6 +184,10 @@ PrefabInstance:
       propertyPath: contents
       value: Camera View Mover
       objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3666665109749020489, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1135,6 +1139,10 @@ PrefabInstance:
       propertyPath: contents
       value: Tile Picker
       objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3725025451399025986, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_text
       value: I
@@ -1763,14 +1771,13 @@ GameObject:
   m_Component:
   - component: {fileID: 959352195}
   - component: {fileID: 959352194}
-  - component: {fileID: 959352196}
   m_Layer: 0
-  m_Name: Cursor Selection
+  m_Name: Hover Selection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &959352194
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1819,7 +1826,7 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 0.14901961}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 1
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -1836,30 +1843,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1225213360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &959352196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 959352193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db689d50f69fa46b69697c35535b91fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridSpace: {fileID: 959352195}
-  grid: {fileID: 1348606030}
-  mainCamera: {fileID: 519420031}
-  toolbarActions: {fileID: 1225213364}
-  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
-  moveSpeed: 0.015
-  cursorTypes: []
 --- !u!1 &981196971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,6 +2170,10 @@ PrefabInstance:
     - target: {fileID: 2868408261602085058, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: contents
       value: Center Camera on Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3666665109749020489, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_Enabled
@@ -2641,10 +2633,12 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   grid: {fileID: 1348606030}
   selectionOutline: {fileID: 1315522478}
-  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
-  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+  hoverSelection: {fileID: 959352194}
+  hoverSelectionSpeed: 0.015
   primaryToolInput: {fileID: -2875367136976448151, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   secondaryToolInput: {fileID: -2054376795459531727, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
+  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
 --- !u!1 &1295752053
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,7 +2991,7 @@ GameObject:
   - component: {fileID: 1315522479}
   - component: {fileID: 1315522478}
   m_Layer: 0
-  m_Name: Tile Placer Selection
+  m_Name: Selection Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3263,7 +3257,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_RaycastPadding: {x: -25, y: -25, z: -25, w: -25}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4417,6 +4411,10 @@ PrefabInstance:
       propertyPath: contents
       value: Tile Brush
       objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3725025451399025986, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_text
       value: B
@@ -4627,6 +4625,10 @@ PrefabInstance:
     - target: {fileID: 2868408261602085058, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: contents
       value: Tile Selection
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3666665109749020489, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_Enabled
@@ -5082,6 +5084,10 @@ PrefabInstance:
     - target: {fileID: 2868408261602085058, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: contents
       value: Rectangle Tile Brush
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3725025451399025986, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_text
@@ -5803,6 +5809,10 @@ PrefabInstance:
     - target: {fileID: 2868408261602085058, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: contents
       value: Tile Eraser
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285089986745673642, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5882890211375748498, guid: 35f51039ac82840858171e9bd64934d6, type: 3}
       propertyPath: m_Name

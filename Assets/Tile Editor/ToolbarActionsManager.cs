@@ -7,18 +7,26 @@ using UnityEngine.InputSystem;
 
 public class ToolbarActionsManager : MonoBehaviour
 {
+    [Header("Scene References")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Grid grid;
     [SerializeField] private SpriteRenderer selectionOutline;
-    [SerializeField] private TileEditorState editorState;
-    [SerializeField] private GameStateManager gameStateManager;
+    [SerializeField] private SpriteRenderer hoverSelection;
+    [SerializeField] private float hoverSelectionSpeed;
+    [Header("Input")]
     [SerializeField] private InputActionReference primaryToolInput;
     [SerializeField] private InputActionReference secondaryToolInput;
+    [Header("References")]
+    [SerializeField] private TileEditorState editorState;
+    [SerializeField] private GameStateManager gameStateManager;
     
     private Vector3Int dragStart;
     private BoundsInt selection;
     private State currentState;
     private ToolSide toolSide;
+
+    private Vector3 hoverSelectionPositionVelocity;
+    private Vector2 hoverSelectionSizeVelocity;
     
     public enum State
     {
@@ -91,17 +99,7 @@ public class ToolbarActionsManager : MonoBehaviour
         selectionOutline.gameObject.SetActive(false);
     }
     
-    /*
-     * Start
-     *
-     * 1. Click -> Start selection
-     * 2. Release -> Finish Selection
-     *
-     * 3. Click Outside Area -> Start Selection (1)
-     * 
-     * 4. Click Inside Area -> Start movement
-     * 5. Release -> Move selection
-     */
+    #region Tool Actions
     
     private void PrimaryToolDown(InputAction.CallbackContext context)
     {
@@ -117,6 +115,12 @@ public class ToolbarActionsManager : MonoBehaviour
             case ToolType.Brush:
                 
                 editorState.StartChangeBundle("Brushed multiple tiles.");
+                
+                break;
+            
+            case ToolType.Eraser:
+                
+                editorState.StartChangeBundle("Erased multiple tiles.");
                 
                 break;
             
@@ -175,6 +179,12 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 break;
             
+            case ToolType.Eraser:
+
+                editorState.StartChangeBundle("Erased multiple tiles.");
+                
+                break;
+            
             case ToolType.RectBrush:
                 
                 dragStart = MouseCell;
@@ -219,6 +229,12 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
                 
+                editorState.EndChangeBundle();
+                
+                break;
+            
+            case ToolType.Eraser:
+
                 editorState.EndChangeBundle();
                 
                 break;
@@ -294,6 +310,12 @@ public class ToolbarActionsManager : MonoBehaviour
                 editorState.EndChangeBundle();
                 
                 break;
+            
+            case ToolType.Eraser:
+
+                editorState.EndChangeBundle();
+                
+                break;
 
             case ToolType.RectBrush:
 
@@ -314,6 +336,8 @@ public class ToolbarActionsManager : MonoBehaviour
         toolSide = ToolSide.None;
     }
     
+    #endregion
+    
     private void Update()
     {
         switch (toolSide)
@@ -328,19 +352,41 @@ public class ToolbarActionsManager : MonoBehaviour
         }
         
         // Selection outline
-        if (currentState is State.Selected or State.MovingSelection)
-        {
-            selectionOutline.gameObject.SetActive(true);
-            
-            selectionOutline.size = (Vector2Int)selection.size;
+        selectionOutline.size = (Vector2Int)selection.size;
+        selectionOutline.transform.position =
+            (grid.GetCellCenterWorld(selection.min) + grid.GetCellCenterWorld(selection.max)) / 2f -
+            new Vector3(0.5f, 0.5f, 0);
+        
+        selectionOutline.gameObject.SetActive(currentState is State.Selected or State.MovingSelection);
 
-            selectionOutline.transform.position =
-                (grid.GetCellCenterWorld(selection.min) + grid.GetCellCenterWorld(selection.max)) / 2f - new Vector3(0.5f, 0.5f, 0);
-        }
-        else
+        // Hover Selection
+        Vector3Int mouseCell = MouseCell;
+        Vector3 mouseWorld = grid.GetCellCenterWorld(mouseCell);
+
+        (Vector3 position, Vector2 size) = currentState switch
         {
-            selectionOutline.gameObject.SetActive(false);
-        }
+            State.DrawingRect or State.Selecting => (
+                position: (mouseWorld + grid.GetCellCenterWorld(dragStart)) / 2f,
+                size: new Vector2(
+                    Mathf.Abs(mouseCell.x - dragStart.x) + 1,
+                    Mathf.Abs(mouseCell.y - dragStart.y) + 1)),
+
+            State.MovingSelection => (
+                position: selection.center + mouseWorld - grid.GetCellCenterWorld(dragStart),
+                size: (Vector2)(Vector3)selection.size),
+            
+            _ => (
+                position: mouseWorld,
+                size: Vector2.one),
+        };
+
+        hoverSelection.size = Vector2.SmoothDamp(hoverSelection.size, size, ref hoverSelectionSizeVelocity,
+            hoverSelectionSpeed);
+        hoverSelection.transform.localPosition =
+            Vector3.SmoothDamp(hoverSelection.transform.localPosition, position, ref hoverSelectionPositionVelocity,
+                hoverSelectionSpeed);
+        hoverSelection.gameObject.SetActive(
+            !PointerOverUI || currentState is State.DrawingRect or State.Selecting or State.MovingSelection);
     }
     
     private void SetTilemapRect(GameTile tile)
@@ -393,5 +439,4 @@ public class ToolbarActionsManager : MonoBehaviour
             yield return enumerator.Current;
         }
     }
-
 }

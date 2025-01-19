@@ -31,9 +31,13 @@ public class ChangeLogText : MonoBehaviour
         
         string undoText = changelog.UndoLog.Count > 0
             ? $"\n>> {string.Join("\n", changelog.UndoLog)}"
-            : ""; 
+            : "";
+
+        string originalState = changelog.UndoLog.Count == 0
+            ? "\n>> Original State"
+            : "\nOriginal State";
         
         textMesh.text =
-            $"<b><size=125%>Change Log</size></b>\n{redoText}{undoText}";
+            $"<b><size=125%>Change Log</size></b>\n{redoText}{undoText}{originalState}";
     }
 }
