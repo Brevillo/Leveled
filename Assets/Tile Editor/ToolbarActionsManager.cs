@@ -22,13 +22,13 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private Vector3Int dragStart;
     private BoundsInt selection;
-    private State currentState;
+    private State state;
     private ToolSide toolSide;
 
     private Vector3 hoverSelectionPositionVelocity;
     private Vector2 hoverSelectionSizeVelocity;
     
-    public enum State
+    private enum State
     {
         None,
         DrawingRect,
@@ -43,13 +43,7 @@ public class ToolbarActionsManager : MonoBehaviour
         Primary,
         Secondary,
     }
-
-    public Vector3Int DragStart => dragStart;
-
-    public BoundsInt Selection => selection;
     
-    public State CurrentState => currentState;
-
     private Vector3Int MouseCell => grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
 
     private static bool PointerOverUI
@@ -94,9 +88,10 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private void OnGameStateChanged(GameState gameState)
     {
-        currentState = State.None;
+        state = State.None;
 
         selectionOutline.gameObject.SetActive(false);
+        
     }
     
     #region Tool Actions
@@ -127,7 +122,7 @@ public class ToolbarActionsManager : MonoBehaviour
             case ToolType.RectBrush:
        
                 dragStart = MouseCell;
-                currentState = State.DrawingRect;
+                state = State.DrawingRect;
                 
                 break;
             
@@ -135,11 +130,11 @@ public class ToolbarActionsManager : MonoBehaviour
 
                 dragStart = MouseCell;
 
-                switch (currentState)
+                switch (state)
                 {
                     case State.None:
 
-                        currentState = State.Selecting;
+                        state = State.Selecting;
                         
                         break;
                     
@@ -147,15 +142,15 @@ public class ToolbarActionsManager : MonoBehaviour
 
                         if (selection.Contains(dragStart))
                         {
-                            currentState = State.MovingSelection;
+                            state = State.MovingSelection;
                         }
                         
                         break;
                 }
                 
-                if (currentState != State.MovingSelection || !selection.Contains(MouseCell))
+                if (state != State.MovingSelection || !selection.Contains(MouseCell))
                 {
-                    currentState = State.Selecting;
+                    state = State.Selecting;
                 }
 
                 break;
@@ -188,7 +183,7 @@ public class ToolbarActionsManager : MonoBehaviour
             case ToolType.RectBrush:
                 
                 dragStart = MouseCell;
-                currentState = State.DrawingRect;
+                state = State.DrawingRect;
                 
                 break;
         }
@@ -225,6 +220,11 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private void PrimaryToolUp(InputAction.CallbackContext context)
     {
+        if (toolSide != ToolSide.Primary)
+        {
+            return;
+        }
+        
         switch (editorState.ActiveTool)
         {
             case ToolType.Brush:
@@ -241,12 +241,12 @@ public class ToolbarActionsManager : MonoBehaviour
             
             case ToolType.RectBrush:
                 
-                if (currentState == State.DrawingRect)
+                if (state == State.DrawingRect)
                 {
                     SetTilemapRect(editorState.ActiveTile);
                 }
 
-                currentState = State.None;
+                state = State.None;
                 
                 break;
                 
@@ -256,13 +256,13 @@ public class ToolbarActionsManager : MonoBehaviour
                 
             case ToolType.Selection:
 
-                switch (currentState)
+                switch (state)
                 {
                     case State.Selecting:
 
                         if (dragStart == MouseCell)
                         {
-                            currentState = State.None;
+                            state = State.None;
                             break;
                         }
                         
@@ -271,30 +271,50 @@ public class ToolbarActionsManager : MonoBehaviour
 
                         selection = new(min, max - min + Vector3Int.one);
 
-                        currentState = State.Selected;
+                        state = State.Selected;
                         
                         break;
                         
                     case State.MovingSelection:
-                        
-                        if (dragStart != MouseCell)
+
+                        state = State.Selected;
+
+                        if (dragStart == MouseCell) break;
+
+                        List<Vector3Int> originPositions = new();
+                        foreach (var position in selection.allPositionsWithin)
                         {
-                            MoveSelection();
+                            originPositions.Add(position);
                         }
 
-                        currentState = State.Selected;
-                        
-                        break;
-                    
-                    default:
-                        currentState = State.None;
+                        var nullTiles = new GameTile[originPositions.Count];
+                        Array.Fill(nullTiles, null);
+
+                        var originTiles = originPositions
+                            .Select(editorState.GetTile)
+                            .ToArray();
+
+                        Vector3Int delta = MouseCell - dragStart;
+                        var destinationPositions = originPositions
+                            .Select(position => position + delta)
+                            .ToArray();
+
+                        editorState.StartChangeBundle("Moved tile selection");
+
+                        editorState.SetTiles(originPositions.ToArray(), nullTiles);
+                        editorState.SetTiles(destinationPositions, originTiles);
+
+                        editorState.EndChangeBundle();
+
+                        selection.position += delta;
+
                         break;
                 }
                 
                 break;
 
             default:
-                currentState = State.None;
+                state = State.None;
                 break;
         }
 
@@ -303,6 +323,11 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private void SecondaryToolUp(InputAction.CallbackContext context)
     {
+        if (toolSide != ToolSide.Secondary)
+        {
+            return;
+        }
+        
         switch (editorState.ActiveTool)
         {
             case ToolType.Brush:
@@ -319,17 +344,17 @@ public class ToolbarActionsManager : MonoBehaviour
 
             case ToolType.RectBrush:
 
-                if (currentState == State.DrawingRect)
+                if (state == State.DrawingRect)
                 {
                     SetTilemapRect(null);
                 }
 
-                currentState = State.None;
+                state = State.None;
                 
                 break;
             
             default:
-                currentState = State.None;
+                state = State.None;
                 break;
         }
 
@@ -357,13 +382,13 @@ public class ToolbarActionsManager : MonoBehaviour
             (grid.GetCellCenterWorld(selection.min) + grid.GetCellCenterWorld(selection.max)) / 2f -
             new Vector3(0.5f, 0.5f, 0);
         
-        selectionOutline.gameObject.SetActive(currentState is State.Selected or State.MovingSelection);
+        selectionOutline.gameObject.SetActive(state is State.Selected or State.MovingSelection);
 
         // Hover Selection
         Vector3Int mouseCell = MouseCell;
         Vector3 mouseWorld = grid.GetCellCenterWorld(mouseCell);
 
-        (Vector3 position, Vector2 size) = currentState switch
+        (Vector3 position, Vector2 size) = state switch
         {
             State.DrawingRect or State.Selecting => (
                 position: (mouseWorld + grid.GetCellCenterWorld(dragStart)) / 2f,
@@ -385,8 +410,10 @@ public class ToolbarActionsManager : MonoBehaviour
         hoverSelection.transform.localPosition =
             Vector3.SmoothDamp(hoverSelection.transform.localPosition, position, ref hoverSelectionPositionVelocity,
                 hoverSelectionSpeed);
-        hoverSelection.gameObject.SetActive(
-            !PointerOverUI || currentState is State.DrawingRect or State.Selecting or State.MovingSelection);
+        bool hoverSelectionActive =
+            (!PointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
+            editorState.ActiveTool != ToolType.Mover; 
+        hoverSelection.gameObject.SetActive(hoverSelectionActive);
     }
     
     private void SetTilemapRect(GameTile tile)
@@ -404,39 +431,5 @@ public class ToolbarActionsManager : MonoBehaviour
         Array.Fill(tiles, tile);
         
         editorState.SetTiles(positions, tiles);
-    }
-
-    private void MoveSelection()
-    {
-        var originPositions = ToEnumerable(selection.allPositionsWithin).ToArray();
-
-        var nullTiles = new GameTile[originPositions.Length];
-        Array.Fill(nullTiles, null);
-        
-        var originTiles = originPositions
-            .Select(editorState.GetTile)
-            .ToArray();
-        
-        Vector3Int delta = MouseCell - dragStart;
-        var destinationPositions = originPositions
-            .Select(position => position + delta)
-            .ToArray();
-
-        editorState.StartChangeBundle("Moved tile selection");
-        
-        editorState.SetTiles(originPositions, nullTiles);
-        editorState.SetTiles(destinationPositions, originTiles);
-        
-        editorState.EndChangeBundle();
-        
-        selection.position += delta;
-    }
-
-    private static IEnumerable<T> ToEnumerable<T>(IEnumerator<T> enumerator)
-    {
-        while (enumerator.MoveNext())
-        {
-            yield return enumerator.Current;
-        }
     }
 }
