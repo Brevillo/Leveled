@@ -31,6 +31,8 @@ public class TileEditorState : GameService
         SendEditorChange(changeInfo, false);
     }
 
+    #region Changes
+    
     public event Action<ChangeInfo> EditorChanged;
 
     public void StartChangeBundle(string description)
@@ -113,6 +115,8 @@ public class TileEditorState : GameService
                 break;
         }
     }
+    
+    #endregion
     
     #region State Modification
     
