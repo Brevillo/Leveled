@@ -3,7 +3,7 @@
 Made by Oliver Beebe
 
 ## Features
-<details open>
+<details>
   <summary>Tile Editing</summary>
   
   - Brush
@@ -15,7 +15,7 @@ Made by Oliver Beebe
   - Center camera on level
 </details>
 
-<details open>
+<details>
   <summary>Undo and Redo</summary>
 
   - Revert changes
@@ -23,7 +23,7 @@ Made by Oliver Beebe
   - View the active level changelog
 </details>
 
-<details open>
+<details>
   <summary>Multiple Tile Types</summary>
 
   - Ground (grassy dirt, stone, etc.)
@@ -33,12 +33,13 @@ Made by Oliver Beebe
   - Linkable teleporters
 </details>
 
-<details open>
+<details>
   <summary>File Saving</summary>
 
   - Choose a folder to read/write levels from
   - Levels are saved to JSON
   - Easily swap between levels
+  - Easily create new levels
 </details>
 
 ## Planned Features
