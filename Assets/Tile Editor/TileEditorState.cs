@@ -13,10 +13,10 @@ public class TileEditorState : GameService
     private GameTile activeTile = null;
     private ToolType activeTool = ToolType.Brush;
     
-    private Dictionary<Vector3Int, GameTile> tiles = new();
-
+    private Dictionary<Vector3Int, TileData> tiles = new();
+    
     private string changeInfoBundleDescription;
-    private List<ChangeInfo> changeInfoBundle; 
+    private List<ChangeInfo> changeInfoBundle;
     
     #endregion
 
@@ -85,7 +85,7 @@ public class TileEditorState : GameService
             
             case TileChangeInfo tileChangeInfo:
 
-                if (tileChangeInfo.newTile == null)
+                if (tileChangeInfo.newTile.IsEmpty)
                 {
                     tiles.Remove(tileChangeInfo.position);
                 }
@@ -101,7 +101,7 @@ public class TileEditorState : GameService
                 {
                     var tile = multiTileChangeInfo.newTiles[i];
             
-                    if (tile == null)
+                    if (tile.IsEmpty)
                     {
                         tiles.Remove(multiTileChangeInfo.positions[i]);
                     }
@@ -117,11 +117,27 @@ public class TileEditorState : GameService
     
     #endregion
     
-    #region State Modification
+    #region State Modification/Access
     
-    public GameTile GetTile(Vector3Int position) => tiles.GetValueOrDefault(position);
+    public string[] LinkingGroups => tiles.Values
+        .GroupBy(tile => tile.linkingGroup)
+        .Select(group => group.Key)
+        .Where(group => group != string.Empty)
+        .ToArray();
 
-    public void SetTile(Vector3Int position, GameTile tile)
+    public string GetLinkingGroup(GameObject gameObject)
+    {
+        var grid = gameObject.GetComponentInParent<Grid>();
+        Vector3Int position = grid.WorldToCell(gameObject.transform.position);
+        
+        return tiles.TryGetValue(position, out var tile)
+            ? tile.linkingGroup
+            : string.Empty;
+    }
+
+    public TileData GetTile(Vector3Int position) => tiles.GetValueOrDefault(position);
+
+    public void SetTile(Vector3Int position, TileData tile)
     {
         var current = GetTile(position);
 
@@ -133,7 +149,7 @@ public class TileEditorState : GameService
         SendEditorChange(new TileChangeInfo(position, current, tile));
     }
 
-    public void SetTiles(Vector3Int[] positions, GameTile[] tiles) =>
+    public void SetTiles(Vector3Int[] positions, TileData[] tiles) =>
         SendEditorChange(new MultiTileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles));
     
     public GameTile ActiveTile
@@ -163,14 +179,14 @@ public class TileEditorState : GameService
     public LevelData GetLevelData(GameTilePalette palette) => new()
     {
         positions = tiles.Keys.ToArray(),
-        ids = tiles.Values.Select(palette.GetID).ToArray(),
+        paletteIndices = tiles.Values.Select(data => palette.GetIndex(data.gameTile)).ToArray(),
+        linkingGroups = tiles.Values.Select(data => data.linkingGroup).ToArray(),
     };
 
     public void ClearAllTiles()
     {
         // Clear Tiles
-        var nullTiles = new GameTile[tiles.Count];
-        Array.Fill(nullTiles, null);
+        var nullTiles = new TileData[tiles.Count];
         
         SetTiles(tiles.Keys.ToArray(), nullTiles);
         
@@ -182,13 +198,14 @@ public class TileEditorState : GameService
     public void SetLevelData(LevelData levelData, GameTilePalette palette)
     {
         // Clear current level
-        var nullTiles = new GameTile[tiles.Count];
-        Array.Fill(nullTiles, null);
+        var nullTiles = new TileData[tiles.Count];
         
         SetTiles(tiles.Keys.ToArray(), nullTiles);
         
         // Fill new level
-        SetTiles(levelData.positions, levelData.ids.Select(palette.GetTile).ToArray());
+        SetTiles(levelData.positions, Enumerable.Range(0, levelData.positions.Length)
+            .Select(i => new TileData(palette.GetTile(levelData.paletteIndices[i]), levelData.linkingGroups[i]))
+            .ToArray());
         
         // Clear changelog
         changelog.ClearChangelog();

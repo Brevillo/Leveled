@@ -139,6 +139,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Teleporter Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7127384555612513220, guid: 90349452163624e659bcaa399a4e6df4, type: 3}
+      propertyPath: prefab
+      value: 
+      objectReference: {fileID: 8072397385723173511, guid: 42e4ebe7bdae340ec95255c1c6b30d9a, type: 3}
     - target: {fileID: 8908401106685051606, guid: 90349452163624e659bcaa399a4e6df4, type: 3}
       propertyPath: m_Sprite
       value: 

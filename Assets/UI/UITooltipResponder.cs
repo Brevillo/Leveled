@@ -37,7 +37,7 @@ public class UITooltipResponder : MonoBehaviour
         currentTooltip = null;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         contents.SetActive(currentTooltip != null);
 

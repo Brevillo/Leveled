@@ -8,6 +8,16 @@ public class GameStateManager : ScriptableObject
 
     public event Action<GameState> GameStateChanged;
 
+    public void EnterPlayMode()
+    {
+        GameState = GameState.Playing;
+    }
+
+    public void ExitPlayMode()
+    {
+        GameState = GameState.Editing;
+    }
+    
     public void ToggleGameState()
     {
         GameState = GameState == GameState.Editing
@@ -20,8 +30,14 @@ public class GameStateManager : ScriptableObject
         get => gameState;
         set
         {
+            bool changed = gameState != value;
+            
             gameState = value;
-            GameStateChanged?.Invoke(value);
+
+            if (changed)
+            {
+                GameStateChanged?.Invoke(value);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ public class ToolbarActionsManager : MonoBehaviour
     [Header("Scene References")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Grid grid;
+    [SerializeField] private LinkingGroupSetter linkingGroupSetter;
     [SerializeField] private SpriteRenderer selectionOutline;
     [SerializeField] private SpriteRenderer hoverSelection;
     [SerializeField] private float hoverSelectionSpeed;
@@ -27,6 +28,8 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private Vector3 hoverSelectionPositionVelocity;
     private Vector2 hoverSelectionSizeVelocity;
+
+    private List<Vector3Int> brushedTiles = new();
     
     private enum State
     {
@@ -46,27 +49,12 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private Vector3Int MouseCell => grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
 
-    private static bool PointerOverUI
-    {
-        get
-        {
-            int uiLayer = LayerMask.NameToLayer("UI");
-            
-            var eventData = new PointerEventData(EventSystem.current)
-            {
-                position = Input.mousePosition,
-            };
-            var results = new List<RaycastResult>();
-            
-            EventSystem.current.RaycastAll(eventData, results);
-
-            return results.Any(result => result.gameObject.layer == uiLayer);
-        }
-    }
+    private bool pointerOverUI;
     
     private void OnEnable()
     {
         gameStateManager.GameStateChanged += OnGameStateChanged;
+        editorState.EditorChanged += OnEditorChanged;
         
         primaryToolInput.action.performed += PrimaryToolDown;
         primaryToolInput.action.canceled += PrimaryToolUp;
@@ -78,6 +66,7 @@ public class ToolbarActionsManager : MonoBehaviour
     private void OnDisable()
     {
         gameStateManager.GameStateChanged -= OnGameStateChanged;
+        editorState.EditorChanged -= OnEditorChanged;
         
         primaryToolInput.action.performed -= PrimaryToolDown;
         primaryToolInput.action.canceled -= PrimaryToolUp;
@@ -93,12 +82,28 @@ public class ToolbarActionsManager : MonoBehaviour
         selectionOutline.gameObject.SetActive(false);
         
     }
+
+    private void OnEditorChanged(ChangeInfo changeInfo)
+    {
+        switch (changeInfo)
+        {
+            case ToolbarChangeInfo toolbarChangeInfo:
+
+                if (toolbarChangeInfo.previousTool == ToolType.Selection
+                    && toolbarChangeInfo.newTool != ToolType.Selection)
+                {
+                    state = State.None;
+                }
+                
+                break;
+        }
+    }
     
     #region Tool Actions
     
     private void PrimaryToolDown(InputAction.CallbackContext context)
     {
-        if (PointerOverUI || toolSide == ToolSide.Secondary)
+        if (pointerOverUI || toolSide == ToolSide.Secondary)
         {
             return;
         }
@@ -110,6 +115,7 @@ public class ToolbarActionsManager : MonoBehaviour
             case ToolType.Brush:
                 
                 editorState.StartChangeBundle("Brushed multiple tiles.");
+                brushedTiles.Clear();
                 
                 break;
             
@@ -159,7 +165,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private void SecondaryToolDown(InputAction.CallbackContext context)
     {
-        if (PointerOverUI || toolSide == ToolSide.Primary)
+        if (pointerOverUI || toolSide == ToolSide.Primary)
         {
             return;
         }
@@ -194,15 +200,20 @@ public class ToolbarActionsManager : MonoBehaviour
         switch (editorState.ActiveTool)
         {
             case ToolType.Brush:
-                editorState.SetTile(MouseCell, editorState.ActiveTile);
+                
+                Vector3Int brushPosition = MouseCell;
+                
+                editorState.SetTile(brushPosition, new(editorState.ActiveTile));
+                brushedTiles.Add(brushPosition);
+                
                 break;
                 
             case ToolType.Eraser:
-                editorState.SetTile(MouseCell, null);
+                editorState.SetTile(MouseCell, TileData.Empty);
                 break;
                 
             case ToolType.Picker:
-                editorState.ActiveTile = editorState.GetTile(MouseCell);
+                editorState.ActiveTile = editorState.GetTile(MouseCell).gameTile;
                 break;
         }
     }
@@ -213,7 +224,7 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
             case ToolType.Eraser:
-                editorState.SetTile(MouseCell, null);
+                editorState.SetTile(MouseCell, TileData.Empty);
                 break;
         }
     }
@@ -229,7 +240,21 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
                 
-                editorState.EndChangeBundle();
+                if (editorState.ActiveTile.Linkable)
+                {
+                    GetLinkingGroup(linkingGroup =>
+                    {
+                        var tiles = new TileData[brushedTiles.Count];
+                        Array.Fill(tiles, new TileData(editorState.ActiveTile, linkingGroup));
+                        
+                        editorState.SetTiles(brushedTiles.ToArray(), tiles);
+                        editorState.EndChangeBundle();
+                    });
+                }
+                else
+                {
+                    editorState.EndChangeBundle();
+                }
                 
                 break;
             
@@ -259,12 +284,6 @@ public class ToolbarActionsManager : MonoBehaviour
                 switch (state)
                 {
                     case State.Selecting:
-
-                        if (dragStart == MouseCell)
-                        {
-                            state = State.None;
-                            break;
-                        }
                         
                         Vector3Int min = Vector3Int.Min(dragStart, MouseCell);
                         Vector3Int max = Vector3Int.Max(dragStart, MouseCell);
@@ -287,8 +306,7 @@ public class ToolbarActionsManager : MonoBehaviour
                             originPositions.Add(position);
                         }
 
-                        var nullTiles = new GameTile[originPositions.Count];
-                        Array.Fill(nullTiles, null);
+                        var nullTiles = new TileData[originPositions.Count];
 
                         var originTiles = originPositions
                             .Select(editorState.GetTile)
@@ -365,6 +383,18 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private void Update()
     {
+        int uiLayer = LayerMask.NameToLayer("UI");
+            
+        var eventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition,
+        };
+        var results = new List<RaycastResult>();
+            
+        EventSystem.current.RaycastAll(eventData, results);
+
+        pointerOverUI = results.Any(result => result.gameObject.layer == uiLayer);
+        
         switch (toolSide)
         {
             case ToolSide.Primary:
@@ -411,7 +441,7 @@ public class ToolbarActionsManager : MonoBehaviour
             Vector3.SmoothDamp(hoverSelection.transform.localPosition, position, ref hoverSelectionPositionVelocity,
                 hoverSelectionSpeed);
         bool hoverSelectionActive =
-            (!PointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
+            (!pointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
             editorState.ActiveTool != ToolType.Mover; 
         hoverSelection.gameObject.SetActive(hoverSelectionActive);
     }
@@ -427,9 +457,36 @@ public class ToolbarActionsManager : MonoBehaviour
             .Select(i => new Vector3Int(min.x + i % size.x, min.y + i / size.x))
             .ToArray();
 
-        var tiles = new GameTile[positions.Length];
-        Array.Fill(tiles, tile);
+        var tiles = new TileData[positions.Length];
+        Array.Fill(tiles, new(tile));
         
-        editorState.SetTiles(positions, tiles);
+        if (tile != null && tile.Linkable)
+        {
+            editorState.StartChangeBundle("Set multiple tiles");
+            
+            editorState.SetTiles(positions, tiles);
+
+            GetLinkingGroup(linkingGroup =>
+            {
+                var tiles = new TileData[positions.Length];
+                Array.Fill(tiles, new(tile, linkingGroup));
+                
+                editorState.SetTiles(positions, tiles);
+                editorState.EndChangeBundle();
+            });
+        }
+        else
+        {
+            editorState.SetTiles(positions, tiles);
+        }
+    }
+
+    private void GetLinkingGroup(Action<string> linkingGroupAction)
+    {
+        Vector2 mouseViewport =
+            mainCamera.WorldToViewportPoint(grid.GetCellCenterWorld(MouseCell) + Vector3.down * 0.5f); 
+        Vector2 position = (Vector2.one - mouseViewport) * mainCamera.rect.min + mouseViewport;
+        
+        linkingGroupSetter.GetLinkingGroupAtPosition(position, linkingGroupAction);
     }
 }

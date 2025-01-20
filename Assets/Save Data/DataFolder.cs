@@ -23,12 +23,12 @@ public class SODataFolder<TData> : DataFolder<TData> where TData : ScriptableObj
 /// <summary> Utility for easily storing objects in a Json format within a specified subfolder of Application.persistentData. </summary>
 public class DataFolder<TData>
 {
-    private readonly string extension;
-    private readonly string folderName;
-    private readonly Func<TData, string> getFileName;
-    private readonly Func<TData> dataConstructor;
-    private readonly Action<TData> dataDestructor;
-    private readonly DirectoryInfo directory;
+    public readonly string extension;
+    public readonly string folderName;
+    public readonly Func<TData, string> getFileName;
+    public readonly Func<TData> dataConstructor;
+    public readonly Action<TData> dataDestructor;
+    public readonly DirectoryInfo directory;
 
     /// <summary> Constructs a new DataFolder. </summary>
     /// <param name="extension"> The file extension to append to created files. Must include the "." <para>Example: .save</para></param>
@@ -50,7 +50,7 @@ public class DataFolder<TData>
         this.dataDestructor = dataDestructor;
         this.getFileName = getFileName;
 
-        directory = new(FolderPath);
+        directory = new(folderName);
         if (!directory.Exists) directory.Create();
     }
 
@@ -74,23 +74,33 @@ public class DataFolder<TData>
 
     /// <summary> Adds or updates the file corresponding to the given data </summary>
     /// <param name="data"> The data to be saved. </param>
-    public void Save(TData data) => Save(data, getFileName.Invoke(data));
+    public void Save(TData data) => Save(data, getFileName?.Invoke(data) ?? throw new Exception("No file name action defined!"));
     /// <summary> Adds or updates the file corresponding to the given data </summary>
     /// <param name="data"> The data to be saved. </param>
     /// <param name="name"> The name of file. </param>
     public void Save(TData data, string name)
     {
-        var file = new FileInfo(DataPath(data, name));
+        var file = new FileInfo(DataPath(name));
         file.Directory.Create();
         File.WriteAllText(file.FullName, DataToJson(data));
     }
 
     /// <summary> Removes the specified data from the folder. </summary>
     /// <param name="data"> The data to be deleted. </param>
-    public void Delete(TData data)
+    public void Delete(TData data) => Delete(data, getFileName?.Invoke(data) ?? throw new Exception("No file name action defined!"));
+    /// <summary> Removes the specified data from the folder and calls the defined destructor on the data object. </summary>
+    /// <param name="data"> The data object to be deleted. </param>
+    /// <param name="name"> The name of the file. </param>
+    public void Delete(TData data, string name)
     {
-        File.Delete(DataPath(data));
+        File.Delete(DataPath(name));
         dataDestructor?.Invoke(data);
+    }
+    /// <summary> Removes the specified data from the folder. </summary>
+    /// <param name="name"> The name of the file. </param>
+    public void Delete(string name)
+    {
+        File.Delete(DataPath(name));
     }
 
     /// <summary> Deletes all data from the folder. </summary>
@@ -101,10 +111,8 @@ public class DataFolder<TData>
         .ForEach(file => File.Delete(file.Name));   // delete each file
 
     #region Internals
-
-    private string FolderPath => $"{Application.persistentDataPath}/{folderName}";
-    private string DataPath(TData data) => DataPath(data, getFileName.Invoke(data));
-    private string DataPath(TData data, string name) => $"{FolderPath}/{name}{extension}";
+    
+    private string DataPath(string name) => $"{folderName}/{name}{extension}";
 
     private TData JsonToData(string jsonText)
     {

@@ -30,10 +30,10 @@ public class ChangeInfoBundle : ChangeInfo
 public class MultiTileChangeInfo : ChangeInfo
 {
     public readonly Vector3Int[] positions;
-    private readonly GameTile[] previousTiles;
-    public readonly GameTile[] newTiles;
+    public readonly TileData[] previousTiles;
+    public readonly TileData[] newTiles;
 
-    public MultiTileChangeInfo(Vector3Int[] positions, GameTile[] previousTiles, GameTile[] newTiles) : base("Set multiple tiles.")
+    public MultiTileChangeInfo(Vector3Int[] positions, TileData[] previousTiles, TileData[] newTiles) : base("Set multiple tiles.")
     {
         this.positions = positions;
         this.previousTiles = previousTiles;
@@ -46,11 +46,10 @@ public class MultiTileChangeInfo : ChangeInfo
 public class TileChangeInfo : ChangeInfo
 {
     public readonly Vector3Int position;
-    private readonly GameTile previousTile;
-    public readonly GameTile newTile;
+    public readonly TileData previousTile;
+    public readonly TileData newTile;
 
-    public TileChangeInfo(Vector3Int position, GameTile previousTile, GameTile newTile) : base(
-        $"Set Tile at {position} from {GameTile.NullableToString(previousTile)} to {GameTile.NullableToString(newTile)}")
+    public TileChangeInfo(Vector3Int position, TileData previousTile, TileData newTile) : base("Set a tile")
     {
         this.position = position;
         this.previousTile = previousTile;
@@ -62,7 +61,7 @@ public class TileChangeInfo : ChangeInfo
 
 public class ToolbarChangeInfo : ChangeInfo
 {
-    private readonly ToolType previousTool;
+    public readonly ToolType previousTool;
     public readonly ToolType newTool;
 
     public ToolbarChangeInfo(ToolType previousTool, ToolType newTool) : base($"Changed active tool to {newTool.ToString()}")
@@ -76,7 +75,7 @@ public class ToolbarChangeInfo : ChangeInfo
 
 public class PaletteChangeInfo : ChangeInfo
 {
-    private readonly GameTile previousTile;
+    public readonly GameTile previousTile;
     public readonly GameTile newTile;
 
     public PaletteChangeInfo(GameTile previousTile, GameTile newTile) : base(

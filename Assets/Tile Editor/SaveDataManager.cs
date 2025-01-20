@@ -1,26 +1,49 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using System.IO;
+using SFB;
+using UnityEngine.UI;
 
 public class SaveDataManager : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private GameTilePalette palette;
-    [SerializeField] private TMP_InputField folderPath;
+    [SerializeField] private TMP_InputField levelName;
     [SerializeField] private GameStateManager gameStateManager;
-
+    [SerializeField] private LevelSelectOption levelSelectOptionPrefab;
+    [SerializeField] private Transform levelSelectionOptionsParent;
+    [SerializeField] private CameraMovement cameraMovement;
+    
     private DataFolder<LevelData> saveFolder;
 
-    private const string LevelFolder = "Levels";
-    private const string LastFolderPathKey = "LastFolderPath";
+    private string loadedLevelName;
+    
+    private const string LastFolderPathPrefKey = "LastFolderPath";
+    private const string LastLevelNamePrefKey = "LastLevelName";
+    private const string FileExtension = "level";
+
+    private List<LevelSelectOption> levelSelectOptionInstances;
+    
+    private string LevelFolderPath
+    {
+        get => saveFolder?.directory.FullName ?? "";
+        set
+        {
+            if (value == "") return;
+            
+            saveFolder = new($".{FileExtension}", value, () => new LevelData());
+        }
+    }
+
+    private static string GetName(FileInfo file) => Path.GetFileNameWithoutExtension(file.FullName);
     
     private void Awake()
     {
-        saveFolder = new(".level", LevelFolder, () => new LevelData());
-        
-        folderPath.text = PlayerPrefs.GetString(LastFolderPathKey, "");
+        levelSelectOptionInstances = new();
+        LevelFolderPath = PlayerPrefs.GetString(LastFolderPathPrefKey, "");
     }
 
     private void Start()
@@ -29,43 +52,124 @@ public class SaveDataManager : MonoBehaviour
         editorState.ActiveTile = palette.Tiles.FirstOrDefault(tile => tile.TileBase != null);
         editorState.ActiveTool = ToolType.Brush;
         
-        Load();
+        RefreshLevels();
+
+        if (saveFolder != null)
+        {
+            var levels = saveFolder.GetAllFiles();
+            string lastLevelName = PlayerPrefs.GetString(LastLevelNamePrefKey, "");
+            var lastLevelFile = levels.FirstOrDefault(file => GetName(file) == lastLevelName);
+
+            LoadLevel(lastLevelFile ?? levels.FirstOrDefault());
+        }
     }
 
-    public void Save()
+    public void RefreshLevels()
     {
-        var invalidPathChars = Path.GetInvalidPathChars();
-        if (folderPath.text.Any(c => invalidPathChars.Contains(c)))
+        if (saveFolder == null)
         {
-            Debug.LogError("Invalid Path Name!");
             return;
         }
+        
+        foreach (var option in levelSelectOptionInstances)
+        {
+            Destroy(option.gameObject);
+        }
 
-        saveFolder.Save(editorState.GetLevelData(palette), folderPath.text); 
-        PlayerPrefs.SetString(LastFolderPathKey, folderPath.text);
+        levelSelectOptionInstances.Clear();
+
+        foreach (var file in saveFolder.GetAllFiles())
+        {
+            var option = Instantiate(levelSelectOptionPrefab, levelSelectionOptionsParent);
+
+            option.Initialize(GetName(file));
+            
+            option.Select.onClick.AddListener(() => LoadLevel(file));
+            option.Delete.onClick.AddListener(() => DeleteLevelOption(file, option));
+            
+            option.UpdateSelected(loadedLevelName);
+            
+            levelSelectOptionInstances.Add(option);
+        }
     }
 
-    public void Load()
+    private void DeleteLevelOption(FileInfo file, LevelSelectOption option)
     {
-        string loadingName = Path.GetFileNameWithoutExtension(folderPath.text);
-
-        var levelData = saveFolder.GetDataFromFile(saveFolder.GetAllFiles()
-            .FirstOrDefault(file => Path.GetFileNameWithoutExtension(file.FullName) == loadingName));
-
-        if (levelData == null) return;
-        
-        editorState.SetLevelData(levelData, palette);
-        PlayerPrefs.SetString(LastFolderPathKey, folderPath.text);
+        file.Delete();
+        levelSelectOptionInstances.Remove(option);
+        Destroy(option.gameObject);
     }
     
-    public void OpenLevelFolder()
+    public void SaveLevel()
     {
-        OpenInFileBrowser($"{Application.persistentDataPath}/{LevelFolder}");
+        saveFolder.Delete(loadedLevelName);
+        saveFolder.Save(editorState.GetLevelData(palette), levelName.text);
+
+        loadedLevelName = levelName.text;
+        
+        RefreshLevels();
     }
 
-    public void New()
+    private void LoadLevel(FileInfo file)
     {
+        if (file == null) return;
+        
+        PlayerPrefs.SetString(LastLevelNamePrefKey, GetName(file));
+        
+        var levelData = saveFolder.GetDataFromFile(file);
+    
+        if (levelData == null) return;
+
+        if (levelData.paletteIndices == null)
+        {
+            var levelData_1 = new LevelData_1();
+            JsonUtility.FromJsonOverwrite(File.ReadAllText(file.FullName), levelData_1);
+
+            levelData.paletteIndices = levelData_1.ids;
+            levelData.linkingGroups = new string[levelData.positions.Length];
+        }
+
+        if (levelData.paletteIndices == null) return;
+
+        levelName.text = loadedLevelName = GetName(file);
+        
+        editorState.SetLevelData(levelData, palette);
+        cameraMovement.ResetCamera();
+        
+        foreach (var option in levelSelectOptionInstances)
+        {
+            option.UpdateSelected(GetName(file));
+        }
+    }
+    
+    public void ChooseLevelFolder()
+    {
+        string path = StandaloneFileBrowser.OpenFolderPanel("Choose Folder to Load Levels From", LevelFolderPath, false)
+            .FirstOrDefault();
+
+        if (path == default) return;
+
+        PlayerPrefs.SetString(LastFolderPathPrefKey, path);
+        LevelFolderPath = path;
+        
+        RefreshLevels();
+    }
+
+    public void NewLevel()
+    {        
+        print(LevelFolderPath);
+
+        string path =
+            StandaloneFileBrowser.SaveFilePanel("Create New Level", LevelFolderPath, "New Level", FileExtension);
+
+        if (path == "") return;
+        
+        levelName.text = loadedLevelName = Path.GetFileNameWithoutExtension(path);
+        
         editorState.ClearAllTiles();
+        
+        SaveLevel();
+        RefreshLevels();
     }
     
     #region Open File Browser

@@ -39,9 +39,9 @@ public class TilePlacer : MonoBehaviour
                 var tile = tileChangeInfo.newTile;
                 var selfTilemap = GetTilemap(tile);
         
-                if (tile != null)
+                if (!tile.IsEmpty)
                 {
-                    selfTilemap.SetTile(position, tile.TileBase);
+                    selfTilemap.SetTile(position, tile.gameTile.TileBase);
                 }
         
                 foreach (var tilemap in tilemaps.Values)
@@ -55,7 +55,7 @@ public class TilePlacer : MonoBehaviour
             
             case MultiTileChangeInfo multiTileChangeInfo:
                 
-                var tilemapGroups = Enumerable.Range(0, multiTileChangeInfo.positions.Length)
+                IGrouping<Tilemap, (Vector3Int position, TileData tileData, Tilemap tilemap)>[] tilemapGroups = Enumerable.Range(0, multiTileChangeInfo.positions.Length)
                     .Select(i =>
                     {
                         var position = multiTileChangeInfo.positions[i];
@@ -75,7 +75,7 @@ public class TilePlacer : MonoBehaviour
                     
                     if (group.Key != null)
                     {
-                        var tileArray = group.Select(item => item.tile.TileBase).ToArray();
+                        var tileArray = group.Select(item => item.tileData.gameTile.TileBase).ToArray();
                         group.Key.SetTiles(positionArray, tileArray);
                     }
                     
@@ -96,20 +96,22 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
-    private Tilemap GetTilemap(GameTile gameTile)
+    private Tilemap GetTilemap(TileData tileData)
     {
-        if (gameTile == null || gameTile.TilemapPrefab == null)
+        if (tileData.IsEmpty || tileData.gameTile.TilemapPrefab == null)
         {
             return null;
         }
-    
-        if (tilemaps.TryGetValue(gameTile.TilemapPrefab, out var tilemap))
+
+        var tilemapPrefab = tileData.gameTile.TilemapPrefab;
+        
+        if (tilemaps.TryGetValue(tilemapPrefab, out var tilemap))
         {
             return tilemap;
         }
         
-        tilemap = Instantiate(gameTile.TilemapPrefab, grid.transform);
-        tilemaps[gameTile.TilemapPrefab] = tilemap;
+        tilemap = Instantiate(tilemapPrefab, grid.transform);
+        tilemaps[tilemapPrefab] = tilemap;
     
         return tilemap;
     }
