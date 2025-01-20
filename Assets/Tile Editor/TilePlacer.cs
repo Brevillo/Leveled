@@ -93,6 +93,12 @@ public class TilePlacer : MonoBehaviour
         foreach (var tilemap in tilemaps.Values)
         {
             tilemap.CompressBounds();
+            tilemap.RefreshAllTiles();
+
+            if (tilemap.TryGetComponent(out CompositeCollider2D composite))
+            {
+                composite.GenerateGeometry();
+            }
         }
     }
 

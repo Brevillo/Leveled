@@ -32,25 +32,25 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
+        
         switch (gameStateManager.GameState)
         {
             case GameState.Editing:
                 
-                if (Input.GetMouseButton(2)
-                    || (editorState.ActiveTool == ToolType.Mover && Input.GetMouseButton(0)))
+                if (!editorState.PointerOverUI)
                 {
-                    transform.position -= mainCamera.ScreenToWorldPoint(Input.mousePosition - prevMousePosition) - mainCamera.ScreenToWorldPoint(Vector3.zero);
+                    if (Input.GetMouseButton(2)
+                        || (editorState.ActiveTool == ToolType.Mover && Input.GetMouseButton(0)))
+                    {
+                        transform.position -= mainCamera.ScreenToWorldPoint(Input.mousePosition - prevMousePosition) - mainCamera.ScreenToWorldPoint(Vector3.zero);
+                    }
+                    prevMousePosition = Input.mousePosition;
+                    
+                    zoomTarget = Mathf.Pow(Mathf.Clamp(Mathf.Pow(zoomTarget - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor), maxZoom, minZoom), 1f / zoomFactor);
                 }
-                prevMousePosition = Input.mousePosition;
-                
-                zoomTarget = Mathf.Pow(Mathf.Clamp(Mathf.Pow(zoomTarget - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor), maxZoom, minZoom), 1f / zoomFactor);
                 
                 Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                
-                mainCamera.orthographicSize =
-                    Mathf.SmoothDamp(mainCamera.orthographicSize, Mathf.Pow(zoomTarget, zoomFactor), ref zoomVelocity,
-                        zoomSmoothing);
-                
+                DampZoom();
                 transform.position += mouseWorldPosition - mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
                 break;
@@ -70,14 +70,17 @@ public class CameraMovement : MonoBehaviour
                     playMoveSpeed);
                 
                 zoomTarget = Mathf.Pow(Mathf.Max(minPlaySize, GetZoomForSize(bounds.size + Vector3.right * playSizeBuffer)), 1f / zoomFactor);
-                mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, Mathf.Pow(zoomTarget, zoomFactor),
-                    ref zoomVelocity, zoomSmoothing);
+                DampZoom();
                 
                 break;
         }
-        
-        // Camera Zoom
+
+        void DampZoom()
+        {
+            mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, Mathf.Pow(zoomTarget, zoomFactor), ref zoomVelocity, zoomSmoothing);
+        }
     }
+    
 
     private void SetZoom(float value)
     {

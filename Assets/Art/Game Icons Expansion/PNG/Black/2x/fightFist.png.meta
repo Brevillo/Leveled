@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fightFist_0: -5538309489535354286
+      fightFist_1: 537610771437768340
+      fightFist_2: 5045293432334022923
+      fightFist_3: -3423281284406697310
+      fightFist_4: 1785930765627211783
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

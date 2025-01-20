@@ -29,6 +29,8 @@ public class ToolbarActionsManager : MonoBehaviour
     private Vector3 hoverSelectionPositionVelocity;
     private Vector2 hoverSelectionSizeVelocity;
 
+    private ToolType recentBrushType = ToolType.Brush;
+
     private List<Vector3Int> brushedTiles = new();
     
     private enum State
@@ -48,8 +50,6 @@ public class ToolbarActionsManager : MonoBehaviour
     }
     
     private Vector3Int MouseCell => grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
-
-    private bool pointerOverUI;
     
     private void OnEnable()
     {
@@ -80,7 +80,6 @@ public class ToolbarActionsManager : MonoBehaviour
         state = State.None;
 
         selectionOutline.gameObject.SetActive(false);
-        
     }
 
     private void OnEditorChanged(ChangeInfo changeInfo)
@@ -94,6 +93,11 @@ public class ToolbarActionsManager : MonoBehaviour
                 {
                     state = State.None;
                 }
+
+                if (toolbarChangeInfo.newTool is ToolType.Brush or ToolType.RectBrush)
+                {
+                    recentBrushType = toolbarChangeInfo.newTool;
+                }
                 
                 break;
         }
@@ -103,7 +107,7 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private void PrimaryToolDown(InputAction.CallbackContext context)
     {
-        if (pointerOverUI || toolSide == ToolSide.Secondary)
+        if (editorState.PointerOverUI || toolSide == ToolSide.Secondary)
         {
             return;
         }
@@ -165,7 +169,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private void SecondaryToolDown(InputAction.CallbackContext context)
     {
-        if (pointerOverUI || toolSide == ToolSide.Primary)
+        if (editorState.PointerOverUI || toolSide == ToolSide.Primary)
         {
             return;
         }
@@ -276,7 +280,7 @@ public class ToolbarActionsManager : MonoBehaviour
                 break;
                 
             case ToolType.Picker:
-                editorState.ActiveTool = ToolType.Brush;
+                editorState.ActiveTool = recentBrushType;
                 break;
                 
             case ToolType.Selection:
@@ -383,18 +387,6 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private void Update()
     {
-        int uiLayer = LayerMask.NameToLayer("UI");
-            
-        var eventData = new PointerEventData(EventSystem.current)
-        {
-            position = Input.mousePosition,
-        };
-        var results = new List<RaycastResult>();
-            
-        EventSystem.current.RaycastAll(eventData, results);
-
-        pointerOverUI = results.Any(result => result.gameObject.layer == uiLayer);
-        
         switch (toolSide)
         {
             case ToolSide.Primary:
@@ -441,7 +433,7 @@ public class ToolbarActionsManager : MonoBehaviour
             Vector3.SmoothDamp(hoverSelection.transform.localPosition, position, ref hoverSelectionPositionVelocity,
                 hoverSelectionSpeed);
         bool hoverSelectionActive =
-            (!pointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
+            (!editorState.PointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
             editorState.ActiveTool != ToolType.Mover; 
         hoverSelection.gameObject.SetActive(hoverSelectionActive);
     }

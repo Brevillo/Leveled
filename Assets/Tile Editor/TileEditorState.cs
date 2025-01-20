@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 [CreateAssetMenu(menuName = "Leveled/GameTile Editor State")]
 public class TileEditorState : GameService
@@ -118,6 +119,24 @@ public class TileEditorState : GameService
     #endregion
     
     #region State Modification/Access
+
+    public bool PointerOverUI
+    {
+        get
+        {
+            int uiLayer = LayerMask.NameToLayer("UI");
+            
+            var eventData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition,
+            };
+            var results = new List<RaycastResult>();
+            
+            EventSystem.current.RaycastAll(eventData, results);
+
+            return results.Any(result => result.gameObject.layer == uiLayer);
+        }
+    }
     
     public string[] LinkingGroups => tiles.Values
         .GroupBy(tile => tile.linkingGroup)

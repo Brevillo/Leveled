@@ -1722,7 +1722,71 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      tilemap_color_0: 778521763615278669
+      tilemap_color_1: 5551620796146804589
+      tilemap_color_10: -6138458605456681442
+      tilemap_color_11: 6606037284898887523
+      tilemap_color_12: 962761526985461985
+      tilemap_color_13: 2194040357172187003
+      tilemap_color_14: 8882317421825284719
+      tilemap_color_15: -1291278360103661180
+      tilemap_color_16: -5067653012403650635
+      tilemap_color_17: -8558379674420587203
+      tilemap_color_18: 6866179908322075174
+      tilemap_color_19: -8541068431456874790
+      tilemap_color_2: 5995895391878595505
+      tilemap_color_20: -8151397727226602378
+      tilemap_color_21: 4876905011688191990
+      tilemap_color_22: 5356401608837398553
+      tilemap_color_23: -4073979545073139459
+      tilemap_color_24: -6824697942580332816
+      tilemap_color_25: -68191330175176259
+      tilemap_color_26: 4092243073438970143
+      tilemap_color_27: -7110811400504609920
+      tilemap_color_28: 7159776147211458325
+      tilemap_color_29: 4302817606424317332
+      tilemap_color_3: -3364063674341925912
+      tilemap_color_30: 8829381548009470147
+      tilemap_color_31: 2279080589045550315
+      tilemap_color_32: -1441783303264416520
+      tilemap_color_33: 8359383147353355257
+      tilemap_color_34: -1355738933838670817
+      tilemap_color_35: 905322611579572574
+      tilemap_color_36: -1450531101263126164
+      tilemap_color_37: -2477156839393377346
+      tilemap_color_38: -549057401695853905
+      tilemap_color_39: -1123752898407266878
+      tilemap_color_4: 7490351436628229928
+      tilemap_color_40: 8341564121221302943
+      tilemap_color_41: 6172213910264800623
+      tilemap_color_42: 3907406735652919697
+      tilemap_color_43: -8439912414222243077
+      tilemap_color_44: 1929375212055940753
+      tilemap_color_45: 403196801179357610
+      tilemap_color_46: 7603650198396695450
+      tilemap_color_47: 192669694246174713
+      tilemap_color_48: -8419682326548655044
+      tilemap_color_49: 3755522916646213279
+      tilemap_color_5: 3078424143636962306
+      tilemap_color_50: 1423005427948254289
+      tilemap_color_51: 5358652997573915417
+      tilemap_color_52: 6574021569431836806
+      tilemap_color_53: 7123305776059813611
+      tilemap_color_54: 2982299142598237933
+      tilemap_color_55: -3779697735133054558
+      tilemap_color_56: -1248123380505161689
+      tilemap_color_57: -232700773762316480
+      tilemap_color_58: -2451163499330712174
+      tilemap_color_59: 8976017644703801241
+      tilemap_color_6: -75055630171134630
+      tilemap_color_60: -3130363871402688408
+      tilemap_color_61: -7631949728335934420
+      tilemap_color_62: 4164837547585804629
+      tilemap_color_63: -7384656971932226228
+      tilemap_color_7: -1812034973686956504
+      tilemap_color_8: 1063260568961654011
+      tilemap_color_9: 205612836937262991
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fightFist_circle_0: 5552802398899316972
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

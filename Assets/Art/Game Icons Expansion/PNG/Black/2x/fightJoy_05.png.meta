@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fightJoy_05_0: -4917836597250328237
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

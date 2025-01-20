@@ -1722,7 +1722,71 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      tilemap_grayscale_0: 5938270116720354570
+      tilemap_grayscale_1: -3963339588323555387
+      tilemap_grayscale_10: 717374496090264444
+      tilemap_grayscale_11: 8548757128007255797
+      tilemap_grayscale_12: 2077229558026840309
+      tilemap_grayscale_13: -3599897683383173558
+      tilemap_grayscale_14: -6024304168507389426
+      tilemap_grayscale_15: 4885539540073866854
+      tilemap_grayscale_16: -4021804612897968289
+      tilemap_grayscale_17: -2872854945937987062
+      tilemap_grayscale_18: -1373882982437063197
+      tilemap_grayscale_19: 1146119581402050685
+      tilemap_grayscale_2: 958455914601753391
+      tilemap_grayscale_20: 5268196021570806698
+      tilemap_grayscale_21: -1490382745357899682
+      tilemap_grayscale_22: 3696410007999646191
+      tilemap_grayscale_23: 1446755730343884214
+      tilemap_grayscale_24: 7339313960793979963
+      tilemap_grayscale_25: 5274382518359042547
+      tilemap_grayscale_26: -3577856367710800052
+      tilemap_grayscale_27: 8481115156808815552
+      tilemap_grayscale_28: 1254376549728726565
+      tilemap_grayscale_29: -3965538462910867189
+      tilemap_grayscale_3: -8479027614073363828
+      tilemap_grayscale_30: -9125160023758688585
+      tilemap_grayscale_31: -7072093837675029645
+      tilemap_grayscale_32: 72641421676834249
+      tilemap_grayscale_33: 7160890169350527734
+      tilemap_grayscale_34: -7179173895283898992
+      tilemap_grayscale_35: -2330709635361118364
+      tilemap_grayscale_36: -6127892430920552884
+      tilemap_grayscale_37: 5279083991141401122
+      tilemap_grayscale_38: 417142892736831625
+      tilemap_grayscale_39: -5258398643456403195
+      tilemap_grayscale_4: -2867789465566450413
+      tilemap_grayscale_40: 3619579309157335565
+      tilemap_grayscale_41: 7332769722178710490
+      tilemap_grayscale_42: -6640793432466434208
+      tilemap_grayscale_43: -876045770832106921
+      tilemap_grayscale_44: -5621943748402962012
+      tilemap_grayscale_45: -5363621395944454549
+      tilemap_grayscale_46: 1200138966794414135
+      tilemap_grayscale_47: -6197142691582595669
+      tilemap_grayscale_48: 7751138867303061252
+      tilemap_grayscale_49: 7606870278162855952
+      tilemap_grayscale_5: -5372135478622546878
+      tilemap_grayscale_50: 6798784928362914252
+      tilemap_grayscale_51: -2805349955065316267
+      tilemap_grayscale_52: -6378742596591134154
+      tilemap_grayscale_53: 3176767744753490543
+      tilemap_grayscale_54: 5458281662290035781
+      tilemap_grayscale_55: 7416685249987489485
+      tilemap_grayscale_56: -2155950539739611852
+      tilemap_grayscale_57: 8784456261060552990
+      tilemap_grayscale_58: 646359529708304123
+      tilemap_grayscale_59: -8559964951940932262
+      tilemap_grayscale_6: 2800929330295353844
+      tilemap_grayscale_60: -2928884867610403285
+      tilemap_grayscale_61: -1274784502079930086
+      tilemap_grayscale_62: 7065286944210481865
+      tilemap_grayscale_63: -2947746341110063132
+      tilemap_grayscale_7: 546567062167947773
+      tilemap_grayscale_8: 2831421167334271410
+      tilemap_grayscale_9: -15346014519966536
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

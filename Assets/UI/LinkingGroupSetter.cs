@@ -16,7 +16,6 @@ public class LinkingGroupSetter : MonoBehaviour
     [SerializeField] private RectTransform screenRect;
     [SerializeField] private GameObject blocker;
     [SerializeField] private EditorButtonActions editorButtonActions;
-    [SerializeField] private CameraMovement cameraMovement;
     [SerializeField] private List<string> preGenerateOptions;
     
     private List<GameObject> spawnedOptions;
@@ -37,7 +36,6 @@ public class LinkingGroupSetter : MonoBehaviour
     public void GetLinkingGroupAtPosition(Vector2 viewportPosition, Action<string> linkingGroupAction)
     {
         editorButtonActions.enabled = false;
-        cameraMovement.enabled = false;
         
         windowPosition.gameObject.SetActive(true);
 
@@ -79,7 +77,6 @@ public class LinkingGroupSetter : MonoBehaviour
         if (linkingGroup == "") return;
 
         editorButtonActions.enabled = true;
-        cameraMovement.enabled = true;
 
         linkingGroupAction?.Invoke(linkingGroup);
         linkingGroupAction = null;

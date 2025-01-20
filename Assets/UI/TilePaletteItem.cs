@@ -45,12 +45,6 @@ public class TilePaletteItem : MonoBehaviour
                     ? selectedColor
                     : regularColor;
 
-                if (editorState.ActiveTool != ToolType.Brush
-                    && editorState.ActiveTool != ToolType.RectBrush)
-                {
-                    editorState.ActiveTool = ToolType.Brush;
-                }
-
                 break;
         }
     }

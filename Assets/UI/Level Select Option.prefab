@@ -501,6 +501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7081495282122125448}
   - component: {fileID: 7947426873896807694}
+  - component: {fileID: 802210277663955500}
   m_Layer: 5
   m_Name: Delete
   m_TagString: Untagged
@@ -572,6 +573,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &802210277663955500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4778976454038252311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859a908489f90490d9be0242823392b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: Delete Level
 --- !u!1 &5225753665069101059
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +651,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9ad1495f38a3d426aa4fd8af9c34ee22, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3e758daef04284deaa00ffb146a2ffca, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
