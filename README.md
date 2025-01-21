@@ -45,7 +45,7 @@ Made by Oliver Beebe
 
 ## Planned Features
 
-- Configurable tile availability, allowing administrators to disable the use of certain tiles and gameplay elements with a config file.
+- Configurable tile availability, allowing administrators to enable or disable the use of certain tiles and gameplay elements with an easily shareable config file.
 - Configurable player and camera movement, allowing users to adjust the parameters for player and camera movement, as well as providing some good presets.
 - Confirmation of destructive action (popup asking users to save when they switch to another level or close the app).
 - More tile types
