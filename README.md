@@ -31,6 +31,7 @@ Made by Oliver Beebe
   - Player
   - Checkpoints
   - Linkable teleporters
+  - Bounce pad
 </details>
 
 <details>
@@ -48,7 +49,6 @@ Made by Oliver Beebe
 - Configurable player and camera movement, allowing users to adjust the parameters for player and camera movement, as well as providing some good presets.
 - Confirmation of destructive action (popup asking users to save when they switch to another level or close the app).
 - More tile types
-  - Bounce pads
   - Slopes
   - Simple enemies
   - Locked doors (with keys and toggles)
