@@ -195,10 +195,10 @@ public class TileEditorState : GameService
     
     #region Get/Set Level Data
     
-    public LevelData GetLevelData(GameTilePalette palette) => new()
+    public LevelData GetLevelData() => new()
     {
         positions = tiles.Keys.ToArray(),
-        paletteIndices = tiles.Values.Select(data => palette.GetIndex(data.gameTile)).ToArray(),
+        gameTileIds = tiles.Values.Select(data => data.gameTile.ID).ToArray(),
         linkingGroups = tiles.Values.Select(data => data.linkingGroup).ToArray(),
     };
 
@@ -223,7 +223,7 @@ public class TileEditorState : GameService
         
         // Fill new level
         SetTiles(levelData.positions, Enumerable.Range(0, levelData.positions.Length)
-            .Select(i => new TileData(palette.GetTile(levelData.paletteIndices[i]), levelData.linkingGroups[i]))
+            .Select(i => new TileData(palette.GetTile(levelData.gameTileIds[i]), levelData.linkingGroups[i]))
             .ToArray());
         
         // Clear changelog

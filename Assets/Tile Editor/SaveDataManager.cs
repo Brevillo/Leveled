@@ -34,7 +34,7 @@ public class SaveDataManager : MonoBehaviour
         {
             if (value == "") return;
             
-            saveFolder = new($".{FileExtension}", value, () => new LevelData());
+            saveFolder = new($".{FileExtension}", value, () => new());
         }
     }
 
@@ -103,7 +103,7 @@ public class SaveDataManager : MonoBehaviour
     public void SaveLevel()
     {
         saveFolder.Delete(loadedLevelName);
-        saveFolder.Save(editorState.GetLevelData(palette), levelName.text);
+        saveFolder.Save(editorState.GetLevelData(), levelName.text);
 
         loadedLevelName = levelName.text;
         
@@ -120,16 +120,19 @@ public class SaveDataManager : MonoBehaviour
     
         if (levelData == null) return;
 
-        if (levelData.paletteIndices == null)
-        {
-            var levelData_1 = new LevelData_1();
-            JsonUtility.FromJsonOverwrite(File.ReadAllText(file.FullName), levelData_1);
-
-            levelData.paletteIndices = levelData_1.ids;
-            levelData.linkingGroups = new string[levelData.positions.Length];
-        }
-
-        if (levelData.paletteIndices == null) return;
+        TryLoadAs(new LevelData_1(), 
+            data => data.positions,
+            data => data.ids,
+            _ => new string[levelData.positions.Length]);
+        
+        TryLoadAs(new LevelData_2(),
+            data => data.positions,
+            data => data.paletteIndices,
+            data => data.linkingGroups);
+        
+        if (levelData.gameTileIds == null
+            || levelData.positions == null
+            || levelData.linkingGroups == null) return;
 
         levelName.text = loadedLevelName = GetName(file);
         
@@ -139,6 +142,18 @@ public class SaveDataManager : MonoBehaviour
         foreach (var option in levelSelectOptionInstances)
         {
             option.UpdateSelected(GetName(file));
+        }
+
+        void TryLoadAs<T>(T data,
+            Func<T, Vector3Int[]> positionGetter,
+            Func<T, int[]> idsGetter,
+            Func<T, string[]> linkingGroupsGetter)
+        {
+            JsonUtility.FromJsonOverwrite(File.ReadAllText(file.FullName), data);
+
+            levelData.positions ??= positionGetter.Invoke(data);
+            levelData.gameTileIds ??= idsGetter.Invoke(data);
+            levelData.linkingGroups ??= linkingGroupsGetter.Invoke(data);
         }
     }
     
@@ -171,76 +186,4 @@ public class SaveDataManager : MonoBehaviour
         SaveLevel();
         RefreshLevels();
     }
-    
-    #region Open File Browser
-    
-    public static void OpenInMacFileBrowser(string path)
-    {
-        bool openInsidesOfFolder = false;
-
-        // try mac
-        string macPath = path.Replace("\\", "/"); // mac finder doesn't like backward slashes
-
-        if (Directory.Exists(macPath)) // if path requested is a folder, automatically open insides of that folder
-        {
-            openInsidesOfFolder = true;
-        }
-
-        //Debug.Log("macPath: " + macPath);
-        //Debug.Log("openInsidesOfFolder: " + openInsidesOfFolder);
-
-        if (!macPath.StartsWith("\""))
-        {
-            macPath = "\"" + macPath;
-        }
-        if (!macPath.EndsWith("\""))
-        {
-            macPath = macPath + "\"";
-        }
-        string arguments = (openInsidesOfFolder ? "" : "-R ") + macPath;
-        //Debug.Log("arguments: " + arguments);
-        try
-        {
-            System.Diagnostics.Process.Start("open", arguments);
-        }
-        catch(System.ComponentModel.Win32Exception e)
-        {
-            // tried to open mac finder in windows
-            // just silently skip error
-            // we currently have no platform define for the current OS we are in, so we resort to this
-            e.HelpLink = ""; // do anything with this variable to silence warning about not using it
-        }
-    }
-
-    public static void OpenInWinFileBrowser(string path)
-    {
-        bool openInsidesOfFolder = false;
-
-        // try windows
-        string winPath = path.Replace("/", "\\"); // windows explorer doesn't like forward slashes
-
-        if (Directory.Exists(winPath)) // if path requested is a folder, automatically open insides of that folder
-        {
-            openInsidesOfFolder = true;
-        }
-        try
-        {
-            System.Diagnostics.Process.Start("explorer.exe", (openInsidesOfFolder ? "/root," : "/select,") + winPath);
-        }
-        catch(System.ComponentModel.Win32Exception e)
-        {
-            // tried to open win explorer in mac
-            // just silently skip error
-            // we currently have no platform define for the current OS we are in, so we resort to this
-            e.HelpLink = ""; // do anything with this variable to silence warning about not using it
-        }
-    }
-
-    public static void OpenInFileBrowser(string path)
-    {
-        OpenInWinFileBrowser(path);
-        OpenInMacFileBrowser(path);
-    }
-    
-    #endregion
 }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
-  m_Name: Checkpoint GameTile
+  m_Name: Upward Bounce Pad GameTile
   m_EditorClassIdentifier: 
-  id: 5
-  paletteIcon: {fileID: 21300000, guid: 966c0510a50064dbe8099aaf986c4ac0, type: 3}
-  tileBase: {fileID: 11400000, guid: 430c122d2a31849b6a795b0525b26832, type: 2}
+  id: 7
+  paletteIcon: {fileID: -1728379928979949314, guid: 34802f8b2678144be989279b2295ecd6, type: 3}
+  tileBase: {fileID: 11400000, guid: 638895ce985674636992671f33de3358, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  tooltip: Checkpoint
+  tooltip: Upward Bounce Pad
   linkable: 0

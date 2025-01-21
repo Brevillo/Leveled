@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 7992538494955775503}
   - component: {fileID: 8767169520055743416}
   - component: {fileID: 6740518952160683664}
+  - component: {fileID: 8012699874280804015}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -249,7 +250,7 @@ MonoBehaviour:
   airAccel: 100
   airDeccel: 150
   jumpInput: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  jumpHeight: 5.5
+  jumpHeight: 3.5
   jumpGravity: 45
   peakingGravity: 200
   fallGravity: 60
@@ -369,6 +370,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 322dc756076804a20b2cec9611148aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 4891161871428994844}
+--- !u!114 &8012699874280804015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4706571802681261726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7786f43e13fb848e493f0f1231027bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 4891161871428994844}

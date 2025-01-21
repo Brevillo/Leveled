@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
   m_Name: Player GameTile
   m_EditorClassIdentifier: 
+  id: 3
   paletteIcon: {fileID: 2216962988415778236, guid: 59b5b6556a5d4418d8bd2a2ddd8e7192, type: 3}
   tileBase: {fileID: 11400000, guid: 3697b1cff19d34d3893322e22a30fd19, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Player
+  linkable: 0

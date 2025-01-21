@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
   m_Name: Grass GameTile
   m_EditorClassIdentifier: 
+  id: 1
   paletteIcon: {fileID: 2216962988415778236, guid: a632b71739ce84c7990038f75aa2925f, type: 3}
   tileBase: {fileID: 11400000, guid: 441360bb452ee474680c2e2ad3206d4c, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Grassy Dirt
+  linkable: 0
