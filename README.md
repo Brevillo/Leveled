@@ -41,13 +41,13 @@ Made by Oliver Beebe
   - Levels are saved to JSON
   - Easily swap between levels
   - Easily create new levels
+  - Confirmation for save when closing level
 </details>
 
 ## Planned Features
 
 - Configurable tile availability, allowing administrators to enable or disable the use of certain tiles and gameplay elements with an easily shareable config file.
 - Configurable player and camera movement, allowing users to adjust the parameters for player and camera movement, as well as providing some good presets.
-- Confirmation of destructive action (popup asking users to save when they switch to another level or close the app).
 - More tile types
   - Slopes
   - Simple enemies
