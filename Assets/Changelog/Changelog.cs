@@ -11,6 +11,8 @@ public class Changelog : GameService
     public Stack<ChangeInfo> UndoLog => undoLog;
     public Stack<ChangeInfo> RedoLog => redoLog;
 
+    public bool ActiveLevelDirty => undoLog.Count > 0 || redoLog.Count > 0;
+    
     public event Action LogUpdated;
     public event Action<ChangeInfo> ChangeEvent;
 

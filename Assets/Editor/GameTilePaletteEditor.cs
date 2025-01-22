@@ -19,7 +19,7 @@ public class GameTilePaletteEditor : Editor
 
         var getAllTilesButton = new Button(GetAllTiles)
         {
-            text = "Get All Tiles",
+            text = "Add Missing Tiles",
         };
         
         root.Add(getAllTilesButton);
@@ -65,32 +65,17 @@ public class GameTilePaletteEditor : Editor
     
     private void GetAllTiles()
     {
-        var tilesProp = serializedObject.FindProperty("tiles");
-
-        var tiles = AssetDatabase.FindAssets($"t:{nameof(GameTile)}")
+        var tiles = Palette.Tiles;
+        
+        var newTiles = AssetDatabase.FindAssets($"t:{nameof(GameTile)}")
             .Select(AssetDatabase.GUIDToAssetPath)
             .Select(AssetDatabase.LoadAssetAtPath<GameTile>)
             .Where(tile => tile != null)
+            .Where(tile => !tiles.Contains(tile))
             .ToArray();
-        
-        // skip to array fields
-        tilesProp.Next(true);
-        tilesProp.Next(true);
 
-        tilesProp.intValue = tiles.Length;
-        
-        // advance to first array item
-        tilesProp.Next(true);
-
-        for (int i = 0; i < tiles.Length; i++)
-        {
-            tilesProp.objectReferenceValue = tiles[i];
-
-            if (i < tiles.Length - 1)
-            {
-                tilesProp.Next(false);
-            }
-        }
+        Undo.RecordObject(target, "Added tiles to Tile Palette");
+        tiles.AddRange(newTiles);
 
         serializedObject.ApplyModifiedProperties();
         

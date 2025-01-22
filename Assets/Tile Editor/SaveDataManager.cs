@@ -11,8 +11,12 @@ public class SaveDataManager : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private GameTilePalette palette;
-    [SerializeField] private TMP_InputField levelName;
     [SerializeField] private GameStateManager gameStateManager;
+    [Header("Save UI")] 
+    [SerializeField] private ConfirmationMenu confirmationMenu;
+    [Header("Level Select UI")]
+    [SerializeField] private Changelog changelog;
+    [SerializeField] private TMP_InputField levelName;
     [SerializeField] private LevelSelectOption levelSelectOptionPrefab;
     [SerializeField] private Transform levelSelectionOptionsParent;
     [SerializeField] private CameraMovement cameraMovement;
@@ -37,13 +41,28 @@ public class SaveDataManager : MonoBehaviour
             saveFolder = new($".{FileExtension}", value, () => new());
         }
     }
-
+    
     private static string GetName(FileInfo file) => Path.GetFileNameWithoutExtension(file.FullName);
     
     private void Awake()
     {
         levelSelectOptionInstances = new();
         LevelFolderPath = PlayerPrefs.GetString(LastFolderPathPrefKey, "");
+    }
+
+    private void OnEnable()
+    {
+        changelog.LogUpdated += OnChangelogUpdated;
+    }
+
+    private void OnDisable()
+    {
+        changelog.LogUpdated -= OnChangelogUpdated;
+    }
+
+    private void OnChangelogUpdated()
+    {
+        RefreshLevelSelection();
     }
 
     private void Start()
@@ -53,7 +72,7 @@ public class SaveDataManager : MonoBehaviour
         editorState.ActiveTool = ToolType.Brush;
         
         RefreshLevels();
-
+        
         if (saveFolder != null)
         {
             var levels = saveFolder.GetAllFiles();
@@ -84,20 +103,32 @@ public class SaveDataManager : MonoBehaviour
 
             option.Initialize(GetName(file));
             
-            option.Select.onClick.AddListener(() => LoadLevel(file));
+            option.Select.onClick.AddListener(() => RequestSaveLevel(() => LoadLevel(file)));
             option.Delete.onClick.AddListener(() => DeleteLevelOption(file, option));
             
-            option.UpdateSelected(loadedLevelName);
+            option.UpdateSelected(loadedLevelName, changelog.ActiveLevelDirty);
             
             levelSelectOptionInstances.Add(option);
         }
     }
 
+    private void RefreshLevelSelection()
+    {
+        foreach (var option in levelSelectOptionInstances)
+        {
+            option.UpdateSelected(loadedLevelName, changelog.ActiveLevelDirty);
+        }
+    }
+
     private void DeleteLevelOption(FileInfo file, LevelSelectOption option)
     {
-        file.Delete();
-        levelSelectOptionInstances.Remove(option);
-        Destroy(option.gameObject);
+        confirmationMenu.OpenDestructiveConfirmMenu("Delete Level?", "Delete", "Cancel",
+            () =>
+            {
+                file.Delete();
+                levelSelectOptionInstances.Remove(option);
+                Destroy(option.gameObject);
+            });
     }
     
     public void SaveLevel()
@@ -110,11 +141,30 @@ public class SaveDataManager : MonoBehaviour
         RefreshLevels();
     }
 
+    private void RequestSaveLevel(Action action)
+    {
+        if (!changelog.ActiveLevelDirty)
+        {
+            action?.Invoke();
+            return;
+        }
+        
+        confirmationMenu.OpenOptionalConfirmMenu("Save Level?", "Save", "Don't Save", "Cancel",
+            () =>
+            {
+                SaveLevel();
+                action?.Invoke();
+            }, 
+            action);
+    }
+    
     private void LoadLevel(FileInfo file)
     {
         if (file == null) return;
+
+        string loadingLevelName = GetName(file);
         
-        PlayerPrefs.SetString(LastLevelNamePrefKey, GetName(file));
+        PlayerPrefs.SetString(LastLevelNamePrefKey, loadingLevelName);
         
         var levelData = saveFolder.GetDataFromFile(file);
     
@@ -134,15 +184,12 @@ public class SaveDataManager : MonoBehaviour
             || levelData.positions == null
             || levelData.linkingGroups == null) return;
 
-        levelName.text = loadedLevelName = GetName(file);
+        levelName.text = loadedLevelName = loadingLevelName;
         
         editorState.SetLevelData(levelData, palette);
         cameraMovement.ResetCamera();
         
-        foreach (var option in levelSelectOptionInstances)
-        {
-            option.UpdateSelected(GetName(file));
-        }
+        RefreshLevelSelection();
 
         void TryLoadAs<T>(T data,
             Func<T, Vector3Int[]> positionGetter,
@@ -171,19 +218,21 @@ public class SaveDataManager : MonoBehaviour
     }
 
     public void NewLevel()
-    {        
-        print(LevelFolderPath);
+    {
+        RequestSaveLevel(() =>
+        {
+            string path =
+                StandaloneFileBrowser.SaveFilePanel("Create New Level", LevelFolderPath, "New Level", FileExtension);
 
-        string path =
-            StandaloneFileBrowser.SaveFilePanel("Create New Level", LevelFolderPath, "New Level", FileExtension);
-
-        if (path == "") return;
+            if (path == "") return;
+            
+            levelName.text = loadedLevelName = Path.GetFileNameWithoutExtension(path);
+            
+            editorState.ClearAllTiles();
+            
+            SaveLevel();
+            RefreshLevels();
+        });
         
-        levelName.text = loadedLevelName = Path.GetFileNameWithoutExtension(path);
-        
-        editorState.ClearAllTiles();
-        
-        SaveLevel();
-        RefreshLevels();
     }
 }
