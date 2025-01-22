@@ -32,55 +32,71 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        
         switch (gameStateManager.GameState)
         {
             case GameState.Editing:
-                
-                if (!editorState.PointerOverUI)
-                {
-                    if (Input.GetMouseButton(2)
-                        || (editorState.ActiveTool == ToolType.Mover && Input.GetMouseButton(0)))
-                    {
-                        transform.position -= mainCamera.ScreenToWorldPoint(Input.mousePosition - prevMousePosition) - mainCamera.ScreenToWorldPoint(Vector3.zero);
-                    }
-                    prevMousePosition = Input.mousePosition;
-                    
-                    zoomTarget = Mathf.Pow(Mathf.Clamp(Mathf.Pow(zoomTarget - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor), maxZoom, minZoom), 1f / zoomFactor);
-                }
-                
-                Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                DampZoom();
-                transform.position += mouseWorldPosition - mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
+                EditModeCamera();
                 break;
             
             case GameState.Playing:
-
-                if (CameraTrackable.trackables.Count == 0) break;
-                
-                var bounds = new Bounds(CameraTrackable.trackables[0].transform.position, Vector3.zero);
-
-                foreach (var trackable in CameraTrackable.trackables)
-                {
-                    bounds.Encapsulate(trackable.transform.position);
-                }
-
-                transform.position = Vector2.SmoothDamp(transform.position, bounds.center, ref playPositionVelocity,
-                    playMoveSpeed);
-                
-                zoomTarget = Mathf.Pow(Mathf.Max(minPlaySize, GetZoomForSize(bounds.size + Vector3.right * playSizeBuffer)), 1f / zoomFactor);
-                DampZoom();
-                
+                PlayModeCamera();
                 break;
         }
+    }
 
-        void DampZoom()
+    private void EditModeCamera()
+    {
+        if (!editorState.PointerOverUI)
         {
-            mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, Mathf.Pow(zoomTarget, zoomFactor), ref zoomVelocity, zoomSmoothing);
+            if (Input.GetMouseButton(2)
+                || (editorState.ActiveTool == ToolType.Mover && Input.GetMouseButton(0)))
+            {
+                transform.position -= mainCamera.ScreenToWorldPoint(Input.mousePosition - prevMousePosition) - mainCamera.ScreenToWorldPoint(Vector3.zero);
+            }
+            
+            prevMousePosition = Input.mousePosition;
+            
+            zoomTarget = Mathf.Pow(Mathf.Clamp(Mathf.Pow(zoomTarget - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor), maxZoom, minZoom), 1f / zoomFactor);
         }
+        
+        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        UpdateCameraZoom();
+        transform.position += mouseWorldPosition - mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
     
+    private void PlayModeCamera()
+    {
+        if (CameraTrackable.trackables.Count == 0) return;
+        
+        var trackableBounds = new Bounds(CameraTrackable.trackables[0].transform.position, Vector3.zero);
+        
+        foreach (var trackable in CameraTrackable.trackables)
+        {
+            trackableBounds.Encapsulate(trackable.transform.position);
+        }
+        
+        zoomTarget = Mathf.Pow(Mathf.Max(minPlaySize, GetZoomForSize(trackableBounds.size + Vector3.right * playSizeBuffer)), 1f / zoomFactor);
+        UpdateCameraZoom();
+        
+        Vector2 position =
+            Vector2.SmoothDamp(transform.position, trackableBounds.center, ref playPositionVelocity, playMoveSpeed);
+
+        var levelBounds = placer.Bounds;
+        Vector2 cameraRect = mainCamera.rect.size * new Vector2((float)Screen.width / Screen.height, 1f);
+        Vector2 cameraExtents = mainCamera.orthographicSize * cameraRect;
+        Vector2 min = (Vector2)levelBounds.min + cameraExtents;
+        Vector2 max = (Vector2)levelBounds.max - cameraExtents;
+
+        position.x = min.x > max.x ? (min.x + max.x) / 2f : Mathf.Clamp(position.x, min.x, max.x);
+        position.y = min.y > max.y ? (min.y + max.y) / 2f : Mathf.Clamp(position.y, min.y, max.y);
+
+        transform.position = position;
+    }
+
+    private void UpdateCameraZoom()
+    {
+        mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, Mathf.Pow(zoomTarget, zoomFactor), ref zoomVelocity, zoomSmoothing);
+    }
 
     private void SetZoom(float value)
     {
@@ -97,18 +113,8 @@ public class CameraMovement : MonoBehaviour
             return;
         }
         
-        var bounds = tilemaps[0].localBounds;
-        
-        foreach (var tilemap in tilemaps)
-        {
-            tilemap.CompressBounds();
-            var localBounds = tilemap.localBounds;
-            
-            bounds.Encapsulate(new Bounds(tilemap.transform.TransformPoint(localBounds.center), localBounds.size));
-        }
-        
-        transform.position = bounds.center;
-        SetZoom(GetZoomForSize(bounds.size));
+        transform.position = placer.Bounds.center;
+        SetZoom(GetZoomForSize(placer.Bounds.size));
     }
 
     private float GetZoomForSize(Vector3 size) => Mathf.Max(size.y, size.x * (Screen.height * mainCamera.rect.height) / (Screen.width * mainCamera.rect.width)) / 2f;

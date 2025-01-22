@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 4423932827853221901}
   - component: {fileID: 7821406865352529986}
   - component: {fileID: 2870827605688684115}
-  - component: {fileID: 1542906847451068836}
   m_Layer: 6
   m_Name: Hazard Tilemap
   m_TagString: Untagged
@@ -252,16 +251,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1542906847451068836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2638635784549367861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aa3d3534bdb149b8b987be28ae01fca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 0.2}
