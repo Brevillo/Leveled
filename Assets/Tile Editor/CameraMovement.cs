@@ -88,7 +88,7 @@ public class CameraMovement : MonoBehaviour
         mainCamera.orthographicSize = value;
     }
     
-    public void ResetCamera()
+    public void CenterCameraOnLevel()
     {
         var tilemaps = placer.Tilemaps;
 

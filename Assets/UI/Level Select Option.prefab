@@ -239,6 +239,7 @@ MonoBehaviour:
   selectedIcon: {fileID: 4637652677516518778}
   dirtyIcon: {fileID: 1333544467742009130}
   delete: {fileID: 7947426873896807694}
+  changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
 --- !u!114 &2554238643455504711
 MonoBehaviour:
   m_ObjectHideFlags: 0

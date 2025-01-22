@@ -29,7 +29,7 @@ public class SaveDataManager : MonoBehaviour
     private const string LastLevelNamePrefKey = "LastLevelName";
     private const string FileExtension = "level";
 
-    private List<LevelSelectOption> levelSelectOptionInstances;
+    private Dictionary<string, LevelSelectOption> levelSelectOptionInstances;
     
     private string LevelFolderPath
     {
@@ -48,21 +48,6 @@ public class SaveDataManager : MonoBehaviour
     {
         levelSelectOptionInstances = new();
         LevelFolderPath = PlayerPrefs.GetString(LastFolderPathPrefKey, "");
-    }
-
-    private void OnEnable()
-    {
-        changelog.LogUpdated += OnChangelogUpdated;
-    }
-
-    private void OnDisable()
-    {
-        changelog.LogUpdated -= OnChangelogUpdated;
-    }
-
-    private void OnChangelogUpdated()
-    {
-        RefreshLevelSelection();
     }
 
     private void Start()
@@ -90,7 +75,7 @@ public class SaveDataManager : MonoBehaviour
             return;
         }
         
-        foreach (var option in levelSelectOptionInstances)
+        foreach (var option in levelSelectOptionInstances.Values)
         {
             Destroy(option.gameObject);
         }
@@ -101,22 +86,16 @@ public class SaveDataManager : MonoBehaviour
         {
             var option = Instantiate(levelSelectOptionPrefab, levelSelectionOptionsParent);
 
-            option.Initialize(GetName(file));
+            string levelName = GetName(file);
+            
+            option.Initialize(levelName);
             
             option.Select.onClick.AddListener(() => RequestSaveLevel(() => LoadLevel(file)));
             option.Delete.onClick.AddListener(() => DeleteLevelOption(file, option));
-            
-            option.UpdateSelected(loadedLevelName, changelog.ActiveLevelDirty);
-            
-            levelSelectOptionInstances.Add(option);
-        }
-    }
 
-    private void RefreshLevelSelection()
-    {
-        foreach (var option in levelSelectOptionInstances)
-        {
-            option.UpdateSelected(loadedLevelName, changelog.ActiveLevelDirty);
+            option.Selected = loadedLevelName == levelName;
+            
+            levelSelectOptionInstances.Add(levelName, option);
         }
     }
 
@@ -126,7 +105,7 @@ public class SaveDataManager : MonoBehaviour
             () =>
             {
                 file.Delete();
-                levelSelectOptionInstances.Remove(option);
+                levelSelectOptionInstances.Remove(GetName(file));
                 Destroy(option.gameObject);
             });
     }
@@ -184,12 +163,18 @@ public class SaveDataManager : MonoBehaviour
             || levelData.positions == null
             || levelData.linkingGroups == null) return;
 
+        if (loadedLevelName != null
+            && levelSelectOptionInstances.TryGetValue(loadedLevelName, out var levelSelectOption))
+        {
+            levelSelectOption.Selected = false;
+        }
+        
+        levelSelectOptionInstances[loadingLevelName].Selected = true;
+        
         levelName.text = loadedLevelName = loadingLevelName;
         
         editorState.SetLevelData(levelData, palette);
-        cameraMovement.ResetCamera();
-        
-        RefreshLevelSelection();
+        cameraMovement.CenterCameraOnLevel();
 
         void TryLoadAs<T>(T data,
             Func<T, Vector3Int[]> positionGetter,
