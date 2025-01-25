@@ -11,11 +11,19 @@ public class Changelog : GameService
     public Stack<ChangeInfo> UndoLog => undoLog;
     public Stack<ChangeInfo> RedoLog => redoLog;
 
-    public bool ActiveLevelDirty => undoLog.Count > 0;
+    public bool ActiveLevelDirty => undoLog.Count != undosForCleanFile;
+
+    private int undosForCleanFile = 0;
     
     public event Action LogUpdated;
     public event Action<ChangeInfo> ChangeEvent;
 
+    public void NotifySaved()
+    {
+        undosForCleanFile = undoLog.Count;
+        LogUpdated?.Invoke();
+    }
+    
     protected override void Initialize()
     {
         LogUpdated = null;
@@ -51,6 +59,7 @@ public class Changelog : GameService
 
     public void ClearChangelog()
     {
+        undosForCleanFile = 0;
         undoLog.Clear();
         redoLog.Clear();
         LogUpdated?.Invoke();

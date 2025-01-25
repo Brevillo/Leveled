@@ -117,6 +117,8 @@ public class SaveDataManager : MonoBehaviour
 
         loadedLevelName = levelName.text;
         
+        changelog.NotifySaved();
+        
         RefreshLevels();
     }
 

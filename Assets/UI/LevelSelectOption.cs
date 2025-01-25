@@ -22,7 +22,7 @@ public class LevelSelectOption : MonoBehaviour
         {
             selected = value;
             selectedIcon.enabled = selected;
-            if (!selected) dirtyIcon.enabled = false;
+            UpdateDirty();
         }
     }
     
@@ -41,15 +41,18 @@ public class LevelSelectOption : MonoBehaviour
 
     private void OnChangelogUpdated()
     {
-        if (Selected)
-        {
-            dirtyIcon.enabled = changelog.ActiveLevelDirty;
-        }
+        UpdateDirty();
+    }
+
+    private void UpdateDirty()
+    {
+        dirtyIcon.enabled = Selected && changelog.ActiveLevelDirty;
     }
 
     public void Initialize(string levelName)
     {
         this.levelName = levelName;
         label.text = levelName;
+        UpdateDirty();
     }
 }
