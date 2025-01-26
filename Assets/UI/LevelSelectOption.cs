@@ -8,11 +8,10 @@ public class LevelSelectOption : MonoBehaviour
     [SerializeField] private Button select;
     [SerializeField] private TextMeshProUGUI label;
     [SerializeField] private Image selectedIcon;
-    [SerializeField] private Image dirtyIcon;
+    [SerializeField] private GameObject dirtyIcon;
     [SerializeField] private Button delete;
     [SerializeField] private Changelog changelog;
 
-    private string levelName; 
     private bool selected;
 
     public bool Selected
@@ -22,6 +21,7 @@ public class LevelSelectOption : MonoBehaviour
         {
             selected = value;
             selectedIcon.enabled = selected;
+            select.interactable = !selected;
             UpdateDirty();
         }
     }
@@ -46,12 +46,11 @@ public class LevelSelectOption : MonoBehaviour
 
     private void UpdateDirty()
     {
-        dirtyIcon.enabled = Selected && changelog.ActiveLevelDirty;
+        dirtyIcon.SetActive(Selected && changelog.ActiveLevelDirty);
     }
 
     public void Initialize(string levelName)
     {
-        this.levelName = levelName;
         label.text = levelName;
         UpdateDirty();
     }

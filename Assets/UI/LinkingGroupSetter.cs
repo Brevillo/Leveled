@@ -13,7 +13,7 @@ public class LinkingGroupSetter : MonoBehaviour
     [SerializeField] private Transform optionsParent;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private RectTransform windowPosition;
-    [SerializeField] private RectTransform screenRect;
+    [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private GameObject content;
     [SerializeField] private EditorButtonActions editorButtonActions;
     [SerializeField] private List<string> preGenerateOptions;
@@ -33,19 +33,13 @@ public class LinkingGroupSetter : MonoBehaviour
         }
     }
 
-    public void GetLinkingGroupAtPosition(Vector2 viewportPosition, Action<string> linkingGroupAction)
+    public void GetLinkingGroupAtPosition(Vector2 position, Action<string> linkingGroupAction)
     {
         editorButtonActions.enabled = false;
         
         content.SetActive(true);
         
-        Vector2 position = screenRect.rect.size * (viewportPosition - Vector2.one / 2f);
-        Vector2 max = screenRect.rect.size / 2f - windowPosition.rect.size * (Vector2.one - windowPosition.pivot);
-        Vector2 min = screenRect.rect.size / 2f - windowPosition.rect.size * windowPosition.pivot;
-        position.x = Mathf.Clamp(position.x, -min.x, max.x);
-        position.y = Mathf.Clamp(position.y, -min.y, max.y);
-        
-        windowPosition.anchoredPosition = position;
+        windowPosition.anchoredPosition = spaceUtility.ClampRectTransformToWindow(windowPosition, position);
         
         this.linkingGroupAction = linkingGroupAction;
 

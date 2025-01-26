@@ -8,8 +8,7 @@ using UnityEngine.InputSystem;
 public class ToolbarActionsManager : MonoBehaviour
 {
     [Header("Scene References")]
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private Grid grid;
+    [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private LinkingGroupSetter linkingGroupSetter;
     [SerializeField] private SpriteRenderer selectionOutline;
     [SerializeField] private SpriteRenderer hoverSelection;
@@ -48,8 +47,6 @@ public class ToolbarActionsManager : MonoBehaviour
         Primary,
         Secondary,
     }
-    
-    private Vector3Int MouseCell => grid.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
     
     private void OnEnable()
     {
@@ -131,14 +128,14 @@ public class ToolbarActionsManager : MonoBehaviour
             
             case ToolType.RectBrush:
        
-                dragStart = MouseCell;
+                dragStart = spaceUtility.MouseCell;
                 state = State.DrawingRect;
                 
                 break;
             
             case ToolType.Selection:
 
-                dragStart = MouseCell;
+                dragStart = spaceUtility.MouseCell;
 
                 switch (state)
                 {
@@ -158,7 +155,7 @@ public class ToolbarActionsManager : MonoBehaviour
                         break;
                 }
                 
-                if (state != State.MovingSelection || !selection.Contains(MouseCell))
+                if (state != State.MovingSelection || !selection.Contains(spaceUtility.MouseCell))
                 {
                     state = State.Selecting;
                 }
@@ -192,7 +189,7 @@ public class ToolbarActionsManager : MonoBehaviour
             
             case ToolType.RectBrush:
                 
-                dragStart = MouseCell;
+                dragStart = spaceUtility.MouseCell;
                 state = State.DrawingRect;
                 
                 break;
@@ -205,7 +202,7 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
                 
-                Vector3Int brushPosition = MouseCell;
+                Vector3Int brushPosition = spaceUtility.MouseCell;
                 
                 editorState.SetTile(brushPosition, new(editorState.ActiveTile));
                 brushedTiles.Add(brushPosition);
@@ -213,11 +210,11 @@ public class ToolbarActionsManager : MonoBehaviour
                 break;
                 
             case ToolType.Eraser:
-                editorState.SetTile(MouseCell, TileData.Empty);
+                editorState.SetTile(spaceUtility.MouseCell, TileData.Empty);
                 break;
                 
             case ToolType.Picker:
-                editorState.ActiveTile = editorState.GetTile(MouseCell).gameTile;
+                editorState.ActiveTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
                 break;
         }
     }
@@ -228,7 +225,7 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
             case ToolType.Eraser:
-                editorState.SetTile(MouseCell, TileData.Empty);
+                editorState.SetTile(spaceUtility.MouseCell, TileData.Empty);
                 break;
         }
     }
@@ -289,8 +286,8 @@ public class ToolbarActionsManager : MonoBehaviour
                 {
                     case State.Selecting:
                         
-                        Vector3Int min = Vector3Int.Min(dragStart, MouseCell);
-                        Vector3Int max = Vector3Int.Max(dragStart, MouseCell);
+                        Vector3Int min = Vector3Int.Min(dragStart, spaceUtility.MouseCell);
+                        Vector3Int max = Vector3Int.Max(dragStart, spaceUtility.MouseCell);
 
                         selection = new(min, max - min + Vector3Int.one);
 
@@ -302,7 +299,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
                         state = State.Selected;
 
-                        if (dragStart == MouseCell) break;
+                        if (dragStart == spaceUtility.MouseCell) break;
 
                         List<Vector3Int> originPositions = new();
                         foreach (var position in selection.allPositionsWithin)
@@ -316,7 +313,7 @@ public class ToolbarActionsManager : MonoBehaviour
                             .Select(editorState.GetTile)
                             .ToArray();
 
-                        Vector3Int delta = MouseCell - dragStart;
+                        Vector3Int delta = spaceUtility.MouseCell - dragStart;
                         var destinationPositions = originPositions
                             .Select(position => position + delta)
                             .ToArray();
@@ -401,25 +398,24 @@ public class ToolbarActionsManager : MonoBehaviour
         // Selection outline
         selectionOutline.size = (Vector2Int)selection.size;
         selectionOutline.transform.position =
-            (grid.GetCellCenterWorld(selection.min) + grid.GetCellCenterWorld(selection.max)) / 2f -
-            new Vector3(0.5f, 0.5f, 0);
+            spaceUtility.GetBoundsIntCenterWorld(selection) - new Vector3(0.5f, 0.5f, 0);
         
         selectionOutline.gameObject.SetActive(state is State.Selected or State.MovingSelection);
 
         // Hover Selection
-        Vector3Int mouseCell = MouseCell;
-        Vector3 mouseWorld = grid.GetCellCenterWorld(mouseCell);
+        Vector3Int mouseCell = spaceUtility.MouseCell;
+        Vector3 mouseWorld = spaceUtility.MouseCellCenterWorld;
 
         (Vector3 position, Vector2 size) = state switch
         {
             State.DrawingRect or State.Selecting => (
-                position: (mouseWorld + grid.GetCellCenterWorld(dragStart)) / 2f,
+                position: (mouseWorld + spaceUtility.GetCellCenterWorld(dragStart)) / 2f,
                 size: new Vector2(
                     Mathf.Abs(mouseCell.x - dragStart.x) + 1,
                     Mathf.Abs(mouseCell.y - dragStart.y) + 1)),
 
             State.MovingSelection => (
-                position: selection.center + mouseWorld - grid.GetCellCenterWorld(dragStart),
+                position: selection.center + mouseWorld - spaceUtility.GetCellCenterWorld(dragStart),
                 size: (Vector2)(Vector3)selection.size),
             
             _ => (
@@ -440,7 +436,7 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private void SetTilemapRect(GameTile tile)
     {
-        Vector3Int dragEnd = MouseCell;
+        Vector3Int dragEnd = spaceUtility.MouseCell;
         Vector3Int min = Vector3Int.Min(dragStart, dragEnd);
         Vector3Int max = Vector3Int.Max(dragStart, dragEnd);
         Vector3Int size = max - min + new Vector3Int(1, 1, 0);
@@ -475,9 +471,8 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private void GetLinkingGroup(Action<string> linkingGroupAction)
     {
-        Vector2 mouseViewport =
-            mainCamera.WorldToViewportPoint(grid.GetCellCenterWorld(MouseCell) + Vector3.down * 0.5f); 
-        Vector2 position = (Vector2.one - mouseViewport) * mainCamera.rect.min + mouseViewport;
+        Vector2 position =
+            spaceUtility.WorldToWindowPoint(spaceUtility.MouseWorld + Vector3.down * 0.5f); 
         
         linkingGroupSetter.GetLinkingGroupAtPosition(position, linkingGroupAction);
     }

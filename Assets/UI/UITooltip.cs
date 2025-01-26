@@ -14,30 +14,14 @@ public class UITooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public static event Action<UITooltip> TooltipRequested;
     public static event Action<UITooltip> TooltipCanceled;
-    
-    private const float tooltipDelay = 0.1f; 
 
-    private bool hovered;
-    private float tooltipRequestTime;
-    
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        hovered = true;
-        tooltipRequestTime = Time.time + tooltipDelay;
+        TooltipRequested?.Invoke(this);
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        hovered = false;
         TooltipCanceled?.Invoke(this);
-    }
-
-    private void Update()
-    {
-        if (hovered && Time.time > tooltipRequestTime)
-        {
-            hovered = false;
-            TooltipRequested?.Invoke(this);
-        }
     }
 }

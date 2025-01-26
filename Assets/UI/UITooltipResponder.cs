@@ -1,4 +1,5 @@
 using System;
+using OliverBeebe.UnityUtilities.Runtime.Settings;
 using TMPro;
 using UnityEngine;
 
@@ -6,10 +7,13 @@ public class UITooltipResponder : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMesh;
     [SerializeField] private GameObject contents;
-    [SerializeField] private RectTransform screenRect;
-    [SerializeField] private Camera mainCamera;
-
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private BoolSetting tooltipsEnabledSetting;
+    [SerializeField] private SpaceUtility spaceUtility;
+    [SerializeField] private Vector2 tooltipAnchor;
+    
     private UITooltip currentTooltip;
+    private Vector2 velocity;
     
     private void OnEnable()
     {
@@ -39,13 +43,20 @@ public class UITooltipResponder : MonoBehaviour
 
     private void LateUpdate()
     {
-        contents.SetActive(currentTooltip != null);
+        bool enabled = tooltipsEnabledSetting.Value && currentTooltip != null; 
+        
+        contents.SetActive(enabled);
 
-        if (currentTooltip != null)
+        if (enabled)
         {
             var target = (RectTransform)currentTooltip.transform;
+            RectTransform window = (RectTransform)contents.transform;
             
-            contents.transform.position = target.TransformPoint(target.rect.min);
+            Vector2 center = (tooltipAnchor - Vector2.one / 2f) * target.rect.size;
+            Vector2 windowPosition = spaceUtility.CanvasToWindowPoint(center, target);
+            Vector2 position = spaceUtility.ClampRectTransformToWindow(window, windowPosition);
+            
+            window.anchoredPosition = Vector2.SmoothDamp(window.anchoredPosition, position, ref velocity, moveSpeed);
         }
     }
 

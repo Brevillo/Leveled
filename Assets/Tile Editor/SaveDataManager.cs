@@ -4,14 +4,23 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using System.IO;
+using OliverBeebe.UnityUtilities.Runtime.Settings;
 using SFB;
 using UnityEngine.UI;
+
+public enum AutosaveOptions
+{
+    Periodic = 0,
+    EveryChange = 1,
+    Never = 2,
+}
 
 public class SaveDataManager : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private GameTilePalette palette;
     [SerializeField] private GameStateManager gameStateManager;
+    [SerializeField] private IntSetting autosaveSetting;
     [Header("Save UI")] 
     [SerializeField] private ConfirmationMenu confirmationMenu;
     [Header("Level Select UI")]
@@ -29,6 +38,8 @@ public class SaveDataManager : MonoBehaviour
     private const string LastLevelNamePrefKey = "LastLevelName";
     private const string FileExtension = "level";
 
+    private float autosaveTimer;
+
     private Dictionary<string, LevelSelectOption> levelSelectOptionInstances;
     
     private string LevelFolderPath
@@ -43,11 +54,23 @@ public class SaveDataManager : MonoBehaviour
     }
     
     private static string GetName(FileInfo file) => Path.GetFileNameWithoutExtension(file.FullName);
+
+    private AutosaveOptions AutosaveOption => (AutosaveOptions)autosaveSetting.Value;
     
     private void Awake()
     {
         levelSelectOptionInstances = new();
         LevelFolderPath = PlayerPrefs.GetString(LastFolderPathPrefKey, "");
+        
+        changelog.ChangeEvent += OnChangeEvent;
+    }
+
+    private void OnChangeEvent(ChangeInfo changeInfo)
+    {
+        if (AutosaveOption == AutosaveOptions.EveryChange)
+        {
+            SaveLevel();
+        }
     }
 
     private void Start()
@@ -65,6 +88,17 @@ public class SaveDataManager : MonoBehaviour
             var lastLevelFile = levels.FirstOrDefault(file => GetName(file) == lastLevelName);
 
             LoadLevel(lastLevelFile ?? levels.FirstOrDefault());
+        }
+    }
+
+    private void Update()
+    {
+        autosaveTimer += Time.deltaTime;
+
+        if (AutosaveOption == AutosaveOptions.Periodic && autosaveTimer > 5f)
+        {
+            SaveLevel();
+            autosaveTimer = 0;
         }
     }
 
@@ -101,7 +135,7 @@ public class SaveDataManager : MonoBehaviour
 
     private void DeleteLevelOption(FileInfo file, LevelSelectOption option)
     {
-        confirmationMenu.OpenDestructiveConfirmMenu("Delete Level?", "Delete", "Cancel",
+        confirmationMenu.OpenDestructiveConfirmMenu($"Delete {GetName(file)}?\n<size=50%>This action cannot be undone.</size>", "Delete", "Cancel",
             () =>
             {
                 file.Delete();
@@ -130,7 +164,7 @@ public class SaveDataManager : MonoBehaviour
             return;
         }
         
-        confirmationMenu.OpenOptionalConfirmMenu("Save Level?", "Save", "Don't Save", "Cancel",
+        confirmationMenu.OpenOptionalConfirmMenu($"Save {loadedLevelName}?", "Save", "Don't Save", "Cancel",
             () =>
             {
                 SaveLevel();
