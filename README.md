@@ -41,6 +41,7 @@ Made by Oliver Beebe
   - Levels are saved to JSON
   - Easily swap between levels
   - Easily create new levels
+  - Autosave options (periodic, every change, or off)
   - Confirmation for save when closing level
 </details>
 
