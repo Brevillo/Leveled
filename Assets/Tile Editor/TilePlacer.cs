@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 public class TilePlacer : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
-    [SerializeField] private Grid grid;
+    [SerializeField] private Transform tilemapsParent;
     [SerializeField] private SpriteRenderer tilemapBoundsOutline;
     [SerializeField] private float wallThickness;
     [SerializeField] private float wallHeightBuffer;
@@ -162,7 +162,7 @@ public class TilePlacer : MonoBehaviour
             return tilemap;
         }
         
-        tilemap = Instantiate(tilemapPrefab, grid.transform);
+        tilemap = Instantiate(tilemapPrefab, tilemapsParent);
         tilemaps[tilemapPrefab] = tilemap;
     
         return tilemap;

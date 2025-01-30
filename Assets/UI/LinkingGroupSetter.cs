@@ -39,7 +39,7 @@ public class LinkingGroupSetter : MonoBehaviour
         
         content.SetActive(true);
         
-        windowPosition.anchoredPosition = spaceUtility.ClampRectTransformToWindow(windowPosition, position);
+        windowPosition.anchoredPosition = spaceUtility.ClampWorldCanvasPointToCanvasRect(position, windowPosition);
         
         this.linkingGroupAction = linkingGroupAction;
 

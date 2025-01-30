@@ -430,7 +430,7 @@ public class ToolbarActionsManager : MonoBehaviour
                 hoverSelectionSpeed);
         bool hoverSelectionActive =
             (!editorState.PointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
-            editorState.ActiveTool != ToolType.Mover; 
+            editorState.ActiveTool != ToolType.Mover;
         hoverSelection.gameObject.SetActive(hoverSelectionActive);
     }
     

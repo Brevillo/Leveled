@@ -11,9 +11,25 @@ public class UITooltipResponder : MonoBehaviour
     [SerializeField] private BoolSetting tooltipsEnabledSetting;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Vector2 tooltipAnchor;
+    [SerializeField] private float inactiveSnapDuration;
     
     private UITooltip currentTooltip;
     private Vector2 velocity;
+    private float inactiveTimer;
+    
+    private Vector2 TargetWindowPosition
+    {
+        get
+        {
+            var target = (RectTransform)currentTooltip.transform;
+            RectTransform window = (RectTransform)contents.transform;
+            
+            Vector2 center = target.TransformPoint(target.rect.center + (tooltipAnchor - Vector2.one / 2f) * target.rect.size);
+            Vector2 position = spaceUtility.ClampWorldCanvasPointToCanvasRect(center, window);
+
+            return position;
+        }
+    }
     
     private void OnEnable()
     {
@@ -49,14 +65,18 @@ public class UITooltipResponder : MonoBehaviour
 
         if (enabled)
         {
-            var target = (RectTransform)currentTooltip.transform;
-            RectTransform window = (RectTransform)contents.transform;
+            if (inactiveTimer > inactiveSnapDuration)
+            {
+                contents.transform.position = TargetWindowPosition;
+            }
+
+            inactiveTimer = 0f;
             
-            Vector2 center = (tooltipAnchor - Vector2.one / 2f) * target.rect.size;
-            Vector2 windowPosition = spaceUtility.CanvasToWindowPoint(center, target);
-            Vector2 position = spaceUtility.ClampRectTransformToWindow(window, windowPosition);
-            
-            window.anchoredPosition = Vector2.SmoothDamp(window.anchoredPosition, position, ref velocity, moveSpeed);
+            contents.transform.position = Vector2.SmoothDamp(contents.transform.position, TargetWindowPosition, ref velocity, moveSpeed);
+        }
+        else
+        {
+            inactiveTimer += Time.deltaTime;
         }
     }
 
