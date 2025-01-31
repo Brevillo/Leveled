@@ -37,10 +37,10 @@ public class Teleporter : MonoBehaviour
 
     private void OnDisable()
     {
+        RecalculateConnections -= OnRecalculateConnections;
+        
         teleporters.Remove(this);
         RecalculateConnections?.Invoke();
-        
-        RecalculateConnections -= OnRecalculateConnections;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -50,6 +50,8 @@ public class Teleporter : MonoBehaviour
             disable = false;
             return;
         }
+
+        if (connection == null) return;
         
         if (other.TryGetComponent(out Teleportable teleportable))
         {

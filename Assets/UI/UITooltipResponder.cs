@@ -11,6 +11,8 @@ public class UITooltipResponder : MonoBehaviour
     [SerializeField] private BoolSetting tooltipsEnabledSetting;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Vector2 tooltipAnchor;
+    [SerializeField] private Vector2 tooltipOffset;
+    [SerializeField] private Vector2 screenEdgeBuffer;
     [SerializeField] private float inactiveSnapDuration;
     
     private UITooltip currentTooltip;
@@ -25,9 +27,9 @@ public class UITooltipResponder : MonoBehaviour
             RectTransform window = (RectTransform)contents.transform;
             
             Vector2 center = target.TransformPoint(target.rect.center + (tooltipAnchor - Vector2.one / 2f) * target.rect.size);
-            Vector2 position = spaceUtility.ClampWorldCanvasPointToCanvasRect(center, window);
+            Vector2 position = spaceUtility.ClampCanvasPointToCanvasRect(center, window, screenEdgeBuffer);
 
-            return position;
+            return position + tooltipOffset;
         }
     }
     

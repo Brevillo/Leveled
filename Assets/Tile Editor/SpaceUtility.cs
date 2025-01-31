@@ -4,32 +4,107 @@ using UnityEngine.UI;
 
 public class SpaceUtility : MonoBehaviour
 {
+    /* Space Utility Options
+    
+    Screen Space
+        Pixel space of the screen
+        (0,0) to (Screen.width, Screen.height)
+     
+    World Space
+        Global space for all GameObjects
+        Unbounded
+    
+    Viewport Space
+        Normalized space for the portion of the screen rendered to by the main camera
+        (0,0) to (1,1)
+    
+    Window Space
+        Normalized space for the entire screen
+        (0, 0) to (1, 1)
+        
+    Cell Space
+        Local space for the grid in integer coordinates (Vector3Ints)
+        Unbounded
+        
+    Canvas Space
+        Local space for the root canvas of a given RectTransform
+        -canvas.pixelRect.size / 2 to canvas.pixelRect.size / 2
+    
+     */
+    
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Grid grid;
 
     public Camera Camera => mainCamera;
     public Grid Grid => grid;
 
+    #region Mouse Positions
+    
     public Vector3 MouseScreen => Input.mousePosition;
     public Vector3 MouseWorld => mainCamera.ScreenToWorldPoint(Input.mousePosition);
     public Vector3 MouseViewport => mainCamera.ScreenToViewportPoint(Input.mousePosition);
-    public Vector3 MouseWindow => ScreenToWindowPoint(Input.mousePosition);
+    public Vector3 MouseWindow => ScreenToWindow(Input.mousePosition);
 
+    public Vector3 MouseCanvas(RectTransform rectTransform) => ScreenToCanvas(MouseScreen, rectTransform);
+    
     public Vector3Int MouseCell => grid.WorldToCell(MouseWorld);
     public Vector3 MouseCellCenterWorld => grid.GetCellCenterWorld(MouseCell);
 
-    public Vector3 GetBoundsIntCenterWorld(BoundsInt bounds) =>
-        (grid.GetCellCenterWorld(bounds.min) + grid.GetCellCenterWorld(bounds.max)) / 2f;
-
-    public Vector3 GetCellCenterWorld(Vector3Int position) => grid.GetCellCenterWorld(position);
-
-    public Vector3 WorldToWindowPoint(Vector3 position) =>
-        ViewportToWindowPoint(mainCamera.WorldToViewportPoint(position));
-
-    public Vector3 ScreenToWindowPoint(Vector3 position) =>
-        ViewportToWindowPoint(mainCamera.ScreenToViewportPoint(position));
+    #endregion
     
-    public Vector3 CanvasToWindowPoint(Vector3 position, RectTransform rectTransform)
+    #region to World
+
+    public Vector3 ScreenToWorld(Vector3 position) =>
+        mainCamera.ScreenToWorldPoint(position);
+
+    public Vector3 ViewportToWorld(Vector3 position) =>
+        mainCamera.ViewportToWorldPoint(position);
+    
+    public Vector3 WindowToWorld(Vector3 position) =>
+        mainCamera.ViewportToWorldPoint(WindowToViewport(position));
+    
+    public Vector3 CellToWorld(Vector3Int position) => 
+        grid.GetCellCenterWorld(position);
+    
+    public Vector3 CanvasToWorld(Vector3 position, RectTransform rectTransform) =>
+        WindowToWorld(CanvasToWindow(position, rectTransform));
+    
+    #endregion
+    
+    #region to Viewport
+
+    public Vector3 ScreenToViewport(Vector3 position) =>
+        mainCamera.ScreenToViewportPoint(position);
+
+    public Vector3 WorldToViewport(Vector3 position) =>
+        mainCamera.WorldToViewportPoint(position);
+    
+    public Vector3 WindowToViewport(Vector3 position) =>
+        ((Vector2)position - Vector2.one) / mainCamera.rect.size + Vector2.one;
+
+    public Vector3 CellToViewport(Vector3Int position) =>
+        WorldToViewport(CellToWorld(position)); // cell -> world -> viewport
+
+    public Vector3 CanvasToViewport(Vector3 position, RectTransform rectTransform) =>
+        WindowToViewport(CanvasToWindow(position, rectTransform)); // canvas -> window -> viewport
+        
+    #endregion
+    
+    #region To Window
+
+    public Vector3 ScreenToWindow(Vector3 position) =>
+        ViewportToWindow(mainCamera.ScreenToViewportPoint(position)); // screen -> viewport -> window
+    
+    public Vector3 WorldToWindow(Vector3 position) =>
+        ViewportToWindow(WorldToViewport(position)); // world -> viewport -> window
+
+    public Vector3 ViewportToWindow(Vector3 position) =>
+        (Vector2.one - (Vector2)position) * mainCamera.rect.min + (Vector2)position;
+
+    public Vector3 CellToWindow(Vector3Int position) =>
+        ViewportToWindow(CellToViewport(position)); // cell -> viewport -> window
+    
+    public Vector3 CanvasToWindow(Vector3 position, RectTransform rectTransform)
     {
         var canvas = GetCanvas(rectTransform);
         
@@ -39,39 +114,93 @@ public class SpaceUtility : MonoBehaviour
         return windowPoint;
     }
 
-    public Vector3 ViewportToWindowPoint(Vector3 position) =>
-        (Vector2.one - (Vector2)position) * mainCamera.rect.min + (Vector2)position;
-
-    public Vector3 WindowToWorldPoint(Vector3 position) =>
-        mainCamera.ViewportToWorldPoint(WindowToViewportPoint(position));
-
-    public Vector3 WindowToViewportPoint(Vector3 position) =>
-        ((Vector2)position - Vector2.one) / mainCamera.rect.size + Vector2.one;
+    #endregion
     
-    public Vector3 ClampWorldCanvasPointToCanvasRect(Vector3 position, RectTransform rectTransform)
+    #region To Cell
+
+    public Vector3Int ScreenToCell(Vector3 position) =>
+        WorldToCell(ScreenToWorld(position)); // screen -> world -> cell 
+
+    public Vector3Int WorldToCell(Vector3 position) =>
+        grid.WorldToCell(position);
+
+    public Vector3Int ViewportToCell(Vector3 position) =>
+        WorldToCell(ViewportToWorld(position)); // viewport -> world -> cell
+
+    public Vector3Int WindowToCell(Vector3 position) =>
+        WorldToCell(WindowToWorld(position)); // window -> world -> cell
+
+    public Vector3Int CanvasToCell(Vector3 position, RectTransform rectTransform) =>
+        WorldToCell(CanvasToWorld(position, rectTransform)); // canvas -> world -> cell
+
+    #region BoundsInt
+    
+    public Vector3 GetBoundsIntCenterWorld(BoundsInt bounds) => GetBoundsIntAnchorWorld(bounds, Vector2.one / 2f);
+
+    public Vector3 GetBoundsIntAnchorWorld(BoundsInt bounds, Vector2 anchor)
+    {
+        Vector2 min = grid.GetCellCenterWorld(bounds.min) - grid.cellSize / 2f;
+        Vector2 max = grid.GetCellCenterWorld(bounds.max - Vector3Int.one) + grid.cellSize / 2f;
+
+        return new Vector2(
+            Mathf.LerpUnclamped(min.x, max.x, anchor.x),
+            Mathf.LerpUnclamped(min.y, max.y, anchor.y));
+    }
+    
+    #endregion
+    
+    #endregion
+    
+    #region to Canvas
+
+    public Vector3 ScreenToCanvas(Vector3 position, RectTransform rectTransform) =>
+        WindowToCanvas(ScreenToWindow(position), rectTransform); // screen -> window -> canvas
+    
+    public Vector3 WorldToCanvas(Vector3 position, RectTransform rectTransform) =>
+        WindowToCanvas(WorldToWindow(position), rectTransform); // world -> window -> canvas
+    
+    public Vector3 ViewportToCanvas(Vector3 position, RectTransform rectTransform) =>
+        WindowToCanvas(ViewportToWindow(position), rectTransform); // viewport -> window -> canvas
+    
+    public Vector3 WindowToCanvas(Vector3 position, RectTransform rectTransform) =>
+        position * GetCanvas(rectTransform).pixelRect.size;
+
+    public Vector3 CellToCanvas(Vector3Int position, RectTransform rectTransform) =>
+        WorldToCanvas(CellToWorld(position), rectTransform); // cell -> world -> canvas
+    
+    #region Clamping
+    
+    public Vector3 ClampCanvasPointToCanvasRect(Vector3 position, RectTransform rectTransform) =>
+        ClampCanvasPointToCanvasRect(position, rectTransform, Vector2.zero);
+    public Vector3 ClampCanvasPointToCanvasRect(Vector3 position, RectTransform rectTransform, Vector2 buffer)
     {
         var canvas = GetCanvas(rectTransform);
-
-        Vector2 max = canvas.pixelRect.size - rectTransform.rect.size * (Vector2.one - rectTransform.pivot);
         
-        position.x = Mathf.Clamp(position.x, 0, max.x);
-        position.y = Mathf.Clamp(position.y, 0, max.y);
+        Vector2 max = canvas.pixelRect.size - rectTransform.rect.size * (Vector2.one - rectTransform.pivot) - buffer;
+        Vector2 min = rectTransform.rect.size * rectTransform.pivot + buffer;
+        
+        position.x = Mathf.Clamp(position.x, min.x, max.x);
+        position.y = Mathf.Clamp(position.y, min.y, max.y);
 
         return position;
     }
 
+    #endregion
+    
     public Canvas GetCanvas(RectTransform rectTransform)
     {
         if (canvases.TryGetValue(rectTransform, out var canvas))
         {
             return canvas;
         }
-
-        canvas = rectTransform.root.GetComponentInChildren<Canvas>();
+        
+        canvas = rectTransform.GetComponentInParent<Canvas>().rootCanvas;
         canvases.Add(rectTransform, canvas);
 
         return canvas;
     }
 
     private readonly Dictionary<RectTransform, Canvas> canvases = new();
+    
+    #endregion
 }

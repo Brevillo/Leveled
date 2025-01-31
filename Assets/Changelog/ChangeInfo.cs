@@ -15,6 +15,18 @@ public abstract class ChangeInfo
     public override string ToString() => description;
 }
 
+public abstract class ValueChangeInfo<T> : ChangeInfo
+{
+    public readonly T previousValue;
+    public readonly T newValue;
+
+    public ValueChangeInfo(T previousValue, T newValue, string description) : base(description)
+    {
+        this.previousValue = previousValue;
+        this.newValue = newValue;
+    }
+}
+
 public class ChangeInfoBundle : ChangeInfo
 {
     public readonly ChangeInfo[] changeInfos;
@@ -43,47 +55,31 @@ public class MultiTileChangeInfo : ChangeInfo
     public override ChangeInfo Reverted => new MultiTileChangeInfo(positions, newTiles, previousTiles);
 }
 
-public class TileChangeInfo : ChangeInfo
+public class ToolbarChangeInfo : ValueChangeInfo<ToolType>
 {
-    public readonly Vector3Int position;
-    public readonly TileData previousTile;
-    public readonly TileData newTile;
-
-    public TileChangeInfo(Vector3Int position, TileData previousTile, TileData newTile) : base("Set a tile")
+    public ToolbarChangeInfo(ToolType previousValue, ToolType newValue) : base(previousValue, newValue, $"Changed active tool to {newValue.ToString()}")
     {
-        this.position = position;
-        this.previousTile = previousTile;
-        this.newTile = newTile;
     }
 
-    public override ChangeInfo Reverted=> new TileChangeInfo(position, newTile, previousTile);
+    public override ChangeInfo Reverted => new ToolbarChangeInfo(newValue, previousValue);
 }
 
-public class ToolbarChangeInfo : ChangeInfo
+public class PaletteChangeInfo : ValueChangeInfo<GameTile>
 {
-    public readonly ToolType previousTool;
-    public readonly ToolType newTool;
-
-    public ToolbarChangeInfo(ToolType previousTool, ToolType newTool) : base($"Changed active tool to {newTool.ToString()}")
+    public PaletteChangeInfo(GameTile previousValue, GameTile newValue) : base(previousValue, newValue,
+        $"Changed active tile from {GameTile.NullableToString(previousValue)} to {GameTile.NullableToString(newValue)}")
     {
-        this.previousTool = previousTool;
-        this.newTool = newTool;
     }
 
-    public override ChangeInfo Reverted => new ToolbarChangeInfo(newTool, previousTool);
+    public override ChangeInfo Reverted => new PaletteChangeInfo(newValue, previousValue);
 }
 
-public class PaletteChangeInfo : ChangeInfo
+public class ShowLinkingGroupsChangeInfo : ValueChangeInfo<bool>
 {
-    public readonly GameTile previousTile;
-    public readonly GameTile newTile;
-
-    public PaletteChangeInfo(GameTile previousTile, GameTile newTile) : base(
-        $"Changed active tile from {GameTile.NullableToString(previousTile)} to {GameTile.NullableToString(newTile)}")
+    public ShowLinkingGroupsChangeInfo(bool previousValue, bool newValue) : base(previousValue, newValue,
+        $"Changed 'Show Linking Group' from {previousValue} to {newValue}")
     {
-        this.previousTile = previousTile;
-        this.newTile = newTile;
     }
 
-    public override ChangeInfo Reverted => new PaletteChangeInfo(newTile, previousTile);
+    public override ChangeInfo Reverted => new ShowLinkingGroupsChangeInfo(newValue, previousValue);
 }

@@ -37,30 +37,27 @@ public class TilePlacer : MonoBehaviour
         editorState.EditorChanged -= OnEditorChanged;
     }
 
+    public void PlaceTile(Vector3Int position, TileData tile)
+    {
+        var selfTilemap = GetTilemap(tile);
+
+        if (!tile.IsEmpty)
+        {
+            selfTilemap.SetTile(position, tile.gameTile.TileBase);
+        }
+
+        foreach (var tilemap in tilemaps.Values)
+        {
+            if (tilemap == selfTilemap) continue;
+    
+            tilemap.SetTile(position, null);
+        }
+    }
+
     private void OnEditorChanged(ChangeInfo changeInfo)
     {
         switch (changeInfo)
         {
-            case TileChangeInfo tileChangeInfo:
-
-                var position = tileChangeInfo.position;
-                var tile = tileChangeInfo.newTile;
-                var selfTilemap = GetTilemap(tile);
-        
-                if (!tile.IsEmpty)
-                {
-                    selfTilemap.SetTile(position, tile.gameTile.TileBase);
-                }
-        
-                foreach (var tilemap in tilemaps.Values)
-                {
-                    if (tilemap == selfTilemap) continue;
-            
-                    tilemap.SetTile(position, null);
-                }
-                
-                break;
-            
             case MultiTileChangeInfo multiTileChangeInfo:
                 
                 var tilemapGroups = Enumerable.Range(0, multiTileChangeInfo.positions.Length)

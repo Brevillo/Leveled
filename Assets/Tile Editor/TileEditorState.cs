@@ -8,17 +8,19 @@ using UnityEngine.EventSystems;
 public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;
-    
+
     #region State
-    
+
     private GameTile activeTile = null;
     private ToolType activeTool = ToolType.Brush;
-    
+
+    private bool showLinkingGroups = false;
+
     private Dictionary<Vector3Int, TileData> tiles = new();
-    
+
     private string changeInfoBundleDescription;
     private List<ChangeInfo> changeInfoBundle;
-    
+
     #endregion
 
     protected override void Initialize()
@@ -32,7 +34,7 @@ public class TileEditorState : GameService
     }
 
     #region Changes
-    
+
     public event Action<ChangeInfo> EditorChanged;
 
     public void StartChangeBundle(string description)
@@ -51,7 +53,7 @@ public class TileEditorState : GameService
         changeInfoBundle = null;
         changeInfoBundleDescription = "";
     }
-    
+
     private void SendEditorChange(ChangeInfo changeInfo, bool logChange = true)
     {
         if (changeInfoBundle != null)
@@ -62,9 +64,14 @@ public class TileEditorState : GameService
         {
             changelog.LogChange(changeInfo);
         }
-        
+
         EditorChanged?.Invoke(changeInfo);
-        
+
+        OnEditorChanged(changeInfo);
+    }
+
+    private void OnEditorChanged(ChangeInfo changeInfo)
+    {
         switch (changeInfo)
         {
             case ChangeInfoBundle changeInfoBundle:
@@ -73,35 +80,23 @@ public class TileEditorState : GameService
                 {
                     SendEditorChange(info, false);
                 }
-                
-                break;
-            
-            case PaletteChangeInfo paletteChangeInfo:
-                activeTile = paletteChangeInfo.newTile;
-                break;
-            
-            case ToolbarChangeInfo toolbarChangeInfo:
-                activeTool = toolbarChangeInfo.newTool;
-                break;
-            
-            case TileChangeInfo tileChangeInfo:
 
-                if (tileChangeInfo.newTile.IsEmpty)
-                {
-                    tiles.Remove(tileChangeInfo.position);
-                }
-                else
-                {
-                    tiles[tileChangeInfo.position] = tileChangeInfo.newTile;
-                }
                 break;
-            
+
+            case PaletteChangeInfo paletteChangeInfo:
+                activeTile = paletteChangeInfo.newValue;
+                break;
+
+            case ToolbarChangeInfo toolbarChangeInfo:
+                activeTool = toolbarChangeInfo.newValue;
+                break;
+
             case MultiTileChangeInfo multiTileChangeInfo:
 
                 for (int i = 0; i < multiTileChangeInfo.positions.Length; i++)
                 {
                     var tile = multiTileChangeInfo.newTiles[i];
-            
+
                     if (tile.IsEmpty)
                     {
                         tiles.Remove(multiTileChangeInfo.positions[i]);
@@ -111,12 +106,18 @@ public class TileEditorState : GameService
                         tiles[multiTileChangeInfo.positions[i]] = tile;
                     }
                 }
-                
+
+                break;
+
+            case ShowLinkingGroupsChangeInfo showLinkingGroupsChangeInfo:
+
+                showLinkingGroups = showLinkingGroupsChangeInfo.newValue;
+
                 break;
         }
     }
-    
-    #endregion
+
+#endregion
     
     #region State Modification/Access
 
@@ -137,6 +138,11 @@ public class TileEditorState : GameService
             return results.Any(result => result.gameObject.layer == uiLayer);
         }
     }
+
+    public (Vector3Int position, TileData tile)[] LinkedTiles => tiles
+        .Where(kv => kv.Value.Linkable)
+        .Select(kv => (kv.Key, kv.Value))
+        .ToArray();
     
     public string[] LinkingGroups => tiles.Values
         .GroupBy(tile => tile.linkingGroup)
@@ -155,18 +161,6 @@ public class TileEditorState : GameService
     }
 
     public TileData GetTile(Vector3Int position) => tiles.GetValueOrDefault(position);
-
-    public void SetTile(Vector3Int position, TileData tile)
-    {
-        var current = GetTile(position);
-
-        if (tile == current)
-        {
-            return;
-        }
-        
-        SendEditorChange(new TileChangeInfo(position, current, tile));
-    }
 
     public void SetTiles(Vector3Int[] positions, TileData[] tiles) =>
         SendEditorChange(new MultiTileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles));
@@ -190,6 +184,14 @@ public class TileEditorState : GameService
         get => activeTool;
         set => SendEditorChange(new ToolbarChangeInfo(activeTool, value), false);
     }
+
+    public bool ShowLinkingGroups
+    {
+        get => showLinkingGroups;
+        set => SendEditorChange(new ShowLinkingGroupsChangeInfo(showLinkingGroups, value), false);
+    }
+
+    public void ToggleShowLinkingGroups() => ShowLinkingGroups = !ShowLinkingGroups;
     
     #endregion
     

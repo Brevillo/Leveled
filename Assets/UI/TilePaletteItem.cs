@@ -41,7 +41,7 @@ public class TilePaletteItem : MonoBehaviour
         {
             case PaletteChangeInfo paletteChangeInfo:
                 
-                background.color = paletteChangeInfo.newTile == gameTile
+                background.color = paletteChangeInfo.newValue == gameTile
                     ? selectedColor
                     : regularColor;
 

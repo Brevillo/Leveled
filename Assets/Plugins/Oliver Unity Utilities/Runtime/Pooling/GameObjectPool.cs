@@ -73,10 +73,18 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
 
             base.Return(poolable);
         }
-
+        
         public override void Return(Poolable poolable)
         {
             poolable.Return();
+        }
+
+        public override void ReturnAll()
+        {
+            foreach (var poolable in ActiveObjects)
+            {
+                poolable.Return();
+            }
         }
     }
 }

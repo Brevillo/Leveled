@@ -26,7 +26,7 @@ public class ToolbarItem : MonoBehaviour
         {
             case ToolbarChangeInfo toolbarChangeInfo:
                 
-                background.color = toolbarChangeInfo.newTool == toolType
+                background.color = toolbarChangeInfo.newValue == toolType
                     ? selectedColor
                     : regularColor;
                 

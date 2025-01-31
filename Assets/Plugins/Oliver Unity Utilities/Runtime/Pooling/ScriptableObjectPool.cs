@@ -16,11 +16,15 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
         protected virtual void Destroy(T obj) { }
 
         public void Generate(int count) => Pool.Generate(count, Create);
-
+        
         public virtual T Retrieve() => Pool.Retrieve(Create);
+
+        public virtual T[] RetrieveAll() => Pool.RetrieveAll();
 
         public virtual void Return(T obj) => Pool.Return(obj);
 
+        public virtual void ReturnAll() => Pool.ReturnAll();
+        
         public void Clear() => Pool.Clear(Destroy);
     }
 }

@@ -6,4 +6,5 @@ public enum ToolType
     Picker,
     Mover,
     Selection,
+    Linker,
 }

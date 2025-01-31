@@ -17,6 +17,8 @@ public class LinkingGroupSetter : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private EditorButtonActions editorButtonActions;
     [SerializeField] private List<string> preGenerateOptions;
+    [SerializeField] private Vector2 windowOffset;
+    [SerializeField] private Vector2 screenEdgeBuffer;
     
     private List<GameObject> spawnedOptions;
 
@@ -38,8 +40,11 @@ public class LinkingGroupSetter : MonoBehaviour
         editorButtonActions.enabled = false;
         
         content.SetActive(true);
+
+        Vector2 canvasPosition = (Vector2)spaceUtility.WorldToCanvas(position, windowPosition) + windowOffset;
+        windowPosition.position = spaceUtility.ClampCanvasPointToCanvasRect(canvasPosition, windowPosition, screenEdgeBuffer);
         
-        windowPosition.anchoredPosition = spaceUtility.ClampWorldCanvasPointToCanvasRect(position, windowPosition);
+        print($"world: {position}   canvas: {canvasPosition}   clamped: {windowPosition.position}");
         
         this.linkingGroupAction = linkingGroupAction;
 

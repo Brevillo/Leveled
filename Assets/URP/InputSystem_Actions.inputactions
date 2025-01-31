@@ -603,6 +603,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Linker",
+                    "type": "Button",
+                    "id": "38245247-e3b8-4fb1-84ba-fff36dfccfa2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SaveLevel",
                     "type": "Button",
                     "id": "b735f10d-b6f1-44a2-a932-8d643733c0fb",
@@ -1476,6 +1485,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Close Settings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf94f50f-066d-41f4-9009-4e1c54eac589",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Linker",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

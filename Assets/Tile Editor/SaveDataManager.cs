@@ -243,7 +243,7 @@ public class SaveDataManager : MonoBehaviour
         RequestSaveLevel(() =>
         {
             string path =
-                StandaloneFileBrowser.SaveFilePanel("Create New Level", LevelFolderPath, "New Level", FileExtension);
+                StandaloneFileBrowser.SaveFilePanel("Create New Level", LevelFolderPath, "New Level", "");
 
             if (path == "") return;
             

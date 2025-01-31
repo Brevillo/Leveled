@@ -19,6 +19,8 @@ public readonly struct TileData : IEquatable<TileData>
 
     public bool IsEmpty => gameTile == null;
 
+    public bool Linkable => gameTile != null && gameTile.Linkable;
+
     public static TileData Empty => default;
 
     public bool Equals(TileData other) => Equals((object)other);
