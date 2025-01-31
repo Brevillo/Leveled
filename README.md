@@ -13,6 +13,7 @@ Made by Oliver Beebe
   - Tile selection and movement
   - Camera mover
   - Center camera on level
+  - Linking groups for linking doors, keys, etc.
 </details>
 
 <details>
@@ -57,6 +58,5 @@ Made by Oliver Beebe
   - Level end goal
 - Moving platforms
 - Secondary palette selection (currently right click is always set to the empty tile)
-- Mode for seeing linking groups for linkable tiles (like teleporter)
 - Color picker for linking groups
 - Option to load levels when one level is completed.
