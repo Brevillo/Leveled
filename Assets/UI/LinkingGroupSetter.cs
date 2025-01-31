@@ -42,9 +42,8 @@ public class LinkingGroupSetter : MonoBehaviour
         content.SetActive(true);
 
         Vector2 canvasPosition = (Vector2)spaceUtility.WorldToCanvas(position, windowPosition) + windowOffset;
-        windowPosition.position = spaceUtility.ClampCanvasPointToCanvasRect(canvasPosition, windowPosition, screenEdgeBuffer);
-        
-        print($"world: {position}   canvas: {canvasPosition}   clamped: {windowPosition.position}");
+        windowPosition.position =
+            spaceUtility.ClampCanvasPointToCanvasRect(canvasPosition, windowPosition, screenEdgeBuffer);
         
         this.linkingGroupAction = linkingGroupAction;
 

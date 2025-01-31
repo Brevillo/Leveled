@@ -682,6 +682,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "TogglePanel",
+                    "type": "Button",
+                    "id": "68098093-8235-4c9e-aa97-f0c88962e553",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1496,6 +1505,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Linker",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c308eb0-ce36-4c72-b79a-6a4382b74954",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TogglePanel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

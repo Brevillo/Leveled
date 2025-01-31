@@ -25,8 +25,9 @@ public class UITooltipResponder : MonoBehaviour
         {
             var target = (RectTransform)currentTooltip.transform;
             RectTransform window = (RectTransform)contents.transform;
-            
-            Vector2 center = target.TransformPoint(target.rect.center + (tooltipAnchor - Vector2.one / 2f) * target.rect.size);
+
+            Vector2 center =
+                target.TransformPoint(target.rect.center + (tooltipAnchor - Vector2.one / 2f) * target.rect.size);
             Vector2 position = spaceUtility.ClampCanvasPointToCanvasRect(center, window, screenEdgeBuffer);
 
             return position + tooltipOffset;
@@ -73,8 +74,9 @@ public class UITooltipResponder : MonoBehaviour
             }
 
             inactiveTimer = 0f;
-            
-            contents.transform.position = Vector2.SmoothDamp(contents.transform.position, TargetWindowPosition, ref velocity, moveSpeed);
+
+            contents.transform.position = Vector2.SmoothDamp(contents.transform.position, TargetWindowPosition,
+                ref velocity, moveSpeed);
         }
         else
         {

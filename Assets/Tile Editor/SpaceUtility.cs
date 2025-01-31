@@ -175,7 +175,7 @@ public class SpaceUtility : MonoBehaviour
     public Vector3 ClampCanvasPointToCanvasRect(Vector3 position, RectTransform rectTransform, Vector2 buffer)
     {
         var canvas = GetCanvas(rectTransform);
-        
+
         Vector2 max = canvas.pixelRect.size - rectTransform.rect.size * (Vector2.one - rectTransform.pivot) - buffer;
         Vector2 min = rectTransform.rect.size * rectTransform.pivot + buffer;
         

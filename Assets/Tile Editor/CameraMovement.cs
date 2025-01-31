@@ -55,8 +55,10 @@ public class CameraMovement : MonoBehaviour
             }
             
             prevMousePosition = Input.mousePosition;
+
+            float newZoom = Mathf.Pow(Mathf.Pow(zoomTarget, 1f / zoomFactor) - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor);
             
-            zoomTarget = Mathf.Pow(Mathf.Clamp(Mathf.Pow(zoomTarget - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor), maxZoom, minZoom), 1f / zoomFactor);
+            zoomTarget = Mathf.Clamp(newZoom, maxZoom, minZoom);
         }
         
         Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -75,7 +77,7 @@ public class CameraMovement : MonoBehaviour
             trackableBounds.Encapsulate(trackable.transform.position);
         }
         
-        zoomTarget = Mathf.Pow(Mathf.Max(minPlaySize, GetZoomForSize(trackableBounds.size + Vector3.right * playSizeBuffer)), 1f / zoomFactor);
+        zoomTarget = Mathf.Max(minPlaySize, GetZoomForSize(trackableBounds.size + Vector3.right * playSizeBuffer));
         UpdateCameraZoom();
         
         Vector2 position =
@@ -95,27 +97,32 @@ public class CameraMovement : MonoBehaviour
 
     private void UpdateCameraZoom()
     {
-        mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, Mathf.Pow(zoomTarget, zoomFactor), ref zoomVelocity, zoomSmoothing);
+        mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, zoomTarget, ref zoomVelocity, zoomSmoothing);
     }
 
     private void SetZoom(float value)
     {
-        zoomTarget = Mathf.Pow(value, 1f / zoomFactor);
+        value = Mathf.Clamp(value, maxZoom, minZoom);
+        zoomTarget = value;
         mainCamera.orthographicSize = value;
     }
     
     public void CenterCameraOnLevel()
     {
+        if (gameStateManager.GameState == GameState.Playing) return;
+        
         var tilemaps = placer.Tilemaps;
-
+        
         if (tilemaps.Length == 0)
         {
             return;
         }
         
         transform.position = placer.Bounds.center;
-        SetZoom(GetZoomForSize(placer.Bounds.size));
+        SetZoom(placer.Bounds.size == Vector3.zero 
+            ? defaultZoom 
+            : GetZoomForSize(placer.Bounds.size));
     }
 
-    private float GetZoomForSize(Vector3 size) => Mathf.Max(size.y, size.x * (Screen.height * mainCamera.rect.height) / (Screen.width * mainCamera.rect.width)) / 2f;
+    private float GetZoomForSize(Vector2 size) => Mathf.Max(size.y, size.x * (Screen.height * mainCamera.rect.height) / (Screen.width * mainCamera.rect.width)) / 2f;
 }

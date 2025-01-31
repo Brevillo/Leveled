@@ -56,13 +56,18 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (dragging) return;
         
-        resizer.anchoredPosition = Vector2.right * (resizer.anchoredPosition.x < snapWidth / 2f
-            ? snapWidth
-            : 0);
+        TogglePanel();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         dragging = false;
+    }
+
+    public void TogglePanel()
+    {
+        resizer.anchoredPosition = Vector2.right * (resizer.anchoredPosition.x < snapWidth / 2f
+            ? snapWidth
+            : 0);
     }
 }
