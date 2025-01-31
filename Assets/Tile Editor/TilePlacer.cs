@@ -52,6 +52,8 @@ public class TilePlacer : MonoBehaviour
     
             tilemap.SetTile(position, null);
         }
+        
+        CompressBounds();
     }
 
     private void OnEditorChanged(ChangeInfo changeInfo)
