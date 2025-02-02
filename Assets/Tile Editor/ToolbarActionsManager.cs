@@ -205,7 +205,7 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
 
-                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(editorState.ActiveTile));
+                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(editorState.PrimaryTile));
                 brushedTiles.Add(spaceUtility.MouseCell);
                 
                 break;
@@ -219,7 +219,7 @@ public class ToolbarActionsManager : MonoBehaviour
                 
             case ToolType.Picker:
                
-                editorState.ActiveTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
+                editorState.PrimaryTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
                
                 break;
         }
@@ -230,11 +230,23 @@ public class ToolbarActionsManager : MonoBehaviour
         switch (editorState.ActiveTool)
         {
             case ToolType.Brush:
+
+                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(editorState.SecondaryTile));
+                brushedTiles.Add(spaceUtility.MouseCell);
+                
+                break;
+
             case ToolType.Eraser:
                
                 tilePlacer.PlaceTile(spaceUtility.MouseCell, TileData.Empty);
                 brushedTiles.Add(spaceUtility.MouseCell);
                 
+                break;
+            
+            case ToolType.Picker:
+               
+                editorState.SecondaryTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
+               
                 break;
         }
     }
@@ -250,13 +262,13 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
                 
-                if (editorState.ActiveTile.Linkable)
+                if (editorState.PrimaryTile.Linkable)
                 {
-                    GetLinkingGroup(linkingGroup => SetTiles(new(editorState.ActiveTile, linkingGroup)));
+                    GetLinkingGroup(linkingGroup => SetTiles(new(editorState.PrimaryTile, linkingGroup)));
                 }
                 else
                 {
-                    SetTiles(new(editorState.ActiveTile));
+                    SetTiles(new(editorState.PrimaryTile));
                 }
                 
                 break;
@@ -271,7 +283,7 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 if (state == State.DrawingRect)
                 {
-                    SetTilemapRect(editorState.ActiveTile);
+                    SetTilemapRect(editorState.PrimaryTile);
                 }
 
                 state = State.None;
@@ -383,6 +395,18 @@ public class ToolbarActionsManager : MonoBehaviour
         switch (editorState.ActiveTool)
         {
             case ToolType.Brush:
+                
+                if (editorState.SecondaryTile.Linkable)
+                {
+                    GetLinkingGroup(linkingGroup => SetTiles(new(editorState.SecondaryTile, linkingGroup)));
+                }
+                else
+                {
+                    SetTiles(new(editorState.SecondaryTile));
+                }
+
+                break;
+                
             case ToolType.Eraser:
                 
                 SetTiles(TileData.Empty);
@@ -393,7 +417,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
                 if (state == State.DrawingRect)
                 {
-                    SetTilemapRect(null);
+                    SetTilemapRect(editorState.SecondaryTile);
                 }
 
                 state = State.None;
@@ -457,6 +481,7 @@ public class ToolbarActionsManager : MonoBehaviour
             Vector3.SmoothDamp(hoverSelection.transform.localPosition, position, ref hoverSelectionPositionVelocity,
                 hoverSelectionSpeed);
         bool hoverSelectionActive =
+            Cursor.visible &&
             (!editorState.PointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
             editorState.ActiveTool != ToolType.Mover;
         hoverSelection.gameObject.SetActive(hoverSelectionActive);

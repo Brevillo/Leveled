@@ -14,6 +14,7 @@ Made by Oliver Beebe
   - Camera mover
   - Center camera on level
   - Linking groups for linking doors, keys, etc.
+  - Select primary and secondary tile while drawing for left/right click
 </details>
 
 <details>
@@ -57,6 +58,5 @@ Made by Oliver Beebe
   - Collectables
   - Level end goal
 - Moving platforms
-- Secondary palette selection (currently right click is always set to the empty tile)
 - Color picker for linking groups
 - Option to load levels when one level is completed.

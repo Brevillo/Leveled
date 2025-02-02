@@ -165,7 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 3752113063257388990}
-  selectedColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
+  primaryColor: {r: 1, g: 1, b: 1, a: 0.2}
+  secondaryColor: {r: 1, g: 1, b: 1, a: 0.101960786}
   regularColor: {r: 0, g: 0, b: 0, a: 0}
   editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   iconImage: {fileID: 1910517465757237918}
@@ -177,7 +178,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762981873955814362}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 

@@ -11,7 +11,8 @@ public class TileEditorState : GameService
 
     #region State
 
-    private GameTile activeTile = null;
+    private GameTile primaryTile = null;
+    private GameTile secondaryTile = null;
     private ToolType activeTool = ToolType.Brush;
 
     private bool showLinkingGroups = false;
@@ -65,9 +66,9 @@ public class TileEditorState : GameService
             changelog.LogChange(changeInfo);
         }
 
-        EditorChanged?.Invoke(changeInfo);
-
         OnEditorChanged(changeInfo);
+
+        EditorChanged?.Invoke(changeInfo);
     }
 
     private void OnEditorChanged(ChangeInfo changeInfo)
@@ -84,7 +85,18 @@ public class TileEditorState : GameService
                 break;
 
             case PaletteChangeInfo paletteChangeInfo:
-                activeTile = paletteChangeInfo.newValue;
+
+                switch (paletteChangeInfo.type)
+                {
+                    case PaletteChangeInfo.Type.Primary:
+                        primaryTile = paletteChangeInfo.newValue;
+                        break;
+                    
+                    case PaletteChangeInfo.Type.Secondary:
+                        secondaryTile = paletteChangeInfo.newValue;
+                        break;
+                }
+
                 break;
 
             case ToolbarChangeInfo toolbarChangeInfo:
@@ -164,13 +176,24 @@ public class TileEditorState : GameService
 
     public void SetTiles(Vector3Int[] positions, TileData[] tiles) =>
         SendEditorChange(new MultiTileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles));
-    
-    public GameTile ActiveTile
+
+    public GameTile PrimaryTile
     {
-        get => activeTile;
-        set => SendEditorChange(new PaletteChangeInfo(activeTile, value), false);
+        get => primaryTile;
+        set => SendEditorChange(new PaletteChangeInfo(primaryTile, value, PaletteChangeInfo.Type.Primary), false);
     }
 
+    public GameTile SecondaryTile
+    {
+        get => secondaryTile;
+        set => SendEditorChange(new PaletteChangeInfo(secondaryTile, value, PaletteChangeInfo.Type.Secondary), false);
+    }
+
+    public void SwapSelectedTiles()
+    {
+        (PrimaryTile, SecondaryTile) = (SecondaryTile, PrimaryTile);
+    }
+    
     public void SetActiveTool(string toolTypeName)
     {
         if (Enum.TryParse(typeof(ToolType), toolTypeName, true, out var toolType))

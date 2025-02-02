@@ -66,12 +66,21 @@ public class ToolbarChangeInfo : ValueChangeInfo<ToolType>
 
 public class PaletteChangeInfo : ValueChangeInfo<GameTile>
 {
-    public PaletteChangeInfo(GameTile previousValue, GameTile newValue) : base(previousValue, newValue,
-        $"Changed active tile from {GameTile.NullableToString(previousValue)} to {GameTile.NullableToString(newValue)}")
+    public enum Type
     {
+        Primary,
+        Secondary,
     }
 
-    public override ChangeInfo Reverted => new PaletteChangeInfo(newValue, previousValue);
+    public readonly Type type; 
+    
+    public PaletteChangeInfo(GameTile previousValue, GameTile newValue, Type type) : base(previousValue, newValue,
+        $"Changed active tile from {GameTile.NullableToString(previousValue)} to {GameTile.NullableToString(newValue)}")
+    {
+        this.type = type;
+    }
+
+    public override ChangeInfo Reverted => new PaletteChangeInfo(newValue, previousValue, type);
 }
 
 public class ShowLinkingGroupsChangeInfo : ValueChangeInfo<bool>

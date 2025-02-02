@@ -41,7 +41,7 @@ public class TilePlacer : MonoBehaviour
     {
         var selfTilemap = GetTilemap(tile);
 
-        if (!tile.IsEmpty)
+        if (!tile.IsEmpty && selfTilemap != null)
         {
             selfTilemap.SetTile(position, tile.gameTile.TileBase);
         }

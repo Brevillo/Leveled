@@ -691,6 +691,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SwapSelectedTiles",
+                    "type": "Button",
+                    "id": "c9e158ff-eb9f-4260-8609-6929b9d559a9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1516,6 +1525,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TogglePanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae0568fe-dcc9-43eb-8ca3-8e1a3b950d02",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwapSelectedTiles",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

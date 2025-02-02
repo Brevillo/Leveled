@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
 public class CameraMovement : MonoBehaviour
@@ -17,13 +18,15 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float minPlaySize;
     [SerializeField] private float playMoveSpeed;
     [SerializeField] private float playSizeBuffer;
-    
-    private Vector3 prevMousePosition;
 
     private float zoomTarget;
     private float zoomVelocity;
 
+    private bool dragging;
+    
     private Vector2 playPositionVelocity;
+
+    private Vector2 mousePosition;
 
     private void Awake()
     {
@@ -46,16 +49,47 @@ public class CameraMovement : MonoBehaviour
 
     private void EditModeCamera()
     {
-        if (!editorState.PointerOverUI)
+        bool pointerOverUI = editorState.PointerOverUI;
+        
+        if (!pointerOverUI)
         {
-            if (Input.GetMouseButton(2)
-                || (editorState.ActiveTool == ToolType.Mover && Input.GetMouseButton(0)))
+            bool moverTool = editorState.ActiveTool == ToolType.Mover;
+            
+            if (!dragging && (Input.GetMouseButtonDown(2) || (moverTool && Input.GetMouseButtonDown(0))))
             {
-                transform.position -= mainCamera.ScreenToWorldPoint(Input.mousePosition - prevMousePosition) - mainCamera.ScreenToWorldPoint(Vector3.zero);
+                mousePosition = Input.mousePosition;
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+
+                dragging = true;
             }
             
-            prevMousePosition = Input.mousePosition;
+            if (dragging && (Input.GetMouseButton(2) || (moverTool && Input.GetMouseButton(0))))
+            {
+                Vector2 delta = Input.mousePositionDelta * 4f;
+                transform.position -= mainCamera.ScreenToWorldPoint(delta) - mainCamera.ScreenToWorldPoint(Vector3.zero);
 
+                mousePosition += delta;
+            }
+            
+            if (dragging && (Input.GetMouseButtonUp(2) || (moverTool && Input.GetMouseButtonUp(0))))
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+
+                mousePosition = new(
+                    Mathf.Clamp(mousePosition.x, 0, Screen.width),
+                    Mathf.Clamp(mousePosition.y, 0, Screen.height));
+                
+                Mouse.current.WarpCursorPosition(mousePosition);
+
+                dragging = false;
+            }
+        }
+        
+        if (!pointerOverUI)
+        {
             float newZoom = Mathf.Pow(Mathf.Pow(zoomTarget, 1f / zoomFactor) - Input.mouseScrollDelta.y * zoomSpeed, zoomFactor);
             
             zoomTarget = Mathf.Clamp(newZoom, maxZoom, minZoom);

@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TilePaletteItem : MonoBehaviour
+public class TilePaletteItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image background;
-    [SerializeField] private Color selectedColor;
+    [SerializeField] private Color primaryColor;
+    [SerializeField] private Color secondaryColor;
     [SerializeField] private Color regularColor;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private Image iconImage;
@@ -18,11 +20,6 @@ public class TilePaletteItem : MonoBehaviour
         iconImage.sprite = tile.PaletteIcon;
         gameTile = tile;
         tooltip.Contents = tile.Tooltip;
-    }
-    
-    public void SetActiveTile()
-    {
-        editorState.ActiveTile = gameTile;
     }
 
     private void OnEnable()
@@ -39,12 +36,31 @@ public class TilePaletteItem : MonoBehaviour
     {
         switch (changeInfo)
         {
-            case PaletteChangeInfo paletteChangeInfo:
+            case PaletteChangeInfo:
                 
-                background.color = paletteChangeInfo.newValue == gameTile
-                    ? selectedColor
+                background.color
+                    = editorState.PrimaryTile == gameTile ? primaryColor 
+                    : editorState.SecondaryTile == gameTile ? secondaryColor
                     : regularColor;
 
+                break;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+
+                editorState.PrimaryTile = gameTile;
+                
+                break;
+            
+            case PointerEventData.InputButton.Right:
+
+                editorState.SecondaryTile = gameTile;
+                
                 break;
         }
     }
