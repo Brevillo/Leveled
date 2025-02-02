@@ -59,7 +59,7 @@ Made by Oliver Beebe
   - Clearly labeled keyboards shortcuts for most editor functionality
   - UI scaling
   - Confirmation when closing or deleting level files
-  - Enter and exit play mode with Spacebar and Escape keys
+  - Instantly enter and exit play mode with Spacebar and Escape keys
 </details>
 
 ## Planned Features
