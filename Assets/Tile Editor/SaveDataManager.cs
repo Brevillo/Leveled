@@ -138,7 +138,10 @@ public class SaveDataManager : MonoBehaviour
 
     private void DeleteLevelOption(FileInfo file, LevelSelectOption option)
     {
-        confirmationMenu.OpenDestructiveConfirmMenu($"Delete {GetName(file)}?\n<size=50%>This action cannot be undone.</size>", "Delete", "Cancel",
+        confirmationMenu.OpenDestructiveConfirmMenu(
+            $"Delete {GetName(file)}?\n<size=50%>This action cannot be undone.</size>",
+            "Delete",
+            "Cancel",
             () =>
             {
                 file.Delete();
@@ -149,13 +152,36 @@ public class SaveDataManager : MonoBehaviour
     
     public void SaveLevel()
     {
-        saveFolder.Delete(loadedLevelName);
-        saveFolder.Save(editorState.GetLevelData(), levelName.text);
+        if (loadedLevelName != levelName.text)
+        {
+            string oldName = loadedLevelName;
+            string newName = levelName.text;
+            
+            confirmationMenu.OpenDoubleOptionMenu(
+                $"Save {newName} as new level?",
+                "Save as new level.",
+                $"Rename {oldName} to {newName}", 
+                "Cancel",
+                SaveLevelInternal,
+                () =>
+                {
+                    saveFolder.Delete(oldName);
+                    SaveLevelInternal();
+                });
+        }
+        else
+        {
+            SaveLevelInternal();
+        }
+    }
 
+    private void SaveLevelInternal()
+    {
         loadedLevelName = levelName.text;
         
-        changelog.NotifySaved();
+        saveFolder.Save(editorState.GetLevelData(), loadedLevelName);
         
+        changelog.NotifySaved();
         RefreshLevels();
     }
 
@@ -167,7 +193,11 @@ public class SaveDataManager : MonoBehaviour
             return;
         }
         
-        confirmationMenu.OpenOptionalConfirmMenu($"Save {loadedLevelName}?", "Save", "Don't Save", "Cancel",
+        confirmationMenu.OpenOptionalConfirmMenu(
+            $"Save {loadedLevelName}?", 
+            "Save",
+            "Don't Save",
+            "Cancel",
             () =>
             {
                 SaveLevel();
