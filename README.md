@@ -34,6 +34,7 @@ Made by Oliver Beebe
   - Checkpoints
   - Linkable teleporters
   - Bounce pad
+  - Collectables
 </details>
 
 <details>
@@ -55,7 +56,6 @@ Made by Oliver Beebe
   - Slopes
   - Simple enemies
   - Locked doors (with keys and toggles)
-  - Collectables
   - Level end goal
 - Moving platforms
 - Color picker for linking groups

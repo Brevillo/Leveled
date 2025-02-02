@@ -77,7 +77,7 @@ public class SaveDataManager : MonoBehaviour
 
     private void Start()
     {
-        gameStateManager.GameState = GameState.Editing;
+        gameStateManager.SetGameStateWithNotify(GameState.Editing);
         editorState.PrimaryTile = defaultPrimaryTile;
         editorState.SecondaryTile = defaultSecondaryTile;
         editorState.ActiveTool = ToolType.Brush;

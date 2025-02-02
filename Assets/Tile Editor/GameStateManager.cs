@@ -24,19 +24,22 @@ public class GameStateManager : ScriptableObject
             ? GameState.Playing
             : GameState.Editing;
     }
+
+    public void SetGameStateWithNotify(GameState gameState)
+    {
+        this.gameState = gameState;
+        
+        GameStateChanged?.Invoke(gameState);
+    }
     
     public GameState GameState
     {
         get => gameState;
         set
         {
-            bool changed = gameState != value;
-            
-            gameState = value;
-
-            if (changed)
+            if (gameState != value)
             {
-                GameStateChanged?.Invoke(value);
+                SetGameStateWithNotify(value);
             }
         }
     }
