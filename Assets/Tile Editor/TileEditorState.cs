@@ -16,7 +16,8 @@ public class TileEditorState : GameService
     private ToolType activeTool = ToolType.Brush;
 
     private bool showLinkingGroups = false;
-
+    private bool showPlayerPositionRecording = false;
+    
     private Dictionary<Vector3Int, TileData> tiles = new();
 
     private string changeInfoBundleDescription;
@@ -126,6 +127,12 @@ public class TileEditorState : GameService
                 showLinkingGroups = showLinkingGroupsChangeInfo.newValue;
 
                 break;
+            
+            case ShowPlayerPositionRecordingChangeInfo showPlayerPositionRecordingChangeInfo:
+
+                showPlayerPositionRecording = showPlayerPositionRecordingChangeInfo.newValue;
+                
+                break;
         }
     }
 
@@ -215,6 +222,14 @@ public class TileEditorState : GameService
     }
 
     public void ToggleShowLinkingGroups() => ShowLinkingGroups = !ShowLinkingGroups;
+
+    public bool ShowPlayerPositionRecording
+    {
+        get => showPlayerPositionRecording;
+        set => SendEditorChange(new ShowPlayerPositionRecordingChangeInfo(showPlayerPositionRecording, value), false);
+    }
+
+    public void ToggleShowPlayerPositionRecording() => ShowPlayerPositionRecording = !ShowPlayerPositionRecording;
     
     #endregion
     

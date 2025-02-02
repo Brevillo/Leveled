@@ -3,25 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using System.Linq;
 using UnityEngine.UI;
 
 public class EditorButtonActions : MonoBehaviour
 {
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private List<Action> actions;
     
     [Serializable]
     private class Action
     {
-        public string name;
-        public Button button;
-        public InputActionReference inputAction;
-        public UnityEvent action;
+        [SerializeField, HideInInspector] private string displayName;
+        [SerializeField] private string name;
+        [SerializeField] private Button button;
+        [SerializeField] private GameState validGameStates = GameState.Editing;
+        [SerializeField] private InputActionReference inputAction;
+        [SerializeField] private UnityEvent action;
 
-        public void Enable()
+        private GameStateManager gameStateManager;
+
+        public void UpdateDisplayName()
         {
+            var values = Enum.GetValues(typeof(GameState)).Cast<GameState>().Where(value => validGameStates.HasFlag(value));
+            
+            displayName = $"{name} - {string.Join(", ", values)}";
+        }
+        
+        public void Enable(GameStateManager gameStateManager)
+        {
+            this.gameStateManager = gameStateManager;
+            
             if (button != null)
             {
-                button.onClick.AddListener(action.Invoke);
+                button.onClick.AddListener(InvokeAction);
             }
 
             if (inputAction != null)
@@ -34,7 +49,7 @@ public class EditorButtonActions : MonoBehaviour
         {
             if (button != null)
             {
-                button.onClick.RemoveListener(action.Invoke);
+                button.onClick.RemoveListener(InvokeAction);
             }
 
             if (inputAction != null)
@@ -45,6 +60,16 @@ public class EditorButtonActions : MonoBehaviour
 
         private void OnInputActionPerformed(InputAction.CallbackContext context)
         {
+            InvokeAction();
+        }
+
+        private void InvokeAction()
+        {
+            if (!validGameStates.HasFlag(gameStateManager.GameState))
+            {
+                return;
+            }
+            
             action.Invoke();
         }
     }
@@ -53,7 +78,7 @@ public class EditorButtonActions : MonoBehaviour
     {
         foreach (var action in actions)
         {
-            action.Enable();
+            action.Enable(gameStateManager);
         }
     }
 
@@ -62,6 +87,14 @@ public class EditorButtonActions : MonoBehaviour
         foreach (var action in actions)
         {
             action.Disable();
+        }
+    }
+
+    private void OnValidate()
+    {
+        foreach (var action in actions)
+        {
+            action.UpdateDisplayName();
         }
     }
 }

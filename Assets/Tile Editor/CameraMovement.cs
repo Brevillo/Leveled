@@ -77,12 +77,16 @@ public class CameraMovement : MonoBehaviour
             {
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
-
-                mousePosition = new(
-                    Mathf.Clamp(mousePosition.x, 0, Screen.width),
-                    Mathf.Clamp(mousePosition.y, 0, Screen.height));
                 
-                Mouse.current.WarpCursorPosition(mousePosition);
+                Vector2 viewportPosition = mainCamera.ScreenToViewportPoint(mousePosition);
+                
+                Mouse.current.WarpCursorPosition(
+                        viewportPosition.x < 0 
+                        || viewportPosition.x > 1
+                        || viewportPosition.y < 0
+                        || viewportPosition.y > 1
+                    ? mainCamera.ViewportToScreenPoint(Vector2.one / 2f)
+                    : mousePosition);
 
                 dragging = false;
             }

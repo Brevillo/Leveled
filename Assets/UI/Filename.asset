@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02b8cdc42acea47da9f930bb6200d03f, type: 3}
-  m_Name: Tile Editor State
+  m_Script: {fileID: 11500000, guid: 53cb228b978284846adb4002a8fa44d1, type: 3}
+  m_Name: Filename
   m_EditorClassIdentifier: 
-  changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
-  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+  disallowedCharacters: /\|<>:"?*

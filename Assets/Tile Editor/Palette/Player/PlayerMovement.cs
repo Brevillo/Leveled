@@ -23,9 +23,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float coyoteTime;
     [SerializeField] private BufferTimer jumpBuffer;
     [SerializeField] private CollisionAggregate2D ground;
+
+    [Header("Walljumping")]
+    [SerializeField] private float walljumpHeight;
+    [SerializeField] private float walljumpBoost;
+    [SerializeField] private float walljumpNoTurnDuration;
+    [SerializeField] private CollisionAggregate2D leftWall;
+    [SerializeField] private CollisionAggregate2D rightWall;
     
     [Header("References")] 
     [SerializeField] private new Rigidbody2D rigidbody;
+    [SerializeField] private PositionRecorder positionRecorder;
 
     private Vector2 spawnPoint;
     private Checkpoint checkpoint;
@@ -33,15 +41,28 @@ public class PlayerMovement : MonoBehaviour
     private Grounded grounded;
     private Jumping jumping;
     private Falling falling;
+    private Walljumping walljumping;
+    
     private StateMachine stateMachine;
+
+    private int WallDirection 
+        => rightWall.Touching ? 1
+        : leftWall.Touching ? -1
+        : 0;
 
     public void Respawn()
     {
-        rigidbody.position = checkpoint != null 
+        positionRecorder.AddPosition();
+
+        rigidbody.interpolation = RigidbodyInterpolation2D.None;
+        transform.position = checkpoint != null 
             ? checkpoint.transform.position
             : spawnPoint;
+        rigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
         
         rigidbody.linearVelocity = Vector2.zero;
+     
+        positionRecorder.NewSegment();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -79,16 +100,24 @@ public class PlayerMovement : MonoBehaviour
         grounded = new(this);
         jumping = new(this);
         falling = new(this);
+        walljumping = new(this);
 
         TransitionDelegate
 
             canGround = () => ground.Touching,
             
             canJump = () => ground.Touching && jumpBuffer,
-            canEndJump = () => rigidbody.linearVelocity.y <= 0,
-            canCoyoteJump = () => stateMachine.previousState == grounded && stateMachine.stateDuration < coyoteTime && jumpBuffer,
+            canEndJump = () => rigidbody.linearVelocityY <= 0,
+            canCoyoteJump = () => stateMachine.previousState == grounded 
+                                  && stateMachine.stateDuration < coyoteTime && jumpBuffer,
+            
+            canWalljump = () => WallDirection != 0 && jumpBuffer,
+            canEndWalljump = () => stateMachine.stateDuration > walljumpNoTurnDuration 
+                                   || rigidbody.linearVelocityY <= 0,
             
             canFall = () => !ground.Touching;
+
+        Transition toWalljump = new(walljumping, canWalljump);
         
         stateMachine = new(
             firstState: grounded,
@@ -103,40 +132,53 @@ public class PlayerMovement : MonoBehaviour
                 { jumping, new()
                 {
                     new(falling, canEndJump),
+                    toWalljump,
                 }},
                 
                 { falling, new()
                 {
                     new(jumping, canCoyoteJump),
                     new(grounded, canGround),
-                }}
+                    toWalljump,
+                }},
+                
+                { walljumping, new()
+                {
+                    new(grounded, canGround),
+                    new(falling, canEndWalljump),
+                }},
             });
     }
 
     private class State : State<PlayerMovement>
     {
+        protected float VelocityX
+        {
+            get => context.rigidbody.linearVelocityX;
+            set => context.rigidbody.linearVelocityX = value;
+        }
+        
+        protected float VelocityY
+        {
+            get => context.rigidbody.linearVelocityY;
+            set => context.rigidbody.linearVelocityY = value;
+        }
+
+        protected float InputX => context.moveInput.action.ReadValue<Vector2>().x;
+        
         public State(PlayerMovement context) : base(context) { }
 
-        protected void Run(float accel, float deccel)
-        {
-            Vector2 velocity = context.rigidbody.linearVelocity;
-            
-            float input = context.moveInput.action.ReadValue<Vector2>().x;
-            float currentAccel = input != 0 ? accel : deccel;
+        protected void Run(float accel, float deccel) =>
+            Run(accel, deccel, InputX);
 
-            velocity.x = Mathf.MoveTowards(velocity.x, input * context.runSpeed, currentAccel * Time.deltaTime);
+        protected void Run(float accel, float deccel, float input) =>
+            VelocityX = Mathf.MoveTowards(VelocityX, input * context.runSpeed,
+                (input != 0 ? accel : deccel) * Time.deltaTime);
 
-            context.rigidbody.linearVelocity = velocity;
-        }
+        protected void Fall(float gravity) => 
+            VelocityY = Mathf.MoveTowards(VelocityY, -context.maxFallSpeed, gravity * Time.deltaTime);
 
-        protected void Fall(float gravity)
-        {
-            Vector2 velocity = context.rigidbody.linearVelocity;
-
-            velocity.y = Mathf.MoveTowards(velocity.y, -context.maxFallSpeed, gravity * Time.deltaTime);
-
-            context.rigidbody.linearVelocity = velocity;
-        }
+        protected static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
     }
     
     private class Grounded : State
@@ -157,9 +199,7 @@ public class PlayerMovement : MonoBehaviour
 
         public override void Enter()
         {
-            Vector2 velocity = context.rigidbody.linearVelocity;
-            velocity.y = Mathf.Sqrt(2f * context.jumpHeight * context.jumpGravity);
-            context.rigidbody.linearVelocity = velocity;
+            context.rigidbody.linearVelocityY = Mathf.Sqrt(2f * context.jumpHeight * context.jumpGravity);
             
             context.jumpBuffer.Reset();
             
@@ -189,6 +229,44 @@ public class PlayerMovement : MonoBehaviour
             
             Run(context.airAccel, context.airDeccel);
             Fall(context.fallGravity);
+        }
+    }
+    
+    private class Walljumping : State
+    {
+        public Walljumping(PlayerMovement context) : base(context) { }
+
+        public override void Enter()
+        {
+            context.rigidbody.linearVelocity = new Vector2
+            {
+                y = Mathf.Sqrt(2f * context.walljumpHeight * context.jumpGravity),
+                x = context.walljumpBoost * -context.WallDirection,
+            };
+            
+            context.jumpBuffer.Reset();
+            
+            base.Enter();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            float input = InputX;
+            
+            if (Sign0(input) == context.WallDirection)
+            {
+                input = 0;
+            }
+            
+            Run(context.airAccel, context.airDeccel, input);
+
+            float gravity = context.jumpInput.action.IsPressed()
+                ? context.jumpGravity
+                : context.peakingGravity;
+            
+            Fall(gravity);
         }
     }
     

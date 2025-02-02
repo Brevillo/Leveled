@@ -36,7 +36,8 @@ public class ChangeInfoBundle : ChangeInfo
         this.changeInfos = changeInfos;
     }
 
-    public override ChangeInfo Reverted => new ChangeInfoBundle(description, changeInfos.Reverse().Select(change => change.Reverted).ToArray());
+    public override ChangeInfo Reverted => 
+        new ChangeInfoBundle(description, changeInfos.Reverse().Select(change => change.Reverted).ToArray());
 }
 
 public class MultiTileChangeInfo : ChangeInfo
@@ -45,7 +46,8 @@ public class MultiTileChangeInfo : ChangeInfo
     public readonly TileData[] previousTiles;
     public readonly TileData[] newTiles;
 
-    public MultiTileChangeInfo(Vector3Int[] positions, TileData[] previousTiles, TileData[] newTiles) : base("Set multiple tiles.")
+    public MultiTileChangeInfo(Vector3Int[] positions, TileData[] previousTiles, TileData[] newTiles) : base(
+        "Set multiple tiles.")
     {
         this.positions = positions;
         this.previousTiles = previousTiles;
@@ -57,7 +59,8 @@ public class MultiTileChangeInfo : ChangeInfo
 
 public class ToolbarChangeInfo : ValueChangeInfo<ToolType>
 {
-    public ToolbarChangeInfo(ToolType previousValue, ToolType newValue) : base(previousValue, newValue, $"Changed active tool to {newValue.ToString()}")
+    public ToolbarChangeInfo(ToolType previousValue, ToolType newValue) : base(previousValue, newValue,
+        $"Changed active tool to {newValue.ToString()}")
     {
     }
 
@@ -75,7 +78,7 @@ public class PaletteChangeInfo : ValueChangeInfo<GameTile>
     public readonly Type type; 
     
     public PaletteChangeInfo(GameTile previousValue, GameTile newValue, Type type) : base(previousValue, newValue,
-        $"Changed active tile from {GameTile.NullableToString(previousValue)} to {GameTile.NullableToString(newValue)}")
+        $"Changed {type} tile from {GameTile.NullableToString(previousValue)} to {GameTile.NullableToString(newValue)}")
     {
         this.type = type;
     }
@@ -91,4 +94,14 @@ public class ShowLinkingGroupsChangeInfo : ValueChangeInfo<bool>
     }
 
     public override ChangeInfo Reverted => new ShowLinkingGroupsChangeInfo(newValue, previousValue);
+}
+
+public class ShowPlayerPositionRecordingChangeInfo : ValueChangeInfo<bool>
+{
+    public ShowPlayerPositionRecordingChangeInfo(bool previousValue, bool newValue) : base(previousValue, newValue,
+        $"Changed 'Show Player Position Recording' from {previousValue} to {newValue}")
+    {
+    }
+
+    public override ChangeInfo Reverted => new ShowPlayerPositionRecordingChangeInfo(newValue, previousValue);
 }

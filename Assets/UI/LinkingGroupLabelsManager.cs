@@ -35,6 +35,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
 
     private void Start()
     {
+        popupPool.Clear();
         popupPool.SetParent(labelsParent);
     }
 
@@ -112,7 +113,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
         labels.Clear();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         foreach (var label in labels)
         {

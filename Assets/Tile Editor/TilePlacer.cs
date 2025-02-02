@@ -56,52 +56,58 @@ public class TilePlacer : MonoBehaviour
         CompressBounds();
     }
 
+    public void PlaceTiles(Vector3Int[] positions, TileData[] tiles)
+    {
+        var tilemapGroups = Enumerable.Range(0, positions.Length)
+            .Select(i =>
+            {
+                var tile = tiles[i];
+                
+                return (position: positions[i], tileData: tile, tilemap: GetTilemap(tile));
+            })
+            .GroupBy(item => item.tilemap)
+            .ToArray();
+        
+        foreach (var group in tilemapGroups)
+        {
+            var positionArray = group.Select(item => item.position).ToArray();
+            
+            if (group.Key != null)
+            {
+                var tileArray = group.Select(item => item.tileData.gameTile.TileBase).ToArray();
+                group.Key.SetTiles(positionArray, tileArray);
+            }
+            
+            var nullTiles = new TileBase[positionArray.Length];
+            Array.Fill(nullTiles, null);
+            
+            foreach (var tilemap in tilemaps.Values)
+            {
+                if (tilemap == group.Key) continue;
+        
+                tilemap.SetTiles(positionArray, nullTiles);
+            }
+        }
+    }
+
     private void OnEditorChanged(ChangeInfo changeInfo)
     {
         switch (changeInfo)
         {
             case MultiTileChangeInfo multiTileChangeInfo:
                 
-                var tilemapGroups = Enumerable.Range(0, multiTileChangeInfo.positions.Length)
-                    .Select(i =>
-                    {
-                        var tile = multiTileChangeInfo.newTiles[i];
-                        
-                        return (position: multiTileChangeInfo.positions[i], tileData: tile, tilemap: GetTilemap(tile));
-                    })
-                    .GroupBy(item => item.tilemap)
-                    .ToArray();
+                PlaceTiles(multiTileChangeInfo.positions, multiTileChangeInfo.newTiles);
                 
-                foreach (var group in tilemapGroups)
+                CompressBounds();
+
+                StartCoroutine(WaitFrame());
+                IEnumerator WaitFrame()
                 {
-                    var positionArray = group.Select(item => item.position).ToArray();
-                    var nullTiles = new TileBase[positionArray.Length];
-                    Array.Fill(nullTiles, null);
-                    
-                    if (group.Key != null)
-                    {
-                        var tileArray = group.Select(item => item.tileData.gameTile.TileBase).ToArray();
-                        group.Key.SetTiles(positionArray, tileArray);
-                    }
-                    
-                    foreach (var tilemap in tilemaps.Values)
-                    {
-                        if (tilemap == group.Key) continue;
-                
-                        tilemap.SetTiles(positionArray, nullTiles);
-                    }
+                    yield return null;
+                    CompressBounds();
                 }
                 
                 break;
-        }
-
-        CompressBounds();
-
-        StartCoroutine(WaitFrame());
-        IEnumerator WaitFrame()
-        {
-            yield return null;
-            CompressBounds();
         }
     }
 

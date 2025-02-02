@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02b8cdc42acea47da9f930bb6200d03f, type: 3}
-  m_Name: Tile Editor State
+  m_Script: {fileID: 11500000, guid: a79cad0131bb6468ea1f33b29f785c1c, type: 3}
+  m_Name: Position Recording Line Renderers
   m_EditorClassIdentifier: 
-  changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
-  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+  prefab: {fileID: 7568689141524219450, guid: d669e0a9d7086407a9b29aa5d4856620, type: 3}
+  setActiveOnRetrieval: 1

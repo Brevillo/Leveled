@@ -81,6 +81,8 @@ public class SaveDataManager : MonoBehaviour
         editorState.PrimaryTile = defaultPrimaryTile;
         editorState.SecondaryTile = defaultSecondaryTile;
         editorState.ActiveTool = ToolType.Brush;
+        editorState.ShowPlayerPositionRecording = false;
+        editorState.ShowLinkingGroups = false;
         
         RefreshLevels();
         
@@ -147,6 +149,16 @@ public class SaveDataManager : MonoBehaviour
                 file.Delete();
                 levelSelectOptionInstances.Remove(GetName(file));
                 Destroy(option.gameObject);
+
+                var files = saveFolder.GetAllFiles();
+                if (files.Length > 0)
+                {
+                    LoadLevel(files[0]);
+                }
+                else
+                {
+                    NewLevel();
+                }
             });
     }
     

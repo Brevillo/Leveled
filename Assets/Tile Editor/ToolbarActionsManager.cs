@@ -458,7 +458,7 @@ public class ToolbarActionsManager : MonoBehaviour
         Vector3Int mouseCell = spaceUtility.MouseCell;
         Vector3 mouseWorld = spaceUtility.MouseCellCenterWorld;
 
-        (Vector3 position, Vector2 size) = state switch
+        (Vector3 hoverSelectionPosition, Vector2 hoverSelectionSize) = state switch
         {
             State.DrawingRect or State.Selecting => (
                 position: (mouseWorld + spaceUtility.CellToWorld(dragStart)) / 2f,
@@ -474,17 +474,22 @@ public class ToolbarActionsManager : MonoBehaviour
                 position: mouseWorld,
                 size: Vector2.one),
         };
-
-        hoverSelection.size = Vector2.SmoothDamp(hoverSelection.size, size, ref hoverSelectionSizeVelocity,
-            hoverSelectionSpeed);
-        hoverSelection.transform.localPosition =
-            Vector3.SmoothDamp(hoverSelection.transform.localPosition, position, ref hoverSelectionPositionVelocity,
-                hoverSelectionSpeed);
+        
         bool hoverSelectionActive =
             Cursor.visible &&
             (!editorState.PointerOverUI || state is State.DrawingRect or State.Selecting or State.MovingSelection) &&
             editorState.ActiveTool != ToolType.Mover;
+        
         hoverSelection.gameObject.SetActive(hoverSelectionActive);
+
+        hoverSelection.size = hoverSelectionActive
+            ? Vector2.SmoothDamp(hoverSelection.size, hoverSelectionSize, ref hoverSelectionSizeVelocity, hoverSelectionSpeed)
+            : hoverSelectionSize;
+
+        hoverSelection.transform.localPosition = hoverSelectionActive
+            ? Vector3.SmoothDamp(hoverSelection.transform.localPosition, hoverSelectionPosition, ref hoverSelectionPositionVelocity,
+                hoverSelectionSpeed)
+            : hoverSelectionPosition;
     }
 
     private BoundsInt CalculateSelection()
@@ -522,17 +527,14 @@ public class ToolbarActionsManager : MonoBehaviour
         
         if (tile != null && tile.Linkable)
         {
-            editorState.StartChangeBundle("Set multiple tiles");
-            
-            editorState.SetTiles(positions, tiles);
+            tilePlacer.PlaceTiles(positions, tiles);
 
             GetLinkingGroup(linkingGroup =>
             {
-                var tiles = new TileData[positions.Length];
-                Array.Fill(tiles, new(tile, linkingGroup));
+                var linkedTiles = new TileData[positions.Length];
+                Array.Fill(linkedTiles, new(tile, linkingGroup));
                 
-                editorState.SetTiles(positions, tiles);
-                editorState.EndChangeBundle();
+                editorState.SetTiles(positions, linkedTiles);
             });
         }
         else
