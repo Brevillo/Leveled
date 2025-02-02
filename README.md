@@ -5,16 +5,19 @@ Made by Oliver Beebe
 ## Features
 <details>
   <summary>Tile Editing</summary>
-  
-  - Brush
-  - Eraser
-  - Rectangle brush
-  - Tile picker
-  - Tile selection and movement
-  - Camera mover
-  - Center camera on level
-  - Linking groups for linking doors, keys, etc.
+
+  - Tile tools
+    - Brush
+    - Eraser
+    - Rectangle brush
+    - Tile picker
+    - Tile selection and movement
   - Select primary and secondary tile while drawing for left/right click
+  - Linking groups
+    - Link tiles like doors, keys, etc.
+    - Easily change linking groups
+    - Toggleable mode for viewing linking groups
+
 </details>
 
 <details>
@@ -45,7 +48,18 @@ Made by Oliver Beebe
   - Easily swap between levels
   - Easily create new levels
   - Autosave options (periodic, every change, or off)
-  - Confirmation for save when closing level
+</details>
+
+<details>
+  <summary>Quality of Life</summary>
+
+  - Camera mover tool (or drag with middle click)
+  - Center camera on level
+  - Tooltips for all editor buttons and tiles (can be toggled on/off)
+  - Clearly labeled keyboards shortcuts for most editor functionality
+  - UI scaling
+  - Confirmation when closing or deleting level files
+  - Enter and exit play mode with Spacebar and Escape keys
 </details>
 
 ## Planned Features
@@ -60,3 +74,4 @@ Made by Oliver Beebe
 - Moving platforms
 - Color picker for linking groups
 - Option to load levels when one level is completed.
+- Remapping for keyboard shortcuts
