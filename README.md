@@ -41,6 +41,13 @@ Made by Oliver Beebe
 </details>
 
 <details>
+  <summary>Gameplay Features</summary>
+
+  - Basic player with run, jump and walljump
+  - Toggleable player position tracing
+</details>
+
+<details>
   <summary>File Saving</summary>
 
   - Choose a folder to read/write levels from
