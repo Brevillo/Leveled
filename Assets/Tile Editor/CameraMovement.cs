@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.Tilemaps;
 
 public class CameraMovement : MonoBehaviour
@@ -54,8 +55,13 @@ public class CameraMovement : MonoBehaviour
         if (!pointerOverUI)
         {
             bool moverTool = editorState.ActiveTool == ToolType.Mover;
+
+            ButtonControl
+                middle = Mouse.current.middleButton,
+                right = Mouse.current.rightButton,
+                left = Mouse.current.leftButton;
             
-            if (!dragging && (Input.GetMouseButtonDown(2) || (moverTool && Input.GetMouseButtonDown(0))))
+            if (!dragging && (middle.wasPressedThisFrame || (moverTool && (left.wasPressedThisFrame || right.wasPressedThisFrame))))
             {
                 mousePosition = Input.mousePosition;
 
@@ -65,7 +71,7 @@ public class CameraMovement : MonoBehaviour
                 dragging = true;
             }
             
-            if (dragging && (Input.GetMouseButton(2) || (moverTool && Input.GetMouseButton(0))))
+            if (dragging && (middle.isPressed || (moverTool && (left.isPressed || right.isPressed))))
             {
                 Vector2 delta = Input.mousePositionDelta * 4f;
                 transform.position -= mainCamera.ScreenToWorldPoint(delta) - mainCamera.ScreenToWorldPoint(Vector3.zero);
@@ -73,7 +79,7 @@ public class CameraMovement : MonoBehaviour
                 mousePosition += delta;
             }
             
-            if (dragging && (Input.GetMouseButtonUp(2) || (moverTool && Input.GetMouseButtonUp(0))))
+            if (dragging && (middle.wasReleasedThisFrame || (moverTool && (left.wasReleasedThisFrame || right.wasReleasedThisFrame))))
             {
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;

@@ -121,7 +121,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
             
             label.Value.textMesh.text = tileData.linkingGroup;
 
-            Vector3 windowPoint = spaceUtility.WorldToWindow(spaceUtility.CellToWorld(label.Key));
+            Vector3 windowPoint = spaceUtility.WorldToWindow(spaceUtility.CellToWorld(label.Key) + Vector3.down * 0.5f);
             label.Value.transform.position = spaceUtility.GetCanvas(label.Value.transform).pixelRect.size * windowPoint;
         }
     }

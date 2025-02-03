@@ -93,7 +93,7 @@ public class SpaceUtility : MonoBehaviour
     #region To Window
 
     public Vector3 ScreenToWindow(Vector3 position) =>
-        ViewportToWindow(mainCamera.ScreenToViewportPoint(position)); // screen -> viewport -> window
+        new Vector3(position.x / Screen.width, position.y / Screen.height, 0f);
     
     public Vector3 WorldToWindow(Vector3 position) =>
         ViewportToWindow(WorldToViewport(position)); // world -> viewport -> window

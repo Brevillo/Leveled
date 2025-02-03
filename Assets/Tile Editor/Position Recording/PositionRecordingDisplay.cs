@@ -84,6 +84,8 @@ public class PositionRecordingDisplay : MonoBehaviour
 
     private void OnSegmentUpdated(PositionRecording recording, PositionRecording.Segment segment)
     {
+        if (!editorState.ShowPlayerPositionRecording) return;
+        
         var lineSegments = GetLineSegments(recording);
         
         var lineSegment = lineSegments.Find(line => line.segment == segment);
@@ -100,6 +102,8 @@ public class PositionRecordingDisplay : MonoBehaviour
     
     private void OnRecordingRecordingUpdated(PositionRecording recording)
     {
+        if (!editorState.ShowPlayerPositionRecording) return;
+
         var lineSegments = GetLineSegments(recording);
         
         foreach (var line in lineSegments)

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Teleporter RuleTile
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 1716792198540288336, guid: aaecb77e9611446888687e0bca45ec91, type: 3}
+  m_DefaultGameObject: {fileID: 8072397385723173511, guid: 42e4ebe7bdae340ec95255c1c6b30d9a, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules: []

@@ -171,7 +171,11 @@ public class TileEditorState : GameService
 
     public string GetLinkingGroup(GameObject gameObject)
     {
+        if (gameObject == null) return string.Empty;
+        
         var grid = gameObject.GetComponentInParent<Grid>();
+        if (grid == null) return string.Empty;
+        
         Vector3Int position = grid.WorldToCell(gameObject.transform.position);
         
         return tiles.TryGetValue(position, out var tile)

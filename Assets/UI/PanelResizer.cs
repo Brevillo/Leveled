@@ -7,67 +7,120 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 {
     [SerializeField] private RectTransform panel;
     [SerializeField] private RectTransform resizer;
-    [SerializeField] private RectTransform screenRect;
-    [SerializeField] private Camera mainCamera;
+    [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Image background;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color idleColor;
     [SerializeField] private float fadeInDistance;
-    [SerializeField] private float snapWidth;
-
+    [SerializeField] private float defaultSnapWidth;
+    [SerializeField] private float toggleMoveSpeed;
+    [SerializeField] private float cameraAdjustAnchoring;
+    
     private Vector2 dragPositionDelta;
     private bool dragging;
+    private float snapWidth;
 
-    private Vector2 MouseViewport => Input.mousePosition / new Vector2(Screen.width, Screen.height);
+    private float targetWidth;
+    private float widthVelocity;
 
+    private Vector2 ScreenSize => spaceUtility.GetCanvas(resizer).pixelRect.size;
+    
+    private float Width
+    {
+        get => resizer.anchoredPosition.x;
+        set
+        {
+            spaceUtility.Camera.transform.position -=
+                (spaceUtility.CanvasToWorld(resizer.anchoredPosition, resizer) 
+                 - spaceUtility.CanvasToWorld(Vector2.right * value, resizer)) * cameraAdjustAnchoring;
+            
+            // Resize camera rect
+            float resizerPosition = value / ScreenSize.x;
+            spaceUtility.Camera.rect = new(resizerPosition, 0, 1 - resizerPosition, 1);
+            
+            // Move panel
+            resizer.anchoredPosition = Vector2.right * value;
+            
+            // Resize panel
+            Vector2 panelSize = panel.sizeDelta;
+            panelSize.x = value;
+            panel.sizeDelta = panelSize;
+        }
+    }
+
+    private void Awake()
+    {
+        snapWidth = defaultSnapWidth;
+    }
+    
     private void Update()
     {
-        // Resize camera rect
-        Vector2 resizerPosition = resizer.anchoredPosition / screenRect.rect.size;
-        mainCamera.rect = new(resizerPosition.x, 0, 1 - resizerPosition.x, 1);
-        
-        // Resize panel
-        Vector2 panelSize = panel.sizeDelta;
-        panelSize.x = resizer.anchoredPosition.x;
-        panel.sizeDelta = panelSize;
+        Width = Mathf.SmoothDamp(Width, targetWidth, ref widthVelocity, toggleMoveSpeed);
 
         // Set background color
         var rect = resizer.rect;
-        Vector2 mousePosition = MouseViewport * screenRect.rect.size - resizer.anchoredPosition;
-        float distance = mousePosition.x < rect.center.x
-            ? Mathf.InverseLerp(rect.xMin, rect.xMin - fadeInDistance, mousePosition.x)
-            : Mathf.InverseLerp(rect.xMax, rect.xMax + fadeInDistance, mousePosition.x);
+        float mousePosition = spaceUtility.MouseWindow.x * ScreenSize.x - Width;
+        float distance = mousePosition < rect.center.x
+            ? Mathf.InverseLerp(rect.xMin, rect.xMin - fadeInDistance, mousePosition)
+            : Mathf.InverseLerp(rect.xMax, rect.xMax + fadeInDistance, mousePosition);
+        
         background.color = Color.Lerp(selectedColor, idleColor, distance);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        dragPositionDelta = resizer.anchoredPosition - screenRect.rect.size * MouseViewport;
+        dragPositionDelta = resizer.anchoredPosition - ScreenSize * spaceUtility.MouseWindow;
         dragging = true;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        resizer.anchoredPosition =
-            Vector2.right * Mathf.Max(0, (MouseViewport * screenRect.rect.size + dragPositionDelta).x);
+        Width = targetWidth = snapWidth = Mathf.Max(0, (spaceUtility.MouseWindow * ScreenSize + dragPositionDelta).x);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
         if (dragging) return;
-        
-        TogglePanel();
+
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            targetWidth = snapWidth = defaultSnapWidth;
+        }
+        else
+        {
+            TogglePanel();
+        }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         dragging = false;
     }
 
     public void TogglePanel()
     {
-        resizer.anchoredPosition = Vector2.right * (resizer.anchoredPosition.x < snapWidth / 2f
-            ? snapWidth
-            : 0);
+        if (targetWidth > 0)
+        {
+            ClosePanel();
+        }
+        else
+        {
+            OpenPanel();
+        }
+    }
+
+    public void ClosePanel()
+    {
+        if (targetWidth < defaultSnapWidth / 2f)
+        {
+            snapWidth = defaultSnapWidth;
+        }
+
+        targetWidth = 0;
+    }
+
+    public void OpenPanel()
+    {
+        targetWidth = snapWidth;
     }
 }

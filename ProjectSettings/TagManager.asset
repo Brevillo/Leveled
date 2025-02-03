@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Linking Connection
+    uniqueID: 1819676979
+    locked: 0
   - name: Tile Selection
     uniqueID: 3328504437
     locked: 0
