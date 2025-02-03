@@ -27,10 +27,15 @@ public class TileEditorState : GameService
 
     protected override void Initialize()
     {
-        changelog.ChangeEvent += OnChangelogChangeEvent;
+        changelog.ChangeEvent += OnChangeEvent;
     }
 
-    private void OnChangelogChangeEvent(ChangeInfo changeInfo)
+    protected override void InstanceDestroyed()
+    {
+        changelog.ChangeEvent -= OnChangeEvent;
+    }
+
+    private void OnChangeEvent(ChangeInfo changeInfo)
     {
         SendEditorChange(changeInfo, false);
     }

@@ -35,6 +35,7 @@ public class Changelog : GameService
         undoLog.Push(changeInfo);
         redoLog.Clear();
         LogUpdated?.Invoke();
+        ChangeEvent?.Invoke(changeInfo);
     }
 
     public void Undo()

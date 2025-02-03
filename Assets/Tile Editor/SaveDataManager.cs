@@ -10,9 +10,9 @@ using UnityEngine.UI;
 
 public enum AutosaveOptions
 {
-    Periodic = 0,
+    Never = 0,
     EveryChange = 1,
-    Never = 2,
+    Periodic = 2,
 }
 
 public class SaveDataManager : MonoBehaviour
@@ -65,6 +65,11 @@ public class SaveDataManager : MonoBehaviour
         LevelFolderPath = PlayerPrefs.GetString(LastFolderPathPrefKey, "");
         
         changelog.ChangeEvent += OnChangeEvent;
+    }
+
+    private void OnDestroy()
+    {
+        changelog.ChangeEvent -= OnChangeEvent;
     }
 
     private void OnChangeEvent(ChangeInfo changeInfo)
