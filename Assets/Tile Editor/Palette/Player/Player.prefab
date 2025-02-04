@@ -350,7 +350,7 @@ MonoBehaviour:
   jumpGravity: 45
   peakingGravity: 200
   fallGravity: 60
-  maxFallSpeed: 30
+  maxFallSpeed: 25
   coyoteTime: 0.1
   jumpBuffer:
     threshold: 0.1

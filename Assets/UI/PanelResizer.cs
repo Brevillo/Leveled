@@ -15,6 +15,7 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private float defaultSnapWidth;
     [SerializeField] private float toggleMoveSpeed;
     [SerializeField] private float cameraAdjustAnchoring;
+    [SerializeField] private RectTransform screenRect;
     
     private Vector2 dragPositionDelta;
     private bool dragging;
@@ -23,7 +24,7 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private float targetWidth;
     private float widthVelocity;
 
-    private Vector2 ScreenSize => spaceUtility.GetCanvas(resizer).pixelRect.size;
+    private Vector2 ScreenSize => screenRect.rect.size;
     
     private float Width
     {
