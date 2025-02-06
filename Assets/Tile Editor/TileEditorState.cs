@@ -109,19 +109,19 @@ public class TileEditorState : GameService
                 activeTool = toolbarChangeInfo.newValue;
                 break;
 
-            case MultiTileChangeInfo multiTileChangeInfo:
+            case TileChangeInfo tileChangeInfo:
 
-                for (int i = 0; i < multiTileChangeInfo.positions.Length; i++)
+                for (int i = 0; i < tileChangeInfo.positions.Length; i++)
                 {
-                    var tile = multiTileChangeInfo.newTiles[i];
+                    var tile = tileChangeInfo.newTiles[i];
 
                     if (tile.IsEmpty)
                     {
-                        tiles.Remove(multiTileChangeInfo.positions[i]);
+                        tiles.Remove(tileChangeInfo.positions[i]);
                     }
                     else
                     {
-                        tiles[multiTileChangeInfo.positions[i]] = tile;
+                        tiles[tileChangeInfo.positions[i]] = tile;
                     }
                 }
 
@@ -190,8 +190,8 @@ public class TileEditorState : GameService
 
     public TileData GetTile(Vector3Int position) => tiles.GetValueOrDefault(position);
 
-    public void SetTiles(Vector3Int[] positions, TileData[] tiles) =>
-        SendEditorChange(new MultiTileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles));
+    public void SetTiles(Vector3Int[] positions, TileData[] tiles, string description) =>
+        SendEditorChange(new TileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles, description));
 
     public GameTile PrimaryTile
     {
@@ -256,7 +256,7 @@ public class TileEditorState : GameService
         // Clear Tiles
         var nullTiles = new TileData[tiles.Count];
         
-        SetTiles(tiles.Keys.ToArray(), nullTiles);
+        SetTiles(tiles.Keys.ToArray(), nullTiles, "Cleared all tiles");
         
         // Reset editor state
         changelog.ClearChangelog();
@@ -268,12 +268,15 @@ public class TileEditorState : GameService
         // Clear current level
         var nullTiles = new TileData[tiles.Count];
         
-        SetTiles(tiles.Keys.ToArray(), nullTiles);
+        SetTiles(tiles.Keys.ToArray(), nullTiles, "Cleared all tiles");
         
         // Fill new level
-        SetTiles(levelData.positions, Enumerable.Range(0, levelData.positions.Length)
-            .Select(i => new TileData(palette.GetTile(levelData.gameTileIds[i]), levelData.linkingGroups[i]))
-            .ToArray());
+        SetTiles(
+            levelData.positions,
+            Enumerable.Range(0, levelData.positions.Length)
+                .Select(i => new TileData(palette.GetTile(levelData.gameTileIds[i]), levelData.linkingGroups[i]))
+                .ToArray(),
+            "Filled new level");
         
         // Clear changelog
         changelog.ClearChangelog();

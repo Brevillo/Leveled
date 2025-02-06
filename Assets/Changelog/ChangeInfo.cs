@@ -40,21 +40,21 @@ public class ChangeInfoBundle : ChangeInfo
         new ChangeInfoBundle(description, changeInfos.Reverse().Select(change => change.Reverted).ToArray());
 }
 
-public class MultiTileChangeInfo : ChangeInfo
+public class TileChangeInfo : ChangeInfo
 {
     public readonly Vector3Int[] positions;
     public readonly TileData[] previousTiles;
     public readonly TileData[] newTiles;
 
-    public MultiTileChangeInfo(Vector3Int[] positions, TileData[] previousTiles, TileData[] newTiles) : base(
-        "Set multiple tiles.")
+    public TileChangeInfo(Vector3Int[] positions, TileData[] previousTiles, TileData[] newTiles, string description) 
+        : base(description)
     {
         this.positions = positions;
         this.previousTiles = previousTiles;
         this.newTiles = newTiles;
     }
 
-    public override ChangeInfo Reverted => new MultiTileChangeInfo(positions, newTiles, previousTiles);
+    public override ChangeInfo Reverted => new TileChangeInfo(positions, newTiles, previousTiles, description);
 }
 
 public class ToolbarChangeInfo : ValueChangeInfo<ToolType>

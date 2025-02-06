@@ -7,12 +7,13 @@ using UnityEngine;
 
 public class LinkingGroupLabelsManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGameObjectPool popupPool;
+    [SerializeField] private GameObjectPool popupPool;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Transform labelsParent;
 
-    private Dictionary<Vector3Int, Label> labels;
+    private readonly HashSet<Vector3Int> linkableTiles = new();
+    private readonly Dictionary<Vector3Int, Label> labels = new();
 
     private readonly struct Label
     {
@@ -20,23 +21,20 @@ public class LinkingGroupLabelsManager : MonoBehaviour
         public readonly TextMeshProUGUI textMesh;
         public readonly RectTransform transform;
 
-        public Label(Poolable poolable)
+        public Label(LinkingGroupLabelsManager context)
         {
-            this.poolable = poolable;
+            this.poolable = context.popupPool.Retrieve();
             textMesh = poolable.GetComponentInChildren<TextMeshProUGUI>();
             transform = poolable.transform as RectTransform;
+            transform.SetParent(context.labelsParent);
         }
-    }
-    
-    private void Awake()
-    {
-        labels = new();
     }
 
     private void Start()
     {
+        linkableTiles.Clear();
+        labels.Clear();
         popupPool.Clear();
-        popupPool.SetParent(labelsParent);
     }
 
     private void OnEnable()
@@ -53,68 +51,58 @@ public class LinkingGroupLabelsManager : MonoBehaviour
     {
         switch (changeInfo)
         {
-            case ShowLinkingGroupsChangeInfo showLinkingGroupsChangeInfo:
-
-                if (showLinkingGroupsChangeInfo.newValue && !showLinkingGroupsChangeInfo.previousValue)
-                {
-                    CreateLabels();
-                }
-                else
-                {
-                    ClearLabels();
-                }
+            case TileChangeInfo tileChangeInfo:
                 
-                break;
-                
-            case MultiTileChangeInfo multiTileChangeInfo:
-                
-                if (!editorState.ShowLinkingGroups) break;
-
-                for (int i = 0; i < multiTileChangeInfo.positions.Length; i++)
+                for (int i = 0; i < tileChangeInfo.positions.Length; i++)
                 {
-                    Vector3Int position = multiTileChangeInfo.positions[i];
-                    var newTile = multiTileChangeInfo.newTiles[i];
+                    Vector3Int position = tileChangeInfo.positions[i];
+                    var newTile = tileChangeInfo.newTiles[i];
                     
                     // remove empty tiles
-                    if (newTile.IsEmpty && labels.TryGetValue(position, out var label))
+                    if (newTile.IsEmpty)
                     {
-                        label.poolable.Return();
-                        labels.Remove(position);
+                        linkableTiles.Remove(position);
                     }
                     
-                    // create filled tiles
-                    else if (newTile.Linkable && !labels.ContainsKey(position))
+                    // add linkable tiles
+                    else if (newTile.Linkable)
                     {
-                        labels.Add(position, new(popupPool.Retrieve()));
+                        linkableTiles.Add(position);
                     }
                 }
 
                 break;
         }
-    }
-
-    private void CreateLabels()
-    {
-        var tiles = editorState.LinkedTiles;
-
-        foreach (var (position, _) in tiles)
-        {
-            labels.Add(position, new(popupPool.Retrieve()));
-        }
-    }
-
-    private void ClearLabels()
-    {
-        foreach (var label in labels.Values)
-        {
-            label.poolable.Return();
-        }
-        
-        labels.Clear();
     }
 
     private void LateUpdate()
     {
+        var windowRect = new Rect
+        {
+            size = Vector2.one * 1.1f,
+            center = Vector2.one / 2f,
+        };
+        
+        foreach (var position in linkableTiles)
+        {
+            if (!labels.ContainsKey(position)
+                && windowRect.Contains((Vector2)spaceUtility.CellToWindow(position)))
+            {
+                labels.Add(position, new(this));
+            }
+        }
+
+        foreach (var position in labels.Keys.ToArray())
+        {
+            if (!windowRect.Contains(spaceUtility.CellToWindow(position)))
+            {
+                labels[position].poolable.Return();
+                labels.Remove(position);
+            }
+        }
+
+        bool showLinkingGroups = editorState.ShowLinkingGroups;
+        
         foreach (var label in labels)
         {
             var tileData = editorState.GetTile(label.Key);
@@ -123,6 +111,8 @@ public class LinkingGroupLabelsManager : MonoBehaviour
 
             Vector3 windowPoint = spaceUtility.WorldToWindow(spaceUtility.CellToWorld(label.Key) + Vector3.down * 0.5f);
             label.Value.transform.position = spaceUtility.GetCanvas(label.Value.transform).pixelRect.size * windowPoint;
+            
+            label.Value.transform.gameObject.SetActive(showLinkingGroups);
         }
     }
 }

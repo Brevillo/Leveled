@@ -123,6 +123,9 @@ public class SpaceUtility : MonoBehaviour
 
     public Vector3Int WorldToCell(Vector3 position) =>
         grid.WorldToCell(position);
+    
+    public Vector3 SnapWorldToCell(Vector3 position) =>
+        grid.CellToWorld(grid.WorldToCell(position));
 
     public Vector3Int ViewportToCell(Vector3 position) =>
         WorldToCell(ViewportToWorld(position)); // viewport -> world -> cell
@@ -193,8 +196,9 @@ public class SpaceUtility : MonoBehaviour
         {
             return canvas;
         }
-        
-        canvas = rectTransform.GetComponentInParent<Canvas>().rootCanvas;
+
+        var parentCanvas = rectTransform.GetComponentInParent<Canvas>();
+        canvas = parentCanvas.rootCanvas;
         canvases.Add(rectTransform, canvas);
 
         return canvas;

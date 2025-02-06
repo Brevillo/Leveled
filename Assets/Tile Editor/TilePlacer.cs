@@ -4,12 +4,14 @@ using System.Linq;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class TilePlacer : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private Transform tilemapsParent;
-    [SerializeField] private SpriteRenderer tilemapBoundsOutline;
+    [SerializeField] private Image tilemapBoundsOutline;
+    [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private float wallThickness;
     [SerializeField] private float wallHeightBuffer;
     [SerializeField] private BoxCollider2D leftWall;
@@ -35,6 +37,14 @@ public class TilePlacer : MonoBehaviour
     private void OnDisable()
     {
         editorState.EditorChanged -= OnEditorChanged;
+    }
+
+    private void Update()
+    {
+        var outlineTransform = tilemapBoundsOutline.rectTransform;
+        outlineTransform.position = spaceUtility.WorldToCanvas(bounds.center, outlineTransform);
+        outlineTransform.sizeDelta = spaceUtility.WorldToCanvas(bounds.max, outlineTransform) -
+                                     spaceUtility.WorldToCanvas(bounds.min, outlineTransform);
     }
 
     public void PlaceTile(Vector3Int position, TileData tile)
@@ -94,9 +104,9 @@ public class TilePlacer : MonoBehaviour
     {
         switch (changeInfo)
         {
-            case MultiTileChangeInfo multiTileChangeInfo:
+            case TileChangeInfo tileChangeInfo:
                 
-                PlaceTiles(multiTileChangeInfo.positions, multiTileChangeInfo.newTiles);
+                PlaceTiles(tileChangeInfo.positions, tileChangeInfo.newTiles);
                 
                 CompressBounds();
 
@@ -131,9 +141,6 @@ public class TilePlacer : MonoBehaviour
             
             bounds.Encapsulate(WorldBounds(tilemap));
         }
-
-        tilemapBoundsOutline.transform.position = bounds.center;
-        tilemapBoundsOutline.size = bounds.size;
 
         Vector2 wallSize = new(wallThickness, bounds.size.y + wallHeightBuffer); 
         

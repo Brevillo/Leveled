@@ -11,53 +11,24 @@ public class Teleporter : MonoBehaviour
     private Teleporter connection;
     private string linkingGroup;
     private bool disable;
+    private ChangeInfo lastChangeInfo;
     
     private static readonly List<Teleporter> teleporters = new();
-    private static event Action ConnectionsRecalculated;
     
-    private void OnConnectionsRecalculated()
-    {
-        if (connection != null && editorState.ShowLinkingGroups)
-        {
-            Vector2 self = transform.position + Vector3.up * 0.5f;
-            Vector2 other = connection.transform.position + Vector3.down * 0.5f;
-            float distance = Vector2.Distance(self, other);
-            other = self + (other - self) / distance * (distance - 0.5f);
-            
-            arrow.size = new(Vector3.Distance(other, self) / arrow.transform.localScale.x, 1);
-            arrow.transform.SetPositionAndRotation(
-                (self + other) / 2f,
-                Quaternion.FromToRotation(Vector2.right, other - self));
-            
-            arrow.gameObject.SetActive(true);
-        }
-        else
-        {
-            arrow.gameObject.SetActive(false);
-        }
-    }
-
     private void OnEnable()
     {
         editorState.EditorChanged += OnEditorChanged;
-        ConnectionsRecalculated += OnConnectionsRecalculated;
         
         teleporters.Add(this);
-        RecalculateAllConnections();
+        RecalculateAllConnections(editorState);
     }
     
     private void OnDisable()
     {
         editorState.EditorChanged -= OnEditorChanged;
-        ConnectionsRecalculated -= OnConnectionsRecalculated;
         
         teleporters.Remove(this);
-        RecalculateAllConnections();
-    }
-
-    private void Start()
-    {
-        RecalculateAllConnections();
+        RecalculateAllConnections(editorState);
     }
 
     private void OnEditorChanged(ChangeInfo changeInfo)
@@ -67,8 +38,17 @@ public class Teleporter : MonoBehaviour
             case ShowLinkingGroupsChangeInfo showLinkingGroupsChangeInfo:
                 
                 arrow.gameObject.SetActive(showLinkingGroupsChangeInfo.newValue);
-                RecalculateAllConnections();
+                RecalculateAllConnections(editorState);
                 
+                break;
+            
+            case TileChangeInfo:
+
+                if (changeInfo != lastChangeInfo)
+                {
+                    lastChangeInfo = changeInfo;
+                    RecalculateAllConnections(editorState);
+                }
                 break;
         }
     }
@@ -90,7 +70,7 @@ public class Teleporter : MonoBehaviour
         }
     }
 
-    private void RecalculateAllConnections()
+    private static void RecalculateAllConnections(TileEditorState editorState)
     {
         foreach (var teleporter in teleporters)
         {
@@ -103,8 +83,33 @@ public class Teleporter : MonoBehaviour
                 .Where(teleporter => teleporter.linkingGroup == self.linkingGroup && teleporter != self)
                 .OrderBy(teleporter => Vector3.Distance(teleporter.transform.position, self.transform.position))
                 .FirstOrDefault();
+            
+            self.UpdateConnectionArrow();
         }
-        
-        ConnectionsRecalculated?.Invoke();
+    }    
+    
+    private void UpdateConnectionArrow()
+    {
+        if (connection != null && editorState.ShowLinkingGroups)
+        {
+            Vector2 self = transform.position + Vector3.up * 0.5f;
+            Vector2 other = connection.transform.position + Vector3.down * 0.5f;
+            float distance = Vector2.Distance(self, other);
+            
+            other = distance == 0
+                ? other
+                : self + (other - self) / distance * (distance - 0.5f);
+            
+            arrow.size = new(Vector3.Distance(other, self) / arrow.transform.localScale.x, 1);
+            arrow.transform.SetPositionAndRotation(
+                (self + other) / 2f,
+                Quaternion.FromToRotation(Vector2.right, other - self));
+            
+            arrow.gameObject.SetActive(true);
+        }
+        else
+        {
+            arrow.gameObject.SetActive(false);
+        }
     }
 }

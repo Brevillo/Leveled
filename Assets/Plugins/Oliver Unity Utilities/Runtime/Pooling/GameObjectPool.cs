@@ -5,13 +5,18 @@ using UnityEngine;
 namespace OliverBeebe.UnityUtilities.Runtime.Pooling
 {
     [CreateAssetMenu(menuName = "Oliver Utilities/Pooling/GameObject Pool")]
-    public class GameObjectPool : ScriptableObjectPool<Poolable>
+    public class GameObjectPool : ScriptableObject
     {
         [SerializeField] private Poolable prefab;
         [SerializeField] private bool setActiveOnRetrieval;
 
         private static Transform allParent;
         private Transform heirarchyParent;
+
+        private Transform currentParent;
+
+        private ObjectPool<Poolable> pool;
+        private ObjectPool<Poolable> Pool => pool ??= new();
 
         protected virtual Transform SpawnHeirarchyParent() => new GameObject().transform;
 
@@ -29,17 +34,17 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
             heirarchyParent.name = name;
         }
 
-        protected override Poolable Create()
+        private Poolable Create()
         {
             if (heirarchyParent == null)
             {
                 Initialize();
             }
 
-            return Instantiate(prefab, heirarchyParent);
+            return Instantiate(prefab, currentParent);
         }
 
-        protected override void Destroy(Poolable poolable)
+        private void Destroy(Poolable poolable)
         {
             if (poolable != null && poolable.gameObject != null)
             {
@@ -47,9 +52,18 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
             }
         }
 
-        public override Poolable Retrieve()
+        public void Generate(int count) => Generate(count, heirarchyParent);
+        public void Generate(int count, Transform parent)
         {
-            var poolable = base.Retrieve();
+            currentParent = parent;
+            Pool.Generate(count, Create);
+        }
+
+        public Poolable Retrieve() => Retrieve(heirarchyParent);
+        public Poolable Retrieve(Transform parent)
+        {
+            currentParent = parent;
+            var poolable = Pool.Retrieve(Create);
 
             poolable.Retrieve();
             poolable.Returned += OnReturned;
@@ -62,6 +76,8 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
             return poolable;
         }
 
+        public void RetrieveAll() => Pool.RetrieveAll();
+        
         private void OnReturned(Poolable poolable)
         {
             poolable.Returned -= OnReturned;
@@ -71,20 +87,22 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
                 poolable.gameObject.SetActive(false);
             }
 
-            base.Return(poolable);
+            Pool.Return(poolable);
         }
         
-        public override void Return(Poolable poolable)
+        public void Return(Poolable poolable)
         {
             poolable.Return();
         }
 
-        public override void ReturnAll()
+        public void ReturnAll()
         {
-            foreach (var poolable in ActiveObjects)
+            foreach (var poolable in Pool.ActiveObjects)
             {
                 poolable.Return();
             }
         }
+
+        public void Clear() => Pool.Clear(Destroy);
     }
 }

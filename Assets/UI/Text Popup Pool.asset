@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ce91cf1a5b24ff59cb22fdb24a2646, type: 3}
+  m_Script: {fileID: 11500000, guid: a79cad0131bb6468ea1f33b29f785c1c, type: 3}
   m_Name: Text Popup Pool
   m_EditorClassIdentifier: 
   prefab: {fileID: 9022218772394118738, guid: d4d7e7e43cc6d43d0a7c2645236c57ae, type: 3}

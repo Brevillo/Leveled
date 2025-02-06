@@ -2,21 +2,23 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ToolbarActionsManager : MonoBehaviour
 {
     [Header("Scene References")]
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private LinkingGroupSetter linkingGroupSetter;
-    [SerializeField] private SpriteRenderer selectionOutline;
-    [SerializeField] private SpriteRenderer hoverSelection;
+    [SerializeField] private Image selectionOutline;
+    [SerializeField] private Image hoverSelection;
     [SerializeField] private float hoverSelectionSpeed;
     [SerializeField] private TilePlacer tilePlacer;
     [Header("Input")]
     [SerializeField] private InputActionReference primaryToolInput;
     [SerializeField] private InputActionReference secondaryToolInput;
+    [SerializeField] private InputActionReference copyInput;
+    [SerializeField] private InputActionReference pasteInput;
     [Header("References")]
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private GameStateManager gameStateManager;
@@ -25,6 +27,10 @@ public class ToolbarActionsManager : MonoBehaviour
     private BoundsInt selection;
     private State state;
     private ToolSide toolSide;
+    
+    private bool selectionCopied;
+    private Vector3Int clipboardPosition;
+    private List<(Vector3Int position, TileData tileData)> clipboard = new();
 
     private Vector3 hoverSelectionPositionVelocity;
     private Vector2 hoverSelectionSizeVelocity;
@@ -59,6 +65,9 @@ public class ToolbarActionsManager : MonoBehaviour
 
         secondaryToolInput.action.performed += SecondaryToolDown;
         secondaryToolInput.action.canceled += SecondaryToolUp;
+
+        copyInput.action.performed += Copy;
+        pasteInput.action.performed += Paste;
     }
 
     private void OnDisable()
@@ -71,6 +80,9 @@ public class ToolbarActionsManager : MonoBehaviour
 
         secondaryToolInput.action.performed -= SecondaryToolDown;
         secondaryToolInput.action.canceled -= SecondaryToolUp;
+
+        copyInput.action.performed -= Copy;
+        pasteInput.action.performed -= Paste;
     }
 
     private void OnGameStateChanged(GameState gameState)
@@ -90,6 +102,7 @@ public class ToolbarActionsManager : MonoBehaviour
                     && toolbarChangeInfo.newValue != ToolType.Selection)
                 {
                     state = State.None;
+                    selectionCopied = false;
                 }
 
                 if (toolbarChangeInfo.newValue is ToolType.Brush or ToolType.RectBrush)
@@ -99,7 +112,7 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 break;
             
-            case PaletteChangeInfo paletteChangeInfo:
+            case PaletteChangeInfo:
 
                 editorState.ActiveTool = recentBrushType;
                 
@@ -137,6 +150,7 @@ public class ToolbarActionsManager : MonoBehaviour
             case ToolType.Selection:
 
                 dragStart = spaceUtility.MouseCell;
+                selectionCopied = false;
 
                 switch (state)
                 {
@@ -216,12 +230,6 @@ public class ToolbarActionsManager : MonoBehaviour
                 brushedTiles.Add(spaceUtility.MouseCell);
                
                 break;
-                
-            case ToolType.Picker:
-               
-                editorState.PrimaryTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
-               
-                break;
         }
     }
 
@@ -241,12 +249,6 @@ public class ToolbarActionsManager : MonoBehaviour
                 tilePlacer.PlaceTile(spaceUtility.MouseCell, TileData.Empty);
                 brushedTiles.Add(spaceUtility.MouseCell);
                 
-                break;
-            
-            case ToolType.Picker:
-               
-                editorState.SecondaryTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
-               
                 break;
         }
     }
@@ -291,7 +293,9 @@ public class ToolbarActionsManager : MonoBehaviour
                 break;
                 
             case ToolType.Picker:
-                editorState.ActiveTool = recentBrushType;
+                
+                editorState.PrimaryTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
+                
                 break;
                 
             case ToolType.Selection:
@@ -331,8 +335,8 @@ public class ToolbarActionsManager : MonoBehaviour
 
                         editorState.StartChangeBundle("Moved tile selection");
 
-                        editorState.SetTiles(originPositions.ToArray(), nullTiles);
-                        editorState.SetTiles(destinationPositions, originTiles);
+                        editorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection");
+                        editorState.SetTiles(destinationPositions, originTiles, "Filled new selection");
 
                         editorState.EndChangeBundle();
 
@@ -370,7 +374,7 @@ public class ToolbarActionsManager : MonoBehaviour
                             }
                         }
                         
-                        editorState.SetTiles(modifiedPositions.ToArray(), modifiedTiles.ToArray());
+                        editorState.SetTiles(modifiedPositions.ToArray(), modifiedTiles.ToArray(), "Changed tile linking");
 
                         state = State.None;
                     });
@@ -424,12 +428,55 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 break;
             
+            case ToolType.Picker:
+
+                editorState.SecondaryTile = editorState.GetTile(spaceUtility.MouseCell).gameTile;
+                
+                break;
+            
             default:
                 state = State.None;
+                selectionCopied = false;
                 break;
         }
 
         toolSide = ToolSide.None;
+    }
+
+    private void Copy(InputAction.CallbackContext context)
+    {
+        if (editorState.ActiveTool != ToolType.Selection || state != State.Selected) return;
+
+        selectionCopied = true;
+        clipboardPosition = selection.position;
+        
+        clipboard.Clear();
+
+        foreach (var position in selection.allPositionsWithin)
+        {
+            clipboard.Add((position, editorState.GetTile(position)));
+        }
+    }
+    
+    private void Paste(InputAction.CallbackContext context)
+    {
+        if (!selectionCopied) return;
+        
+        Vector3 selectionCenterOffset = spaceUtility.GetBoundsIntCenterWorld(selection);
+        Vector3Int selectionCenter = spaceUtility.WorldToCell(
+            spaceUtility.SnapWorldToCell((Vector2)(spaceUtility.MouseWorld - selectionCenterOffset) + Vector2.one / 2f) +
+            selectionCenterOffset - (Vector3)selection.size / 2f);
+        
+        Vector3Int delta = selectionCenter - clipboardPosition;
+
+        editorState.SetTiles(
+            clipboard
+                .Select(tile => tile.position + delta)
+                .ToArray(),
+            clipboard
+                .Select(tile => tile.tileData)
+                .ToArray(),
+            "Pasted tiles");
     }
     
     #endregion
@@ -448,32 +495,50 @@ public class ToolbarActionsManager : MonoBehaviour
         }
         
         // Selection outline
-        selectionOutline.size = (Vector2Int)selection.size;
-        selectionOutline.transform.position =
-            spaceUtility.GetBoundsIntCenterWorld(selection);// - new Vector3(0.5f, 0.5f, 0);
+        var selectionOutlineTransform = selectionOutline.rectTransform;
+        Vector2 selectionOutlineSize = spaceUtility.CellToCanvas(selection.max, selectionOutlineTransform) -
+                                       spaceUtility.CellToCanvas(selection.min, selectionOutlineTransform);
+        selectionOutlineTransform.sizeDelta = selectionOutlineSize;
+        selectionOutlineTransform.position = spaceUtility.WorldToCanvas(spaceUtility.GetBoundsIntCenterWorld(selection),
+            selectionOutlineTransform);
         
         selectionOutline.gameObject.SetActive(state is State.Selected or State.MovingSelection);
 
         // Hover Selection
         Vector3Int mouseCell = spaceUtility.MouseCell;
-        Vector3 mouseWorld = spaceUtility.MouseCellCenterWorld;
+        Vector3 mouseCellWorld = spaceUtility.MouseCellCenterWorld;
+        Vector3 selectionCenterOffset = spaceUtility.GetBoundsIntCenterWorld(selection);
 
-        (Vector3 hoverSelectionPosition, Vector2 hoverSelectionSize) = state switch
+        (Vector3 hoverSelectionCenter, Vector2 hoverSelectionSize) = state switch
         {
             State.DrawingRect or State.Selecting => (
-                position: (mouseWorld + spaceUtility.CellToWorld(dragStart)) / 2f,
-                size: new Vector2(
+                (mouseCellWorld + spaceUtility.CellToWorld(dragStart)) / 2f,
+                new Vector2(
                     Mathf.Abs(mouseCell.x - dragStart.x) + 1,
                     Mathf.Abs(mouseCell.y - dragStart.y) + 1)),
 
             State.MovingSelection => (
-                position: selection.center + mouseWorld - spaceUtility.CellToWorld(dragStart),
-                size: (Vector2)(Vector3)selection.size),
+                selection.center + mouseCellWorld - spaceUtility.CellToWorld(dragStart),
+                (Vector2)(Vector3)selection.size),
+            
+            State.Selected => selectionCopied 
+                ? (spaceUtility.SnapWorldToCell((Vector2)(spaceUtility.MouseWorld - selectionCenterOffset) + Vector2.one / 2f) + selectionCenterOffset, 
+                    (Vector3)selection.size)
+                : (mouseCellWorld, 
+                    Vector2.one),
             
             _ => (
-                position: mouseWorld,
-                size: Vector2.one),
+                mouseCellWorld,
+                Vector2.one),
         };
+
+        var hoverSelectionTransform = hoverSelection.rectTransform;
+        hoverSelectionSize =
+            spaceUtility.WorldToCanvas((Vector2)hoverSelectionCenter + hoverSelectionSize / 2f,
+                hoverSelectionTransform) -
+            spaceUtility.WorldToCanvas((Vector2)hoverSelectionCenter - hoverSelectionSize / 2f,
+                hoverSelectionTransform);
+        hoverSelectionCenter = spaceUtility.WorldToCanvas(hoverSelectionCenter, hoverSelectionTransform);
         
         bool hoverSelectionActive =
             Cursor.visible &&
@@ -482,14 +547,15 @@ public class ToolbarActionsManager : MonoBehaviour
         
         hoverSelection.gameObject.SetActive(hoverSelectionActive);
 
-        hoverSelection.size = hoverSelectionActive
-            ? Vector2.SmoothDamp(hoverSelection.size, hoverSelectionSize, ref hoverSelectionSizeVelocity, hoverSelectionSpeed)
+        hoverSelectionTransform.sizeDelta = hoverSelectionActive
+            ? Vector2.SmoothDamp(hoverSelectionTransform.sizeDelta, hoverSelectionSize, ref hoverSelectionSizeVelocity,
+                hoverSelectionSpeed)
             : hoverSelectionSize;
 
-        hoverSelection.transform.localPosition = hoverSelectionActive
-            ? Vector3.SmoothDamp(hoverSelection.transform.localPosition, hoverSelectionPosition, ref hoverSelectionPositionVelocity,
-                hoverSelectionSpeed)
-            : hoverSelectionPosition;
+        hoverSelection.transform.position = hoverSelectionActive
+            ? Vector3.SmoothDamp(hoverSelection.transform.position, hoverSelectionCenter,
+                ref hoverSelectionPositionVelocity, hoverSelectionSpeed)
+            : hoverSelectionCenter;
     }
 
     private BoundsInt CalculateSelection()
@@ -506,7 +572,12 @@ public class ToolbarActionsManager : MonoBehaviour
         var tiles = new TileData[brushedTiles.Count];
         Array.Fill(tiles, tileData);
         
-        editorState.SetTiles(brushedTiles.ToArray(), tiles);
+        editorState.SetTiles(brushedTiles.ToArray(), tiles, editorState.ActiveTool switch
+        {
+            ToolType.Brush => "Brushed tiles",
+            ToolType.Eraser => "Erased tiles",
+            _ => throw new ArgumentException(),
+        });
         
         brushedTiles.Clear();
     }
@@ -534,12 +605,12 @@ public class ToolbarActionsManager : MonoBehaviour
                 var linkedTiles = new TileData[positions.Length];
                 Array.Fill(linkedTiles, new(tile, linkingGroup));
                 
-                editorState.SetTiles(positions, linkedTiles);
+                editorState.SetTiles(positions, linkedTiles, "Brushed tile rectangle");
             });
         }
         else
         {
-            editorState.SetTiles(positions, tiles);
+            editorState.SetTiles(positions, tiles, "Brushed tile rectangle");
         }
     }
 

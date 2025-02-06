@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace OliverBeebe.UnityUtilities.Runtime.Pooling
 {
@@ -15,9 +16,9 @@ namespace OliverBeebe.UnityUtilities.Runtime.Pooling
 
         protected virtual void Destroy(T obj) { }
 
-        public void Generate(int count) => Pool.Generate(count, Create);
+        public void Generate(int count, Func<T> create) => Pool.Generate(count, create);
         
-        public virtual T Retrieve() => Pool.Retrieve(Create);
+        protected T Retrieve(Func<T> create) => Pool.Retrieve(create);
 
         public virtual T[] RetrieveAll() => Pool.RetrieveAll();
 
