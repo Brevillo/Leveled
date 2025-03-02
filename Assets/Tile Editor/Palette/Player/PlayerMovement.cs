@@ -30,6 +30,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walljumpNoTurnDuration;
     [SerializeField] private CollisionAggregate2D leftWall;
     [SerializeField] private CollisionAggregate2D rightWall;
+
+    [Header("Wall sliding")] 
+    [SerializeField] private float startWallSlideSpeed;
+    [SerializeField] private float maxWallSlideSpeed;
+    [SerializeField] private float wallSlideAccel;
     
     [Header("References")] 
     [SerializeField] private new Rigidbody2D rigidbody;
@@ -43,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     private Jumping jumping;
     private Falling falling;
     private Walljumping walljumping;
+    private Wallsliding wallsliding;
     
     private StateMachine stateMachine;
 
@@ -50,7 +56,11 @@ public class PlayerMovement : MonoBehaviour
         => rightWall.Touching ? 1
         : leftWall.Touching ? -1
         : 0;
+    
+    private Vector2 MoveInput => moveInput.action.ReadValue<Vector2>();
 
+    private static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
+    
     public void Respawn()
     {
         positionRecorder.AddPosition();
@@ -110,19 +120,23 @@ public class PlayerMovement : MonoBehaviour
         jumping = new(this);
         falling = new(this);
         walljumping = new(this);
+        wallsliding = new(this);
 
         TransitionDelegate
 
             canGround = () => ground.Touching,
-            
+
             canJump = () => ground.Touching && jumpBuffer,
             canEndJump = () => rigidbody.linearVelocityY <= 0,
-            canCoyoteJump = () => stateMachine.previousState == grounded 
+            canCoyoteJump = () => stateMachine.previousState == grounded
                                   && stateMachine.stateDuration < coyoteTime && jumpBuffer,
-            
+
             canWalljump = () => WallDirection != 0 && jumpBuffer,
-            canEndWalljump = () => stateMachine.stateDuration > walljumpNoTurnDuration 
+            canEndWalljump = () => stateMachine.stateDuration > walljumpNoTurnDuration
                                    || rigidbody.linearVelocityY <= 0,
+
+            canWallSlide = () => WallDirection != 0 && WallDirection == MoveInput.x && !ground.Touching,
+            canEndWallSlide = () => WallDirection == 0 || Sign0(MoveInput.x) == -WallDirection, 
             
             canFall = () => !ground.Touching;
 
@@ -149,12 +163,20 @@ public class PlayerMovement : MonoBehaviour
                     new(jumping, canCoyoteJump),
                     new(grounded, canGround),
                     toWalljump,
+                    new(wallsliding, canWallSlide),
                 }},
                 
                 { walljumping, new()
                 {
                     new(grounded, canGround),
                     new(falling, canEndWalljump),
+                }},
+                
+                { wallsliding, new()
+                {
+                    new(falling, canEndWallSlide),
+                    toWalljump,
+                    new(grounded, canGround),
                 }},
             });
     }
@@ -173,12 +195,11 @@ public class PlayerMovement : MonoBehaviour
             set => context.rigidbody.linearVelocityY = value;
         }
 
-        protected float InputX => context.moveInput.action.ReadValue<Vector2>().x;
         
         public State(PlayerMovement context) : base(context) { }
 
         protected void Run(float accel, float deccel) =>
-            Run(accel, deccel, InputX);
+            Run(accel, deccel, context.MoveInput.x);
 
         protected void Run(float accel, float deccel, float input) =>
             VelocityX = Mathf.MoveTowards(VelocityX, input * context.runSpeed,
@@ -187,7 +208,6 @@ public class PlayerMovement : MonoBehaviour
         protected void Fall(float gravity) => 
             VelocityY = Mathf.MoveTowards(VelocityY, -context.maxFallSpeed, gravity * Time.deltaTime);
 
-        protected static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
     }
     
     private class Grounded : State
@@ -262,7 +282,7 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Update();
 
-            float input = InputX;
+            float input = context.MoveInput.x;
             
             if (Sign0(input) == context.WallDirection)
             {
@@ -276,6 +296,26 @@ public class PlayerMovement : MonoBehaviour
                 : context.peakingGravity;
             
             Fall(gravity);
+        }
+    }
+    
+    private class Wallsliding : State
+    {
+        public Wallsliding(PlayerMovement context) : base(context) { }
+
+        public override void Enter()
+        {
+            context.rigidbody.linearVelocityY = Mathf.Max(context.rigidbody.linearVelocityY, -context.startWallSlideSpeed);
+            
+            base.Enter();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            context.rigidbody.linearVelocityY = Mathf.MoveTowards(context.rigidbody.linearVelocityY,
+                -context.maxWallSlideSpeed, context.wallSlideAccel * Time.deltaTime);
         }
     }
     

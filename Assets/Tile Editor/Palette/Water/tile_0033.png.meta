@@ -130,10 +130,10 @@ TextureImporter:
         - {x: -9, y: -9}
         - {x: 9, y: -9}
       physicsShape:
-      - - {x: -7, y: -7}
-        - {x: 7, y: -7}
-        - {x: 7, y: 7}
-        - {x: -7, y: 7}
+      - - {x: 9, y: 9}
+        - {x: -9, y: 9}
+        - {x: -9, y: -9}
+        - {x: 9, y: -9}
       tessellationDetail: 0
       bones: []
       spriteID: c8fb4879545e0f990800000000000000
