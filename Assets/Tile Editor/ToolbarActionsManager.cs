@@ -27,6 +27,8 @@ public class ToolbarActionsManager : MonoBehaviour
     private BoundsInt selection;
     private State state;
     private ToolSide toolSide;
+
+    private bool inverseBrushMode;
     
     private bool selectionCopied;
     private Vector3Int clipboardPosition;
@@ -38,6 +40,13 @@ public class ToolbarActionsManager : MonoBehaviour
     private ToolType recentBrushType = ToolType.Brush;
     
     private List<Vector3Int> brushedTiles = new();
+
+    private GameTile DrawingTile => inverseBrushMode ? null : toolSide switch
+    {
+        ToolSide.Primary => editorState.PrimaryTile,
+        ToolSide.Secondary => editorState.SecondaryTile,
+        _ => null,
+    };
     
     private enum State
     {
@@ -137,6 +146,8 @@ public class ToolbarActionsManager : MonoBehaviour
             case ToolType.Eraser:
                 
                 brushedTiles.Clear();
+
+                inverseBrushMode = editorState.GetTile(spaceUtility.MouseCell).gameTile == editorState.PrimaryTile;
                 
                 break;
             
@@ -202,6 +213,8 @@ public class ToolbarActionsManager : MonoBehaviour
 
                 brushedTiles.Clear();
                 
+                inverseBrushMode = editorState.GetTile(spaceUtility.MouseCell).gameTile == editorState.SecondaryTile;
+
                 break;
             
             case ToolType.RectBrush:
@@ -219,7 +232,7 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
 
-                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(editorState.PrimaryTile));
+                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(DrawingTile));
                 brushedTiles.Add(spaceUtility.MouseCell);
                 
                 break;
@@ -239,7 +252,7 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
 
-                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(editorState.SecondaryTile));
+                tilePlacer.PlaceTile(spaceUtility.MouseCell, new(DrawingTile));
                 brushedTiles.Add(spaceUtility.MouseCell);
                 
                 break;
@@ -266,11 +279,11 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 if (editorState.PrimaryTile.Linkable)
                 {
-                    GetLinkingGroup(linkingGroup => SetTiles(new(editorState.PrimaryTile, linkingGroup)));
+                    GetLinkingGroup(linkingGroup => SetTiles(new(DrawingTile, linkingGroup)));
                 }
                 else
                 {
-                    SetTiles(new(editorState.PrimaryTile));
+                    SetTiles(new(DrawingTile));
                 }
                 
                 break;
@@ -400,13 +413,13 @@ public class ToolbarActionsManager : MonoBehaviour
         {
             case ToolType.Brush:
                 
-                if (editorState.SecondaryTile.Linkable)
+                if (DrawingTile != null && DrawingTile.Linkable)
                 {
-                    GetLinkingGroup(linkingGroup => SetTiles(new(editorState.SecondaryTile, linkingGroup)));
+                    GetLinkingGroup(linkingGroup => SetTiles(new(DrawingTile, linkingGroup)));
                 }
                 else
                 {
-                    SetTiles(new(editorState.SecondaryTile));
+                    SetTiles(new(DrawingTile));
                 }
 
                 break;

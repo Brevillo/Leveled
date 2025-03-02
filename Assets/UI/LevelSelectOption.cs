@@ -39,7 +39,7 @@ public class LevelSelectOption : MonoBehaviour
         changelog.LogUpdated -= OnChangelogUpdated;
     }
 
-    private void OnChangelogUpdated()
+    private void OnChangelogUpdated(Changelog.LogUpdateType updateType)
     {
         UpdateDirty();
     }

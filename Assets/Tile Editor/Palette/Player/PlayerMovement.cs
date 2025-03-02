@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")] 
     [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private PositionRecorder positionRecorder;
+    [SerializeField] private Bounceable bounceable;
 
     private Vector2 spawnPoint;
     private Checkpoint checkpoint;
@@ -86,6 +87,14 @@ public class PlayerMovement : MonoBehaviour
         InitStateMachine();
 
         spawnPoint = transform.position;
+        
+        bounceable.Bounced += OnBounced;
+    }
+
+    private void OnBounced(Vector2 force)
+    {
+        stateMachine.ChangeState(falling);
+        rigidbody.linearVelocity = force;
     }
 
     private void Update()

@@ -362,6 +362,7 @@ MonoBehaviour:
   rightWall: {fileID: 7204901590545820916}
   rigidbody: {fileID: 4891161871428994844}
   positionRecorder: {fileID: 7521762912566250812}
+  bounceable: {fileID: 8012699874280804015}
 --- !u!50 &4891161871428994844
 Rigidbody2D:
   serializedVersion: 5
@@ -487,7 +488,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7786f43e13fb848e493f0f1231027bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 4891161871428994844}
+  bounced:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1888088828187024256
 MonoBehaviour:
   m_ObjectHideFlags: 0

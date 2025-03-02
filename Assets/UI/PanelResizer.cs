@@ -24,6 +24,8 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private float targetWidth;
     private float widthVelocity;
 
+    public event Action<bool> PanelToggled;
+    
     private Vector2 ScreenSize => screenRect.rect.size;
     
     private float Width
@@ -31,6 +33,8 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         get => resizer.anchoredPosition.x;
         set
         {
+            float initialValue = resizer.anchoredPosition.x;
+            
             spaceUtility.Camera.transform.position -=
                 (spaceUtility.CanvasToWorld(resizer.anchoredPosition, resizer) 
                  - spaceUtility.CanvasToWorld(Vector2.right * value, resizer)) * cameraAdjustAnchoring;
@@ -46,6 +50,15 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             Vector2 panelSize = panel.sizeDelta;
             panelSize.x = value;
             panel.sizeDelta = panelSize;
+
+            if (initialValue == 0 && value != 0)
+            {
+                PanelToggled?.Invoke(true);
+            }
+            else if (value == 0 && initialValue != 0)
+            {
+                PanelToggled?.Invoke(false);
+            }
         }
     }
 
@@ -118,10 +131,13 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
 
         targetWidth = 0;
+
+        PanelToggled?.Invoke(false);
     }
 
     public void OpenPanel()
     {
         targetWidth = snapWidth;
+        PanelToggled?.Invoke(true);
     }
 }
