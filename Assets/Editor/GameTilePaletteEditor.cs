@@ -78,6 +78,7 @@ public class GameTilePaletteEditor : Editor
         tiles.AddRange(newTiles);
 
         serializedObject.ApplyModifiedProperties();
+        AssetDatabase.SaveAssets();
         
         RefreshIDWarnings();
     }
