@@ -9,11 +9,18 @@ public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;
 
+    [Header("Defaults")]
+    [SerializeField] private GameTile defaultPrimaryTile;
+    [SerializeField] private GameTile defaultSecondaryTile;
+    [SerializeField] private ToolbarAction defaultTool;
+    [SerializeField] private bool defaultShowPlayerPositionRecording;
+    [SerializeField] private bool defaultShowLinkingGroups;
+
     #region State
 
-    private GameTile primaryTile = null;
-    private GameTile secondaryTile = null;
-    private ToolType activeTool = ToolType.Brush;
+    private GameTile primaryTile;
+    private GameTile secondaryTile;
+    private ToolbarAction activeTool;
 
     private bool showLinkingGroups = false;
     private bool showPlayerPositionRecording = false;
@@ -28,6 +35,15 @@ public class TileEditorState : GameService
     protected override void Initialize()
     {
         changelog.ChangeEvent += OnChangeEvent;
+    }
+
+    protected override void Start()
+    {
+        PrimaryTile = defaultPrimaryTile;
+        SecondaryTile = defaultSecondaryTile;
+        ActiveTool = defaultTool;
+        ShowPlayerPositionRecording = defaultShowPlayerPositionRecording;
+        ShowLinkingGroups = defaultShowLinkingGroups;
     }
 
     protected override void InstanceDestroyed()
@@ -210,15 +226,7 @@ public class TileEditorState : GameService
         (PrimaryTile, SecondaryTile) = (SecondaryTile, PrimaryTile);
     }
     
-    public void SetActiveTool(string toolTypeName)
-    {
-        if (Enum.TryParse(typeof(ToolType), toolTypeName, true, out var toolType))
-        {
-            ActiveTool = (ToolType)toolType;
-        }
-    }
-    
-    public ToolType ActiveTool
+    public ToolbarAction ActiveTool
     {
         get => activeTool;
         set => SendEditorChange(new ToolbarChangeInfo(activeTool, value), false);

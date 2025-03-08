@@ -57,10 +57,10 @@ public class TileChangeInfo : ChangeInfo
     public override ChangeInfo Reverted => new TileChangeInfo(positions, newTiles, previousTiles, description);
 }
 
-public class ToolbarChangeInfo : ValueChangeInfo<ToolType>
+public class ToolbarChangeInfo : ValueChangeInfo<ToolbarAction>
 {
-    public ToolbarChangeInfo(ToolType previousValue, ToolType newValue) : base(previousValue, newValue,
-        $"Changed active tool to {newValue.ToString()}")
+    public ToolbarChangeInfo(ToolbarAction previousValue, ToolbarAction newValue) : base(previousValue, newValue,
+        $"Changed active tool to {newValue}")
     {
     }
 

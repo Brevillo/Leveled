@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 7778107494996345918}
   - component: {fileID: 3412403880334736296}
   m_Layer: 5
-  m_Name: Toolbar Item
+  m_Name: Action Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

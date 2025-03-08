@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class LinkingGroupSetter : MonoBehaviour
@@ -15,7 +16,7 @@ public class LinkingGroupSetter : MonoBehaviour
     [SerializeField] private RectTransform windowPosition;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private GameObject content;
-    [SerializeField] private EditorButtonActions editorButtonActions;
+    [SerializeField] private EditorActionsManager editorActionsManager;
     [SerializeField] private List<string> preGenerateOptions;
     [SerializeField] private Vector2 windowOffset;
     [SerializeField] private Vector2 screenEdgeBuffer;
@@ -35,13 +36,15 @@ public class LinkingGroupSetter : MonoBehaviour
         }
     }
 
-    public void GetLinkingGroupAtPosition(Vector2 position, Action<string> linkingGroupAction)
+    public void GetLinkingGroupAtMouse(Action<string> linkingGroupAction) =>
+        GetLinkingGroup(spaceUtility.MouseCellCenterWorld + Vector3.down * 0.5f, linkingGroupAction);
+    public void GetLinkingGroup(Vector2 worldPosition, Action<string> linkingGroupAction)
     {
-        editorButtonActions.enabled = false;
+        editorActionsManager.DisableAll();
         
         content.SetActive(true);
-
-        Vector2 canvasPosition = (Vector2)spaceUtility.WorldToCanvas(position, windowPosition) + windowOffset;
+        
+        Vector2 canvasPosition = (Vector2)spaceUtility.WorldToCanvas(worldPosition, windowPosition) + windowOffset;
         windowPosition.position =
             spaceUtility.ClampCanvasPointToCanvasRect(canvasPosition, windowPosition, screenEdgeBuffer);
         
@@ -74,7 +77,7 @@ public class LinkingGroupSetter : MonoBehaviour
         
         content.SetActive(false);
 
-        editorButtonActions.enabled = true;
+        editorActionsManager.EnableAll();
 
         linkingGroupAction?.Invoke(linkingGroup);
         linkingGroupAction = null;

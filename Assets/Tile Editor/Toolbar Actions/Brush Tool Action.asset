@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db53d0f1b74042a69bb708e3e323c2f, type: 3}
+  m_Name: Brush Tool Action
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 09d5cca6941bf437f91219a722ed386d, type: 3}
+  defaultHoverSelectionActive: 1
+  keymap: B
+  tooltip: Tile Brush
+  editorAction: {fileID: 11400000, guid: 64d6fcf79b9e54ee6b9f8c3c5eb46b54, type: 2}

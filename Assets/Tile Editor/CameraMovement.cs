@@ -54,7 +54,7 @@ public class CameraMovement : MonoBehaviour
         
         if (!pointerOverUI)
         {
-            bool moverTool = editorState.ActiveTool == ToolType.Mover;
+            bool moverTool = false;// editorState.ActiveTool == ToolType.Mover; // todo: implement mover tool
 
             ButtonControl
                 middle = Mouse.current.middleButton,

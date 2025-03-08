@@ -17,8 +17,6 @@ public enum AutosaveOptions
 
 public class SaveDataManager : MonoBehaviour
 {
-    [SerializeField] private GameTile defaultPrimaryTile;
-    [SerializeField] private GameTile defaultSecondaryTile;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private GameTilePalette palette;
     [SerializeField] private GameStateManager gameStateManager;
@@ -83,11 +81,6 @@ public class SaveDataManager : MonoBehaviour
     private void Start()
     {
         gameStateManager.SetGameStateWithNotify(GameState.Editing);
-        editorState.PrimaryTile = defaultPrimaryTile;
-        editorState.SecondaryTile = defaultSecondaryTile;
-        editorState.ActiveTool = ToolType.Brush;
-        editorState.ShowPlayerPositionRecording = false;
-        editorState.ShowLinkingGroups = false;
         
         RefreshLevels();
         
