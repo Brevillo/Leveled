@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
   m_Name: Swap Selected Tiles
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: 5922512543285584395, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  inputActionReference: {fileID: -2879912704209327708, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Swap Tiles (X)
   icon: {fileID: 0}

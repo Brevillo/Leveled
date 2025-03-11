@@ -5,8 +5,9 @@ using UnityEngine;
 public class ToolbarUIManager : MonoBehaviour
 {
     [Serializable]
-    private struct ToolbarEditorAction
+    private class ToolbarEditorAction
     {
+        [HideInInspector] public string name;
         public ToolbarAction toolbarAction;
         public EditorAction editorAction;
     }
@@ -14,6 +15,14 @@ public class ToolbarUIManager : MonoBehaviour
     [SerializeField] private List<ToolbarEditorAction> actions;
     [SerializeField] private ToolbarUIItem toolbarUIItemPrefab;
     [SerializeField] private Transform itemsParent;
+
+    private void OnValidate()
+    {
+        foreach (var action in actions)
+        {
+            action.name = action.toolbarAction.name;
+        }
+    }
 
     private void Awake()
     {
