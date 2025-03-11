@@ -41,12 +41,12 @@ public class RectBrushToolAction : ToolbarAction
                 var linkedTiles = new TileData[positions.Length];
                 Array.Fill(linkedTiles, new(tile, linkingGroup));
                 
-                EditorState.SetTiles(positions, linkedTiles, "Brushed tile rectangle");
+                EditorState.SetTiles(positions, linkedTiles, changelogMessage);
             });
         }
         else
         {
-            EditorState.SetTiles(positions, tiles, "Brushed tile rectangle");
+            EditorState.SetTiles(positions, tiles, changelogMessage);
         }
 
     }

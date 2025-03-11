@@ -8,7 +8,8 @@ public class SelectionToolAction : ToolbarAction
 {
     [SerializeField] private InputActionReference copyInput;
     [SerializeField] private InputActionReference pasteInput;
-
+    [SerializeField] private string pasteChaneglogMessage;
+    
     private bool selectionCopied;
     private State state;
 
@@ -141,7 +142,7 @@ public class SelectionToolAction : ToolbarAction
                     .Select(position => position + delta)
                     .ToArray();
 
-                EditorState.StartChangeBundle("Moved tile selection");
+                EditorState.StartChangeBundle(changelogMessage);
 
                 EditorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection");
                 EditorState.SetTiles(destinationPositions, originTiles, "Filled new selection");
@@ -188,6 +189,6 @@ public class SelectionToolAction : ToolbarAction
         blackboard.editorState.SetTiles(
             clipboardPositions.Select(position => position + delta).ToArray(),
             clipboardTiles.ToArray(),
-            "Pasted tiles");
+            pasteChaneglogMessage);
     }
 }

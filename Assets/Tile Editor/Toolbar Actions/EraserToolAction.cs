@@ -4,6 +4,4 @@ using UnityEngine;
 public class EraserToolAction : BrushToolAction
 {
     protected override GameTile DrawingTile => null;
-
-    protected override string ChangelogMessage => "Erased tiles";
 }

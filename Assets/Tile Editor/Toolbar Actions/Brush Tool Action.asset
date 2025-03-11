@@ -12,8 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db53d0f1b74042a69bb708e3e323c2f, type: 3}
   m_Name: Brush Tool Action
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 09d5cca6941bf437f91219a722ed386d, type: 3}
   defaultHoverSelectionActive: 1
-  keymap: B
-  tooltip: Tile Brush
-  editorAction: {fileID: 11400000, guid: 64d6fcf79b9e54ee6b9f8c3c5eb46b54, type: 2}
+  changelogMessage: Brushed tiles

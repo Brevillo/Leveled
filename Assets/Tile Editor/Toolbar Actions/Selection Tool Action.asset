@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be97dec1778f24f7aa0f60b08f39c3c8, type: 3}
   m_Name: Selection Tool Action
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: e232293144c334355ad890b442ceda84, type: 3}
   defaultHoverSelectionActive: 1
-  keymap: M
-  tooltip: Tile Selection
-  editorAction: {fileID: 11400000, guid: 6bde344b41b914827ab854d7b6a2b8df, type: 2}
+  changelogMessage: Moved tiles
   copyInput: {fileID: 7292288212315272780, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   pasteInput: {fileID: -7889647041772295405, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  pasteChaneglogMessage: Pasted tiles

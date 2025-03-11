@@ -17,9 +17,7 @@ public class BrushToolAction : ToolbarAction
             ToolbarActionsManager.ToolSide.Secondary => EditorState.SecondaryTile,
             _ => null,
         };
-
-    protected virtual string ChangelogMessage => "Brushed tiles";
-
+    
     protected override void OnDown()
     {
         brushedTiles.Clear();
@@ -50,7 +48,7 @@ public class BrushToolAction : ToolbarAction
         var tiles = new TileData[brushedTiles.Count];
         Array.Fill(tiles, tileData);
         
-        EditorState.SetTiles(brushedTiles.ToArray(), tiles, ChangelogMessage);
+        EditorState.SetTiles(brushedTiles.ToArray(), tiles, changelogMessage);
         
         brushedTiles.Clear();
     }

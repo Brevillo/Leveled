@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Swap Selected Tiles
+  m_Name: Set Tool Fill
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: 5922512543285584395, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  inputActionReference: {fileID: -7031780089602342550, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
-  tooltip: Swap Tiles (X)
-  icon: {fileID: 0}
+  tooltip: Fill
+  icon: {fileID: 21300000, guid: f209d307c53454f18b7bd97d7aa7944c, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
         m_TargetAssemblyTypeName: TileEditorState, Assembly-CSharp
-        m_MethodName: SwapSelectedTiles
-        m_Mode: 1
+        m_MethodName: set_ActiveTool
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: ddae5089bacfd4988895257c5058a1fb, type: 2}
+          m_ObjectArgumentAssemblyTypeName: ToolbarAction, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

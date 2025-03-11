@@ -12,8 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6c4b25de6254d72af2d6967cf140f3, type: 3}
   m_Name: Rect Brush Tool Action
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 3c4ceef20200d453d81f6d5e1806ff43, type: 3}
   defaultHoverSelectionActive: 1
-  keymap: U
-  tooltip: Rectangle Tile Brush
-  editorAction: {fileID: 11400000, guid: fd7450501670e4b8c90fccb3175601c1, type: 2}
+  changelogMessage: Rectangle brushed tiles

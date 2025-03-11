@@ -31,6 +31,7 @@ public class ToolbarActionsManager : MonoBehaviour
     [SerializeField] private ToolInput primaryToolInput;
     [SerializeField] private ToolInput secondaryToolInput;
     [SerializeField] private ToolInput tertiaryToolInput;
+    [SerializeField] private ToolbarActionsPalette toolbarActionsPalette;
     [Header("References")]
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private LinkingGroupSetter linkingGroupSetter;
@@ -133,6 +134,11 @@ public class ToolbarActionsManager : MonoBehaviour
         primaryToolInput.Init(this);
         secondaryToolInput.Init(this);
         tertiaryToolInput.Init(this);
+
+        foreach (var toolbarAction in toolbarActionsPalette.ToolbarActions)
+        {
+            toolbarAction.InjectReferences(blackboard);
+        }
     }
     
     private void OnEnable()
@@ -176,11 +182,12 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 if (toolbarChangeInfo.newValue != null)
                 {
-                    toolbarChangeInfo.newValue.Activate(blackboard);
+                    toolbarChangeInfo.newValue.Activate();
                 }
 
                 // Save recent brush type
-                if (toolbarChangeInfo.newValue is (BrushToolAction and not EraserToolAction) or RectBrushToolAction)
+                if (toolbarChangeInfo.newValue is 
+                    BrushToolAction and not EraserToolAction or RectBrushToolAction or FillToolAction)
                 {
                     recentBrushType = toolbarChangeInfo.newValue;
                 }

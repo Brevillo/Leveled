@@ -7,6 +7,7 @@ public abstract class ToolbarAction : ScriptableObject
     protected const int CreateMenuOrder = 100;
     
     [SerializeField] private bool defaultHoverSelectionActive = true;
+    [SerializeField] protected string changelogMessage;
     
     protected Blackboard blackboard;
 
@@ -32,10 +33,13 @@ public abstract class ToolbarAction : ScriptableObject
         Mathf.Abs(SpaceUtility.MouseCell.x - dragStart.x) + 1,
         Mathf.Abs(SpaceUtility.MouseCell.y - dragStart.y) + 1);
 
-    public void Activate(Blackboard blackboard)
+    public void InjectReferences(Blackboard blackboard)
     {
         this.blackboard = blackboard;
-
+    }
+    
+    public void Activate()
+    {
         blackboard.selectionOutlineActive = false;
         blackboard.hoverSelectionActive = defaultHoverSelectionActive;
         

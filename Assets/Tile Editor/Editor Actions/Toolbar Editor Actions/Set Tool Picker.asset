@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Picker
+  m_Name: Set Tool Picker
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: -2070996289465884360, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1

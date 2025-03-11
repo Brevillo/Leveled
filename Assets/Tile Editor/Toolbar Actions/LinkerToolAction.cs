@@ -28,7 +28,7 @@ public class LinkerToolAction : ToolbarAction
                     }
                 }
                 
-                EditorState.SetTiles(modifiedPositions.ToArray(), modifiedTiles.ToArray(), "Changed tile linking");
+                EditorState.SetTiles(modifiedPositions.ToArray(), modifiedTiles.ToArray(), changelogMessage);
             });
     }
 }

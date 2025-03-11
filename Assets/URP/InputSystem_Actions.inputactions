@@ -576,6 +576,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "FillBrush",
+                    "type": "Button",
+                    "id": "e1382c61-428d-48de-a630-7be6e78b6ac3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Picker",
                     "type": "Button",
                     "id": "fac4805b-cb06-4230-a21b-ee2d04a3aea2",
@@ -991,6 +1000,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RectangleBrush",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d40b3710-d871-4fee-be2e-40232a6282c6",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FillBrush",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
