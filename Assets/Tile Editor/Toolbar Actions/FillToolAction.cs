@@ -56,7 +56,7 @@ public class FillToolAction : ToolbarAction
         while (checks.Count > 0)
         {
             iterations++;
-            if (iterations >= maxIterations) break;
+            if (iterations > maxIterations) break;
             
             Vector2Int position = checks.Dequeue();
 
