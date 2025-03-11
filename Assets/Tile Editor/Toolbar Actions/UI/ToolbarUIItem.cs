@@ -5,27 +5,18 @@ using UnityEngine.UI;
 
 public class ToolbarUIItem : MonoBehaviour
 {
-    [SerializeField] private Image icon;
     [SerializeField] private Image background;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color regularColor;
     [SerializeField] private TileEditorState editorState;
-    [SerializeField] private TextMeshProUGUI keymap;
-    [SerializeField] private UITooltip uiTooltip;
-    
-    private ToolbarAction tool;
-    
-    public void Init(ToolbarAction tool)
-    {
-        this.tool = tool;
-        icon.sprite = tool.IconSprite;
-        keymap.text = tool.Keymap;
-        uiTooltip.Contents = tool.Tooltip;
-    }
+    [SerializeField] private EditorActionButton editorActionButton;
 
-    public void Clicked()
+    private ToolbarAction toolbarAction;
+    
+    public void Init(ToolbarAction toolbarAction, EditorAction editorAction)
     {
-        tool.EditorAction.InvokeAction();
+        this.toolbarAction = toolbarAction;
+        editorActionButton.SetEditorAction(editorAction);
     }
     
     private void OnEnable()
@@ -44,7 +35,7 @@ public class ToolbarUIItem : MonoBehaviour
         {
             case ToolbarChangeInfo toolbarChangeInfo:
                 
-                background.color = toolbarChangeInfo.newValue == tool
+                background.color = toolbarChangeInfo.newValue == toolbarAction
                     ? selectedColor
                     : regularColor;
                 

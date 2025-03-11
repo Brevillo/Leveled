@@ -28,8 +28,9 @@ public class ToolbarActionsManager : MonoBehaviour
     [SerializeField] private Image hoverSelection;
     [SerializeField] private float hoverSelectionSpeed;
     [Header("Input")]
-    [SerializeField] private InputActionReference primaryToolInput;
-    [SerializeField] private InputActionReference secondaryToolInput;
+    [SerializeField] private ToolInput primaryToolInput;
+    [SerializeField] private ToolInput secondaryToolInput;
+    [SerializeField] private ToolInput tertiaryToolInput;
     [Header("References")]
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private LinkingGroupSetter linkingGroupSetter;
@@ -44,39 +45,79 @@ public class ToolbarActionsManager : MonoBehaviour
 
     private bool primaryPressed;
     private bool secondaryPressed;
+    private bool tertiaryPressed;
     
     private ToolbarAction recentBrushType;
-    private ToolbarAction activeToolbarAction;
+
+    [Serializable]
+    private class ToolInput
+    {
+        [SerializeField] private InputActionReference toolInput;
+        [SerializeField] private ToolSide toolSide;
+        [SerializeField] private ToolbarAction overrideAction;
+
+        private ToolbarActionsManager manager;
+        
+        private bool pressed;
+
+        private ToolbarAction Action => overrideAction != null
+            ? overrideAction
+            : manager.editorState.ActiveTool;
+        
+        public void Init(ToolbarActionsManager manager)
+        {
+            this.manager = manager;
+        }
+        
+        public void OnEnable()
+        {
+            toolInput.action.performed += OnToolDown;
+            toolInput.action.canceled += OnToolReleased;
+        }
+
+        public void OnDisable()
+        {
+            toolInput.action.performed -= OnToolDown;
+            toolInput.action.canceled -= OnToolReleased;
+        }
+
+        private void OnToolDown(InputAction.CallbackContext context)
+        {
+            if (manager.editorState.PointerOverUI) return;
+
+            pressed = true;
+            
+            if (Action != null)
+            {
+                Action.InputDown(toolSide);
+            }
+        }
+
+        public void Update()
+        {
+            if (pressed && Action != null)
+            {
+                Action.InputPressed(toolSide);
+            }
+        }
+
+        private void OnToolReleased(InputAction.CallbackContext context)
+        {
+            pressed = false;
+
+            if (Action != null)
+            {
+                Action.InputReleased(toolSide);
+            }
+        }
+    }
     
     public enum ToolSide
     {
         None,
         Primary,
         Secondary,
-    }
-    
-    private void OnEnable()
-    {
-        gameStateManager.GameStateChanged += OnGameStateChanged;
-        blackboard.editorState.EditorChanged += OnEditorChanged;
-        
-        primaryToolInput.action.performed += PrimaryToolDown;
-        primaryToolInput.action.canceled += PrimaryToolUp;
-
-        secondaryToolInput.action.performed += SecondaryToolDown;
-        secondaryToolInput.action.canceled += SecondaryToolUp;
-    }
-
-    private void OnDisable()
-    {
-        gameStateManager.GameStateChanged -= OnGameStateChanged;
-        blackboard.editorState.EditorChanged -= OnEditorChanged;
-        
-        primaryToolInput.action.performed -= PrimaryToolDown;
-        primaryToolInput.action.canceled -= PrimaryToolUp;
-
-        secondaryToolInput.action.performed -= SecondaryToolDown;
-        secondaryToolInput.action.canceled -= SecondaryToolUp;
+        Tertiary,
     }
 
     private void Awake()
@@ -88,6 +129,30 @@ public class ToolbarActionsManager : MonoBehaviour
             editorState = editorState,
             tilePlacer = tilePlacer,
         };
+        
+        primaryToolInput.Init(this);
+        secondaryToolInput.Init(this);
+        tertiaryToolInput.Init(this);
+    }
+    
+    private void OnEnable()
+    {
+        gameStateManager.GameStateChanged += OnGameStateChanged;
+        blackboard.editorState.EditorChanged += OnEditorChanged;
+        
+        primaryToolInput.OnEnable();
+        secondaryToolInput.OnEnable();
+        tertiaryToolInput.OnEnable();
+    }
+    
+    private void OnDisable()
+    {
+        gameStateManager.GameStateChanged -= OnGameStateChanged;
+        blackboard.editorState.EditorChanged -= OnEditorChanged;
+        
+        primaryToolInput.OnDisable();
+        secondaryToolInput.OnDisable();
+        tertiaryToolInput.OnDisable();
     }
 
     private void OnGameStateChanged(GameState gameState)
@@ -103,12 +168,16 @@ public class ToolbarActionsManager : MonoBehaviour
 
                 if (toolbarChangeInfo.newValue == toolbarChangeInfo.previousValue) break;
                 
-                // Transition to new tool
-                if (activeToolbarAction != null) activeToolbarAction.Deactivate();
+                // Deactivate old tool and activate new
+                if (toolbarChangeInfo.previousValue != null)
+                {
+                    toolbarChangeInfo.previousValue.Deactivate();
+                }
                 
-                activeToolbarAction = toolbarChangeInfo.newValue;
-                
-                if (activeToolbarAction != null) activeToolbarAction.Activate(blackboard);
+                if (toolbarChangeInfo.newValue != null)
+                {
+                    toolbarChangeInfo.newValue.Activate(blackboard);
+                }
 
                 // Save recent brush type
                 if (toolbarChangeInfo.newValue is (BrushToolAction and not EraserToolAction) or RectBrushToolAction)
@@ -126,62 +195,21 @@ public class ToolbarActionsManager : MonoBehaviour
         }
     }
     
-    #region Tool Actions
-    
-    private void PrimaryToolDown(InputAction.CallbackContext context)
-    {
-        if (blackboard.editorState.PointerOverUI)
-        {
-            return;
-        }
-
-        primaryPressed = true;
-        activeToolbarAction?.InputDown(ToolSide.Primary);
-    }
-
-    private void SecondaryToolDown(InputAction.CallbackContext context)
-    {
-        if (blackboard.editorState.PointerOverUI)
-        {
-            return;
-        }
-
-        secondaryPressed = true;
-        activeToolbarAction?.InputDown(ToolSide.Secondary);
-    }
-
-    private void PrimaryToolUp(InputAction.CallbackContext context)
-    {
-        primaryPressed = false;
-        activeToolbarAction?.InputReleased(ToolSide.Primary);
-    }
-
-    private void SecondaryToolUp(InputAction.CallbackContext context)
-    {
-        secondaryPressed = false;
-        activeToolbarAction?.InputReleased(ToolSide.Secondary);
-    }
-    
-    #endregion
-    
     private void Update()
     {
-        activeToolbarAction?.Update();
+        if (editorState.ActiveTool != null)
+        {
+            editorState.ActiveTool.Update();
+        }
         
-        if (primaryPressed)
-        {
-            activeToolbarAction?.InputPressed(ToolSide.Primary);
-        }
-
-        if (secondaryPressed)
-        {
-            activeToolbarAction?.InputPressed(ToolSide.Secondary);
-        }
+        primaryToolInput.Update();
+        secondaryToolInput.Update();
+        tertiaryToolInput.Update();
         
         // Selection outline
         var selectionOutlineTransform = selectionOutline.rectTransform;
-        Vector2 selectionOutlineSize = blackboard.spaceUtility.CellToCanvas(blackboard.selection.max, selectionOutlineTransform) -
-                                       blackboard.spaceUtility.CellToCanvas(blackboard.selection.min, selectionOutlineTransform);
+        Vector2 selectionOutlineSize = blackboard.spaceUtility.CellToCanvas((Vector2Int)blackboard.selection.max, selectionOutlineTransform) -
+                                       blackboard.spaceUtility.CellToCanvas((Vector2Int)blackboard.selection.min, selectionOutlineTransform);
         selectionOutlineTransform.sizeDelta = selectionOutlineSize;
         selectionOutlineTransform.position = blackboard.spaceUtility.WorldToCanvas(
             blackboard.spaceUtility.GetBoundsIntCenterWorld(blackboard.selection),

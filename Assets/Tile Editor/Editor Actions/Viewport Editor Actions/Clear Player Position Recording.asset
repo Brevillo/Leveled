@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 0}
   validGameStates: -1
+  tooltip: Clear Recording
+  icon: {fileID: 21300000, guid: 2b98e82848d164df09bb0be13120c105, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

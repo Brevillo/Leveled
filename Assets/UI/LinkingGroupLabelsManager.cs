@@ -12,8 +12,8 @@ public class LinkingGroupLabelsManager : MonoBehaviour
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Transform labelsParent;
 
-    private readonly HashSet<Vector3Int> linkableTiles = new();
-    private readonly Dictionary<Vector3Int, Label> labels = new();
+    private readonly HashSet<Vector2Int> linkableTiles = new();
+    private readonly Dictionary<Vector2Int, Label> labels = new();
 
     private readonly struct Label
     {
@@ -55,7 +55,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
                 
                 for (int i = 0; i < tileChangeInfo.positions.Length; i++)
                 {
-                    Vector3Int position = tileChangeInfo.positions[i];
+                    Vector2Int position = tileChangeInfo.positions[i];
                     var newTile = tileChangeInfo.newTiles[i];
                     
                     // remove empty tiles

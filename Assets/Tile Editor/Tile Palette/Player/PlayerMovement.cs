@@ -57,7 +57,16 @@ public class PlayerMovement : MonoBehaviour
         : leftWall.Touching ? -1
         : 0;
     
-    private Vector2 MoveInput => moveInput.action.ReadValue<Vector2>();
+    private Vector2 MoveInput
+    {
+        get
+        {
+            Vector2 input = moveInput.action.ReadValue<Vector2>();
+            input.x = Sign0(input.x);
+            input.y = Sign0(input.y);
+            return input;
+        }
+    }
 
     private static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
     

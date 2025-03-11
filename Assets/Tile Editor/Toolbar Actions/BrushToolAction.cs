@@ -5,7 +5,7 @@ using System;
 [CreateAssetMenu(menuName = CreateMenuPath + "Brush", order = CreateMenuOrder)]
 public class BrushToolAction : ToolbarAction
 {
-    private List<Vector3Int> brushedTiles = new();
+    private List<Vector2Int> brushedTiles = new();
 
     private bool inverseBrushMode;
 

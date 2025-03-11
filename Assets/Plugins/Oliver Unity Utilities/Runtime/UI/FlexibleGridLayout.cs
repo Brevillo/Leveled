@@ -7,6 +7,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -78,18 +79,18 @@ public class FlexibleGridLayout : LayoutGroup
             columns = 1;
         }
 
+        float activeChildren = transform.Cast<Transform>().Count(child => child.gameObject.activeSelf);
+
         if (constraint == Constraint.Uniform)
         {
-            float count = transform.childCount;
-            float squareRoot = Mathf.Sqrt(count);
+            float squareRoot = Mathf.Sqrt(activeChildren);
             rows = columns = Mathf.CeilToInt(squareRoot);
         }
         else if (constraint == Constraint.Tight)
         {
-            float count = transform.childCount;
-            float squareRoot = Mathf.Sqrt(count);
+            float squareRoot = Mathf.Sqrt(activeChildren);
             int greatestFactor = Mathf.CeilToInt(squareRoot);
-            int secondGreatestFactor = Mathf.CeilToInt(count / greatestFactor);
+            int secondGreatestFactor = Mathf.CeilToInt(activeChildren / greatestFactor);
 
             (columns, rows) = startAxis == Axis.Horizontal
                 ? (greatestFactor, secondGreatestFactor)
@@ -98,12 +99,12 @@ public class FlexibleGridLayout : LayoutGroup
 
         if (constraint == Constraint.FixedColumns)
         {
-            rows = Mathf.CeilToInt((float)transform.childCount / columns);
+            rows = Mathf.CeilToInt(activeChildren / columns);
         }
 
         if (constraint == Constraint.FixedRows)
         {
-            columns = Mathf.CeilToInt((float)transform.childCount / rows);
+            columns = Mathf.CeilToInt(activeChildren / rows);
         }
 
         if (matchWidth)

@@ -22,16 +22,22 @@ public class CameraMovement : MonoBehaviour
 
     private float zoomTarget;
     private float zoomVelocity;
-
-    private bool dragging;
     
     private Vector2 playPositionVelocity;
 
-    private Vector2 mousePosition;
-
+    public void SetSize(Vector2 size)
+    {
+        float zoom = size == Vector2.zero ? defaultZoom : GetZoomForSize(size);
+        
+        zoom = Mathf.Clamp(zoom, maxZoom, minZoom);
+        
+        zoomTarget = zoom;
+        mainCamera.orthographicSize = zoom;
+    }
+    
     private void Awake()
     {
-        SetZoom(defaultZoom);
+        SetSize(Vector2.up * defaultZoom);
     }
 
     private void Update()
@@ -51,52 +57,6 @@ public class CameraMovement : MonoBehaviour
     private void EditModeCamera()
     {
         bool pointerOverUI = editorState.PointerOverUI;
-        
-        if (!pointerOverUI)
-        {
-            bool moverTool = false;// editorState.ActiveTool == ToolType.Mover; // todo: implement mover tool
-
-            ButtonControl
-                middle = Mouse.current.middleButton,
-                right = Mouse.current.rightButton,
-                left = Mouse.current.leftButton;
-            
-            if (!dragging && (middle.wasPressedThisFrame || (moverTool && (left.wasPressedThisFrame || right.wasPressedThisFrame))))
-            {
-                mousePosition = Input.mousePosition;
-
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-
-                dragging = true;
-            }
-            
-            if (dragging && (middle.isPressed || (moverTool && (left.isPressed || right.isPressed))))
-            {
-                Vector2 delta = Input.mousePositionDelta * 4f;
-                transform.position -= mainCamera.ScreenToWorldPoint(delta) - mainCamera.ScreenToWorldPoint(Vector3.zero);
-
-                mousePosition += delta;
-            }
-            
-            if (dragging && (middle.wasReleasedThisFrame || (moverTool && (left.wasReleasedThisFrame || right.wasReleasedThisFrame))))
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                
-                Vector2 viewportPosition = mainCamera.ScreenToViewportPoint(mousePosition);
-                
-                Mouse.current.WarpCursorPosition(
-                        viewportPosition.x < 0 
-                        || viewportPosition.x > 1
-                        || viewportPosition.y < 0
-                        || viewportPosition.y > 1
-                    ? mainCamera.ViewportToScreenPoint(Vector2.one / 2f)
-                    : mousePosition);
-
-                dragging = false;
-            }
-        }
         
         if (!pointerOverUI)
         {
@@ -143,29 +103,13 @@ public class CameraMovement : MonoBehaviour
     {
         mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, zoomTarget, ref zoomVelocity, zoomSmoothing);
     }
-
-    private void SetZoom(float value)
-    {
-        value = Mathf.Clamp(value, maxZoom, minZoom);
-        zoomTarget = value;
-        mainCamera.orthographicSize = value;
-    }
     
     public void CenterCameraOnLevel()
     {
         if (gameStateManager.GameState == GameState.Playing) return;
         
-        var tilemaps = placer.Tilemaps;
-        
-        if (tilemaps.Length == 0)
-        {
-            return;
-        }
-        
         transform.position = placer.Bounds.center;
-        SetZoom(placer.Bounds.size == Vector3.zero 
-            ? defaultZoom 
-            : GetZoomForSize(placer.Bounds.size));
+        SetSize(placer.Bounds.size);
     }
 
     private float GetZoomForSize(Vector2 size) => Mathf.Max(size.y, size.x * (Screen.height * mainCamera.rect.height) / (Screen.width * mainCamera.rect.width)) / 2f;

@@ -42,11 +42,11 @@ public class ChangeInfoBundle : ChangeInfo
 
 public class TileChangeInfo : ChangeInfo
 {
-    public readonly Vector3Int[] positions;
+    public readonly Vector2Int[] positions;
     public readonly TileData[] previousTiles;
     public readonly TileData[] newTiles;
 
-    public TileChangeInfo(Vector3Int[] positions, TileData[] previousTiles, TileData[] newTiles, string description) 
+    public TileChangeInfo(Vector2Int[] positions, TileData[] previousTiles, TileData[] newTiles, string description) 
         : base(description)
     {
         this.positions = positions;

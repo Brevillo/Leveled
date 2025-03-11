@@ -522,6 +522,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "TertiaryTool",
+                    "type": "Button",
+                    "id": "a12fb1c5-67f2-4b05-9faa-ef29853ba005",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Undo",
                     "type": "Button",
                     "id": "4d77e63b-605f-4028-b2f1-0b895c93b271",
@@ -839,6 +848,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "SecondaryTool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21772fb2-6d82-42c4-b898-9be3bd7b82be",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "TertiaryTool",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

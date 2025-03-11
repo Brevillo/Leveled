@@ -20,8 +20,7 @@ public class TilePlacer : MonoBehaviour
 
     private Bounds bounds;
     private Dictionary<Tilemap, Tilemap> tilemaps;
-
-    public Tilemap[] Tilemaps => tilemaps.Values.ToArray();
+    
     public Bounds Bounds => bounds;
     
     private void Awake()
@@ -47,26 +46,26 @@ public class TilePlacer : MonoBehaviour
                                      spaceUtility.WorldToCanvas(bounds.min, outlineTransform);
     }
 
-    public void PlaceTile(Vector3Int position, TileData tile)
+    public void PlaceTile(Vector2Int position, TileData tile)
     {
         var selfTilemap = GetTilemap(tile);
 
         if (!tile.IsEmpty && selfTilemap != null)
         {
-            selfTilemap.SetTile(position, tile.gameTile.TileBase);
+            selfTilemap.SetTile((Vector3Int)position, tile.gameTile.TileBase);
         }
 
         foreach (var tilemap in tilemaps.Values)
         {
             if (tilemap == selfTilemap) continue;
     
-            tilemap.SetTile(position, null);
+            tilemap.SetTile((Vector3Int)position, null);
         }
         
         CompressBounds();
     }
 
-    public void PlaceTiles(Vector3Int[] positions, TileData[] tiles)
+    public void PlaceTiles(Vector2Int[] positions, TileData[] tiles)
     {
         var tilemapGroups = Enumerable.Range(0, positions.Length)
             .Select(i =>
@@ -80,7 +79,7 @@ public class TilePlacer : MonoBehaviour
         
         foreach (var group in tilemapGroups)
         {
-            var positionArray = group.Select(item => item.position).ToArray();
+            var positionArray = group.Select(item => (Vector3Int)item.position).ToArray();
             
             if (group.Key != null)
             {
@@ -124,6 +123,9 @@ public class TilePlacer : MonoBehaviour
     private void CompressBounds()
     {
         tilemapBoundsOutline.gameObject.SetActive(tilemaps.Count > 0);
+
+        bounds = default;
+        
         if (tilemaps.Count == 0) return;
         
         bounds = WorldBounds(tilemaps.Values.First()); 

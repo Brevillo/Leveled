@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 0}
   validGameStates: -1
+  tooltip: Toggle Player Position Recording
+  icon: {fileID: 21300000, guid: 6222db76a3c5440f4936212bd7123682, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

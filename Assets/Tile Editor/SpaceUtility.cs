@@ -23,7 +23,7 @@ public class SpaceUtility : MonoBehaviour
         (0, 0) to (1, 1)
         
     Cell Space
-        Local space for the grid in integer coordinates (Vector3Ints)
+        Local space for the grid in integer coordinates (Vector2Ints)
         Unbounded
         
     Canvas Space
@@ -47,8 +47,8 @@ public class SpaceUtility : MonoBehaviour
 
     public Vector3 MouseCanvas(RectTransform rectTransform) => ScreenToCanvas(MouseScreen, rectTransform);
     
-    public Vector3Int MouseCell => grid.WorldToCell(MouseWorld);
-    public Vector3 MouseCellCenterWorld => grid.GetCellCenterWorld(MouseCell);
+    public Vector2Int MouseCell => (Vector2Int)grid.WorldToCell(MouseWorld);
+    public Vector3 MouseCellCenterWorld => grid.GetCellCenterWorld((Vector3Int)MouseCell);
 
     #endregion
     
@@ -63,8 +63,8 @@ public class SpaceUtility : MonoBehaviour
     public Vector3 WindowToWorld(Vector3 position) =>
         mainCamera.ViewportToWorldPoint(WindowToViewport(position));
     
-    public Vector3 CellToWorld(Vector3Int position) => 
-        grid.GetCellCenterWorld(position);
+    public Vector3 CellToWorld(Vector2Int position) => 
+        grid.GetCellCenterWorld((Vector3Int)position);
     
     public Vector3 CanvasToWorld(Vector3 position, RectTransform rectTransform) =>
         WindowToWorld(CanvasToWindow(position, rectTransform));
@@ -82,7 +82,7 @@ public class SpaceUtility : MonoBehaviour
     public Vector3 WindowToViewport(Vector3 position) =>
         ((Vector2)position - Vector2.one) / mainCamera.rect.size + Vector2.one;
 
-    public Vector3 CellToViewport(Vector3Int position) =>
+    public Vector3 CellToViewport(Vector2Int position) =>
         WorldToViewport(CellToWorld(position)); // cell -> world -> viewport
 
     public Vector3 CanvasToViewport(Vector3 position, RectTransform rectTransform) =>
@@ -101,7 +101,7 @@ public class SpaceUtility : MonoBehaviour
     public Vector3 ViewportToWindow(Vector3 position) =>
         (Vector2.one - (Vector2)position) * mainCamera.rect.min + (Vector2)position;
 
-    public Vector3 CellToWindow(Vector3Int position) =>
+    public Vector3 CellToWindow(Vector2Int position) =>
         ViewportToWindow(CellToViewport(position)); // cell -> viewport -> window
     
     public Vector3 CanvasToWindow(Vector3 position, RectTransform rectTransform)
@@ -118,22 +118,22 @@ public class SpaceUtility : MonoBehaviour
     
     #region To Cell
 
-    public Vector3Int ScreenToCell(Vector3 position) =>
+    public Vector2Int ScreenToCell(Vector3 position) =>
         WorldToCell(ScreenToWorld(position)); // screen -> world -> cell 
 
-    public Vector3Int WorldToCell(Vector3 position) =>
-        grid.WorldToCell(position);
+    public Vector2Int WorldToCell(Vector3 position) =>
+        (Vector2Int)grid.WorldToCell(position);
     
     public Vector3 SnapWorldToCell(Vector3 position) =>
         grid.CellToWorld(grid.WorldToCell(position));
 
-    public Vector3Int ViewportToCell(Vector3 position) =>
+    public Vector2Int ViewportToCell(Vector3 position) =>
         WorldToCell(ViewportToWorld(position)); // viewport -> world -> cell
 
-    public Vector3Int WindowToCell(Vector3 position) =>
+    public Vector2Int WindowToCell(Vector3 position) =>
         WorldToCell(WindowToWorld(position)); // window -> world -> cell
 
-    public Vector3Int CanvasToCell(Vector3 position, RectTransform rectTransform) =>
+    public Vector2Int CanvasToCell(Vector3 position, RectTransform rectTransform) =>
         WorldToCell(CanvasToWorld(position, rectTransform)); // canvas -> world -> cell
 
     #region BoundsInt
@@ -168,7 +168,7 @@ public class SpaceUtility : MonoBehaviour
     public Vector3 WindowToCanvas(Vector3 position, RectTransform rectTransform) =>
         position * GetCanvas(rectTransform).pixelRect.size;
 
-    public Vector3 CellToCanvas(Vector3Int position, RectTransform rectTransform) =>
+    public Vector3 CellToCanvas(Vector2Int position, RectTransform rectTransform) =>
         WorldToCanvas(CellToWorld(position), rectTransform); // cell -> world -> canvas
     
     #region Clamping

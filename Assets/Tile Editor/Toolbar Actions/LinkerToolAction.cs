@@ -14,10 +14,10 @@ public class LinkerToolAction : ToolbarAction
             boundsIntAnchorWorld,
             linkingGroup =>
             {
-                var modifiedPositions = new List<Vector3Int>();
+                var modifiedPositions = new List<Vector2Int>();
                 var modifiedTiles = new List<TileData>();
                 
-                foreach (var position in selection.allPositionsWithin)
+                foreach (Vector2Int position in selection.allPositionsWithin)
                 {
                     var tile = EditorState.GetTile(position);
 

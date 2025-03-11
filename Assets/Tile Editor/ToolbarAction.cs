@@ -6,16 +6,7 @@ public abstract class ToolbarAction : ScriptableObject
     protected const string CreateMenuPath = "Leveled/Toolbar Actions/";
     protected const int CreateMenuOrder = 100;
     
-    [SerializeField] private Sprite icon;
     [SerializeField] private bool defaultHoverSelectionActive = true;
-    [SerializeField] private string keymap;
-    [SerializeField] private string tooltip;
-    [SerializeField] private EditorAction editorAction;
-    
-    public Sprite IconSprite => icon;
-    public string Keymap => editorAction.Keymap;
-    public string Tooltip => tooltip;
-    public EditorAction EditorAction => editorAction;
     
     protected Blackboard blackboard;
 
@@ -26,15 +17,15 @@ public abstract class ToolbarAction : ScriptableObject
 
     protected BoundsInt GetCurrentSelection()
     {
-        Vector3Int dragEnd = SpaceUtility.MouseCell;
-        Vector3Int min = Vector3Int.Min(dragStart, dragEnd);
-        Vector3Int max = Vector3Int.Max(dragStart, dragEnd);
+        Vector2Int dragEnd = SpaceUtility.MouseCell;
+        Vector2Int min = Vector2Int.Min(dragStart, dragEnd);
+        Vector2Int max = Vector2Int.Max(dragStart, dragEnd);
 
-        return new(min, max - min + Vector3Int.one);
+        return new((Vector3Int)min, (Vector3Int)(max - min) + Vector3Int.one);
     }
     
     protected ToolSide activeToolSide;
-    protected Vector3Int dragStart;
+    protected Vector2Int dragStart;
 
     protected Vector3 SelectionCenter => (SpaceUtility.MouseCellCenterWorld + SpaceUtility.CellToWorld(dragStart)) / 2f;
     protected Vector2 SelectionSize => new Vector2(

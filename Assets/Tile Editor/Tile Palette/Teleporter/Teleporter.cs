@@ -10,7 +10,7 @@ public class Teleporter : MonoBehaviour
 
     private Teleporter connection;
     private string linkingGroup;
-    private bool disable;
+    private List<Teleportable> ignore = new();
     private ChangeInfo lastChangeInfo;
     
     private static readonly List<Teleporter> teleporters = new();
@@ -55,18 +55,12 @@ public class Teleporter : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (disable)
-        {
-            disable = false;
-            return;
-        }
-
         if (connection == null) return;
         
-        if (other.TryGetComponent(out Teleportable teleportable))
+        if (other.TryGetComponent(out Teleportable teleportable) && !ignore.Remove(teleportable))
         {
             teleportable.Teleport(connection.transform.position);
-            connection.disable = true;
+            connection.ignore.Add(teleportable);
         }
     }
 

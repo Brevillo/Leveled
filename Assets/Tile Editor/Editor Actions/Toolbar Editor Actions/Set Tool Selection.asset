@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Rectangle Brush
+  m_Name: Set Tool Selection
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: -1499675614215708654, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  inputActionReference: {fileID: -4299738433961196397, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
+  tooltip: Tile Selection
+  icon: {fileID: 21300000, guid: e232293144c334355ad890b442ceda84, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:
@@ -22,7 +24,7 @@ MonoBehaviour:
         m_MethodName: set_ActiveTool
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 7653619b9e4e94328a35d9259d0d2e7f, type: 2}
+          m_ObjectArgument: {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
           m_ObjectArgumentAssemblyTypeName: ToolbarAction, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0

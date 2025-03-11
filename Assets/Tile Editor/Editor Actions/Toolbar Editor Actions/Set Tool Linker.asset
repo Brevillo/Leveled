@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Eraser
+  m_Name: Set Tool Linker
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: -8351880888790116396, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  inputActionReference: {fileID: 7827135941089432492, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
+  tooltip: Change Tile Linking Groups
+  icon: {fileID: 21300000, guid: 6a1858b690a5a4a639075deb62b1fa59, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:
@@ -22,7 +24,7 @@ MonoBehaviour:
         m_MethodName: set_ActiveTool
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 8a2fdd84459914d94b0594e0db96038f, type: 2}
+          m_ObjectArgument: {fileID: 11400000, guid: 32c40eac74e90438c827f465af40bf65, type: 2}
           m_ObjectArgumentAssemblyTypeName: ToolbarAction, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0

@@ -12,8 +12,8 @@ public class SelectionToolAction : ToolbarAction
     private bool selectionCopied;
     private State state;
 
-    private Vector3Int clipboardAnchor;
-    private List<Vector3Int> clipboardPositions;
+    private Vector2Int clipboardAnchor;
+    private List<Vector2Int> clipboardPositions;
     private List<TileData> clipboardTiles;
     
     private enum State
@@ -56,7 +56,7 @@ public class SelectionToolAction : ToolbarAction
                     
             case State.Selected:
 
-                if (blackboard.selection.Contains(dragStart))
+                if (blackboard.selection.Contains((Vector3Int)dragStart))
                 {
                     state = State.MovingSelection;
                 }
@@ -64,7 +64,7 @@ public class SelectionToolAction : ToolbarAction
                 break;
         }
         
-        if (state != State.MovingSelection || !blackboard.selection.Contains(SpaceUtility.MouseCell))
+        if (state != State.MovingSelection || !blackboard.selection.Contains((Vector3Int)SpaceUtility.MouseCell))
         {
             state = State.Selecting;
         }
@@ -124,8 +124,8 @@ public class SelectionToolAction : ToolbarAction
 
                 if (dragStart == SpaceUtility.MouseCell) break;
 
-                List<Vector3Int> originPositions = new();
-                foreach (var position in blackboard.selection.allPositionsWithin)
+                List<Vector2Int> originPositions = new();
+                foreach (Vector2Int position in blackboard.selection.allPositionsWithin)
                 {
                     originPositions.Add(position);
                 }
@@ -136,7 +136,7 @@ public class SelectionToolAction : ToolbarAction
                     .Select(EditorState.GetTile)
                     .ToArray();
 
-                Vector3Int delta = SpaceUtility.MouseCell - dragStart;
+                Vector2Int delta = SpaceUtility.MouseCell - dragStart;
                 var destinationPositions = originPositions
                     .Select(position => position + delta)
                     .ToArray();
@@ -148,7 +148,7 @@ public class SelectionToolAction : ToolbarAction
 
                 EditorState.EndChangeBundle();
 
-                blackboard.selection.position += delta;
+                blackboard.selection.position += (Vector3Int)delta;
 
                 break;
         }
@@ -159,7 +159,7 @@ public class SelectionToolAction : ToolbarAction
         if (state != State.Selected) return;
 
         selectionCopied = true;
-        clipboardAnchor = blackboard.selection.position;
+        clipboardAnchor = (Vector2Int)blackboard.selection.position;
 
         clipboardPositions ??= new();
         clipboardTiles ??= new();
@@ -167,7 +167,7 @@ public class SelectionToolAction : ToolbarAction
         clipboardPositions.Clear();
         clipboardTiles.Clear();
 
-        foreach (var position in blackboard.selection.allPositionsWithin)
+        foreach (Vector2Int position in blackboard.selection.allPositionsWithin)
         {
             clipboardPositions.Add(position);
             clipboardTiles.Add(blackboard.editorState.GetTile(position));
@@ -179,11 +179,11 @@ public class SelectionToolAction : ToolbarAction
         if (!selectionCopied) return;
         
         Vector3 selectionCenterOffset = blackboard.spaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
-        Vector3Int selectionCenter = blackboard.spaceUtility.WorldToCell(
+        Vector2Int selectionCenter = blackboard.spaceUtility.WorldToCell(
             blackboard.spaceUtility.SnapWorldToCell((Vector2)(blackboard.spaceUtility.MouseWorld - selectionCenterOffset) + Vector2.one / 2f) +
             selectionCenterOffset - (Vector3)blackboard.selection.size / 2f);
         
-        Vector3Int delta = selectionCenter - clipboardAnchor;
+        Vector2Int delta = selectionCenter - clipboardAnchor;
 
         blackboard.editorState.SetTiles(
             clipboardPositions.Select(position => position + delta).ToArray(),

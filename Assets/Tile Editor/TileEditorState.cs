@@ -25,7 +25,7 @@ public class TileEditorState : GameService
     private bool showLinkingGroups = false;
     private bool showPlayerPositionRecording = false;
     
-    private Dictionary<Vector3Int, TileData> tiles = new();
+    private Dictionary<Vector2Int, TileData> tiles = new();
 
     private string changeInfoBundleDescription;
     private List<ChangeInfo> changeInfoBundle;
@@ -179,7 +179,7 @@ public class TileEditorState : GameService
         }
     }
 
-    public (Vector3Int position, TileData tile)[] LinkedTiles => tiles
+    public (Vector2Int position, TileData tile)[] LinkedTiles => tiles
         .Where(kv => kv.Value.Linkable)
         .Select(kv => (kv.Key, kv.Value))
         .ToArray();
@@ -197,16 +197,16 @@ public class TileEditorState : GameService
         var grid = gameObject.GetComponentInParent<Grid>();
         if (grid == null) return string.Empty;
         
-        Vector3Int position = grid.WorldToCell(gameObject.transform.position);
+        Vector2Int position = (Vector2Int)grid.WorldToCell(gameObject.transform.position);
         
         return tiles.TryGetValue(position, out var tile)
             ? tile.linkingGroup
             : string.Empty;
     }
 
-    public TileData GetTile(Vector3Int position) => tiles.GetValueOrDefault(position);
+    public TileData GetTile(Vector2Int position) => tiles.GetValueOrDefault(position);
 
-    public void SetTiles(Vector3Int[] positions, TileData[] tiles, string description) =>
+    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description) =>
         SendEditorChange(new TileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles, description));
 
     public GameTile PrimaryTile
@@ -221,11 +221,6 @@ public class TileEditorState : GameService
         set => SendEditorChange(new PaletteChangeInfo(secondaryTile, value, PaletteChangeInfo.Type.Secondary), false);
     }
 
-    public void SwapSelectedTiles()
-    {
-        (PrimaryTile, SecondaryTile) = (SecondaryTile, PrimaryTile);
-    }
-    
     public ToolbarAction ActiveTool
     {
         get => activeTool;
@@ -238,13 +233,19 @@ public class TileEditorState : GameService
         set => SendEditorChange(new ShowLinkingGroupsChangeInfo(showLinkingGroups, value), false);
     }
 
-    public void ToggleShowLinkingGroups() => ShowLinkingGroups = !ShowLinkingGroups;
-
     public bool ShowPlayerPositionRecording
     {
         get => showPlayerPositionRecording;
         set => SendEditorChange(new ShowPlayerPositionRecordingChangeInfo(showPlayerPositionRecording, value), false);
     }
+    
+    #endregion
+
+    #region Helper Methods
+    
+    public void SwapSelectedTiles() => (PrimaryTile, SecondaryTile) = (SecondaryTile, PrimaryTile);
+
+    public void ToggleShowLinkingGroups() => ShowLinkingGroups = !ShowLinkingGroups;
 
     public void ToggleShowPlayerPositionRecording() => ShowPlayerPositionRecording = !ShowPlayerPositionRecording;
     
