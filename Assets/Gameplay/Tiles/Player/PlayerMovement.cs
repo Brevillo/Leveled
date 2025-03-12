@@ -141,8 +141,8 @@ public class PlayerMovement : MonoBehaviour
 
             canGround = () => ground.Touching,
 
-            canJump = () => jumpBuffer && (ground.Touching ||
-                                           (stateMachine.PreviousState == grounded && stateMachine.StateDuration < coyoteTime)),
+            canJump = () => jumpBuffer && ground.Touching,
+            canCoyoteJump = () => jumpBuffer && stateMachine.PreviousState == grounded && stateMachine.StateDuration < coyoteTime,
             canDoubleJump = () => jumpBuffer && jumpsSinceGrounded < maxExtraJumps,
             canEndJump = () => rigidbody.linearVelocityY <= 0,
 
@@ -173,9 +173,15 @@ public class PlayerMovement : MonoBehaviour
                     toWalljump,
                 }},
                 
+                { doubleJumping, new()
+                {
+                    new(falling, canEndJump),
+                    toWalljump,
+                }},
+                
                 { falling, new()
                 {
-                    new(jumping, canJump),
+                    new(jumping, canCoyoteJump),
                     new(grounded, canGround),
                     toWalljump,
                     new(wallSliding, canWallSlide),

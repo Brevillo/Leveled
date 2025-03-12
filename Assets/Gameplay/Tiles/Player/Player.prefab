@@ -452,7 +452,7 @@ MonoBehaviour:
   airAccel: 100
   airDeccel: 150
   jumpInput: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  maxExtraJumps: 2
+  maxExtraJumps: 1
   jumpHeight: 4
   jumpGravity: 45
   peakingGravity: 200
