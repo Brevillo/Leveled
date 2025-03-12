@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpaceUtility : MonoBehaviour
+[CreateAssetMenu(menuName = "Leveled/Editor Systems/Space Utility")]
+public class SpaceUtility : ScriptableObject
 {
     /* Space Utility Options
     
@@ -32,12 +33,18 @@ public class SpaceUtility : MonoBehaviour
     
      */
     
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private Grid grid;
+    private Camera mainCamera;
+    private Grid grid;
 
     public Camera Camera => mainCamera;
     public Grid Grid => grid;
 
+    public void Setup(Camera mainCamera, Grid grid)
+    {
+        this.mainCamera = mainCamera;
+        this.grid = grid;
+    }
+    
     #region Mouse Positions
     
     public Vector3 MouseScreen => Input.mousePosition;

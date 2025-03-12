@@ -13,8 +13,8 @@ public class BrushToolAction : ToolbarAction
         ? null
         : activeToolSide switch
         {
-            ToolbarActionsManager.ToolSide.Primary => EditorState.PrimaryTile,
-            ToolbarActionsManager.ToolSide.Secondary => EditorState.SecondaryTile,
+            ToolSide.Primary => EditorState.PrimaryTile,
+            ToolSide.Secondary => EditorState.SecondaryTile,
             _ => null,
         };
     

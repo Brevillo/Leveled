@@ -39,7 +39,7 @@ public class SelectionToolAction : ToolbarAction
 
     protected override void OnDown()
     {
-        if (activeToolSide == ToolbarActionsManager.ToolSide.Secondary)
+        if (activeToolSide == ToolSide.Secondary)
         {
             state = State.None;
             return;
@@ -85,7 +85,7 @@ public class SelectionToolAction : ToolbarAction
             case State.MovingSelection:
                 
                 blackboard.hoverSelectionCenter = blackboard.selection.center + SpaceUtility.MouseCellCenterWorld -
-                                                  blackboard.spaceUtility.CellToWorld(dragStart);
+                                                  SpaceUtility.CellToWorld(dragStart);
                 blackboard.hoverSelectionSize = (Vector3)blackboard.selection.size;
                 
                 break;
@@ -95,7 +95,7 @@ public class SelectionToolAction : ToolbarAction
                 if (!selectionCopied) break;
                 
                 Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
-                blackboard.hoverSelectionCenter = blackboard.spaceUtility.SnapWorldToCell(
+                blackboard.hoverSelectionCenter = SpaceUtility.SnapWorldToCell(
                     (Vector2)(SpaceUtility.MouseWorld - selectionCenterOffset)
                     + Vector2.one / 2f) + selectionCenterOffset;
                 
@@ -171,7 +171,7 @@ public class SelectionToolAction : ToolbarAction
         foreach (Vector2Int position in blackboard.selection.allPositionsWithin)
         {
             clipboardPositions.Add(position);
-            clipboardTiles.Add(blackboard.editorState.GetTile(position));
+            clipboardTiles.Add(EditorState.GetTile(position));
         }
     }
     
@@ -179,14 +179,14 @@ public class SelectionToolAction : ToolbarAction
     {
         if (!selectionCopied) return;
         
-        Vector3 selectionCenterOffset = blackboard.spaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
-        Vector2Int selectionCenter = blackboard.spaceUtility.WorldToCell(
-            blackboard.spaceUtility.SnapWorldToCell((Vector2)(blackboard.spaceUtility.MouseWorld - selectionCenterOffset) + Vector2.one / 2f) +
+        Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
+        Vector2Int selectionCenter = SpaceUtility.WorldToCell(
+            SpaceUtility.SnapWorldToCell((Vector2)(SpaceUtility.MouseWorld - selectionCenterOffset) + Vector2.one / 2f) +
             selectionCenterOffset - (Vector3)blackboard.selection.size / 2f);
         
         Vector2Int delta = selectionCenter - clipboardAnchor;
 
-        blackboard.editorState.SetTiles(
+        EditorState.SetTiles(
             clipboardPositions.Select(position => position + delta).ToArray(),
             clipboardTiles.ToArray(),
             pasteChaneglogMessage);

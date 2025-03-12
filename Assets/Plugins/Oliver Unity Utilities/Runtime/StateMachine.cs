@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System;
 
-namespace OliverBeebe.UnityUtilities.Runtime {
-
+namespace OliverBeebe.UnityUtilities.Runtime 
+{
     [Serializable]
-    public class StateMachine {
+    public class StateMachine 
+    {
 
         #if UNITY_EDITOR
         [UnityEngine.SerializeField, UnityEngine.TextArea(3, 3)] private string debug;
@@ -15,25 +16,26 @@ namespace OliverBeebe.UnityUtilities.Runtime {
 
         private readonly IState firstState;
         private readonly TransitionDictionary transitions;
+        
+        private IState currentState; 
+        private IState previousState;
+        private float stateDuration; 
 
-        public IState currentState  { get; private set; }
-        public IState previousState { get; private set; }
-        public float stateDuration  { get; private set; }
-
-        public StateMachine(IState firstState, TransitionDictionary transitions) {
-
+        public IState CurrentState  => currentState;
+        public IState PreviousState => previousState;
+        public float StateDuration  => stateDuration;
+        
+        public StateMachine(IState firstState, TransitionDictionary transitions)
+        {
             this.firstState = firstState;
             this.transitions = transitions;
 
             Reset();
         }
 
-        public void Reset() {
-
-            if (currentState != null) {
-                currentState.Exit();
-                currentState.ManualExit();
-            }
+        public void Reset() 
+        {
+            currentState?.Exit();
 
             currentState = previousState = firstState;
             stateDuration = float.MaxValue;
@@ -41,46 +43,28 @@ namespace OliverBeebe.UnityUtilities.Runtime {
             currentState.Enter();
         }
 
-        public void ChangeState(IState toState) {
-
-            if (currentState != null) {
-                currentState.Exit();
-                currentState.ManualExit();
-            }
+        public void ChangeState(IState toState) 
+        {
+            currentState?.Exit();
 
             previousState = currentState;
             currentState = toState;
             stateDuration = 0;
 
-            currentState.ManualEnter();
             currentState.Enter();
  
             OnTransition?.Invoke(previousState, currentState);
         }
 
-        private void ChangeState(IState toState, Action behavior) {
-
-            currentState?.Exit();
-
-            behavior?.Invoke();
-
-            previousState = currentState;
-            currentState = toState;
-            stateDuration = 0;
-
-            currentState.Enter();
-
-            OnTransition?.Invoke(previousState, currentState);
-        }
-
-        public void Update(float dt) {
-
+        public void Update(float dt) 
+        {
             stateDuration += dt;
             currentState.Update();
 
-            if (transitions.TryGetValue(currentState, out var stateTransitions)) {
+            if (transitions.TryGetValue(currentState, out var stateTransitions))
+            {
                 var transition = stateTransitions.Find(Transition.CanTransition);
-                if (transition) ChangeState(transition.toState, transition.behavior);
+                if (transition != null) ChangeState(transition);
             }
 
             #if UNITY_EDITOR
@@ -88,31 +72,49 @@ namespace OliverBeebe.UnityUtilities.Runtime {
             #endif
         }
 
+        private void ChangeState(Transition transition)
+        {
+            currentState?.Exit();
 
+            transition.InvokeTransitionBehavior();
+
+            previousState = currentState;
+            currentState = transition.ToState;
+            stateDuration = 0;
+
+            currentState.Enter();
+
+            OnTransition?.Invoke(previousState, currentState);
+        }
     }
 
     public class TransitionDictionary : Dictionary<IState, List<Transition>> { }
 
     public delegate bool TransitionDelegate();
 
-    public readonly struct Transition {
+    public class Transition
+    {
+        public static bool CanTransition(Transition transition) => transition.condition.Invoke();
+        public IState ToState => toState;
+        public void InvokeTransitionBehavior() => behavior?.Invoke();
 
-        public static Predicate<Transition> CanTransition = transition => transition.canTransition.Invoke();
+        private readonly TransitionDelegate condition;
+        private readonly IState toState;
+        private readonly Action behavior;
 
-        public static implicit operator bool(Transition t) => t.exists;
+        public Transition(IState toState, TransitionDelegate condition)
+        {
+            this.toState = toState;
+            this.condition = condition;
+            this.behavior = null;
+        }
 
-        private readonly bool exists;
-        private readonly TransitionDelegate canTransition;
-        public  readonly IState toState;
-        public  readonly Action behavior;
-
-        public Transition(IState toState, TransitionDelegate canTransition)
-            => (exists, this.toState, this.canTransition, this.behavior)
-            =  (true, toState, canTransition, null);
-
-        public Transition(IState toState, TransitionDelegate canTransition, Action behavior)
-            => (exists, this.toState, this.canTransition, this.behavior)
-            =  (true, toState, canTransition, behavior);
+        public Transition(IState toState, TransitionDelegate condition, Action behavior)
+        {
+            this.toState = toState;
+            this.condition = condition;
+            this.behavior = behavior;
+        }
     }
 
     public interface IState
@@ -120,48 +122,39 @@ namespace OliverBeebe.UnityUtilities.Runtime {
         public void Enter();
         public void Update();
         public void Exit();
-        public void ManualEnter();
-        public void ManualExit();
     }
 
-    public abstract class State<TContext> : IState {
-
-        public State(TContext context) => this.context = context;
+    public abstract class State<TContext> : IState 
+    {
+        protected State(TContext context) => this.context = context;
 
         protected readonly TContext context;
 
         public virtual void Enter () { }
         public virtual void Update() { }
         public virtual void Exit  () { }
-        public virtual void ManualEnter() { }
-        public virtual void ManualExit() { }
     }
 
-    public abstract class SubState<TContext, TSuperState> : State<TContext> where TSuperState : State<TContext> {
-
-        public SubState(TContext context, TSuperState superState) : base(context) => this.superState = superState;
+    public abstract class SubState<TContext, TSuperState> : State<TContext> where TSuperState : State<TContext> 
+    {
+        protected SubState(TContext context, TSuperState superState) : base(context) => this.superState = superState;
 
         protected readonly TSuperState superState;
 
-        public override void Enter()  {
+        public override void Enter()
+        {
             base.Enter();
             superState.Enter();
         }
-        public override void Update() {
+        public override void Update() 
+        {
             superState.Update();
             base.Update();
         }
-        public override void Exit()   {
+        public override void Exit()  
+        {
             superState.Exit();
             base.Exit();
-        }
-        public override void ManualEnter() {
-            base.ManualEnter();
-            superState.ManualEnter();
-        }
-        public override void ManualExit() {
-            superState.ManualExit();
-            base.ManualExit();
         }
     }
 }

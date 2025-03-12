@@ -15,9 +15,9 @@ public class RectBrushToolAction : ToolbarAction
     {
         GameTile tile = activeToolSide switch
         {
-            ToolbarActionsManager.ToolSide.Primary => EditorState.PrimaryTile,
-            ToolbarActionsManager.ToolSide.Secondary => EditorState.SecondaryTile,
-            _ => null
+            ToolSide.Primary => EditorState.PrimaryTile,
+            ToolSide.Secondary => EditorState.SecondaryTile,
+            _ => null,
         };
             
         Vector2Int dragEnd = SpaceUtility.MouseCell;

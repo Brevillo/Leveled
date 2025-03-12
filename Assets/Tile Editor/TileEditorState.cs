@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.EventSystems;
 
-[CreateAssetMenu(menuName = "Leveled/GameTile Editor State")]
+[CreateAssetMenu(menuName = "Leveled/Editor Systems/Editor State")]
 public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;

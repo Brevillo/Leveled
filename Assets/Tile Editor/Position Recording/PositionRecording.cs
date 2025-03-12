@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Positions Recording")]
+[CreateAssetMenu(menuName = "Leveled/Editor Systems/Positions Recording")]
 public class PositionRecording : ScriptableObject
 {
     public class Segment

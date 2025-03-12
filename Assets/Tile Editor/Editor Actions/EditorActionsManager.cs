@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leveled/Editor Actions/Editor Action Palette", order = 0)]
+[CreateAssetMenu(menuName = "Leveled/Editor Actions/Editor Action Manager", order = 0)]
 public class EditorActionsManager : GameService
 {
     [SerializeField] private List<EditorAction> editorActions;

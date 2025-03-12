@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leveled/Collectable Registry")]
+[CreateAssetMenu(menuName = "Leveled/Editor Content/Collectable Registry", order = 100)]
 public class CollectableRegistry : GameService
 {
     private List<Collectable> collectables;

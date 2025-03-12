@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c734e3048424e7cbf0d9e94bbdbf69, type: 3}
+  m_Name: Toolbar Actions Manager
+  m_EditorClassIdentifier: 
+  primaryToolInput:
+    toolInput: {fileID: -2875367136976448151, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    toolSide: 1
+    overrideAction: {fileID: 0}
+  secondaryToolInput:
+    toolInput: {fileID: -2054376795459531727, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    toolSide: 2
+    overrideAction: {fileID: 0}
+  tertiaryToolInput:
+    toolInput: {fileID: 7590849759179378386, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    toolSide: 3
+    overrideAction: {fileID: 11400000, guid: 3d114608408a14ea589e07398a17be85, type: 2}
+  toolbarActions:
+  - {fileID: 11400000, guid: d1cfbbf31a72749e5b59e01f3d6eb422, type: 2}
+  - {fileID: 11400000, guid: 7653619b9e4e94328a35d9259d0d2e7f, type: 2}
+  - {fileID: 11400000, guid: 8a2fdd84459914d94b0594e0db96038f, type: 2}
+  - {fileID: 11400000, guid: 6b444fb93f32d496e9e6705ba8bbe380, type: 2}
+  - {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
+  - {fileID: 11400000, guid: 32c40eac74e90438c827f465af40bf65, type: 2}
+  - {fileID: 11400000, guid: ddae5089bacfd4988895257c5058a1fb, type: 2}
+  - {fileID: 11400000, guid: 3d114608408a14ea589e07398a17be85, type: 2}
+  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
+  blackboard: {fileID: 11400000, guid: 9087306a8f98f424e943a016b8ae31ae, type: 2}

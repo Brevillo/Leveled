@@ -9,11 +9,11 @@ public class PickerToolAction : ToolbarAction
         
         switch (activeToolSide)
         {
-            case ToolbarActionsManager.ToolSide.Primary:
+            case ToolSide.Primary:
                 EditorState.PrimaryTile = gameTile;
                 break;
             
-            case ToolbarActionsManager.ToolSide.Secondary:
+            case ToolSide.Secondary:
                 EditorState.SecondaryTile = gameTile;
                 break;
         }
