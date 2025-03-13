@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 spawnPoint;
     private Checkpoint checkpoint;
 
-    private int jumpsSinceGrounded;
+    private int extraJumpsUsed;
     
     private Grounded grounded;
     private Jumping jumping;
@@ -118,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnBounced(Vector2 force)
     {
         stateMachine.ChangeState(falling);
+        extraJumpsUsed = 0;
         rigidbody.linearVelocity = force;
     }
 
@@ -143,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
 
             canJump = () => jumpBuffer && ground.Touching,
             canCoyoteJump = () => jumpBuffer && stateMachine.PreviousState == grounded && stateMachine.StateDuration < coyoteTime,
-            canDoubleJump = () => jumpBuffer && jumpsSinceGrounded < maxExtraJumps,
+            canDoubleJump = () => jumpBuffer && extraJumpsUsed < maxExtraJumps,
             canEndJump = () => rigidbody.linearVelocityY <= 0,
 
             canWalljump = () => WallDirection != 0 && jumpBuffer,
@@ -238,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Enter();
             
-            context.jumpsSinceGrounded = 0;
+            context.extraJumpsUsed = 0;
         }
 
         public override void Update()
@@ -283,7 +284,9 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Enter();
             
-            context.jumpsSinceGrounded++;
+            context.extraJumpsUsed++;
+            
+            context.jumpBuffer.Reset();
         }
     }
     
@@ -308,6 +311,8 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Enter();
             
+            context.extraJumpsUsed = 0;
+
             context.rigidbody.linearVelocity = new Vector2
             {
                 y = Mathf.Sqrt(2f * context.walljumpHeight * context.jumpGravity),

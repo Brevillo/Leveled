@@ -1,12 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leveled/Toolbar Actions/Toolbar Blackboard")]
+[CreateAssetMenu(menuName = "Leveled/Toolbar Actions/Toolbar Blackboard", order = 0)]
 public class ToolbarBlackboard : ScriptableObject
 {
-    public SpaceUtility spaceUtility;
-    public LinkingGroupSetter linkingGroupSetter;
     public TileEditorState editorState;
+    public SpaceUtility spaceUtility;
     public TilePlacer tilePlacer;
+    public LinkingGroupSetter linkingGroupSetter;
 
     public bool selectionOutlineActive;
     public BoundsInt selection;

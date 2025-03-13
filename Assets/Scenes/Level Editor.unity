@@ -7366,12 +7366,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1225213359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd3d10c35f98441dd8f2655b9954d9b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 15c734e3048424e7cbf0d9e94bbdbf69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
+  toolbarActionPalette: {fileID: 11400000, guid: f8fc07776fcf343f4a832fb47e7f7f38, type: 2}
+  blackboard: {fileID: 11400000, guid: 9087306a8f98f424e943a016b8ae31ae, type: 2}
+  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+  primaryToolInput:
+    toolInput: {fileID: -2875367136976448151, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    overrideAction: {fileID: 0}
+  secondaryToolInput:
+    toolInput: {fileID: -2054376795459531727, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    overrideAction: {fileID: 0}
+  tertiaryToolInput:
+    toolInput: {fileID: 7590849759179378386, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    overrideAction: {fileID: 11400000, guid: 3d114608408a14ea589e07398a17be85, type: 2}
   tilePlacer: {fileID: 1348606032}
   linkingGroupSetter: {fileID: 1405277205}
-  toolbarBlackboard: {fileID: 11400000, guid: 9087306a8f98f424e943a016b8ae31ae, type: 2}
 --- !u!1 &1240614128
 GameObject:
   m_ObjectHideFlags: 0

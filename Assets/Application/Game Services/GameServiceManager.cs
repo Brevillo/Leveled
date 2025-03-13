@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "Leveled/Game Service Manager", fileName = GameServiceManagerResourceName)]
+[CreateAssetMenu(menuName = "Leveled/Application/Game Service Manager", fileName = GameServiceManagerResourceName)]
 public class GameServiceManager : ScriptableObject
 {
     [SerializeField] private List<GameService> services;

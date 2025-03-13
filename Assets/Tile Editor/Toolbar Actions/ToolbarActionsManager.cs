@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public enum ToolSide
 {
@@ -11,36 +12,60 @@ public enum ToolSide
     Tertiary,
 }
 
-[CreateAssetMenu(menuName = "Leveled/Toolbar Actions/Toolbar Actions Manager", order = 0)]
-public class ToolbarActionsManager : GameService
+public class ToolbarActionsManager : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
+    [SerializeField] private ToolbarActionPalette toolbarActionPalette;
     [SerializeField] private ToolbarBlackboard blackboard;
+    [SerializeField] private GameStateManager gameStateManager;
     [Space]
     [SerializeField] private ToolInput primaryToolInput;
     [SerializeField] private ToolInput secondaryToolInput;
     [SerializeField] private ToolInput tertiaryToolInput;
     [Space]
-    [SerializeField] private List<ToolbarAction> toolbarActions;
+    [Header("References")]
+    [SerializeField] private TilePlacer tilePlacer;
+    [SerializeField] private LinkingGroupSetter linkingGroupSetter;
 
     private ToolbarAction recentBrushType;
     
-    protected override void Initialize()
+    private void Awake()
     {
-        primaryToolInput.Enable(this, ToolSide.Primary);
-        secondaryToolInput.Enable(this, ToolSide.Secondary);
-        tertiaryToolInput.Enable(this, ToolSide.Tertiary);
-        
-        foreach (var toolbarAction in toolbarActions)
+        blackboard.tilePlacer = tilePlacer;
+        blackboard.linkingGroupSetter = linkingGroupSetter;
+
+        foreach (var toolbarAction in toolbarActionPalette.Actions)
         {
             toolbarAction.InjectReferences(blackboard);
         }
 
+        primaryToolInput.Init(this, ToolSide.Primary);
+        secondaryToolInput.Init(this, ToolSide.Secondary);
+        tertiaryToolInput.Init(this, ToolSide.Tertiary);
+    }
+
+    private void OnEnable()
+    {
+        primaryToolInput.Enable();
+        secondaryToolInput.Enable();
+        tertiaryToolInput.Enable();
+        
         editorState.EditorChanged += OnEditorChanged;
     }
 
-    protected override void Update()
+    private void OnDisable()
     {
+        primaryToolInput.Disable();
+        secondaryToolInput.Disable();
+        tertiaryToolInput.Disable();
+        
+        editorState.EditorChanged -= OnEditorChanged;
+    }
+    
+    private void Update()
+    {
+        if (gameStateManager.GameState != GameState.Editing) return;
+        
         if (editorState.ActiveTool != null)
         {
             editorState.ActiveTool.Update();
@@ -49,15 +74,6 @@ public class ToolbarActionsManager : GameService
         primaryToolInput.Update();
         secondaryToolInput.Update();
         tertiaryToolInput.Update();
-    }
-
-    protected override void InstanceDestroyed()
-    {
-        primaryToolInput.Disable();
-        secondaryToolInput.Disable();
-        tertiaryToolInput.Disable();
-
-        editorState.EditorChanged -= OnEditorChanged;
     }
     
     private void OnEditorChanged(ChangeInfo changeInfo)
@@ -80,8 +96,7 @@ public class ToolbarActionsManager : GameService
                 }
 
                 // Save recent brush type
-                if (toolbarChangeInfo.newValue is 
-                    BrushToolAction and not EraserToolAction or RectBrushToolAction or FillToolAction)
+                if (toolbarChangeInfo.newValue is BrushToolAction or RectBrushToolAction or FillToolAction)
                 {
                     recentBrushType = toolbarChangeInfo.newValue;
                 }
@@ -110,11 +125,15 @@ public class ToolbarActionsManager : GameService
         private ToolbarAction Action => overrideAction != null
             ? overrideAction
             : manager.editorState.ActiveTool;
-        
-        public void Enable(ToolbarActionsManager manager, ToolSide toolSide)
+
+        public void Init(ToolbarActionsManager manager, ToolSide toolSide)
         {
             this.manager = manager;
             this.toolSide = toolSide;
+        }
+        
+        public void Enable()
+        {
             toolInput.action.performed += OnToolDown;
             toolInput.action.canceled += OnToolReleased;
         }
@@ -127,7 +146,7 @@ public class ToolbarActionsManager : GameService
 
         private void OnToolDown(InputAction.CallbackContext context)
         {
-            if (manager.editorState.PointerOverUI) return;
+            if (manager.editorState.PointerOverUI || manager.gameStateManager.GameState != GameState.Editing) return;
 
             pressed = true;
             
@@ -147,6 +166,8 @@ public class ToolbarActionsManager : GameService
 
         private void OnToolReleased(InputAction.CallbackContext context)
         {
+            if (manager.gameStateManager.GameState != GameState.Editing) return;
+            
             pressed = false;
 
             if (Action != null)
