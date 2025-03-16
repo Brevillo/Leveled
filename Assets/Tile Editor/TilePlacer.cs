@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 
 public class TilePlacer : MonoBehaviour
 {

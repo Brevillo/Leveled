@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using OliverBeebe.UnityUtilities.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -115,11 +116,13 @@ public class PlayerMovement : MonoBehaviour
         bounceable.Bounced += OnBounced;
     }
 
-    private void OnBounced(Vector2 force)
+    private void OnBounced(BounceParams bounceParams)
     {
         stateMachine.ChangeState(falling);
         extraJumpsUsed = 0;
-        rigidbody.linearVelocity = force;
+        
+        rigidbody.MovePosition(bounceParams.SnapPosition(rigidbody.position));
+        rigidbody.linearVelocity = bounceParams.force;
     }
 
     private void Update()

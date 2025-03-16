@@ -43,7 +43,7 @@ public class FillToolAction : ToolbarAction
 
     private Vector2Int[] GetFloodFillPositions(Vector2Int start)
     {
-        var bounds = TilePlacer.Bounds;
+        var bounds = TilePlacer.BoundsInt;
         
         GameTile fillingTile = EditorState.GetTile(start).gameTile;
         Queue<Vector2Int> checks = new();
