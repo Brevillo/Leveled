@@ -34,6 +34,7 @@ public class ToolbarActionsManager : MonoBehaviour
     {
         blackboard.tilePlacer = tilePlacer;
         blackboard.linkingGroupSetter = linkingGroupSetter;
+        blackboard.ResetValues();
 
         foreach (var toolbarAction in toolbarActionPalette.Actions)
         {

@@ -14,4 +14,14 @@ public class ToolbarBlackboard : ScriptableObject
     public BoundsInt hoverSelection;
     public bool hoverSelectionActive;
     public bool snapHoverSelection;
+
+    public void ResetValues()
+    {
+        selectionOutlineActive = false;
+        selection = default;
+
+        hoverSelection = default;
+        hoverSelectionActive = false;
+        snapHoverSelection = false;
+    }
 }

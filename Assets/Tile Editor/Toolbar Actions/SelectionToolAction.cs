@@ -16,6 +16,19 @@ public class SelectionToolAction : ToolbarAction
     private Vector2Int clipboardAnchor;
     private List<Vector2Int> clipboardPositions;
     private List<TileData> clipboardTiles;
+
+    protected Vector2Int CopySelectionMin
+    {
+        get
+        {
+            Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
+            Vector3 worldPosition = SpaceUtility.MouseWorld + (Vector3)Vector2.one / 2f;
+            Vector3 snappedWorldCenter = 
+                SpaceUtility.SnapWorldToCell(worldPosition - selectionCenterOffset) + selectionCenterOffset;
+            
+            return SpaceUtility.WorldToCell(snappedWorldCenter - (Vector3)blackboard.selection.size / 2f);
+        }
+    }
     
     private enum State
     {
@@ -83,7 +96,7 @@ public class SelectionToolAction : ToolbarAction
             
             case State.MovingSelection:
                 
-                blackboard.hoverSelection = blackboard.selection;
+                blackboard.hoverSelection = new(blackboard.selection.position + (Vector3Int)(SpaceUtility.MouseCell - dragStart), blackboard.selection.size);
                 
                 break;
             
@@ -91,11 +104,8 @@ public class SelectionToolAction : ToolbarAction
 
                 if (!selectionCopied) break;
                 
-                Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
-                blackboard.hoverSelection = new(
-                    (Vector3Int)(SpaceUtility.WorldToCell((Vector2)(SpaceUtility.MouseWorld - selectionCenterOffset) + 
-                                                          Vector2.one / 2f) - (Vector2Int)blackboard.selection.size / 2),
-                    blackboard.selection.size);
+                
+                blackboard.hoverSelection = new((Vector3Int)CopySelectionMin, blackboard.selection.size);
                 
                 break;
         }
@@ -175,12 +185,7 @@ public class SelectionToolAction : ToolbarAction
     {
         if (!selectionCopied) return;
         
-        Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
-        Vector2Int selectionCenter = SpaceUtility.WorldToCell(
-            SpaceUtility.SnapWorldToCell((Vector2)(SpaceUtility.MouseWorld - selectionCenterOffset) + Vector2.one / 2f) +
-            selectionCenterOffset - (Vector3)blackboard.selection.size / 2f);
-        
-        Vector2Int delta = selectionCenter - clipboardAnchor;
+        Vector2Int delta = CopySelectionMin - clipboardAnchor;
 
         EditorState.SetTiles(
             clipboardPositions.Select(position => position + delta).ToArray(),
