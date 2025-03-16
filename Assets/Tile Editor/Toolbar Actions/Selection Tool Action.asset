@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHoverSelectionActive: 1
   changelogMessage: Moved tiles
+  cutInput: {fileID: -1169245088181495166, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   copyInput: {fileID: 7292288212315272780, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   pasteInput: {fileID: -7889647041772295405, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  pasteChaneglogMessage: Pasted tiles
+  pasteChangelogMessage: Pasted tiles
+  cutChangelogMessage: Cut tiles

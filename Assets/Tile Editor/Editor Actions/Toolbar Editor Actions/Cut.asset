@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Swap Selected Tiles
+  m_Name: Cut
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: -2879912704209327708, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  inputActionReference: {fileID: -1169245088181495166, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
-  tooltip: Swap Tiles (S)
-  icon: {fileID: 0}
+  tooltip: Cut
+  icon: {fileID: 21300000, guid: 9664193408d4a40808c140f2b5f600cf, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
-        m_TargetAssemblyTypeName: TileEditorState, Assembly-CSharp
-        m_MethodName: SwapSelectedTiles
+      - m_Target: {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
+        m_TargetAssemblyTypeName: SelectionToolAction, Assembly-CSharp
+        m_MethodName: Cut
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

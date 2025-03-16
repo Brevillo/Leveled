@@ -38,4 +38,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d44e113d4fa5e4f1c8e4fdff7f4179ee, type: 2}
   - {fileID: 11400000, guid: 48dcf4681c5c344a591375fb558c9de9, type: 2}
   - {fileID: 11400000, guid: cbe2028ae0ca349d4b042e2c30a7f2cc, type: 2}
+  - {fileID: 11400000, guid: fe7006bbd9fed41e1833090b95e478b9, type: 2}
+  - {fileID: 11400000, guid: 78f36f36d884044be99479c95bb73caf, type: 2}
+  - {fileID: 11400000, guid: c43345e63d2c5471a8bbc3c0fd86e4d6, type: 2}
   gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}

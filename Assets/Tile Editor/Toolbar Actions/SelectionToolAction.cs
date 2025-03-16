@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,8 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = CreateMenuPath + "Selection", order = CreateMenuOrder)]
 public class SelectionToolAction : ToolbarAction
 {
-    [SerializeField] private InputActionReference copyInput;
-    [SerializeField] private InputActionReference pasteInput;
-    [SerializeField] private string pasteChaneglogMessage;
+    [SerializeField] private string pasteChangelogMessage;
+    [SerializeField] private string cutChangelogMessage;
     
     private bool selectionCopied;
     private State state;
@@ -36,18 +36,6 @@ public class SelectionToolAction : ToolbarAction
         Selecting,
         Selected,
         MovingSelection,
-    }
-
-    protected override void OnActivated()
-    {
-        copyInput.action.performed += Copy;
-        pasteInput.action.performed += Paste;
-    }
-
-    protected override void OnDeactivated()
-    {
-        copyInput.action.performed -= Copy;
-        pasteInput.action.performed -= Paste;
     }
 
     protected override void OnDown()
@@ -104,13 +92,12 @@ public class SelectionToolAction : ToolbarAction
 
                 if (!selectionCopied) break;
                 
-                
                 blackboard.hoverSelection = new((Vector3Int)CopySelectionMin, blackboard.selection.size);
                 
                 break;
         }
 
-        blackboard.selectionOutlineActive = state is State.Selected or State.MovingSelection;
+        blackboard.selectionOutlineActive = state is State.Selected or State.MovingSelection && !selectionCopied;
     }
 
     protected override void OnReleased()
@@ -160,11 +147,21 @@ public class SelectionToolAction : ToolbarAction
                 break;
         }
     }
-    
-    private void Copy(InputAction.CallbackContext context)
+
+    public void Cut()
     {
         if (state != State.Selected) return;
 
+        Copy();
+
+        var nullTiles = new TileData[clipboardPositions.Count];
+        EditorState.SetTiles(clipboardPositions.ToArray(), nullTiles, cutChangelogMessage);
+    }
+    
+    public void Copy()
+    {
+        if (state != State.Selected) return;
+        
         selectionCopied = true;
         clipboardAnchor = (Vector2Int)blackboard.selection.position;
 
@@ -180,8 +177,8 @@ public class SelectionToolAction : ToolbarAction
             clipboardTiles.Add(EditorState.GetTile(position));
         }
     }
-    
-    private void Paste(InputAction.CallbackContext context)
+
+    public void Paste()
     {
         if (!selectionCopied) return;
         
@@ -190,6 +187,6 @@ public class SelectionToolAction : ToolbarAction
         EditorState.SetTiles(
             clipboardPositions.Select(position => position + delta).ToArray(),
             clipboardTiles.ToArray(),
-            pasteChaneglogMessage);
+            pasteChangelogMessage);
     }
 }
