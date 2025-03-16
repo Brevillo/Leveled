@@ -65,6 +65,7 @@ public class BrushToolAction : ToolbarAction
         brushedTiles.Clear();
     }
 
+    // Implemented based on https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
     private static Vector2Int[] GetPointsOnLine(Vector2Int start, Vector2Int end)
     {
         var result = new List<Vector2Int>();
