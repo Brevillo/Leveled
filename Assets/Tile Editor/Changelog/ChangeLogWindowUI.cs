@@ -26,6 +26,12 @@ public class ChangeLogWindowUI : MonoBehaviour
         windowContent.SetActive(visible);
     }
 
+    public void CloseChangelog()
+    {
+        visible = false;
+        windowContent.SetActive(false);
+    }
+    
     private void Awake()
     {
         panelResizer.PanelToggled += OnPanelToggled;

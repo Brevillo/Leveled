@@ -12,16 +12,25 @@ public class UITooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         set => contents = value;
     }
 
+    private void OnDisable()
+    {
+        TooltipCanceled?.Invoke(this);
+    }
+
     public static event Action<UITooltip> TooltipRequested;
     public static event Action<UITooltip> TooltipCanceled;
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
+        if (contents == "") return;
+        
         TooltipRequested?.Invoke(this);
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
+        if (contents == "") return;
+        
         TooltipCanceled?.Invoke(this);
     }
 }

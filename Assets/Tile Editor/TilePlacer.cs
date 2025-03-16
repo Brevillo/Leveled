@@ -10,7 +10,6 @@ public class TilePlacer : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private Transform tilemapsParent;
-    [SerializeField] private Image tilemapBoundsOutline;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private float wallThickness;
     [SerializeField] private float wallHeightBuffer;
@@ -19,9 +18,11 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private BoxCollider2D bottomHazard;
 
     private Bounds bounds;
+    private BoundsInt boundsInt;
     private Dictionary<Tilemap, Tilemap> tilemaps;
     
     public Bounds Bounds => bounds;
+    public BoundsInt BoundsInt => boundsInt;
     
     private void Awake()
     {
@@ -36,14 +37,6 @@ public class TilePlacer : MonoBehaviour
     private void OnDisable()
     {
         editorState.EditorChanged -= OnEditorChanged;
-    }
-
-    private void Update()
-    {
-        var outlineTransform = tilemapBoundsOutline.rectTransform;
-        outlineTransform.position = spaceUtility.WorldToCanvas(bounds.center, outlineTransform);
-        outlineTransform.sizeDelta = spaceUtility.WorldToCanvas(bounds.max, outlineTransform) -
-                                     spaceUtility.WorldToCanvas(bounds.min, outlineTransform);
     }
 
     public void PlaceTile(Vector2Int position, TileData tile)
@@ -122,13 +115,12 @@ public class TilePlacer : MonoBehaviour
 
     private void CompressBounds()
     {
-        tilemapBoundsOutline.gameObject.SetActive(tilemaps.Count > 0);
-
         bounds = default;
+        boundsInt = default;
         
         if (tilemaps.Count == 0) return;
         
-        bounds = WorldBounds(tilemaps.Values.First()); 
+        boundsInt = tilemaps.Values.First().cellBounds; 
         
         foreach (var tilemap in tilemaps.Values)
         {
@@ -140,10 +132,16 @@ public class TilePlacer : MonoBehaviour
             {
                 composite.GenerateGeometry();
             }
-            
-            bounds.Encapsulate(WorldBounds(tilemap));
+
+            var tilemapBounds = tilemap.cellBounds;
+
+            boundsInt.SetMinMax(
+                Vector3Int.Min(boundsInt.min, tilemapBounds.min),
+                Vector3Int.Max(boundsInt.max, tilemapBounds.max));
         }
 
+        bounds = new(spaceUtility.Grid.transform.TransformPoint(boundsInt.center), boundsInt.size);
+        
         Vector2 wallSize = new(wallThickness, bounds.size.y + wallHeightBuffer); 
         
         leftWall.transform.position = new Vector2(bounds.min.x - wallThickness / 2f, bounds.center.y + wallHeightBuffer / 2f);
@@ -154,12 +152,6 @@ public class TilePlacer : MonoBehaviour
 
         bottomHazard.transform.position = new Vector2(bounds.center.x, bounds.min.y - wallThickness / 2f);
         bottomHazard.size = new(bounds.size.x, wallThickness);
-    }
-
-    private static Bounds WorldBounds(Tilemap tilemap)
-    {
-        var localBounds = tilemap.localBounds;
-        return new(tilemap.transform.TransformPoint(localBounds.center), localBounds.size);
     }
     
     private Tilemap GetTilemap(TileData tileData)

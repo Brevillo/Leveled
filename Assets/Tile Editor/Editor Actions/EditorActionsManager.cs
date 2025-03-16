@@ -7,6 +7,8 @@ public class EditorActionsManager : GameService
     [SerializeField] private List<EditorAction> editorActions;
     [SerializeField] private GameStateManager gameStateManager;
 
+    public List<EditorAction> EditorActions => editorActions;
+    
     protected override void Initialize()
     {
         EnableAll();

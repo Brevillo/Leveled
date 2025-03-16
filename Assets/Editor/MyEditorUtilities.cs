@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -47,5 +48,74 @@ public static class MyEditorUtilities
         }
         
         return null;
+    }
+    
+    public static bool FindManager<TManager>(ref TManager manager, out string errorMessage)
+        where TManager : Object
+    {
+        errorMessage = "";
+        
+        // already has manager
+        if (manager != null)
+        {
+            return true;
+        }
+
+        var managerGUIDs = AssetDatabase.FindAssets($"t:{typeof(TManager).Name}");
+        
+        switch (managerGUIDs.Length)
+        {
+            // no managers found
+            case 0:
+                errorMessage = $"No {typeof(TManager).Name} found!";
+                return false;
+            
+            // multiple managers found
+            case > 1:
+                errorMessage = $"Multiple {typeof(TManager).Name}s found!";
+                return false;
+            
+            // found manager asset
+            default:
+                string path = AssetDatabase.GUIDToAssetPath(managerGUIDs[0]);
+                manager = AssetDatabase.LoadAssetAtPath<TManager>(path);
+                return true;
+        }
+    }
+
+    public static void DefaultManagerGUI<TManager>(
+        ref TManager manager, 
+        Func<TManager, bool> managerContains, 
+        Action<TManager> addToManager) 
+        where TManager : Object
+    {
+        EditorGUILayout.Space();
+
+        bool onManager = FindManager(ref manager, out var errorMessage)
+                         && managerContains.Invoke(manager);
+
+        // display connected manager
+        if (onManager)
+        {
+            GUI.enabled = false;
+            EditorGUILayout.ObjectField($"{typeof(TManager).Name}", manager, typeof(TManager), false);
+            GUI.enabled = true;
+        }
+
+        // error message
+        else if (errorMessage != "")
+        {
+            EditorGUILayout.HelpBox(errorMessage, MessageType.Error, true);
+        }
+
+        // prompt to add service to manager
+        else if (GUILayout.Button($"Add to {typeof(TManager).Name}"))
+        {
+            addToManager.Invoke(manager);
+            EditorUtility.SetDirty(manager);
+
+            AssetDatabase.SaveAssets();
+        }
+
     }
 }

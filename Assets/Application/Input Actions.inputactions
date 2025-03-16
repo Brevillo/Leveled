@@ -693,7 +693,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Close Settings",
+                    "name": "Close Menu",
                     "type": "Button",
                     "id": "fc2372b4-c790-4e5c-b3c9-91583ee0bf8a",
                     "expectedControlType": "",
@@ -1279,50 +1279,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Two Modifiers",
-                    "id": "dd8acef7-80f8-49bf-9899-c9807d55b0b9",
-                    "path": "TwoModifiers(overrideModifiersNeedToBePressedFirst=true)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier1",
-                    "id": "c4416aba-7dd3-4392-a9c0-fbde4a3a2f03",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier2",
-                    "id": "e81fd238-15a9-4dd5-8caf-3cad2a4f178d",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "ecd75d17-82ec-4c51-b058-aef435e8ec1c",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "Ctrl+Y",
                     "id": "ad5a4dcd-a319-4d09-878a-891701ce5830",
                     "path": "OneModifier",
@@ -1347,6 +1303,72 @@
                 {
                     "name": "binding",
                     "id": "2b933da9-4474-476e-8589-226fdbc26cc5",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Left Cmd + Y",
+                    "id": "5aa12b90-8413-46a9-8751-190c2e43c8a4",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "4cbba56c-0061-4354-a82c-4d9fa2fd01de",
+                    "path": "<Keyboard>/leftMeta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "b82d4624-4f1a-4573-9e32-c3c2b0522015",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right Cmd + Y",
+                    "id": "b8964ae1-e68f-41cb-a3b0-e4d75120fd75",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "76c53fd9-f701-48e6-97b2-65c56279fc8c",
+                    "path": "<Keyboard>/rightMeta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "64249691-6fd8-4f8a-b745-be8469b1af32",
                     "path": "<Keyboard>/y",
                     "interactions": "",
                     "processors": "",
@@ -1560,7 +1582,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Close Settings",
+                    "action": "Close Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

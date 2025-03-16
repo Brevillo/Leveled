@@ -11,7 +11,7 @@ public class ToolbarBlackboard : ScriptableObject
     public bool selectionOutlineActive;
     public BoundsInt selection;
     
-    public Vector3 hoverSelectionCenter;
-    public Vector2 hoverSelectionSize;
+    public BoundsInt hoverSelection;
     public bool hoverSelectionActive;
+    public bool snapHoverSelection;
 }

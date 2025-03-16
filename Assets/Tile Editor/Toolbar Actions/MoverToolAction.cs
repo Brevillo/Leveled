@@ -13,11 +13,12 @@ public class MoverToolAction : ToolbarAction
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-
+    
     protected override void OnPressed()
     {
         Vector2 delta = Input.mousePositionDelta * 4f;
-        SpaceUtility.Camera.transform.position -= SpaceUtility.Camera.ScreenToWorldPoint(delta) - SpaceUtility.Camera.ScreenToWorldPoint(Vector3.zero);
+        SpaceUtility.Camera.transform.position -= SpaceUtility.Camera.ScreenToWorldPoint(delta) -
+                                                  SpaceUtility.Camera.ScreenToWorldPoint(Vector3.zero);
 
         mousePosition += delta;
     }
@@ -36,5 +37,7 @@ public class MoverToolAction : ToolbarAction
             || viewportPosition.y > 1
                 ? SpaceUtility.Camera.ViewportToScreenPoint(Vector2.one / 2f)
                 : mousePosition);
+
+        blackboard.snapHoverSelection = true;
     }
 }

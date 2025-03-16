@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
@@ -39,9 +40,16 @@ public class ToolbarActionsManager : MonoBehaviour
             toolbarAction.InjectReferences(blackboard);
         }
 
-        primaryToolInput.Init(this, ToolSide.Primary);
-        secondaryToolInput.Init(this, ToolSide.Secondary);
-        tertiaryToolInput.Init(this, ToolSide.Tertiary);
+        var toolInputs = new List<ToolInput>
+        {
+            primaryToolInput,
+            secondaryToolInput,
+            tertiaryToolInput,
+        };
+        
+        primaryToolInput.Init(this, toolInputs, ToolSide.Primary);
+        secondaryToolInput.Init(this, toolInputs, ToolSide.Secondary);
+        tertiaryToolInput.Init(this, toolInputs, ToolSide.Tertiary);
     }
 
     private void OnEnable()
@@ -119,17 +127,20 @@ public class ToolbarActionsManager : MonoBehaviour
 
         private ToolbarActionsManager manager;
         private ToolSide toolSide;
+        [NonSerialized]
+        private List<ToolInput> allToolInputs;
         
         private bool pressed;
-
+        
         private ToolbarAction Action => overrideAction != null
             ? overrideAction
             : manager.editorState.ActiveTool;
 
-        public void Init(ToolbarActionsManager manager, ToolSide toolSide)
+        public void Init(ToolbarActionsManager manager, List<ToolInput> allToolInputs, ToolSide toolSide)
         {
             this.manager = manager;
             this.toolSide = toolSide;
+            this.allToolInputs = allToolInputs.Where(input => input != this).ToList();
         }
         
         public void Enable()
@@ -146,7 +157,12 @@ public class ToolbarActionsManager : MonoBehaviour
 
         private void OnToolDown(InputAction.CallbackContext context)
         {
-            if (manager.editorState.PointerOverUI || manager.gameStateManager.GameState != GameState.Editing) return;
+            if (manager.editorState.PointerOverUI
+                || manager.gameStateManager.GameState != GameState.Editing
+                || allToolInputs.Exists(input => input.pressed))
+            {
+                return;
+            }
 
             pressed = true;
             
@@ -158,6 +174,12 @@ public class ToolbarActionsManager : MonoBehaviour
 
         public void Update()
         {
+            if (manager.gameStateManager.GameState != GameState.Editing)
+            {
+                pressed = false;
+                return;
+            }
+            
             if (pressed && Action != null)
             {
                 Action.InputPressed(toolSide);

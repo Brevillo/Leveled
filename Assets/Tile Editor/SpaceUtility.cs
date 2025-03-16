@@ -156,6 +156,9 @@ public class SpaceUtility : ScriptableObject
             Mathf.LerpUnclamped(min.x, max.x, anchor.x),
             Mathf.LerpUnclamped(min.y, max.y, anchor.y));
     }
+
+    public Vector3 GetBoundsIntCenterCanvas(BoundsInt bounds, RectTransform rectTransform) =>
+        WorldToCanvas(GetBoundsIntCenterWorld(bounds), rectTransform); // cell -> world -> canvas
     
     #endregion
     

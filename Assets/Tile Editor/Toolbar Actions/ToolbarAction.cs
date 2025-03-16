@@ -28,11 +28,19 @@ public abstract class ToolbarAction : ScriptableObject
     protected ToolSide activeToolSide;
     protected Vector2Int dragStart;
 
-    protected Vector3 SelectionCenter => (SpaceUtility.MouseCellCenterWorld + SpaceUtility.CellToWorld(dragStart)) / 2f;
-    protected Vector2 SelectionSize => new Vector2(
-        Mathf.Abs(SpaceUtility.MouseCell.x - dragStart.x) + 1,
-        Mathf.Abs(SpaceUtility.MouseCell.y - dragStart.y) + 1);
+    protected BoundsInt Selection
+    {
+        get
+        {
+            Vector2Int current = SpaceUtility.MouseCell;
 
+            Vector2Int min = Vector2Int.Min(current, dragStart);
+            Vector2Int max = Vector2Int.Max(current, dragStart);
+            
+            return new((Vector3Int)min, (Vector3Int)(max - min + Vector2Int.one));
+        }
+    }
+    
     public void InjectReferences(ToolbarBlackboard blackboard)
     {
         this.blackboard = blackboard;
@@ -77,10 +85,14 @@ public abstract class ToolbarAction : ScriptableObject
 
     public void Update()
     {
-        blackboard.hoverSelectionSize = Vector2.one;
-        blackboard.hoverSelectionCenter = SpaceUtility.MouseCellCenterWorld;
+        blackboard.hoverSelection = new BoundsInt((Vector3Int)SpaceUtility.MouseCell, Vector3Int.one);
 
         OnUpdate();
+    }
+
+    public void Cancel()
+    {
+        OnCancel();
     }
     
     protected virtual void OnActivated() { }
@@ -89,4 +101,5 @@ public abstract class ToolbarAction : ScriptableObject
     protected virtual void OnPressed() { }
     protected virtual void OnReleased() { }
     protected virtual void OnUpdate() { }
+    protected virtual void OnCancel() { }
 }

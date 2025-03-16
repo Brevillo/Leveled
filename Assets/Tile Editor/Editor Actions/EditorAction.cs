@@ -14,8 +14,20 @@ public class EditorAction : ScriptableObject
     [SerializeField] private UnityEvent action;
     public event Action Action;
 
-    public string Keymap =>
-        inputActionReference != null ? inputActionReference.action.bindings[0].ToDisplayString() : "";
+    public string Keymap
+    {
+        get
+        {
+            if (inputActionReference == null) return "";
+
+            string bindingDisplay = inputActionReference.action.bindings[0].ToDisplayString();
+
+            if (bindingDisplay.Length > 1) return "";
+
+            return bindingDisplay;
+        }
+    }
+
     public Sprite IconSprite => icon;
     public string Tooltip => tooltip;
     

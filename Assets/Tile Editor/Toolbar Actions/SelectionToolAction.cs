@@ -54,14 +54,14 @@ public class SelectionToolAction : ToolbarAction
                 state = State.Selecting;
                         
                 break;
-                    
+            
             case State.Selected:
 
                 if (blackboard.selection.Contains((Vector3Int)dragStart))
                 {
                     state = State.MovingSelection;
                 }
-                        
+                
                 break;
         }
         
@@ -76,17 +76,14 @@ public class SelectionToolAction : ToolbarAction
         switch (state)
         {
             case State.Selecting:
-                
-                blackboard.hoverSelectionCenter = SelectionCenter;
-                blackboard.hoverSelectionSize = SelectionSize;
+
+                blackboard.hoverSelection = Selection;
                 
                 break;
             
             case State.MovingSelection:
                 
-                blackboard.hoverSelectionCenter = blackboard.selection.center + SpaceUtility.MouseCellCenterWorld -
-                                                  SpaceUtility.CellToWorld(dragStart);
-                blackboard.hoverSelectionSize = (Vector3)blackboard.selection.size;
+                blackboard.hoverSelection = blackboard.selection;
                 
                 break;
             
@@ -95,11 +92,10 @@ public class SelectionToolAction : ToolbarAction
                 if (!selectionCopied) break;
                 
                 Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection);
-                blackboard.hoverSelectionCenter = SpaceUtility.SnapWorldToCell(
-                    (Vector2)(SpaceUtility.MouseWorld - selectionCenterOffset)
-                    + Vector2.one / 2f) + selectionCenterOffset;
-                
-                blackboard.hoverSelectionSize = (Vector3)blackboard.selection.size;
+                blackboard.hoverSelection = new(
+                    (Vector3Int)(SpaceUtility.WorldToCell((Vector2)(SpaceUtility.MouseWorld - selectionCenterOffset) + 
+                                                          Vector2.one / 2f) - (Vector2Int)blackboard.selection.size / 2),
+                    blackboard.selection.size);
                 
                 break;
         }
