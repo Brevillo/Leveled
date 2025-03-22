@@ -4,12 +4,19 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 
 public interface ISaveSystem<TData>
 {
     public string ActiveSaveName { get; }
     
     public TData ActiveSaveData { get; }
+    
+    public bool FolderChosen { get; }
     
     public string FolderPath { get; set; }
 
@@ -26,55 +33,66 @@ public interface ISaveSystem<TData>
     public void CreateNewSave(string name);
 
     public void Delete(string name);
+
+    public event Action FolderUpdated;
 }
 
-public abstract class SaveSystem<TData> : ISaveSystem<TData>
+public interface IPlayerPrefResettable
 {
-    private readonly string extension;
-    private readonly string lastFolderPathPrefKey;
+    public void ResetPlayerPrefs();
+}
+
+public abstract class SaveSystem<TData>
+    : ScriptableObject, ISaveSystem<TData>, IPlayerPrefResettable
+{
+    [SerializeField] private string extension;
+    [SerializeField] private string lastFolderPathPrefKey;
     
     private DirectoryInfo directory;
     
     private string activeSaveName;
     private TData activeSaveData;
     
-    protected SaveSystem(string extension, string lastFolderPathPrefKey)
-    {
-        this.extension = extension;
-        this.lastFolderPathPrefKey = lastFolderPathPrefKey;
-
-        string folderPath = PlayerPrefs.GetString(lastFolderPathPrefKey, string.Empty);
-        if (folderPath != string.Empty)
-        {
-            FolderPath = folderPath;
-        }
-    }
-
     public string ActiveSaveName => activeSaveName;
 
     public TData ActiveSaveData => activeSaveData;
-    
-    public string FolderPath
+
+    public bool FolderChosen => Directory != null;
+
+    private void UpdateDirectory(string name)
     {
-        get => directory?.FullName ?? string.Empty;
-        set
+        if (name == string.Empty || (directory != null && directory.FullName == name)) return;
+        
+        PlayerPrefs.SetString(lastFolderPathPrefKey, name);
+        
+        directory = new(name);
+        directory.Create();
+        FolderUpdated?.Invoke();
+    }
+    
+    private DirectoryInfo Directory
+    {
+        get
         {
-            directory = new DirectoryInfo(value);
-            PlayerPrefs.SetString(lastFolderPathPrefKey, value);
-            
-            if (!directory.Exists)
-            {
-                directory.Create();
-            }
+            UpdateDirectory(PlayerPrefs.GetString(lastFolderPathPrefKey));
+            return directory;
         }
     }
 
-    public string[] AllSaveNames => directory?.GetFiles()
-        .Where(file => file != null && file.Extension == extension)
-        .Select(file => Path.GetFileNameWithoutExtension(file.FullName))
-        .ToArray() ?? Array.Empty<string>();
+    public string FolderPath
+    {
+        get => FolderChosen ? Directory.FullName : string.Empty;
+        set => UpdateDirectory(value);
+    }
 
-    public bool IsValidName(string name) => directory != null && File.Exists(FilePath(name));
+    public string[] AllSaveNames => FolderChosen 
+        ? Directory.GetFiles()
+            .Where(file => file != null && file.Extension == extension)
+            .Select(file => Path.GetFileNameWithoutExtension(file.FullName))
+            .ToArray()
+        : Array.Empty<string>();
+
+    public bool IsValidName(string name) => FolderChosen && File.Exists(FilePath(name));
     
     public bool TryLoad(string name, out TData data)
     {
@@ -87,7 +105,7 @@ public abstract class SaveSystem<TData> : ISaveSystem<TData>
 
     public TData Load(string name)
     {
-        if (directory == null) return default;
+        if (!FolderChosen) return default;
         
         if (!IsValidName(name))
         {
@@ -97,16 +115,16 @@ public abstract class SaveSystem<TData> : ISaveSystem<TData>
         activeSaveName = name;
         activeSaveData = GetSaveData(activeSaveName);
         
-        activeSaveData = OnFileAccessed(activeSaveData);
+        OnFileAccessed(ref activeSaveData);
         
         return activeSaveData;
     }
     
     public void SaveActiveSave(TData data)
     {
-        if (directory == null) return;
+        if (!FolderChosen) return;
         
-        OnFileAccessed(data);
+        OnFileAccessed(ref data);
 
         activeSaveData = data;
         string json = JsonConvert.SerializeObject(data);
@@ -116,14 +134,14 @@ public abstract class SaveSystem<TData> : ISaveSystem<TData>
 
     public void CreateNewSave(string name)
     {
-        if (directory == null) return;
+        if (!FolderChosen) return;
 
         activeSaveName = name;
     }
     
     public void Delete(string name)
     {
-        if (directory == null) return;
+        if (!FolderChosen) return;
         
         File.Delete(FilePath(name));
 
@@ -134,11 +152,15 @@ public abstract class SaveSystem<TData> : ISaveSystem<TData>
         }
     }
 
-    protected virtual TData OnFileAccessed(TData data) => data;
+    public event Action FolderUpdated;
+
+    #region Internals
+    
+    protected virtual void OnFileAccessed(ref TData data) { }
 
     protected TData GetSaveData(string name)
     {
-        if (directory == null) return default;
+        if (!FolderChosen) return default;
         
         string path = FilePath(name);
 
@@ -148,36 +170,34 @@ public abstract class SaveSystem<TData> : ISaveSystem<TData>
         return JsonConvert.DeserializeObject<TData>(json);
     }
     
-    private string FilePath(string name) => $"{directory.FullName}/{name}{extension}";
-}
-
-public class LeveledSaveSystem : SaveSystem<LevelData>
-{
-    public LeveledSaveSystem(string extension, string lastFolderPathPrefKey) 
-        : base(extension, lastFolderPathPrefKey)
-    { }
-
-    protected override LevelData OnFileAccessed(LevelData data)
+    private string FilePath(string name) => $"{Directory.FullName}/{name}{extension}";
+    
+    void IPlayerPrefResettable.ResetPlayerPrefs()
     {
-        // Update last time accessed
-        data.lastTimeAccessed = DateTime.Now;
-        
-        // Compute grid size
-        Vector2Int min = Vector2Int.one * int.MaxValue;
-        Vector2Int max = Vector2Int.one * int.MinValue;
-        
-        foreach (var position in data.positions)
-        {
-            min = Vector2Int.Min(min, position);
-            max = Vector2Int.Max(max, position);
-        }
-
-        data.gridSize = max - min;
-
-        return data;
+        PlayerPrefs.DeleteKey(lastFolderPathPrefKey);
     }
-
-    public string[] RecentSaves => AllSaveNames
-        .OrderByDescending(save => GetSaveData(save).lastTimeAccessed)
-        .ToArray();
+    
+    #endregion
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(SaveSystem<>), true)]
+public class SaveSystemEditor : Editor
+{
+    public override VisualElement CreateInspectorGUI()
+    {
+        var root = new VisualElement();
+        
+        InspectorElement.FillDefaultInspector(root, serializedObject, this);
+        
+        root.Add(new Button(((IPlayerPrefResettable)target).ResetPlayerPrefs)
+        {
+            text = "Reset Folder Pref Data",
+        });
+
+        return root;
+    }
+}
+
+#endif

@@ -16,6 +16,7 @@ public enum AutosaveOptions
 
 public class SaveDataManager : MonoBehaviour
 {
+    [SerializeField] private LeveledSaveSystem saveSystem;
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private GameTilePalette palette;
     [SerializeField] private GameStateManager gameStateManager;
@@ -29,26 +30,23 @@ public class SaveDataManager : MonoBehaviour
     [SerializeField] private Transform levelSelectionOptionsParent;
     [SerializeField] private CameraMovement cameraMovement;
     
-    private LeveledSaveSystem saveSystem;
     
     private float autosaveTimer;
 
-    private List<LevelSelectOption> levelSelectOptionInstances;
+    private readonly List<LevelSelectOption> levelSelectOptionInstances = new();
     
     private AutosaveOptions AutosaveOption => (AutosaveOptions)autosaveSetting.Value;
     
-    private void Awake()
+    private void OnEnable()
     {
-        levelSelectOptionInstances = new();
-
-        saveSystem = new(".level", "LastFolderPath");
-        
         changelog.ChangeEvent += OnChangeEvent;
+        saveSystem.FolderUpdated += OnFolderUpdated;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         changelog.ChangeEvent -= OnChangeEvent;
+        saveSystem.FolderUpdated -= OnFolderUpdated;
     }
 
     private void OnChangeEvent(ChangeInfo changeInfo)
@@ -59,12 +57,16 @@ public class SaveDataManager : MonoBehaviour
         }
     }
 
+    private void OnFolderUpdated()
+    {
+        RefreshLevels();
+        LoadLevel(saveSystem.RecentSaves.FirstOrDefault());
+    }
+
     private void Start()
     {
         gameStateManager.SetGameStateWithNotify(GameState.Editing);
-        
-        RefreshLevels();
-        LoadLevel(saveSystem.RecentSaves.FirstOrDefault());
+        OnFolderUpdated();
     }
 
     private void Update()

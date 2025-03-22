@@ -19,9 +19,20 @@ public class EditorActionButton : MonoBehaviour
         
         if (editorAction == null) return;
 
-        if (editorAction.IconSprite != null) icon.sprite = editorAction.IconSprite;
-        if (keymap != null) keymap.text = editorAction.Keymap;
-        if (uiTooltip != null) uiTooltip.Contents = editorAction.Tooltip;
+        if (editorAction.IconSprite != null && icon != null)
+        {
+            icon.sprite = editorAction.IconSprite;
+        }
+
+        if (keymap != null)
+        {
+            keymap.text = editorAction.Keymap;
+        }
+
+        if (uiTooltip != null)
+        {
+            uiTooltip.Contents = editorAction.Tooltip;
+        }
         
         if (button == null)
         {
