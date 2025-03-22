@@ -11,7 +11,8 @@ Made by Oliver Beebe
     - Eraser
     - Rectangle brush
     - Tile picker
-    - Tile selection and movement
+    - Tile selection with move/copy/cut/paste
+    - Fill tool
   - Select primary and secondary tile while drawing for left/right click
   - Linking groups
     - Link tiles like doors, keys, etc.
