@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70ef134034e141e58317ffaa2bcc0db, type: 3}
   m_Name: Picker Tool Action
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 5cdf31d2055f24678be9cb48f50b4996, type: 3}
   defaultHoverSelectionActive: 1
-  keymap: I
-  tooltip: Tile Picker
-  editorAction: {fileID: 11400000, guid: a9c4c7a0dea8440c49a6d997acadef6a, type: 2}
+  changelogMessage: 
+  toolName: Picker

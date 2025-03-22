@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHoverSelectionActive: 1
   changelogMessage: Erased tiles
+  toolName: Eraser

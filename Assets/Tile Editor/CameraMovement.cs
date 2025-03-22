@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public class CameraMovement : MonoBehaviour
@@ -19,6 +20,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float minPlaySize;
     [SerializeField] private float playMoveSpeed;
     [SerializeField] private float playSizeBuffer;
+    [SerializeField] private float cameraSnapBufferMult;
 
     private float zoomTarget;
     private float zoomVelocity;
@@ -109,7 +111,8 @@ public class CameraMovement : MonoBehaviour
         if (gameStateManager.GameState == GameState.Playing) return;
         
         transform.position = placer.Bounds.center;
-        SetSize(placer.Bounds.size);
+
+        SetSize(placer.Bounds.size * cameraSnapBufferMult);
     }
 
     private float GetZoomForSize(Vector2 size) => Mathf.Max(size.y, size.x * (Screen.height * mainCamera.rect.height) / (Screen.width * mainCamera.rect.width)) / 2f;

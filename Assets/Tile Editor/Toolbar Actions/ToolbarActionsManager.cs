@@ -89,6 +89,12 @@ public class ToolbarActionsManager : MonoBehaviour
     {
         switch (changeInfo)
         {
+            case AreaSelectionChangeInfo areaSelectionChangeInfo:
+
+                blackboard.selection = areaSelectionChangeInfo.newValue;
+                
+                break;
+            
             case ToolbarChangeInfo toolbarChangeInfo:
 
                 if (toolbarChangeInfo.newValue == toolbarChangeInfo.previousValue) break;
@@ -109,6 +115,8 @@ public class ToolbarActionsManager : MonoBehaviour
                 {
                     recentBrushType = toolbarChangeInfo.newValue;
                 }
+
+                blackboard.Deselect();
                 
                 break;
             

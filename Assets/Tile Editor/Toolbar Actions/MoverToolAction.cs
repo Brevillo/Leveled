@@ -21,6 +21,8 @@ public class MoverToolAction : ToolbarAction
                                                   SpaceUtility.Camera.ScreenToWorldPoint(Vector3.zero);
 
         mousePosition += delta;
+
+        blackboard.hoverSelection = new((Vector3Int)SpaceUtility.ScreenToCell(mousePosition), Vector3Int.one);
     }
 
     protected override void OnReleased()
@@ -38,6 +40,7 @@ public class MoverToolAction : ToolbarAction
                 ? SpaceUtility.Camera.ViewportToScreenPoint(Vector2.one / 2f)
                 : mousePosition);
 
-        blackboard.snapHoverSelection = true;
+        blackboard.hoverSelection = new((Vector3Int)SpaceUtility.ScreenToCell(mousePosition), Vector3Int.one);
+        // blackboard.snapHoverSelection = true;
     }
 }

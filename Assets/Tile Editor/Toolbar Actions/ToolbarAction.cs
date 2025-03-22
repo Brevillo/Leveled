@@ -8,6 +8,7 @@ public abstract class ToolbarAction : ScriptableObject
     
     [SerializeField] private bool defaultHoverSelectionActive = true;
     [SerializeField] protected string changelogMessage;
+    [SerializeField] private string toolName;
     
     protected ToolbarBlackboard blackboard;
 
@@ -15,20 +16,12 @@ public abstract class ToolbarAction : ScriptableObject
     protected TileEditorState EditorState => blackboard.editorState;
     protected TilePlacer TilePlacer => blackboard.tilePlacer;
     protected LinkingGroupSetter LinkingGroupSetter => blackboard.linkingGroupSetter;
-
-    protected BoundsInt GetCurrentSelection()
-    {
-        Vector2Int dragEnd = SpaceUtility.MouseCell;
-        Vector2Int min = Vector2Int.Min(dragStart, dragEnd);
-        Vector2Int max = Vector2Int.Max(dragStart, dragEnd);
-
-        return new((Vector3Int)min, (Vector3Int)(max - min) + Vector3Int.one);
-    }
+    public string ToolName => toolName;
     
     protected ToolSide activeToolSide;
     protected Vector2Int dragStart;
 
-    protected BoundsInt Selection
+    protected BoundsInt CurrentSelection
     {
         get
         {
@@ -37,7 +30,7 @@ public abstract class ToolbarAction : ScriptableObject
             Vector2Int min = Vector2Int.Min(current, dragStart);
             Vector2Int max = Vector2Int.Max(current, dragStart);
             
-            return new((Vector3Int)min, (Vector3Int)(max - min + Vector2Int.one));
+            return new((Vector3Int)min, (Vector3Int)(max - min) + Vector3Int.one);
         }
     }
     
@@ -48,15 +41,13 @@ public abstract class ToolbarAction : ScriptableObject
     
     public void Activate()
     {
-        blackboard.selectionOutlineActive = false;
         blackboard.hoverSelectionActive = defaultHoverSelectionActive;
-        
+
         OnActivated();
     }
 
     public void Deactivate()
     {
-        OnDeactivated();
     }
     
     public void InputDown(ToolSide toolSide)
@@ -89,17 +80,10 @@ public abstract class ToolbarAction : ScriptableObject
 
         OnUpdate();
     }
-
-    public void Cancel()
-    {
-        OnCancel();
-    }
     
-    protected virtual void OnActivated() { }
-    protected virtual void OnDeactivated() { }
     protected virtual void OnDown() { }
     protected virtual void OnPressed() { }
     protected virtual void OnReleased() { }
     protected virtual void OnUpdate() { }
-    protected virtual void OnCancel() { }
+    protected virtual void OnActivated() { }
 }

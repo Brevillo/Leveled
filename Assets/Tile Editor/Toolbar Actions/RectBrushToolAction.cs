@@ -7,7 +7,7 @@ public class RectBrushToolAction : ToolbarAction
 {
     protected override void OnPressed()
     {
-        blackboard.hoverSelection = Selection;
+        blackboard.hoverSelection = CurrentSelection;
     }
 
     protected override void OnReleased()

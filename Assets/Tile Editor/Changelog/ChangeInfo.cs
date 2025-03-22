@@ -60,7 +60,7 @@ public class TileChangeInfo : ChangeInfo
 public class ToolbarChangeInfo : ValueChangeInfo<ToolbarAction>
 {
     public ToolbarChangeInfo(ToolbarAction previousValue, ToolbarAction newValue) : base(previousValue, newValue,
-        $"Changed active tool to {newValue}")
+        $"Changed tool to {(newValue != null ? newValue.ToolName : "None")}")
     {
     }
 
@@ -104,4 +104,14 @@ public class ShowPlayerPositionRecordingChangeInfo : ValueChangeInfo<bool>
     }
 
     public override ChangeInfo Reverted => new ShowPlayerPositionRecordingChangeInfo(newValue, previousValue);
+}
+
+public class AreaSelectionChangeInfo : ValueChangeInfo<BoundsInt>
+{
+    public AreaSelectionChangeInfo(BoundsInt previousValue, BoundsInt newValue, string description) : 
+        base(previousValue, newValue, description)
+    {
+    }
+
+    public override ChangeInfo Reverted => new AreaSelectionChangeInfo(newValue, previousValue, description);
 }

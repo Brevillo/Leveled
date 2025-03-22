@@ -6,7 +6,7 @@ public class LinkerToolAction : ToolbarAction
 {
     protected override void OnReleased()
     {
-        var selection = GetCurrentSelection();
+        var selection = CurrentSelection;
         
         var boundsIntAnchorWorld = SpaceUtility.GetBoundsIntAnchorWorld(selection, new Vector2(0.5f, 0f));
         

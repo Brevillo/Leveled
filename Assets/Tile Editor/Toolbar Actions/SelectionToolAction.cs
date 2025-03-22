@@ -1,23 +1,21 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = CreateMenuPath + "Selection", order = CreateMenuOrder)]
 public class SelectionToolAction : ToolbarAction
 {
     [SerializeField] private string pasteChangelogMessage;
     [SerializeField] private string cutChangelogMessage;
+    [SerializeField] private string selectionChangelogMessage;
     
-    private bool selectionCopied;
     private State state;
 
     private Vector2Int clipboardAnchor;
     private List<Vector2Int> clipboardPositions;
     private List<TileData> clipboardTiles;
 
-    protected Vector2Int CopySelectionMin
+    private Vector2Int CopySelectionMin
     {
         get
         {
@@ -34,8 +32,13 @@ public class SelectionToolAction : ToolbarAction
     {
         None,
         Selecting,
-        Selected,
         MovingSelection,
+        Copied,
+    }
+
+    protected override void OnActivated()
+    {
+        state = State.None;
     }
 
     protected override void OnDown()
@@ -43,32 +46,26 @@ public class SelectionToolAction : ToolbarAction
         if (activeToolSide == ToolSide.Secondary)
         {
             state = State.None;
+            blackboard.Deselect();
+            
             return;
         }
-        
-        selectionCopied = false;
 
         switch (state)
         {
             case State.None:
-
-                state = State.Selecting;
-                        
-                break;
-            
-            case State.Selected:
-
-                if (blackboard.selection.Contains((Vector3Int)dragStart))
-                {
-                    state = State.MovingSelection;
-                }
+                
+                state = blackboard.selection.Contains((Vector3Int)dragStart)
+                    ? State.MovingSelection
+                    : State.Selecting;
                 
                 break;
-        }
-        
-        if (state != State.MovingSelection || !blackboard.selection.Contains((Vector3Int)SpaceUtility.MouseCell))
-        {
-            state = State.Selecting;
+            
+            case State.Copied:
+
+                Paste();
+
+                break;
         }
     }
 
@@ -78,7 +75,7 @@ public class SelectionToolAction : ToolbarAction
         {
             case State.Selecting:
 
-                blackboard.hoverSelection = Selection;
+                blackboard.hoverSelection = CurrentSelection;
                 
                 break;
             
@@ -88,16 +85,12 @@ public class SelectionToolAction : ToolbarAction
                 
                 break;
             
-            case State.Selected:
-
-                if (!selectionCopied) break;
+            case State.Copied:
                 
                 blackboard.hoverSelection = new((Vector3Int)CopySelectionMin, blackboard.selection.size);
                 
                 break;
         }
-
-        blackboard.selectionOutlineActive = state is State.Selected or State.MovingSelection && !selectionCopied;
     }
 
     protected override void OnReleased()
@@ -106,15 +99,15 @@ public class SelectionToolAction : ToolbarAction
         {
             case State.Selecting:
 
-                blackboard.selection = GetCurrentSelection();
+                blackboard.SetSelection(CurrentSelection, selectionChangelogMessage);
 
-                state = State.Selected;
+                state = State.None;
                         
                 break;
                         
             case State.MovingSelection:
 
-                state = State.Selected;
+                state = State.None;
 
                 if (dragStart == SpaceUtility.MouseCell) break;
 
@@ -140,9 +133,9 @@ public class SelectionToolAction : ToolbarAction
                 EditorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection");
                 EditorState.SetTiles(destinationPositions, originTiles, "Filled new selection");
 
-                EditorState.EndChangeBundle();
+                blackboard.SetSelection(new BoundsInt(blackboard.selection.position + (Vector3Int)delta, blackboard.selection.size), "Moved selection");
 
-                blackboard.selection.position += (Vector3Int)delta;
+                EditorState.EndChangeBundle();
 
                 break;
         }
@@ -150,7 +143,12 @@ public class SelectionToolAction : ToolbarAction
 
     public void Cut()
     {
-        if (state != State.Selected) return;
+        if (blackboard.selection == default) return;
+
+        if (EditorState.ActiveTool != this)
+        {
+            EditorState.ActiveTool = this;
+        }
 
         Copy();
 
@@ -160,9 +158,14 @@ public class SelectionToolAction : ToolbarAction
     
     public void Copy()
     {
-        if (state != State.Selected) return;
+        if (blackboard.selection == default) return;
+
+        if (EditorState.ActiveTool != this)
+        {
+            EditorState.ActiveTool = this;
+        }
         
-        selectionCopied = true;
+        state = State.Copied;
         clipboardAnchor = (Vector2Int)blackboard.selection.position;
 
         clipboardPositions ??= new();
@@ -180,7 +183,7 @@ public class SelectionToolAction : ToolbarAction
 
     public void Paste()
     {
-        if (!selectionCopied) return;
+        if (state != State.Copied) return;
         
         Vector2Int delta = CopySelectionMin - clipboardAnchor;
 

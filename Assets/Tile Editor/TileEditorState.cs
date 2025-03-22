@@ -77,7 +77,7 @@ public class TileEditorState : GameService
         changeInfoBundleDescription = "";
     }
 
-    private void SendEditorChange(ChangeInfo changeInfo, bool logChange = true)
+    public void SendEditorChange(ChangeInfo changeInfo, bool logChange = true)
     {
         if (changeInfoBundle != null)
         {

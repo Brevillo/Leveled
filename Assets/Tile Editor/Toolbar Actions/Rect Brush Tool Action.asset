@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultHoverSelectionActive: 1
   changelogMessage: Rectangle brushed tiles
+  toolName: Rectangle Brush

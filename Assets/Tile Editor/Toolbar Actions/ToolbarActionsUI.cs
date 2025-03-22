@@ -12,11 +12,10 @@ public class ToolbarActionsUI : MonoBehaviour
     [SerializeField] private ToolbarBlackboard blackboard;
     [SerializeField] private TilePlacer tilePlacer;
     
-    private void Update()
+    private void LateUpdate()
     {
         selectionOutline.SetSize(blackboard.selection);
-        selectionOutline.gameObject.SetActive(
-            blackboard.selectionOutlineActive && gameStateManager.GameState == GameState.Editing);
+        selectionOutline.gameObject.SetActive(blackboard.selection != default && gameStateManager.GameState == GameState.Editing);
 
         hoverSelection.SetSize(blackboard.hoverSelection, blackboard.snapHoverSelection);
         blackboard.snapHoverSelection = false;
