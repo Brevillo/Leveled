@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: -4299738433961196397, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Area Selection
-  icon: {fileID: 21300000, guid: e232293144c334355ad890b442ceda84, type: 3}
+  icon: {fileID: 21300000, guid: e4397b81fa0ff4232ae436b9ec940c99, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

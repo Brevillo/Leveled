@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: -7031780089602342550, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Fill
-  icon: {fileID: 21300000, guid: f209d307c53454f18b7bd97d7aa7944c, type: 3}
+  icon: {fileID: 21300000, guid: 0cb293f5f8a6e41eca8898afb930da17, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

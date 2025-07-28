@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: 5222893082748276061, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: New Level
-  icon: {fileID: 21300000, guid: ca390dc339d11409e845925d67c498d6, type: 3}
+  icon: {fileID: 21300000, guid: 6e78c385cc2a043ce8de761ef8c4ef84, type: 3}
   action:
     m_PersistentCalls:
       m_Calls: []

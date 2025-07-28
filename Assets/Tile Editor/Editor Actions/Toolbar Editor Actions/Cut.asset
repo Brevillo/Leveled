@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: -1169245088181495166, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Cut
-  icon: {fileID: 21300000, guid: 9664193408d4a40808c140f2b5f600cf, type: 3}
+  icon: {fileID: 21300000, guid: 56d1c98626e1b4d4cb9edae237a8cbaa, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

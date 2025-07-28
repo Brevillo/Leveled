@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: 5922512543285584395, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Tile Brush
-  icon: {fileID: 21300000, guid: 09d5cca6941bf437f91219a722ed386d, type: 3}
+  icon: {fileID: 21300000, guid: cbe17fc65a2a2471894d499be4873bea, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

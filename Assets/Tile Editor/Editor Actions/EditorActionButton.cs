@@ -1,3 +1,4 @@
+using OliverBeebe.UnityUtilities.Runtime.Settings;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,7 @@ public class EditorActionButton : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI keymap;
     [SerializeField] private UITooltip uiTooltip;
+    [SerializeField] private BoolSetting showKeymap;
     
     private Button button;
 
@@ -48,6 +50,12 @@ public class EditorActionButton : MonoBehaviour
     private void OnEnable()
     {
         SetEditorAction(editorAction);
+
+        if (showKeymap != null)
+        {
+            showKeymap.ValueChanged += OnShowKeymapValueChanged;
+            OnShowKeymapValueChanged(showKeymap.Value);
+        }
     }
 
     private void OnDisable()
@@ -56,5 +64,15 @@ public class EditorActionButton : MonoBehaviour
         {
             button.onClick.RemoveListener(editorAction.InvokeAction);
         }
+
+        if (showKeymap != null)
+        {
+            showKeymap.ValueChanged -= OnShowKeymapValueChanged;
+        }
+    }
+
+    private void OnShowKeymapValueChanged(bool show)
+    {
+        keymap.enabled = show;
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: -8351880888790116396, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Tile Eraser
-  icon: {fileID: 21300000, guid: bdd98a38453104da2b90a926e2961177, type: 3}
+  icon: {fileID: 21300000, guid: c9ae7f9bfe93b4b2c97efa4dcdca32dc, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

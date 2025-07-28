@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 3873963159433751797}
-  selectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  regularColor: {r: 0.15, g: 0.15, b: 0.15, a: 1}
+  selectedColor: {r: 1, g: 1, b: 1, a: 1}
+  regularColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
   editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   editorActionButton: {fileID: 7259592298358094959}

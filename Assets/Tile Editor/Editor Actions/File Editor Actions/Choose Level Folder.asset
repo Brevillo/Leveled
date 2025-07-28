@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: 8373932535240449686, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Open Folder
-  icon: {fileID: 21300000, guid: 890e3610bde7144549aad2fb1140cf33, type: 3}
+  icon: {fileID: 21300000, guid: cd3bbc60aaaa84fc781ea6d3f8abb7d5, type: 3}
   action:
     m_PersistentCalls:
       m_Calls: []

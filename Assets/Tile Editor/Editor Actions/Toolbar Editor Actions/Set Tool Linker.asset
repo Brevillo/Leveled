@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: 7827135941089432492, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Change Tile Linking Groups
-  icon: {fileID: 21300000, guid: 6a1858b690a5a4a639075deb62b1fa59, type: 3}
+  icon: {fileID: 21300000, guid: 03618de7aea614aaebe2291ed6ecf18c, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:

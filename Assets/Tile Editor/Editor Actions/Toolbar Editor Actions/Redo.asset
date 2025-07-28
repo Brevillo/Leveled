@@ -15,7 +15,7 @@ MonoBehaviour:
   inputActionReference: {fileID: 636539296121372984, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validGameStates: 1
   tooltip: Redo
-  icon: {fileID: -5451898403754682318, guid: ed8e2232bf1fc48aba84aa6969fbd4ad, type: 3}
+  icon: {fileID: 21300000, guid: 4e07a52049c9047e790e8dacc1979ea5, type: 3}
   action:
     m_PersistentCalls:
       m_Calls:
