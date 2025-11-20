@@ -447,8 +447,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveInput: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   runSpeed: 12
-  groundAccel: 150
-  groundDeccel: 200
+  groundAccel: 100
+  groundDeccel: 100
   airAccel: 100
   airDeccel: 150
   jumpInput: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
