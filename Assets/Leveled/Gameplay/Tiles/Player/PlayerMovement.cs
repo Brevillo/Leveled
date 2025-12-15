@@ -58,10 +58,19 @@ public class PlayerMovement : MonoBehaviour
     
     private StateMachine stateMachine;
 
+    private bool immobilized;
+
     private int WallDirection 
         => rightWall.Touching ? 1
         : leftWall.Touching ? -1
         : 0;
+
+    public void Immobilize(bool immobilized)
+    {
+        this.immobilized = immobilized;
+        
+        stateMachine.Reset();
+    }
     
     private Vector2 MoveInput
     {
@@ -127,6 +136,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (immobilized) return;
+        
         jumpBuffer.Buffer(jumpInput.action.WasPerformedThisFrame());
         
         stateMachine.Update(Time.deltaTime);
