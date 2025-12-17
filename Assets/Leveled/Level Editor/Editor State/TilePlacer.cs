@@ -38,25 +38,6 @@ public class TilePlacer : MonoBehaviour
         editorState.EditorChanged -= OnEditorChanged;
     }
 
-    public void PlaceTile(Vector2Int position, TileData tile)
-    {
-        var selfTilemap = GetTilemap(tile);
-
-        if (!tile.IsEmpty && selfTilemap != null)
-        {
-            selfTilemap.SetTile((Vector3Int)position, tile.gameTile.TileBase);
-        }
-
-        foreach (var tilemap in tilemaps.Values)
-        {
-            if (tilemap == selfTilemap) continue;
-    
-            tilemap.SetTile((Vector3Int)position, null);
-        }
-        
-        CompressBounds();
-    }
-
     public void PlaceTiles(Vector2Int[] positions, TileData[] tiles)
     {
         var tilemapGroups = Enumerable.Range(0, positions.Length)

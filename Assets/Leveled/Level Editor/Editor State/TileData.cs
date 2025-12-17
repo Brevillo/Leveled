@@ -17,9 +17,9 @@ public readonly struct TileData
         this.linkingGroup = linkingGroup;
     }
 
-    public bool IsEmpty => gameTile == null || gameTile.TileBase == null;
-
     public bool Linkable => gameTile != null && gameTile.Linkable;
 
+    public bool IsEmpty => gameTile == null || gameTile.IsNullTileBase;
+    
     public static TileData Empty => default;
 }

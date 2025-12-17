@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -116,6 +119,45 @@ public static class MyEditorUtilities
 
             AssetDatabase.SaveAssets();
         }
-
     }
+    
+    public static bool SelectionIsPrefabsWithComponent<T>()
+        => Selection.objects.Length > 0 && Selection.objects
+            .All(obj => obj is GameObject go 
+                        && go.TryGetComponent(out T _)
+                        && PrefabUtility.IsPartOfPrefabAsset(go));
+
+    public static void CreateScriptableObjectFromAssetSelection<TAsset, TScriptableObject>(
+        Action<TAsset, TScriptableObject> setupAction,
+        Func<TAsset, string> namingScheme)
+        where TAsset : Object
+        where TScriptableObject : ScriptableObject
+    {
+        List<Object> createdScriptableObjects = new();
+        
+        foreach (var guid in Selection.assetGUIDs)
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<TAsset>(AssetDatabase.GUIDToAssetPath(guid));
+
+            if (asset == null) continue;
+            
+            var scriptableObject = ScriptableObject.CreateInstance<TScriptableObject>();
+            setupAction.Invoke(asset, scriptableObject);
+            
+            string selectionPath = AssetDatabase.GUIDToAssetPath(guid);
+            string assetPath = $"{Path.GetDirectoryName(selectionPath)}/{namingScheme.Invoke(asset)}.asset";
+
+            if (AssetDatabase.AssetPathExists(assetPath))
+            {
+                Debug.LogWarning($"{typeof(TScriptableObject).Name} already exists for {asset.name}!");
+                continue;
+            }
+            
+            createdScriptableObjects.Add(scriptableObject);
+            AssetDatabase.CreateAsset(scriptableObject, assetPath);
+        }
+
+        Selection.objects = createdScriptableObjects.ToArray();
+    }
+
 }

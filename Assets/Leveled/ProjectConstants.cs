@@ -10,4 +10,7 @@ public static class ProjectConstants
     public const string ToolbarActionsFolder = ProjectFolder + "Toolbar Actions/";
 
     public const string ToolMenuItems = ProjectFolder + "Tools/";
+
+    public const string CreateAssetMenuValidators = "Assets/Validators/";
+    public const int CreateAssetMenuValidatorsPriority = -10000;
 }

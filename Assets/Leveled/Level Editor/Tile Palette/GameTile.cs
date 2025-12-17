@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,12 +14,17 @@ public class GameTile : ScriptableObject
 
     public int ID => id;
     public Sprite PaletteIcon => paletteIcon;
-    public TileBase TileBase => tileBase;
     public Tilemap TilemapPrefab => tilemapPrefab;
     public string Tooltip => tooltip;
     public bool Linkable => linkable;
-    
+
+    public bool IsNullTileBase => TileBase == null;
+
+    public TileBase TileBase => tileBase is TileBaseFactory factory
+        ? factory.TileBase
+        : tileBase;
+
     public static string NullableToString(GameTile tile) => tile != null
-        ? tile.Tooltip 
+        ? tile.Tooltip
         : "null";
 }
