@@ -47,7 +47,8 @@ public class BrushToolAction : ToolbarAction
     {
         if (DrawingTile != null && DrawingTile.Linkable)
         {
-            LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup => SetTiles(new(DrawingTile, linkingGroup)));
+            var tile = DrawingTile;
+            LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup => SetTiles(new(tile, linkingGroup)));
         }
         else
         {

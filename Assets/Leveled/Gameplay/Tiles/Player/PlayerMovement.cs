@@ -1,9 +1,6 @@
-using System;
-using System.ComponentModel;
 using OliverBeebe.UnityUtilities.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -48,13 +45,6 @@ public class PlayerMovement : MonoBehaviour
     private Checkpoint checkpoint;
 
     private int extraJumpsUsed;
-    
-    private Grounded grounded;
-    private Jumping jumping;
-    private Falling falling;
-    private WallJumping wallJumping;
-    private WallSliding wallSliding;
-    private DoubleJumping doubleJumping;
     
     private StateMachine stateMachine;
 
@@ -127,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnBounced(BounceParams bounceParams)
     {
-        stateMachine.ChangeState(falling);
+        stateMachine.ChangeState<Falling>();
         extraJumpsUsed = 0;
         
         rigidbody.MovePosition(bounceParams.SnapPosition(rigidbody.position));
@@ -145,81 +135,71 @@ public class PlayerMovement : MonoBehaviour
 
     private void InitStateMachine()
     {
-        grounded = new(this);
-        jumping = new(this);
-        falling = new(this);
-        wallJumping = new(this);
-        wallSliding = new(this);
-        doubleJumping = new(this);
-
-        TransitionDelegate
+        stateMachine = new();
+        
+        TransitionCondition
 
             canGround = () => ground.Touching,
 
             canJump = () => jumpBuffer && ground.Touching,
-            canCoyoteJump = () => jumpBuffer && stateMachine.PreviousState == grounded && stateMachine.StateDuration < coyoteTime,
+            canCoyoteJump = () => jumpBuffer && stateMachine.PreviousState is Grounded && stateMachine.StateDuration < coyoteTime,
             canDoubleJump = () => jumpBuffer && extraJumpsUsed < maxExtraJumps,
             canEndJump = () => rigidbody.linearVelocityY <= 0,
 
             canWalljump = () => WallDirection != 0 && jumpBuffer,
             canEndWalljump = () => stateMachine.StateDuration > walljumpNoTurnDuration
-                                   || rigidbody.linearVelocityY <= 0,
+                                  || rigidbody.linearVelocityY <= 0,
 
             canWallSlide = () => WallDirection != 0 && WallDirection == MoveInput.x && !ground.Touching,
             canEndWallSlide = () => WallDirection == 0 || Sign0(MoveInput.x) == -WallDirection,
 
             canFall = () => !ground.Touching;
-
-        Transition toWalljump = new(wallJumping, canWalljump);
         
-        stateMachine = new(
-            firstState: grounded,
-            new()
-            {
-                { grounded, new()
-                {
-                    new(jumping, canJump),
-                    new(falling, canFall),
-                }},
-                
-                { jumping, new()
-                {
-                    new(falling, canEndJump),
-                    toWalljump,
-                }},
-                
-                { doubleJumping, new()
-                {
-                    new(falling, canEndJump),
-                    toWalljump,
-                }},
-                
-                { falling, new()
-                {
-                    new(jumping, canCoyoteJump),
-                    new(grounded, canGround),
-                    toWalljump,
-                    new(wallSliding, canWallSlide),
-                    new(doubleJumping, canDoubleJump),
-                }},
-                
-                { wallJumping, new()
-                {
-                    new(grounded, canGround),
-                    new(falling, canEndWalljump),
-                }},
-                
-                { wallSliding, new()
-                {
-                    new(falling, canEndWallSlide),
-                    toWalljump,
-                    new(grounded, canGround),
-                }},
-            });
+        stateMachine.AddState<Grounded>(new())
+            .AddTransition<Jumping>(canJump)
+            .AddTransition<Falling>(canFall);
+        
+        stateMachine.AddState<Jumping>(new())
+            .AddTransition<Falling>(canEndJump)
+            .AddTransition<WallJumping>(canWalljump);
+        
+        stateMachine.AddState<DoubleJumping>(new())
+            .AddTransition<Falling>(canEndJump)
+            .AddTransition<WallJumping>(canWalljump);
+
+        stateMachine.AddState<Falling>(new())
+            .AddTransition<Jumping>(canCoyoteJump)
+            .AddTransition<Grounded>(canGround)
+            .AddTransition<WallJumping>(canWalljump)
+            .AddTransition<WallSliding>(canWallSlide)
+            .AddTransition<DoubleJumping>(canDoubleJump);
+        
+        stateMachine.AddState<WallJumping>(new())
+            .AddTransition<Grounded>(canGround)
+            .AddTransition<Falling>(canEndWalljump);
+
+        stateMachine.AddState<WallSliding>(new())
+            .AddTransition<Falling>(canEndWallSlide)
+            .AddTransition<WallJumping>(canWalljump)
+            .AddTransition<Grounded>(canGround);
+
+        foreach (var state in stateMachine.stateGraph)
+        {
+            ((State)state.behavior).Initialize(this);
+        }
+        
+        stateMachine.SetDefaultState<Grounded>();
     }
 
-    private class State : State<PlayerMovement>
+    private class State : IStateBehavior
     {
+        public void Initialize(PlayerMovement context)
+        {
+            this.context = context;
+        }
+        
+        protected PlayerMovement context;
+        
         protected float VelocityX
         {
             get => context.rigidbody.linearVelocityX;
@@ -232,8 +212,6 @@ public class PlayerMovement : MonoBehaviour
             set => context.rigidbody.linearVelocityY = value;
         }
         
-        public State(PlayerMovement context) : base(context) { }
-
         protected void Run(float accel, float deccel) =>
             Run(accel, deccel, context.MoveInput.x);
 
@@ -243,12 +221,16 @@ public class PlayerMovement : MonoBehaviour
 
         protected void Fall(float gravity) => 
             VelocityY = Mathf.MoveTowards(VelocityY, -context.maxFallSpeed, gravity * Time.deltaTime);
+
+        public virtual void Enter() { }
+        public virtual void Update() { }
+        public virtual void Exit() { }
+
+        public float StateDuration { get; set; }
     }
     
     private class Grounded : State
     {
-        public Grounded(PlayerMovement context) : base(context) { }
-
         public override void Enter()
         {
             base.Enter();
@@ -266,8 +248,6 @@ public class PlayerMovement : MonoBehaviour
     
     private class Jumping : State
     {
-        public Jumping(PlayerMovement context) : base(context) { }
-
         public override void Enter()
         {
             base.Enter();
@@ -292,8 +272,6 @@ public class PlayerMovement : MonoBehaviour
 
     private class DoubleJumping : Jumping
     {
-        public DoubleJumping(PlayerMovement context) : base(context) { }
-
         public override void Enter()
         {
             base.Enter();
@@ -306,8 +284,6 @@ public class PlayerMovement : MonoBehaviour
     
     private class Falling : State
     {
-        public Falling(PlayerMovement context) : base(context) { }
-
         public override void Update()
         {
             Run(context.airAccel, context.airDeccel);
@@ -319,8 +295,6 @@ public class PlayerMovement : MonoBehaviour
     
     private class WallJumping : State
     {
-        public WallJumping(PlayerMovement context) : base(context) { }
-
         public override void Enter()
         {
             base.Enter();
@@ -359,8 +333,6 @@ public class PlayerMovement : MonoBehaviour
     
     private class WallSliding : State
     {
-        public WallSliding(PlayerMovement context) : base(context) { }
-
         public override void Enter()
         {
             base.Enter();

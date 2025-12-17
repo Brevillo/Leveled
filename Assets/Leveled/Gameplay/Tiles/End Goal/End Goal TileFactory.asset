@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
   m_Name: End Goal TileFactory
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  previewTileSprite: {fileID: 0}
+  prefab: {fileID: 6975368122123404394, guid: df4987c3f01a94499a1c6ecc88cc9001, type: 3}
+  previewTileSprite: {fileID: -9101949836599852325, guid: a426adae705094ed59e581b019007c76, type: 3}
   prefabSpawnerPrefab: {fileID: 6057428776556928874, guid: 90349452163624e659bcaa399a4e6df4, type: 3}

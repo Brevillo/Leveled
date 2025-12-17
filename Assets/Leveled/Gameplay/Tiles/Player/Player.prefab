@@ -406,6 +406,7 @@ GameObject:
   - component: {fileID: 8012699874280804015}
   - component: {fileID: 1888088828187024256}
   - component: {fileID: 7521762912566250812}
+  - component: {fileID: 4592391329724680804}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -601,6 +602,20 @@ MonoBehaviour:
   recordInterval: 0.01
   minDistance: 0.1
   recording: {fileID: 11400000, guid: 3e67fb73b365c4fa9bb11daa114bf06b, type: 2}
+--- !u!114 &4592391329724680804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4706571802681261726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc7f501936c34ba2959913a1811d11dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teams:
+  - Player
 --- !u!1 &7671478318461534003
 GameObject:
   m_ObjectHideFlags: 0

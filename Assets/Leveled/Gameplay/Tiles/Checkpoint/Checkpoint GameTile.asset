@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   paletteIcon: {fileID: 21300000, guid: 966c0510a50064dbe8099aaf986c4ac0, type: 3}
-  tileBase: {fileID: 11400000, guid: 430c122d2a31849b6a795b0525b26832, type: 2}
+  tileBase: {fileID: 11400000, guid: 801ecdc6e180746d1a6d6eb68c31d59d, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Checkpoint
   linkable: 0

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
-  m_Name: Checkpoint TileFactory
+  m_Name: Thwomp TileFactory
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8464604153204394415, guid: 11d90bd5b082b43c19b723451568306a, type: 3}
-  previewTileSprite: {fileID: 21300000, guid: 966c0510a50064dbe8099aaf986c4ac0, type: 3}
+  prefab: {fileID: 2859683549599696478, guid: 0ccad76fdf1914a06b3eea7636706b50, type: 3}
+  previewTileSprite: {fileID: 1268485005462236661, guid: a3d1ce82d09064fbba81af656926cdf2, type: 3}
   prefabSpawnerPrefab: {fileID: 6057428776556928874, guid: 90349452163624e659bcaa399a4e6df4, type: 3}

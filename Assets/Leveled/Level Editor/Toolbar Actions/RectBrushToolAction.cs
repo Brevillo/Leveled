@@ -18,7 +18,7 @@ public class RectBrushToolAction : ToolbarAction
             ToolSide.Secondary => EditorState.SecondaryTile,
             _ => null,
         };
-            
+        
         Vector2Int dragEnd = SpaceUtility.MouseCell;
         Vector2Int min = Vector2Int.Min(dragStart, dragEnd);
         Vector2Int max = Vector2Int.Max(dragStart, dragEnd);

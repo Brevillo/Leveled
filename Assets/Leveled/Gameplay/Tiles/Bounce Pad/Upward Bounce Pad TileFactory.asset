@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
   m_Name: Upward Bounce Pad TileFactory
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  previewTileSprite: {fileID: 0}
+  prefab: {fileID: 4808804451769082295, guid: be821cc38ecd34472a3a2cf19a4248c5, type: 3}
+  previewTileSprite: {fileID: -1728379928979949314, guid: 34802f8b2678144be989279b2295ecd6, type: 3}
   prefabSpawnerPrefab: {fileID: 6057428776556928874, guid: 90349452163624e659bcaa399a4e6df4, type: 3}
