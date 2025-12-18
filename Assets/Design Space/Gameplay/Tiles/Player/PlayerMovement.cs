@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float coyoteTime;
     [SerializeField] private BufferTimer jumpBuffer;
     [SerializeField] private CollisionAggregate2D ground;
+    [SerializeField] private SoundEffect jumpSound;
 
     [Header("Walljumping")]
     [SerializeField] private float walljumpHeight;
@@ -265,6 +266,8 @@ public class PlayerMovement : MonoBehaviour
             context.rigidbody.linearVelocityY = Mathf.Sqrt(2f * context.jumpHeight * context.jumpGravity);
             
             context.jumpBuffer.Reset();
+            
+            context.jumpSound.Play();
         }
 
         public override void Update()

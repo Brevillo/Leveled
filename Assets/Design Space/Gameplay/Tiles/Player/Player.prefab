@@ -469,6 +469,7 @@ MonoBehaviour:
   jumpBuffer:
     threshold: 0.1
   ground: {fileID: 8889760176166310530}
+  jumpSound: {fileID: 11400000, guid: b9ecd1b1ccd7e485b8fbbac26f531c96, type: 2}
   walljumpHeight: 4
   walljumpBoost: 15
   walljumpNoTurnDuration: 0.2

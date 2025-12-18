@@ -8,13 +8,13 @@ public class SoundEffect : ScriptableObject
 {
     [SerializeField] private AudioResource audioResource;
     [SerializeField] private SFXCategory sfxCategory;
-    [SerializeField] private bool allowOverlap;
+    [SerializeField] private bool preventOverlap;
     
     private Poolable activeSource;
     
     public void Play()
     {
-        if (!allowOverlap && activeSource != null) return;
+        if (preventOverlap && activeSource != null) return;
         
         activeSource = AudioService.Instance.GetAudioSource();
         activeSource.Returned += OnActiveSourceReturned;
