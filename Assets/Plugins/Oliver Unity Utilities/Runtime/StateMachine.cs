@@ -38,6 +38,13 @@ namespace OliverBeebe.UnityUtilities.Runtime
 
         public void Update(float dt) 
         {
+            if (currentState == null)
+            {
+                Reset();
+
+                if (currentState == null) return;
+            }
+            
             stateDuration += dt;
             currentState.behavior.StateDuration = stateDuration;
             currentState.behavior.Update();
@@ -50,7 +57,7 @@ namespace OliverBeebe.UnityUtilities.Runtime
             }
 
             #if UNITY_EDITOR
-            debug = $"Current State : {currentState.GetType().Name}\nPrevious State : {previousState.GetType().Name}\nDuration : {stateDuration}";
+            debug = $"Current State : {currentState.behavior.GetType().Name}\nPrevious State : {previousState.behavior.GetType().Name}\nDuration : {stateDuration}";
             #endif
         }
 
@@ -105,20 +112,9 @@ namespace OliverBeebe.UnityUtilities.Runtime
         public float StateDuration { get; set; }
     }
 
-    public class ContextStateBehavior<T> : IStateBehavior
+    public interface IContextStateBehavior<T> : IStateBehavior
     {
-        protected T context;
-
-        public void Initialize(T context)
-        {
-            this.context = context;
-        }
-
-        public virtual void Enter() { }
-        public virtual void Update() {}
-        public virtual void Exit() { }
-
-        public float StateDuration { get; set; }
+        public T Context { get; set; }
     }
     
     public delegate bool TransitionCondition();
@@ -136,6 +132,11 @@ namespace OliverBeebe.UnityUtilities.Runtime
             var state = new State(behavior);
             stateMachine.stateGraph.Add(state);
 
+            if (stateMachine.defaultState == null)
+            {
+                stateMachine.defaultState = state;
+            }
+
             return state;
         }
         
@@ -143,8 +144,6 @@ namespace OliverBeebe.UnityUtilities.Runtime
             where T : IStateBehavior
         {
             stateMachine.defaultState = stateMachine.stateGraph.FirstOrDefault(state => state.behavior.GetType() == typeof(T));
-            
-            stateMachine.Reset();
         }
         
         public static void AddTransition<TFrom, TTo>(this StateMachine stateMachine, TransitionCondition condition) 
@@ -181,9 +180,9 @@ namespace OliverBeebe.UnityUtilities.Runtime
         {
             foreach (var state in stateMachine.stateGraph)
             {
-                if (state.behavior is ContextStateBehavior<T> behavior)
+                if (state.behavior is IContextStateBehavior<T> behavior)
                 {
-                    behavior.Initialize(context);
+                    behavior.Context = context;
                 }
             }
         }

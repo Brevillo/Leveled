@@ -15,6 +15,7 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private BoxCollider2D leftWall;
     [SerializeField] private BoxCollider2D rightWall;
     [SerializeField] private BoxCollider2D bottomHazard;
+    [SerializeField] private TilePlacerReference tilePlacerReference;
 
     private Bounds bounds;
     private BoundsInt boundsInt;
@@ -26,6 +27,8 @@ public class TilePlacer : MonoBehaviour
     private void Awake()
     {
         tilemaps = new();
+
+        tilePlacerReference.tilePlacer = this;
     }
 
     private void OnEnable()

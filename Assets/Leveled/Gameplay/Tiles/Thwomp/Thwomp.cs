@@ -8,6 +8,7 @@ public class Thwomp : MonoBehaviour
     [SerializeField] private TargetingStrategy targetingStrategy;
     [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private CollisionAggregate2D groundCheck;
+    [SerializeField] private CollisionAggregate2D ceilingCheck;
     [Header("Dropping")]
     [SerializeField] private float dropDelay;
     [SerializeField] private float dropAcceleration;
@@ -39,10 +40,10 @@ public class Thwomp : MonoBehaviour
             .AddTransition<Dropping>(() => targetingStrategy.ActiveTarget != null);
 
         stateMachine.AddState<Dropping>(new())
-            .AddTransition<Rising>(() => groundCheck.Touching);
+            .AddTransition<Rising>(() => stateMachine.StateDuration > dropDelay && groundCheck.Touching);
         
         stateMachine.AddState<Rising>(new())
-            .AddTransition<Idle>(() => transform.position.y >= startHeight);
+            .AddTransition<Idle>(() => stateMachine.StateDuration > riseDelay && (transform.position.y >= startHeight || ceilingCheck.Touching));
         
         stateMachine.InitializeAllStatesWithContext(this);
         
@@ -54,71 +55,64 @@ public class Thwomp : MonoBehaviour
         stateMachine.Update(Time.deltaTime);
     }
     
-    private class Idle : ContextStateBehavior<Thwomp>
+    private class Idle : IContextStateBehavior<Thwomp>
     {
-        public override void Enter()
-        {
-            base.Enter();
+        public float StateDuration { get; set; }
+        public Thwomp Context { get; set; }
 
-            context.rigidbody.linearVelocity = Vector2.zero;
+        public void Enter()
+        {
+            Context.rigidbody.linearVelocity = Vector2.zero;
         }
+
+        public void Update() { }
+
+        public void Exit() { }
     }
 
-    private class Dropping : ContextStateBehavior<Thwomp>
+    private class Dropping : IContextStateBehavior<Thwomp>
     {
-        private float delayTimer;
-        
-        public override void Enter()
-        {
-            base.Enter();
-            
-            delayTimer = 0f;
-        }
+        public float StateDuration { get; set; }
+        public Thwomp Context { get; set; }
 
-        public override void Update()
-        {
-            delayTimer += Time.deltaTime;
+        public void Enter() { }
 
-            if (delayTimer < context.dropDelay)
+        public void Update()
+        {
+            if (StateDuration < Context.dropDelay)
             {
                 return;
             }
 
-            context.rigidbody.linearVelocityY = Mathf.MoveTowards(
-                context.rigidbody.linearVelocityY,
-                -context.maxDropSpeed, 
-                context.dropAcceleration * Time.deltaTime);
-            
-            base.Update();
+            Context.rigidbody.linearVelocityY = Mathf.MoveTowards(
+                Context.rigidbody.linearVelocityY,
+                -Context.maxDropSpeed, 
+                Context.dropAcceleration * Time.deltaTime);
         }
+
+        public void Exit() { }
     }
 
-    private class Rising : ContextStateBehavior<Thwomp>
+    private class Rising : IContextStateBehavior<Thwomp>
     {
-        private float delayTimer;
+        public float StateDuration { get; set; }
+        public Thwomp Context { get; set; }
         
-        public override void Enter()
-        {
-            base.Enter();
-            
-            delayTimer = 0f;
-        }
+        public void Enter() { }
 
-        public override void Update()
+        public void Update()
         {
-            delayTimer += Time.deltaTime;
-
-            if (delayTimer < context.dropDelay)
+            if (StateDuration < Context.riseDelay)
             {
                 return;
             }
 
-            context.rigidbody.linearVelocityY = Mathf.MoveTowards(
-                context.rigidbody.linearVelocityY,
-                context.maxRiseSpeed, 
-                context.riseAcceleration * Time.deltaTime);
-            
-            base.Update();
+            Context.rigidbody.linearVelocityY = Mathf.MoveTowards(
+                Context.rigidbody.linearVelocityY,
+                Context.maxRiseSpeed, 
+                Context.riseAcceleration * Time.deltaTime);
         }
+
+        public void Exit() { }
     }
 }

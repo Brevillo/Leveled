@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,13 @@ public class CollisionAggregate2D : MonoBehaviour
 {
     public bool Touching => touching;
 
-    [Readonly, SerializeField] private bool touching;
-    private List<Collider2D> colliders;
+    public bool TriggerTouching => triggerTouching;
+
+    public bool CollisionTouching => collisionTouching;
+
+    [Readonly, SerializeField] private bool touching, triggerTouching, collisionTouching;
+    
+    private List<Collider2D> colliders, triggerColliders, collisionColliders;
 
     public List<Collider2D> Colliders
     {
@@ -19,22 +25,44 @@ public class CollisionAggregate2D : MonoBehaviour
         }
     }
 
+    public List<Collider2D> TriggerColliders => triggerColliders;
+
+    public List<Collider2D> CollisionColliders => collisionColliders;
+
     private void Awake()
     {
         colliders = new();
+        triggerColliders = new();
+        collisionColliders = new();
     }
+    
     private void OnTriggerStay2D(Collider2D other)
     {
         if (!colliders.Contains(other))
         {
             colliders.Add(other);
+            triggerColliders.Add(other);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (!colliders.Contains(other.collider))
+        {
+            colliders.Add(other.collider);
+            collisionColliders.Add(other.collider);
         }
     }
 
     private void FixedUpdate()
     {
         touching = colliders.Count > 0;
-
         colliders.Clear();
+
+        triggerTouching = triggerColliders.Count > 0;
+        triggerColliders.Clear();
+
+        collisionTouching = collisionColliders.Count > 0;
+        collisionColliders.Clear();
     }
 }

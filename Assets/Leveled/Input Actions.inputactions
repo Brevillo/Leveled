@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Input Actions",
     "maps": [
         {
@@ -1620,7 +1621,7 @@
                 {
                     "name": "",
                     "id": "ae0568fe-dcc9-43eb-8ca3-8e1a3b950d02",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

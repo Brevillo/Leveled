@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDeccel;
     [SerializeField] private float airAccel;
     [SerializeField] private float airDeccel;
+    [SerializeField] private HeavyObject heavyObject;
 
     [Header("Jumping")] 
     [SerializeField] private InputActionReference jumpInput;
@@ -236,6 +237,8 @@ public class PlayerMovement : MonoBehaviour
             base.Enter();
             
             context.extraJumpsUsed = 0;
+
+            context.heavyObject.grounded = true;
         }
 
         public override void Update()
@@ -243,6 +246,13 @@ public class PlayerMovement : MonoBehaviour
             Run(context.groundAccel, context.groundDeccel);
             
             base.Update();
+        }
+
+        public override void Exit()
+        {
+            context.heavyObject.grounded = false;
+
+            base.Exit();
         }
     }
     

@@ -252,6 +252,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touching: 0
+  triggerTouching: 0
+  collisionTouching: 0
 --- !u!61 &4848863250335219989
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -344,6 +346,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touching: 0
+  triggerTouching: 0
+  collisionTouching: 0
 --- !u!61 &408799753099191249
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -407,6 +411,7 @@ GameObject:
   - component: {fileID: 1888088828187024256}
   - component: {fileID: 7521762912566250812}
   - component: {fileID: 4592391329724680804}
+  - component: {fileID: 58383607053695923}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -452,6 +457,7 @@ MonoBehaviour:
   groundDeccel: 100
   airAccel: 100
   airDeccel: 150
+  heavyObject: {fileID: 58383607053695923}
   jumpInput: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   maxExtraJumps: 1
   jumpHeight: 4
@@ -545,8 +551,8 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8888889, y: 0.9444444}
-  m_EdgeRadius: 0
+  m_Size: {x: 0.6888889, y: 0.7444444}
+  m_EdgeRadius: 0.1
 --- !u!114 &6740518952160683664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,6 +622,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teams:
   - Player
+--- !u!114 &58383607053695923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4706571802681261726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0bf01801ea3c4e72b3598343c17069c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grounded: 0
 --- !u!1 &7671478318461534003
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,6 +681,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touching: 0
+  triggerTouching: 0
+  collisionTouching: 0
 --- !u!61 &1006557864518720518
 BoxCollider2D:
   m_ObjectHideFlags: 0

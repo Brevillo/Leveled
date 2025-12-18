@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
-  m_Name: Donut GameTile
+  m_Name: Coin GameTile
   m_EditorClassIdentifier: 
   id: 8
   paletteIcon: {fileID: -5697566233098705968, guid: 60bb82536ddfb4f9ebcc94acb4c992e6, type: 3}
   tileBase: {fileID: 11400000, guid: 53fc07165bd52445c9e5263cb98df1c1, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  tooltip: Donut (Collectable)
+  tooltip: Coin (Collectable)
   linkable: 0
