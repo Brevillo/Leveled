@@ -15,3 +15,4 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: Rectangle brushed tiles
   toolName: Rectangle Brush
+  placedSound: {fileID: 11400000, guid: fb103600489dd4a2e8556569099812e1, type: 2}

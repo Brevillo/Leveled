@@ -5,6 +5,8 @@ using System.Linq;
 [CreateAssetMenu(menuName = CreateMenuPath + "Rect Brush")]
 public class RectBrushToolAction : ToolbarAction
 {
+    [SerializeField] private SoundEffect placedSound;
+
     protected override void OnPressed()
     {
         blackboard.hoverSelection = CurrentSelection;
@@ -12,6 +14,8 @@ public class RectBrushToolAction : ToolbarAction
 
     protected override void OnReleased()
     {
+        placedSound.Play();
+        
         GameTile tile = activeToolSide switch
         {
             ToolSide.Primary => EditorState.PrimaryTile,

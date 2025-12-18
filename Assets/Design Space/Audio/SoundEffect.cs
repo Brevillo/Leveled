@@ -9,12 +9,17 @@ public class SoundEffect : ScriptableObject
     [SerializeField] private AudioResource audioResource;
     [SerializeField] private SFXCategory sfxCategory;
     [SerializeField] private bool preventOverlap;
+    [SerializeField] private float maxPlayFrequency;
     
     private Poolable activeSource;
+    private float lastPlayTime;
     
     public void Play()
     {
         if (preventOverlap && activeSource != null) return;
+
+        if (Time.time < lastPlayTime + maxPlayFrequency) return;
+        lastPlayTime = Time.time;
         
         activeSource = AudioService.Instance.GetAudioSource();
         activeSource.Returned += OnActiveSourceReturned;

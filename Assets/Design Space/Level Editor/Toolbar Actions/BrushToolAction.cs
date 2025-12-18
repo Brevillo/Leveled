@@ -5,6 +5,8 @@ using System;
 [CreateAssetMenu(menuName = CreateMenuPath + "Brush")]
 public class BrushToolAction : ToolbarAction
 {
+    [SerializeField] private SoundEffect placedSound;
+    
     private List<Vector2Int> brushedTiles = new();
 
     private bool inverseBrushMode;
@@ -26,6 +28,8 @@ public class BrushToolAction : ToolbarAction
         inverseBrushMode = EditorState.GetTile(SpaceUtility.MouseCell).gameTile == EditorState.PrimaryTile;
 
         previousMouseCell = SpaceUtility.MouseCell;
+        
+        placedSound.Play();
     }
 
     protected override void OnPressed()
@@ -39,6 +43,11 @@ public class BrushToolAction : ToolbarAction
         
         TilePlacer.PlaceTiles(positions, tiles);
         brushedTiles.AddRange(positions);
+        
+        if (positions.Length > 0 && current != previousMouseCell)
+        {
+            placedSound.Play();
+        }
         
         previousMouseCell = current;
     }
