@@ -12,9 +12,12 @@ public class BulletWilliamLauncher : MonoBehaviour
     [SerializeField] private List<Vector2> shootDirections;
     [SerializeField] private float shootFrequency;
     [SerializeField] private SoundEffect shootSound;
+    [SerializeField] private GameObjectRegistry bulletWilliamRegistry;
 
-    private float shootTimer;
+    private const int MaxBulletWilliamses = 30;
     
+    private float shootTimer;
+
     private void Update()
     {
         if (targetingStrategy.ActiveTarget == null)
@@ -34,6 +37,8 @@ public class BulletWilliamLauncher : MonoBehaviour
 
     private void Shoot()
     {
+        if (bulletWilliamRegistry.Count >= MaxBulletWilliamses) return;
+        
         shootSound.Play();
         
         Vector2 toTarget = targetingStrategy.ActiveTarget.transform.position - transform.position;

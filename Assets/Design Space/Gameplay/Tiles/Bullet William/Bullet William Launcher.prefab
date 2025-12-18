@@ -238,6 +238,7 @@ MonoBehaviour:
   - {x: -1, y: 0}
   shootFrequency: 1.5
   shootSound: {fileID: 11400000, guid: 336e9380c6e574164ad05a5a2786a8ee, type: 2}
+  bulletWilliamRegistry: {fileID: 11400000, guid: f2cdbc58b551f4040a47b503faaf47e1, type: 2}
 --- !u!61 &4864564852814639214
 BoxCollider2D:
   m_ObjectHideFlags: 0

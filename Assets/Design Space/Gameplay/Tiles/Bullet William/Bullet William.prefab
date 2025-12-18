@@ -99,6 +99,8 @@ GameObject:
   - component: {fileID: 4864564852814639214}
   - component: {fileID: 3296768679243060113}
   - component: {fileID: 7234019061353347657}
+  - component: {fileID: 4444778770032755240}
+  - component: {fileID: 4291204653639758594}
   m_Layer: 0
   m_Name: Bullet William
   m_TagString: Untagged
@@ -193,7 +195,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &7234019061353347657
 MonoBehaviour:
@@ -207,3 +209,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4444778770032755240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4793193494671217304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f714d44522454cd89d3d7a3d20f5c47d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registry: {fileID: 11400000, guid: f2cdbc58b551f4040a47b503faaf47e1, type: 2}
+--- !u!114 &4291204653639758594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4793193494671217304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41b7060dd6244613815ea2492451ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePlacerReference: {fileID: 11400000, guid: 3c0fbe901aae74227b864883ec25e5c1, type: 2}
