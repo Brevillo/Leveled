@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
+  m_Name: Bullet William TileFactory
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 4793193494671217304, guid: 14edac0a0576b4cfc9a719a950d0c0b2, type: 3}
+  previewTileSprite: {fileID: 3432847899485859518, guid: dc13721ba334549d685756891d72a699, type: 3}
+  prefabSpawnerPrefab: {fileID: 6057428776556928874, guid: 90349452163624e659bcaa399a4e6df4, type: 3}

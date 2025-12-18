@@ -1,3 +1,5 @@
+using UnityEditor.SearchService;
+
 public static class ProjectConstants
 {
     public const string ProjectName = "Design Space";
@@ -10,6 +12,7 @@ public static class ProjectConstants
     public const string ActionsFolder = ProjectFolder + "Editor Actions/";
     public const string ToolbarActionsFolder = ProjectFolder + "Toolbar Actions/";
     public const string AudioFolder = ProjectFolder + "Audio/";
+    public const string SettingsFolder = ProjectFolder + "Settings/";
 
     public const string ToolMenuItems = ProjectFolder + "Tools/";
 

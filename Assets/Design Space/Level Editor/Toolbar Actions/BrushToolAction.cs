@@ -9,24 +9,19 @@ public class BrushToolAction : ToolbarAction
     
     private List<Vector2Int> brushedTiles = new();
 
-    private bool inverseBrushMode;
     private Vector2Int previousMouseCell;
 
-    protected virtual GameTile DrawingTile => inverseBrushMode
-        ? null
-        : activeToolSide switch
-        {
-            ToolSide.Primary => EditorState.PrimaryTile,
-            ToolSide.Secondary => EditorState.SecondaryTile,
-            _ => null,
-        };
+    protected virtual GameTile DrawingTile => activeToolSide switch
+    {
+        ToolSide.Primary => EditorState.PrimaryTile,
+        ToolSide.Secondary => EditorState.SecondaryTile,
+        _ => null,
+    };
     
     protected override void OnDown()
     {
         brushedTiles.Clear();
         
-        inverseBrushMode = EditorState.GetTile(SpaceUtility.MouseCell).gameTile == EditorState.PrimaryTile;
-
         previousMouseCell = SpaceUtility.MouseCell;
         
         placedSound.Play();
