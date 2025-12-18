@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
-  m_Name: SFX_Player_Jump
+  m_Name: SFX_Coin_Collect
   m_EditorClassIdentifier: 
-  audioResource: {fileID: 8300000, guid: 6e12aee06e1df4749aa6b49560e66950, type: 3}
+  audioResource: {fileID: 8300000, guid: dc85ad600045b4593af52437a804d014, type: 3}
   sfxCategory: 0
   preventOverlap: 0
