@@ -18,6 +18,8 @@ public class SoundEffect : ScriptableObject
     {
         if (preventOverlap && activeSource != null) return;
 
+        if (Time.time < lastPlayTime) lastPlayTime = 0f;
+        
         if (Time.time < lastPlayTime + maxPlayFrequency) return;
         lastPlayTime = Time.time;
         

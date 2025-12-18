@@ -8,7 +8,8 @@ using UnityEngine.Tilemaps;
 public class FillToolAction : ToolbarAction
 {
     [SerializeField] private int maxIterations;
-    
+    [SerializeField] private SoundEffect placedSound;
+
     protected override void OnDown()
     {
         var tile = activeToolSide switch
@@ -39,6 +40,8 @@ public class FillToolAction : ToolbarAction
         {
             EditorState.SetTiles(fillPositions, tiles, changelogMessage);
         }
+        
+        placedSound.Play();
     }
 
     private Vector2Int[] GetFloodFillPositions(Vector2Int start)

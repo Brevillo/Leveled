@@ -16,3 +16,4 @@ MonoBehaviour:
   changelogMessage: Filled tiles
   toolName: Fill
   maxIterations: 100000
+  placedSound: {fileID: 11400000, guid: fb103600489dd4a2e8556569099812e1, type: 2}
