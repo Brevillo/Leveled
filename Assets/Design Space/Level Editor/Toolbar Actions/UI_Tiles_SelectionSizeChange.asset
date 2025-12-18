@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
   m_Name: UI_Tiles_SelectionSizeChange
   m_EditorClassIdentifier: 
-  audioResource: {fileID: 8300000, guid: 44e5c5bae9170498c978faa43b09c1ad, type: 3}
+  audioResource: {fileID: 6418180475301049370, guid: f6f151b2a083cf548b24da4a4f6a2f55, type: 2}
   sfxCategory: 1
   preventOverlap: 0
   maxPlayFrequency: 0.05
