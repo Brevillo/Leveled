@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
-  m_Name: UI_Hover
+  m_Name: Hover SoundEffect
   m_EditorClassIdentifier: 
   audioResource: {fileID: 6418180475301049370, guid: ca0b565cc5e754b788674ca674b3d76a, type: 2}
   sfxCategory: 1
-  allowOverlap: 0
+  allowOverlap: 1
