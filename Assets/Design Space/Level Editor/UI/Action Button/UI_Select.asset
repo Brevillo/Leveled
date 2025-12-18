@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
-  m_Name: Click SoundEffect
+  m_Name: UI_Select
   m_EditorClassIdentifier: 
   audioResource: {fileID: 6418180475301049370, guid: bc749cc3bd838486fb9e1414f9da8b09, type: 2}
   sfxCategory: 1
