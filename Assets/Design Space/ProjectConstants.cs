@@ -1,9 +1,10 @@
 public static class ProjectConstants
 {
-    public const string ProjectName = "Leveled";
+    public const string ProjectName = "Design Space";
 
     public const string ProjectFolder = ProjectName + "/";
-    
+
+    public const string CommonFolder = ProjectFolder + "Common/";
     public const string ContentFolder = ProjectFolder + "Content/";
     public const string ServicesFolder = ProjectFolder + "Services/";
     public const string ActionsFolder = ProjectFolder + "Editor Actions/";
