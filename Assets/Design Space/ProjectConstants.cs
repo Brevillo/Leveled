@@ -9,6 +9,7 @@ public static class ProjectConstants
     public const string ServicesFolder = ProjectFolder + "Services/";
     public const string ActionsFolder = ProjectFolder + "Editor Actions/";
     public const string ToolbarActionsFolder = ProjectFolder + "Toolbar Actions/";
+    public const string AudioFolder = ProjectFolder + "Audio/";
 
     public const string ToolMenuItems = ProjectFolder + "Tools/";
 
