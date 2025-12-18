@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
-  m_Name: Thwomp TileFactory
+  m_Name: Womp Womp TileFactory
   m_EditorClassIdentifier: 
   prefab: {fileID: 2859683549599696478, guid: 0ccad76fdf1914a06b3eea7636706b50, type: 3}
   previewTileSprite: {fileID: 1268485005462236661, guid: a3d1ce82d09064fbba81af656926cdf2, type: 3}
