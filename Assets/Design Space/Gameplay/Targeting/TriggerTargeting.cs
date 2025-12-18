@@ -7,8 +7,14 @@ public class TriggerTargeting : TargetingStrategy
 
     private void Update()
     {
-        activeTarget = collisions.Colliders
+        var validTargets = collisions.Colliders
             .Select(collider => collider.GetComponent<Targetable>())
-            .FirstOrDefault(targetable => targetable != null && TargetableFilter(targetable));
+            .Where(targetable => targetable != null && TargetableFilter(targetable))
+            .ToList();
+        
+        if (!validTargets.Contains(activeTarget) || activeTarget == null)
+        {
+            activeTarget = validTargets.FirstOrDefault();
+        }
     }
 }

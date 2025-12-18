@@ -37,7 +37,7 @@ public class Thwomp : MonoBehaviour
         stateMachine = new();
 
         stateMachine.AddState<Idle>(new())
-            .AddTransition<Dropping>(() => targetingStrategy.ActiveTarget != null);
+            .AddTransition<Dropping>(() => targetingStrategy.activeTarget != null);
 
         stateMachine.AddState<Dropping>(new())
             .AddTransition<Rising>(() => stateMachine.StateDuration > dropDelay && groundCheck.Touching);

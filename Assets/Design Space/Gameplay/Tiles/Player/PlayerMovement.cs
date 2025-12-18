@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDeccel;
     [SerializeField] private float airAccel;
     [SerializeField] private float airDeccel;
-    [SerializeField] private HeavyObject heavyObject;
 
     [Header("Jumping")] 
     [SerializeField] private InputActionReference jumpInput;
@@ -42,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private PositionRecorder positionRecorder;
     [SerializeField] private Bounceable bounceable;
+    [SerializeField] private Targetable targetable;
+    [SerializeField] private HeavyObject heavyObject;
 
     private Vector2 spawnPoint;
     private Checkpoint checkpoint;
@@ -133,6 +134,11 @@ public class PlayerMovement : MonoBehaviour
         jumpBuffer.Buffer(jumpInput.action.WasPerformedThisFrame());
         
         stateMachine.Update(Time.deltaTime);
+
+        if (MoveInput.x != 0f)
+        {
+            targetable.facingDirection = new(MoveInput.x, 0f);
+        }
     }
 
     private void InitStateMachine()

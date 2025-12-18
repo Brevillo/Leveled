@@ -20,7 +20,7 @@ public class BulletWilliamLauncher : MonoBehaviour
 
     private void Update()
     {
-        if (targetingStrategy.ActiveTarget == null)
+        if (targetingStrategy.activeTarget == null)
         {
             shootTimer = 0f;
             return;
@@ -41,7 +41,7 @@ public class BulletWilliamLauncher : MonoBehaviour
         
         shootSound.Play();
         
-        Vector2 toTarget = targetingStrategy.ActiveTarget.transform.position - transform.position;
+        Vector2 toTarget = targetingStrategy.activeTarget.transform.position - transform.position;
 
         Vector2 shootDirection = shootDirections
             .OrderByDescending(direction => Vector2.Dot(direction, toTarget))

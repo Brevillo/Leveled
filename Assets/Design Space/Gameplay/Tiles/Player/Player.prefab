@@ -469,7 +469,6 @@ MonoBehaviour:
   groundDeccel: 100
   airAccel: 100
   airDeccel: 150
-  heavyObject: {fileID: 58383607053695923}
   jumpInput: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   maxExtraJumps: 1
   jumpHeight: 4
@@ -493,6 +492,8 @@ MonoBehaviour:
   rigidbody: {fileID: 4891161871428994844}
   positionRecorder: {fileID: 7521762912566250812}
   bounceable: {fileID: 8012699874280804015}
+  targetable: {fileID: 4592391329724680804}
+  heavyObject: {fileID: 58383607053695923}
 --- !u!50 &4891161871428994844
 Rigidbody2D:
   serializedVersion: 5
@@ -635,6 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teams:
   - Player
+  facingDirection: {x: 0, y: 0}
 --- !u!114 &58383607053695923
 MonoBehaviour:
   m_ObjectHideFlags: 0

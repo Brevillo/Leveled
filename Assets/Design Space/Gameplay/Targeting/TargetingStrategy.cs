@@ -6,9 +6,7 @@ public abstract class TargetingStrategy : MonoBehaviour
 {
     [SerializeField] private List<string> targetTeams;
     
-    public Targetable ActiveTarget => activeTarget;
-    
-    protected Targetable activeTarget;
+    public Targetable activeTarget;
 
     protected bool TargetableFilter(Targetable targetable) =>
         targetTeams.Exists(team => targetable.Teams.Contains(team));
