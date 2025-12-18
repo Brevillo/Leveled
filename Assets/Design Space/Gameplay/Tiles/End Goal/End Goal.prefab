@@ -5264,6 +5264,7 @@ MonoBehaviour:
   winScreen: {fileID: 3713798372874234935}
   endDelay: 0.5
   fadeInDuration: 0.5
+  winSound: {fileID: 11400000, guid: 7d7543f1534f94834b8c09d51cf980b4, type: 2}
 --- !u!58 &3948877606131192401
 CircleCollider2D:
   m_ObjectHideFlags: 0

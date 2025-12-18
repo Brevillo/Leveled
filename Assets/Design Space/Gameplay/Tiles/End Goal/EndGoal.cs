@@ -8,6 +8,7 @@ public class EndGoal : MonoBehaviour
     [SerializeField] private CanvasGroup winScreen;
     [SerializeField] private float endDelay;
     [SerializeField] private float fadeInDuration;
+    [SerializeField] private SoundEffect winSound;
     
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -21,6 +22,8 @@ public class EndGoal : MonoBehaviour
     {
         playerMovement.Immobilize(true);
         playerMovement.GetComponent<Rigidbody2D>().linearVelocityX = 0f;
+        
+        winSound.Play();
         
         victoryParticles.Play();
 
