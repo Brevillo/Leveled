@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -22,5 +23,17 @@ public static class MenuItemUtilities
     private static void SaveAssets()
     {
         AssetDatabase.SaveAssets();
+    }
+
+    [MenuItem(ProjectConstants.ToolMenuItems + "Maximize Game View _c")]
+    private static void MaximizeGameView()
+    {
+        var gameView = Resources.FindObjectsOfTypeAll<EditorWindow>()
+            .FirstOrDefault(window => window.GetType().FullName == "UnityEditor.GameView");
+
+        if (gameView != null)
+        {
+            gameView.maximized = !gameView.maximized;
+        }
     }
 }
