@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
         if (MoveInput.x != 0f)
         {
             targetable.facingDirection = new(MoveInput.x, 0f);
-            visuals.localScale = new(MoveInput.x, 1f, 1f);
+            visuals.localScale = new(Mathf.Sign(MoveInput.x), 1f, 1f);
         }
     }
 
