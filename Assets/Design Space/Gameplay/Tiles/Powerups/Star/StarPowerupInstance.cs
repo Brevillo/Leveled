@@ -8,11 +8,13 @@ public class StarPowerupInstance : PowerupInstance
     protected override void OnActivated()
     {
         Manager.SpriteMaterial.Add(this, spriteMaterial);
+        Manager.Invinicible.Add(this, true);
     }
 
     protected override void OnDeactivated()
     {
         Manager.SpriteMaterial.Remove(this);
+        Manager.Invinicible.Remove(this);
     }
 
     private void Update()
