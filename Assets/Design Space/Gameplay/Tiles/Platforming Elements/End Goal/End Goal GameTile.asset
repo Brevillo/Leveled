@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: End Goal GameTile
   m_EditorClassIdentifier: 
   id: 9
-  paletteIcon: {fileID: -9101949836599852325, guid: a426adae705094ed59e581b019007c76, type: 3}
+  paletteIcon: {fileID: -2508215801679294386, guid: 995f4681080574e0298d6e94eabf1bc2, type: 3}
   tileBase: {fileID: 11400000, guid: 085a7d334e3c44929b5a1074c39fd5be, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: End Goal

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
-  m_Name: Teleporter GameTile
+  m_Name: Lava GameTile
   m_EditorClassIdentifier: 
-  id: 6
-  paletteIcon: {fileID: 849109395259260800, guid: 28c1c57e5f68844f5bdde8002129e813, type: 3}
-  tileBase: {fileID: 11400000, guid: 02bf4be99963b45e88abae7e7135f94a, type: 2}
-  tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  tooltip: Teleporter
-  linkable: 1
+  id: 4
+  paletteIcon: {fileID: 4150586571126316013, guid: cbed2e3e0774740549e1a2370e3cdd5d, type: 3}
+  tileBase: {fileID: 11400000, guid: 4dd2f6604a4de4518bcc47b89d606a41, type: 2}
+  tilemapPrefab: {fileID: 7211183380168987404, guid: dd8bc77b1b6c64b4f96c5547108a884c, type: 3}
+  tooltip: Lava (Hazard)
+  linkable: 0

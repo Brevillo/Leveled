@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aadf0682978a4574693629ffe018eec4
+guid: 995f4681080574e0298d6e94eabf1bc2
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,33 +72,33 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
+    defaultPivotAlignment: 0
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 0
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
+    defaultPivotAlignment: 0
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 0
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639016917282597333
+  platformSettingsDirtyTick: 639016987304394350
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,29 +123,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Art_Tile_BouncePad
-    originalName: 
-    pivot: {x: 0.50000006, y: -1.7777779}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 4
-      width: 14
-      height: 9
-    spriteID: 9b3687824377a664bbf701b39ef10e19
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
-  spriteSheetImportData:
-  - name: Art_Tile_BouncePad_0
+  - name: Art_Tile_EndGoal
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 9
@@ -155,9 +133,31 @@ ScriptedImporter:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 18
-      height: 8
-    spriteID: ff406dc9bdbe33644acb6db2a06e9881
+      width: 16
+      height: 16
+    spriteID: 74b5063aa254945d9a3901b522c34037
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  spriteSheetImportData:
+  - name: Art_Tile_EndGoal_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 228368f6113d743d6a7081c8a7604f5a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -169,25 +169,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 11485958
+      value0: 211003837
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Art_Tile_BouncePad
+    name: Art_Tile_EndGoal
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Art_Tile_BouncePad
+    - name: Art_Tile_EndGoal
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 15
-        y: 16
-        width: 18
-        height: 8
-      spriteId: 9b3687824377a664bbf701b39ef10e19
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      spriteId: 74b5063aa254945d9a3901b522c34037
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -230,5 +230,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 48, y: 48}
-  previousTextureSize: {x: 32, y: 8}
+  canvasSize: {x: 16, y: 16}
+  previousTextureSize: {x: 16, y: 16}
