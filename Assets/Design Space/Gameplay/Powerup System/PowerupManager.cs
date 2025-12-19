@@ -1,30 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PowerupManager : MonoBehaviour
 {
     [SerializeField] private Transform powerupsParent;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Damageable damageable;
     [SerializeField] private PowerupModifierPrioritizer<Material> spriteMaterial;
     [SerializeField] private PowerupModifierPrioritizer<Sprite> sprite;
+    [SerializeField] private PowerupModifierPrioritizer<bool> invinicible;
 
     public PowerupModifierPrioritizer<Material> SpriteMaterial => spriteMaterial;
     public PowerupModifierPrioritizer<Sprite> Sprite => sprite;
+    public PowerupModifierPrioritizer<bool> Invinicible => invinicible;
+
+    private void Awake()
+    {
+        spriteMaterial.Initialize();
+        sprite.Initialize();
+        invinicible.Initialize((defaultValue, powerupValues) =>
+            powerupValues.Aggregate(defaultValue, (sum, next) => sum || next.Value));
+    }
 
     private void Update()
     {
-        foreach (var prioritizer in new IPowerupModifierPrioritizer[]
-                 {
-                     spriteMaterial,
-                     sprite,
-                 })
-        {
-            prioritizer.ResolveCurrentValue();
-        }
-        
         spriteRenderer.material = spriteMaterial.CurrentValue;
         spriteRenderer.sprite = sprite.CurrentValue;
+        damageable.invincible = invinicible.CurrentValue;
     }
 
     public void AddPowerup(Powerup powerup)
@@ -35,21 +39,27 @@ public class PowerupManager : MonoBehaviour
     }
 }
 
-public interface IPowerupModifierPrioritizer
-{
-    void ResolveCurrentValue();
-}
+public delegate TValue PrioritizationFunc<TValue>(TValue defaultValue, Dictionary<PowerupInstance, TValue> powerupValues);
 
 [Serializable]
-public class PowerupModifierPrioritizer<TValue> : IPowerupModifierPrioritizer
+public class PowerupModifierPrioritizer<TValue>
 {
     [SerializeField] private PowerupModifierPrioritization prioritization;
     [SerializeField] private TValue defaultValue;
 
+    private PrioritizationFunc<TValue> prioritizationFunc;
+    
     private readonly Dictionary<PowerupInstance, TValue> powerupValues = new();
     private TValue currentValue;
 
     public TValue CurrentValue => currentValue;
+
+    public void Initialize(PrioritizationFunc<TValue> prioritizationFunc = null)
+    {
+        this.prioritizationFunc = prioritizationFunc ?? (DefaultPrioritizationFunction);
+        
+        ResolveCurrentValue();
+    }
 
     public void Add(PowerupInstance powerup, TValue value)
     {
@@ -65,9 +75,16 @@ public class PowerupModifierPrioritizer<TValue> : IPowerupModifierPrioritizer
 
     public void ResolveCurrentValue()
     {
-        currentValue = defaultValue;
+        currentValue = prioritizationFunc.Invoke(defaultValue, powerupValues);
+    }
+
+    private TValue DefaultPrioritizationFunction(
+        TValue defaultValue, 
+        Dictionary<PowerupInstance, TValue> powerupValues)
+    {
+        var currentValue = defaultValue;
         int highestPriority = int.MinValue;
-        
+
         foreach (var kv in powerupValues)
         {
             int priority = prioritization.GetPriority(kv.Key.Powerup);
@@ -78,5 +95,7 @@ public class PowerupModifierPrioritizer<TValue> : IPowerupModifierPrioritizer
                 currentValue = kv.Value;
             }
         }
+
+        return currentValue;
     }
 }

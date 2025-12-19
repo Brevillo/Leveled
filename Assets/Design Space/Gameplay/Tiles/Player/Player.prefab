@@ -218,6 +218,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  invincible: 0
 --- !u!1 &2042341679142803765
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,12 +731,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupsParent: {fileID: 5659509615421508570}
   spriteRenderer: {fileID: 3445506988179288736}
+  damageable: {fileID: 4158693922666919140}
   spriteMaterial:
     prioritization: {fileID: 11400000, guid: b229af799d35f4c409e191d2a16ef21c, type: 2}
     defaultValue: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   sprite:
     prioritization: {fileID: 11400000, guid: c94e18ec5774d4524b837b66c397c5c4, type: 2}
     defaultValue: {fileID: 6737232272589169390, guid: c5e8f966857669747b88e592c6022644, type: 3}
+  invinicible:
+    prioritization: {fileID: 0}
+    defaultValue: 0
 --- !u!1 &7671478318461534003
 GameObject:
   m_ObjectHideFlags: 0
