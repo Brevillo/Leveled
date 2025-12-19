@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
-  m_Name: Player GameTile
+  m_Name: Star GameTile
   m_EditorClassIdentifier: 
-  id: 3
-  paletteIcon: {fileID: 6737232272589169390, guid: c5e8f966857669747b88e592c6022644, type: 3}
-  tileBase: {fileID: 11400000, guid: 80dbe6948e95640ff8ecf7159cdbe72f, type: 2}
+  id: 15
+  paletteIcon: {fileID: 5357892413042959192, guid: 9481fae03570a46fab97b13f027fcbd3, type: 3}
+  tileBase: {fileID: 11400000, guid: 4c27dce27286345f5a75d6b2609ae679, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  tooltip: Player
+  tooltip: Star Powerup
   linkable: 0

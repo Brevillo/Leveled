@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("References")] 
     [SerializeField] private new Rigidbody2D rigidbody;
+    [SerializeField] private Transform visuals;
     [SerializeField] private PositionRecorder positionRecorder;
     [SerializeField] private Bounceable bounceable;
     [SerializeField] private Targetable targetable;
@@ -70,8 +71,8 @@ public class PlayerMovement : MonoBehaviour
         get
         {
             Vector2 input = moveInput.action.ReadValue<Vector2>();
-            input.x = Sign0(input.x);
-            input.y = Sign0(input.y);
+            // input.x = Sign0(input.x);
+            // input.y = Sign0(input.y);
             return input;
         }
     }
@@ -138,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
         if (MoveInput.x != 0f)
         {
             targetable.facingDirection = new(MoveInput.x, 0f);
+            visuals.localScale = new(MoveInput.x, 1f, 1f);
         }
     }
 
