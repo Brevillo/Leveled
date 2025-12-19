@@ -14,6 +14,7 @@ public class DonutPlatform : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private TilePlacerReference tilePlacerReference;
     [SerializeField] private new Collider2D collider;
+    [SerializeField] private PlatformEffector2D platformEffector;
     [Header("Visuals")] 
     [SerializeField] private Sprite normalSprite;
     [SerializeField] private Sprite triggeredSprite;
@@ -91,15 +92,21 @@ public class DonutPlatform : MonoBehaviour
     {
         public DonutPlatform Context { get; set; }
         public float StateDuration { get; set; }
-        
-        public void Enter() { }
+
+        public void Enter()
+        {
+            Context.platformEffector.enabled = true;
+        }
         
         public void Update()
         {
             Context.rigidbody.linearVelocityY = -Context.fallSpeed;
         }
 
-        public void Exit() { }
+        public void Exit()
+        {
+            Context.platformEffector.enabled = false;
+        }
     }
 
     private class Respawning : IContextStateBehavior<DonutPlatform>
