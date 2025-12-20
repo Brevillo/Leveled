@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giveCollectable: {fileID: 5347938846713730742, guid: d608f7f1f1de3433ea8a17e2dd256494, type: 3}
-  count: 10
+  count: 1
   allCollectablesGiven:
     m_PersistentCalls:
       m_Calls:
