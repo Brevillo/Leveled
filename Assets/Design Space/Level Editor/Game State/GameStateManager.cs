@@ -36,10 +36,15 @@ public class GameStateManager : ScriptableObject
         set
         {
             if (editorState == value) return;
-            
-            editorState = value;
-        
-            GameStateChanged?.Invoke(value);
+
+            SetEditorStateAndNotify(value);
         }
+    }
+
+    public void SetEditorStateAndNotify(EditorState value)
+    {
+        editorState = value;
+
+        GameStateChanged?.Invoke(value);
     }
 }

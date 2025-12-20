@@ -65,7 +65,7 @@ public class SaveDataManager : MonoBehaviour
 
     private void Start()
     {
-        gameStateManager.EditorState = EditorState.Editing;
+        gameStateManager.SetEditorStateAndNotify(EditorState.Editing);
         OnFolderUpdated();
     }
 
