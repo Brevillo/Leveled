@@ -15,3 +15,4 @@ MonoBehaviour:
   audioResource: {fileID: 8300000, guid: dc85ad600045b4593af52437a804d014, type: 3}
   sfxCategory: 0
   preventOverlap: 0
+  maxPlayFrequency: 0.05
