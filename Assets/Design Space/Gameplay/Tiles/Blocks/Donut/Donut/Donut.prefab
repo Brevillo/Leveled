@@ -84,7 +84,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3035277352086094400
@@ -143,8 +143,8 @@ MonoBehaviour:
   tilePlacerReference: {fileID: 11400000, guid: 3c0fbe901aae74227b864883ec25e5c1, type: 2}
   collider: {fileID: 2400994947296788011}
   platformEffector: {fileID: 3660539799913703772}
-  normalSprite: {fileID: -7567844679814543264, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
-  triggeredSprite: {fileID: -7207202297195394316, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
+  normalSprite: {fileID: -1554253085616129903, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
+  triggeredSprite: {fileID: -8037873815809173669, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
   spriteRenderer: {fileID: 7226985978640418993}
 --- !u!1 &5782698151577332862
 GameObject:
