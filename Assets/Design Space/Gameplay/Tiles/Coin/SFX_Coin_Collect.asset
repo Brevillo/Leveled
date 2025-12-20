@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
   m_Name: SFX_Coin_Collect
   m_EditorClassIdentifier: 
-  audioResource: {fileID: 8300000, guid: dc85ad600045b4593af52437a804d014, type: 3}
+  audioResource: {fileID: 6418180475301049370, guid: 6c84622dafc3030408dc83be75b5daa8, type: 2}
   sfxCategory: 0
   preventOverlap: 0
   maxPlayFrequency: 0.05
