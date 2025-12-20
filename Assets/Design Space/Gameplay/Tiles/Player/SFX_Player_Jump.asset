@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
   m_Name: SFX_Player_Jump
   m_EditorClassIdentifier: 
-  audioResource: {fileID: 8300000, guid: 44109f8a2e2c20743afadfe072bf5654, type: 3}
+  audioResource: {fileID: 6418180475301049370, guid: c7c85d732fecf0e40a806bba3c5dd22d, type: 2}
   sfxCategory: 0
   preventOverlap: 0
   maxPlayFrequency: 0
