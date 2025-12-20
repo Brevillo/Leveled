@@ -1,43 +1,43 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1233149941 &-8138987918351961518
+--- !u!1233149941 &-5156083978202997338
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hovers B 001_{-8138987918351961518}
-  m_AudioClip: {fileID: 8300000, guid: 4c7ed77588aa24de9b37b14836c558e1, type: 3}
+  m_Name: UI_Hover_4_{-5156083978202997338}
+  m_AudioClip: {fileID: 8300000, guid: d1c81ff0a56a32941b76a675f37ace47, type: 3}
   m_Volume: 0
   m_Enabled: 1
---- !u!1233149941 &-231314206287700335
+--- !u!1233149941 &-1032101998943935637
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hovers B 005_{-231314206287700335}
-  m_AudioClip: {fileID: 8300000, guid: fb759da29f1bd44568d5170741f88cda, type: 3}
+  m_Name: UI_Hover_5_{-1032101998943935637}
+  m_AudioClip: {fileID: 8300000, guid: a8500563bb2b129499d3a8852336be08, type: 3}
   m_Volume: 0
   m_Enabled: 1
---- !u!1233149941 &2451619878352215790
+--- !u!1233149941 &-1021244584449590573
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hovers B 003_{2451619878352215790}
-  m_AudioClip: {fileID: 8300000, guid: 96444d0de842049cc97e394d1508739f, type: 3}
+  m_Name: UI_Hover_2_{-1021244584449590573}
+  m_AudioClip: {fileID: 8300000, guid: 39c79095f431b8a45a043af953474b5f, type: 3}
   m_Volume: 0
   m_Enabled: 1
---- !u!1233149941 &2580555946081777404
+--- !u!1233149941 &1777514058536433202
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hovers B 002_{2580555946081777404}
-  m_AudioClip: {fileID: 8300000, guid: 33cbe77c86a9d4481a6bed99d553416f, type: 3}
+  m_Name: UI_Hover_1_{1777514058536433202}
+  m_AudioClip: {fileID: 8300000, guid: 3963edced14538642a27b61940c051bc, type: 3}
   m_Volume: 0
   m_Enabled: 1
 --- !u!1307931743 &6418180475301049370
@@ -52,31 +52,31 @@ AudioRandomContainer:
   m_AutomaticTriggerTime: 0
   m_LoopCount: 1
   m_VolumeRandomizationRange: {x: 0, y: 0}
-  m_PitchRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -50, y: 50}
   m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
   m_LoopCountRandomizationRange: {x: 0, y: 0}
   m_Elements:
-  - {fileID: -8138987918351961518}
-  - {fileID: 2580555946081777404}
-  - {fileID: 2451619878352215790}
-  - {fileID: 6826524900799661023}
-  - {fileID: -231314206287700335}
+  - {fileID: 1777514058536433202}
+  - {fileID: -1021244584449590573}
+  - {fileID: 6742975842337151662}
+  - {fileID: -5156083978202997338}
+  - {fileID: -1032101998943935637}
   m_AvoidRepeatingLast: 0
   m_PlaybackMode: 2
   m_TriggerMode: 0
   m_AutomaticTriggerMode: 1
   m_LoopMode: 2
   m_VolumeRandomizationEnabled: 0
-  m_PitchRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
   m_AutomaticTriggerTimeRandomizationEnabled: 0
   m_LoopCountRandomizationEnabled: 0
---- !u!1233149941 &6826524900799661023
+--- !u!1233149941 &6742975842337151662
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hovers B 004_{6826524900799661023}
-  m_AudioClip: {fileID: 8300000, guid: cade40aa809ba40208de455e02eb8b1b, type: 3}
+  m_Name: UI_Hover_3_{6742975842337151662}
+  m_AudioClip: {fileID: 8300000, guid: d55d5d3ea4fe6bc4db31c242ad2cfada, type: 3}
   m_Volume: 0
   m_Enabled: 1
