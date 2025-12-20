@@ -300,8 +300,9 @@ GameObject:
   - component: {fileID: 4229162716072966902}
   - component: {fileID: 4500762378048989696}
   - component: {fileID: 6342889054841875265}
+  - component: {fileID: 717847417823062382}
   m_Layer: 0
-  m_Name: Hazard
+  m_Name: Damage Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,6 +371,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageTypes:
+  - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+--- !u!114 &717847417823062382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6103728938930651885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4e0c075b826444882d637a77196b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceptedDamageTypes:
+  - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
+  destroyOnDamaged: 1
+  destroyTarget: {fileID: 6799291018397145350}
+  damaged:
+    m_PersistentCalls:
+      m_Calls: []
+  invincible: 0
 --- !u!1 &6799291018397145350
 GameObject:
   m_ObjectHideFlags: 0

@@ -40,6 +40,6 @@ public class EndGoal : MonoBehaviour
         
         playerMovement.Immobilize(false);
         
-        gameStateManager.GameState = GameState.Editing;
+        gameStateManager.EditorState = EditorState.Editing;
     }
 }

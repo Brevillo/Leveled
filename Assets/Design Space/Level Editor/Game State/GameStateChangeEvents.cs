@@ -7,7 +7,7 @@ public class GameStateChangeEvents : MonoBehaviour
     [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private UnityEvent enteringPlayMode;
     [SerializeField] private UnityEvent exitingPlayMode;
-    [SerializeField] private UnityEvent<GameState> gameStateChanged;
+    [SerializeField] private UnityEvent<EditorState> gameStateChanged;
     
     private void OnEnable()
     {
@@ -19,17 +19,17 @@ public class GameStateChangeEvents : MonoBehaviour
         gameStateManager.GameStateChanged -= OnGameStateChanged;
     }
 
-    private void OnGameStateChanged(GameState gameState)
+    private void OnGameStateChanged(EditorState editorState)
     {
-        gameStateChanged.Invoke(gameState);
+        gameStateChanged.Invoke(editorState);
         
-        switch (gameState)
+        switch (editorState)
         {
-            case GameState.Playing:
+            case EditorState.Playing:
                 enteringPlayMode.Invoke();
                 break;
             
-            case GameState.Editing:
+            case EditorState.Editing:
                 exitingPlayMode.Invoke();
                 break;
         }

@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 7234019061353347657}
   - component: {fileID: 4444778770032755240}
   - component: {fileID: 4291204653639758594}
+  - component: {fileID: 6074633272792113660}
   m_Layer: 0
   m_Name: Bullet William
   m_TagString: Untagged
@@ -209,6 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageTypes:
+  - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
 --- !u!114 &4444778770032755240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,3 +238,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePlacerReference: {fileID: 11400000, guid: 3c0fbe901aae74227b864883ec25e5c1, type: 2}
+--- !u!114 &6074633272792113660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4793193494671217304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4e0c075b826444882d637a77196b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceptedDamageTypes:
+  - {fileID: 11400000, guid: d22c334ad94f340d286916918d4d7763, type: 2}
+  - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
+  destroyOnDamaged: 1
+  destroyTarget: {fileID: 4793193494671217304}
+  damaged:
+    m_PersistentCalls:
+      m_Calls: []
+  invincible: 0

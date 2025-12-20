@@ -10,25 +10,24 @@ public class PowerupManager : MonoBehaviour
     [SerializeField] private Damageable damageable;
     [SerializeField] private PowerupModifierPrioritizer<Material> spriteMaterial;
     [SerializeField] private PowerupModifierPrioritizer<Sprite> sprite;
-    [SerializeField] private PowerupModifierPrioritizer<bool> invinicible;
+    [SerializeField] private PowerupModifierPrioritizer<List<DamageType>> acceptedDamageTypes;
 
     public PowerupModifierPrioritizer<Material> SpriteMaterial => spriteMaterial;
     public PowerupModifierPrioritizer<Sprite> Sprite => sprite;
-    public PowerupModifierPrioritizer<bool> Invinicible => invinicible;
+    public PowerupModifierPrioritizer<List<DamageType>> AcceptedDamageTypes => acceptedDamageTypes;
 
     private void Awake()
     {
         spriteMaterial.Initialize();
         sprite.Initialize();
-        invinicible.Initialize((defaultValue, powerupValues) =>
-            powerupValues.Aggregate(defaultValue, (sum, next) => sum || next.Value));
+        acceptedDamageTypes.Initialize();
     }
 
     private void Update()
     {
         spriteRenderer.material = spriteMaterial.CurrentValue;
         spriteRenderer.sprite = sprite.CurrentValue;
-        damageable.invincible = invinicible.CurrentValue;
+        damageable.acceptedDamageTypes = acceptedDamageTypes.CurrentValue;
     }
 
     public void AddPowerup(Powerup powerup)

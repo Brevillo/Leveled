@@ -44,13 +44,13 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        switch (gameStateManager.GameState)
+        switch (gameStateManager.EditorState)
         {
-            case GameState.Editing:
+            case EditorState.Editing:
                 EditModeCamera();
                 break;
             
-            case GameState.Playing:
+            case EditorState.Playing:
                 PlayModeCamera();
                 break;
         }
@@ -108,7 +108,7 @@ public class CameraMovement : MonoBehaviour
     
     public void CenterCameraOnLevel()
     {
-        if (gameStateManager.GameState == GameState.Playing) return;
+        if (gameStateManager.EditorState == EditorState.Playing) return;
         
         transform.position = placer.Bounds.center;
 

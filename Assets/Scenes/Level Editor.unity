@@ -1780,7 +1780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4347372806694543718, guid: a6a444a6a2f0448a98cb78d34db327da, type: 3}
       propertyPath: bindings.Array.data[1].binding.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ExitPlayMode
+      value: EnterEditMode
       objectReference: {fileID: 0}
     - target: {fileID: 4347372806694543718, guid: a6a444a6a2f0448a98cb78d34db327da, type: 3}
       propertyPath: bindings.Array.data[2].binding.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -5177,6 +5177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 727628817}
   - component: {fileID: 727628819}
+  - component: {fileID: 727628820}
   - component: {fileID: 727628818}
   m_Layer: 5
   m_Name: Version
@@ -5303,6 +5304,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727628816}
   m_CullTransparentMesh: 1
+--- !u!114 &727628820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727628816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0586f63fea4426fa39f03c5546ff1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  display: {fileID: 727628818}
+  displayFormat: Version {0}
 --- !u!1 &746749817
 GameObject:
   m_ObjectHideFlags: 0
@@ -6818,6 +6833,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageTypes: []
+  damageDealt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &942022068
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12520,26 +12539,14 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+        m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
+        m_MethodName: EnterEditMode
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12556,7 +12563,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+        m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
+        m_MethodName: StartTextInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14840,10 +14859,6 @@ PrefabInstance:
     - target: {fileID: 6848667686775525426, guid: 306b99bb3166f44e898756e62771d556, type: 3}
       propertyPath: m_Color.a
       value: 0.14901961
-      objectReference: {fileID: 0}
-    - target: {fileID: 8709682363159440918, guid: 306b99bb3166f44e898756e62771d556, type: 3}
-      propertyPath: moveSpeed
-      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -72,7 +72,7 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private void Update()
     {
-        if (gameStateManager.GameState != GameState.Editing) return;
+        if (gameStateManager.EditorState != EditorState.Editing) return;
         
         if (editorState.ActiveTool != null)
         {
@@ -166,7 +166,7 @@ public class ToolbarActionsManager : MonoBehaviour
         private void OnToolDown(InputAction.CallbackContext context)
         {
             if (manager.editorState.PointerOverUI
-                || manager.gameStateManager.GameState != GameState.Editing
+                || manager.gameStateManager.EditorState != EditorState.Editing
                 || allToolInputs.Exists(input => input.pressed))
             {
                 return;
@@ -182,7 +182,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
         public void Update()
         {
-            if (manager.gameStateManager.GameState != GameState.Editing)
+            if (manager.gameStateManager.EditorState != EditorState.Editing)
             {
                 pressed = false;
                 return;
@@ -196,7 +196,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
         private void OnToolReleased(InputAction.CallbackContext context)
         {
-            if (manager.gameStateManager.GameState != GameState.Editing) return;
+            if (manager.gameStateManager.EditorState != EditorState.Editing) return;
             
             pressed = false;
 
