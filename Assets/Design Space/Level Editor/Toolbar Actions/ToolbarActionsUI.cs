@@ -26,7 +26,7 @@ public class ToolbarActionsUI : MonoBehaviour
         previousSelectionSize = newSelectionSize;
         
         selectionOutline.SetSize(blackboard.selection);
-        selectionOutline.gameObject.SetActive(blackboard.selection != default && gameStateManager.GameState == GameState.Editing);
+        selectionOutline.gameObject.SetActive(blackboard.selection != default && gameStateManager.EditorState == EditorState.Editing);
 
         hoverSelection.SetSize(blackboard.hoverSelection, blackboard.snapHoverSelection);
         blackboard.snapHoverSelection = false;

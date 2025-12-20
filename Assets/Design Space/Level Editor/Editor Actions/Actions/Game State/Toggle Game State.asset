@@ -13,21 +13,6 @@ MonoBehaviour:
   m_Name: Toggle Game State
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 0}
-  validGameStates: -1
+  validEditorStates: 3
   tooltip: 
   icon: {fileID: 21300000, guid: 6e90087134519450584bb5dbc65eaae1, type: 3}
-  action:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
-        m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
-        m_MethodName: ToggleGameState
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

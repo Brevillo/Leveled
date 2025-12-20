@@ -32,11 +32,11 @@ public class PrefabSpawner : MonoBehaviour
         gameStateManager.GameStateChanged -= OnGameStateChanged;
     }
 
-    public void OnGameStateChanged(GameState gameState)
+    public void OnGameStateChanged(EditorState editorState)
     {
-        switch (gameState)
+        switch (editorState)
         {
-            case GameState.Editing:
+            case EditorState.Editing:
                 
                 if (prefabInstance != null)
                 {
@@ -47,7 +47,7 @@ public class PrefabSpawner : MonoBehaviour
                 
                 break;
             
-            case GameState.Playing:
+            case EditorState.Playing:
                 
                 spriteRenderer.enabled = false;
                 

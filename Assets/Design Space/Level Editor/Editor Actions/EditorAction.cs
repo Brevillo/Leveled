@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class EditorAction : ScriptableObject
 {
     [SerializeField] private InputActionReference inputActionReference;
-    [SerializeField] private GameState validGameStates = GameState.Editing;
+    [SerializeField] private EditorState validEditorStates = EditorState.Editing;
     [SerializeField] private string tooltip;
     [SerializeField] private Sprite icon;
     
@@ -56,7 +56,7 @@ public class EditorAction : ScriptableObject
 
     public void InvokeAction()
     {
-        if (!validGameStates.HasFlag(gameStateManager.GameState)) return;
+        if (!validEditorStates.HasFlag(gameStateManager.EditorState)) return;
         
         Action?.Invoke();
     }

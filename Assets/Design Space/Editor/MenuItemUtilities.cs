@@ -25,7 +25,7 @@ public static class MenuItemUtilities
         AssetDatabase.SaveAssets();
     }
 
-    [MenuItem(ProjectConstants.ToolMenuItems + "Maximize Game View _c")]
+    [MenuItem(ProjectConstants.ToolMenuItems + "Maximize Game View &c")]
     private static void MaximizeGameView()
     {
         var gameView = Resources.FindObjectsOfTypeAll<EditorWindow>()

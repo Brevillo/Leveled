@@ -65,7 +65,7 @@ public class SaveDataManager : MonoBehaviour
 
     private void Start()
     {
-        gameStateManager.SetGameStateWithNotify(GameState.Editing);
+        gameStateManager.SetEditorStateAndNotify(EditorState.Editing);
         OnFolderUpdated();
     }
 
@@ -196,7 +196,7 @@ public class SaveDataManager : MonoBehaviour
         cameraMovement.CenterCameraOnLevel();
 
         // UI
-        levelName.text = name;
+        levelName.SetTextWithoutNotify(name);
         RefreshLevels();
     }
     
@@ -223,7 +223,7 @@ public class SaveDataManager : MonoBehaviour
             
             editorState.ClearAllTiles();
             
-            levelName.text = Path.GetFileNameWithoutExtension(path);
+            levelName.SetTextWithoutNotify(Path.GetFileNameWithoutExtension(path));
             
             SaveAsNewLevel();
         });

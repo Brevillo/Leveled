@@ -133,6 +133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touching: 0
+  triggerTouching: 0
+  collisionTouching: 0
 --- !u!61 &7275557030663437616
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -177,7 +179,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 0.25}
+  m_Size: {x: 1.9, y: 0.25}
   m_EdgeRadius: 0
 --- !u!1 &1808144609010010792
 GameObject:
@@ -348,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTeams:
   - Player
+  activeTarget: {fileID: 0}
   collisions: {fileID: 6534809834309852055}
 --- !u!50 &5531390275591907590
 Rigidbody2D:
@@ -468,6 +471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touching: 0
+  triggerTouching: 0
+  collisionTouching: 0
 --- !u!61 &3573973317041004097
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -512,7 +517,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 0.25}
+  m_Size: {x: 1.9, y: 0.25}
   m_EdgeRadius: 0
 --- !u!1 &5622814922021288690
 GameObject:
@@ -525,6 +530,7 @@ GameObject:
   - component: {fileID: 3148323264716810483}
   - component: {fileID: 3138005273431691010}
   - component: {fileID: 4150736278144949207}
+  - component: {fileID: 5293018931237938956}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -605,6 +611,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageTypes:
+  - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  damageDealt:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5293018931237938956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622814922021288690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4e0c075b826444882d637a77196b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceptedDamageTypes:
+  - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
+  destroyOnDamaged: 1
+  destroyTarget: {fileID: 2859683549599696478}
+  damaged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7962677847293415594
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,6 +681,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touching: 0
+  triggerTouching: 0
+  collisionTouching: 0
 --- !u!61 &2678902549800332447
 BoxCollider2D:
   m_ObjectHideFlags: 0

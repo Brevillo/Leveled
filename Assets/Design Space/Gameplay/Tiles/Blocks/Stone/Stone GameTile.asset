@@ -16,5 +16,5 @@ MonoBehaviour:
   paletteIcon: {fileID: 4916434213668886548, guid: 470638531b4cccb4ea2b7eb3306d6e31, type: 3}
   tileBase: {fileID: 11400000, guid: 1c5314c4bd8975441bff1e0411fb6160, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  tooltip: Stone Bock
+  tooltip: Stone Brick
   linkable: 0

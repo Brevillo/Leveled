@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Enter Play Mode
+  m_Script: {fileID: 11500000, guid: 1fc26f1a64d094261930eaf87f246fad, type: 3}
+  m_Name: Hazard Instant Kill Player
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: -3429878075033818465, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  validEditorStates: 3
-  tooltip: 
-  icon: {fileID: 0}

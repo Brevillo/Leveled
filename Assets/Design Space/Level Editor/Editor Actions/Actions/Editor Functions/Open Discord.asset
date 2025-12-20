@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Open Discord
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 0}
-  validGameStates: -1
+  validEditorStates: 3
   tooltip: Design Space Discord Server
   icon: {fileID: -9173703381430546336, guid: dfe5236cc34c04640a42ff2258232ceb, type: 3}

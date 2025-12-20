@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Toggle Changelog Window
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 0}
-  validGameStates: 1
+  validEditorStates: 3
   tooltip: View Changelog
   icon: {fileID: 21300000, guid: 0c7f8e868340c430a9c36d8245e92250, type: 3}

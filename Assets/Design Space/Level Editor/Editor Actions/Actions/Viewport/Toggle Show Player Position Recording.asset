@@ -13,21 +13,6 @@ MonoBehaviour:
   m_Name: Toggle Show Player Position Recording
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 0}
-  validGameStates: -1
+  validEditorStates: 3
   tooltip: Toggle Player Position Recording
   icon: {fileID: 21300000, guid: e2327d5e28f104abf80099e0d3aa91f3, type: 3}
-  action:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
-        m_TargetAssemblyTypeName: TileEditorState, Assembly-CSharp
-        m_MethodName: ToggleShowPlayerPositionRecording
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

@@ -4,43 +4,47 @@ using UnityEngine;
 [CreateAssetMenu(menuName = ProjectConstants.ServicesFolder + "Game State Manager")]
 public class GameStateManager : ScriptableObject
 {
-    private GameState gameState;
+    private EditorState editorState;
 
-    public event Action<GameState> GameStateChanged;
+    public event Action<EditorState> GameStateChanged;
 
     public void EnterPlayMode()
     {
-        GameState = GameState.Playing;
+        EditorState = EditorState.Playing;
     }
 
-    public void ExitPlayMode()
+    public void EnterEditMode()
     {
-        GameState = GameState.Editing;
+        EditorState = EditorState.Editing;
+    }
+
+    public void StartTextInput()
+    {
+        EditorState = EditorState.TextInput;
     }
     
     public void ToggleGameState()
     {
-        GameState = GameState == GameState.Editing
-            ? GameState.Playing
-            : GameState.Editing;
+        EditorState = EditorState == EditorState.Editing
+            ? EditorState.Playing
+            : EditorState.Editing;
     }
 
-    public void SetGameStateWithNotify(GameState gameState)
+    public EditorState EditorState
     {
-        this.gameState = gameState;
-        
-        GameStateChanged?.Invoke(gameState);
-    }
-    
-    public GameState GameState
-    {
-        get => gameState;
+        get => editorState;
         set
         {
-            if (gameState != value)
-            {
-                SetGameStateWithNotify(value);
-            }
+            if (editorState == value) return;
+
+            SetEditorStateAndNotify(value);
         }
+    }
+
+    public void SetEditorStateAndNotify(EditorState value)
+    {
+        editorState = value;
+
+        GameStateChanged?.Invoke(value);
     }
 }

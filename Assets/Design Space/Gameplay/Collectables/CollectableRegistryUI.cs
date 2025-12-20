@@ -34,7 +34,7 @@ public class CollectableRegistryUI : MonoBehaviour
 
     private void UpdateVisibility()
     {
-        content.SetActive(gameStateManager.GameState == GameState.Playing && registry.TotalCount > 0);
+        content.SetActive(gameStateManager.EditorState == EditorState.Playing && registry.TotalCount > 0);
         UpdateUI();
     }
 
@@ -50,7 +50,7 @@ public class CollectableRegistryUI : MonoBehaviour
         graphics.ForEach(graphic => graphic.color = graphicColor);
     }
 
-    private void OnGameStateChanged(GameState gameState)
+    private void OnGameStateChanged(EditorState editorState)
     {
         UpdateVisibility();
     }
