@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CollisionAggregate2D ground;
     [SerializeField] private SoundEffect jumpSound;
     [SerializeField] private DamageSource jumpDamageSource;
+    [SerializeField] private DamageSource fallDamageSource;
 
     [Header("Bouncing")]
     [SerializeField] private float minBounceDuration;
@@ -127,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         spawnPoint = transform.position;
         
         bounceable.Bounced += OnBounced;
-        jumpDamageSource.DamageDealt += OnJumpDamageDealt;
+        fallDamageSource.DamageDealt += OnFallDamageDealt;
 
         respawnTime = Time.time;
 
@@ -142,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
         rigidbody.linearVelocity = bounceParams.force;
     }
 
-    private void OnJumpDamageDealt()
+    private void OnFallDamageDealt()
     {
         stateMachine.ChangeState<Bouncing>();
     }
@@ -305,6 +306,8 @@ public class PlayerMovement : MonoBehaviour
             Context.jumpBuffer.Reset();
             
             Context.jumpSound.Play();
+
+            Context.jumpDamageSource.enabled = true;
         }
 
         public override void Update()
@@ -320,9 +323,9 @@ public class PlayerMovement : MonoBehaviour
     {
         public override void Enter()
         {
-            Context.extraJumpsUsed = 0;
-            
             base.Enter();
+            
+            Context.extraJumpsUsed = 0;
         }
     }
 
@@ -347,6 +350,13 @@ public class PlayerMovement : MonoBehaviour
             
             base.Update();
         }
+
+        public override void Exit()
+        {
+            Context.jumpDamageSource.enabled = false;
+
+            base.Exit();
+        }
     }
     
     private class Falling : State
@@ -355,7 +365,7 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Enter();
 
-            Context.jumpDamageSource.enabled = true;
+            Context.fallDamageSource.enabled = true;
         }
 
         public override void Update()
@@ -368,7 +378,7 @@ public class PlayerMovement : MonoBehaviour
 
         public override void Exit()
         {
-            Context.jumpDamageSource.enabled = false;
+            Context.fallDamageSource.enabled = false;
 
             base.Exit();
         }

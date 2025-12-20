@@ -94,7 +94,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
 
         foreach (var position in labels.Keys.ToArray())
         {
-            if (!windowRect.Contains(spaceUtility.CellToWindow(position)))
+            if (!windowRect.Contains(spaceUtility.CellToWindow(position)) || !linkableTiles.Contains(position))
             {
                 labels[position].poolable.Return();
                 labels.Remove(position);

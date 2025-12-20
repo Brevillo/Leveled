@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class Collectable : MonoBehaviour
 {
     [SerializeField] private CollectableRegistry registry;
+    [SerializeField] private GameObject visuals;
     
     [SerializeField] private UnityEvent collected;
     public event Action Collected; 
@@ -13,12 +14,12 @@ public class Collectable : MonoBehaviour
 
     public bool IsCollected => isCollected;
 
-    private void OnEnable()
+    private void Awake()
     {
         registry.Add(this);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         registry.Remove(this);
     }
@@ -31,5 +32,7 @@ public class Collectable : MonoBehaviour
         
         Collected?.Invoke();
         collected.Invoke();
+        
+        visuals.SetActive(false);
     }
 }

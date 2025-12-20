@@ -370,6 +370,102 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1, y: 0.8}
   m_EdgeRadius: 0
+--- !u!1 &3464242044185981262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5656529139896547696}
+  - component: {fileID: 6213698822503826016}
+  - component: {fileID: 2228848043381946792}
+  m_Layer: 0
+  m_Name: Jump Damage Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5656529139896547696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3464242044185981262}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8011682120327122674}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &6213698822503826016
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3464242044185981262}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.5, y: 0.25}
+  m_EdgeRadius: 0
+--- !u!114 &2228848043381946792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3464242044185981262}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageTypes:
+  - {fileID: 11400000, guid: bb93c1835ad77494484eeca4ef80e214, type: 2}
+  damageDealt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4128720352538531107
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,6 +647,7 @@ Transform:
   - {fileID: 2673735022045903149}
   - {fileID: 2650679161962833723}
   - {fileID: 9143080354101836163}
+  - {fileID: 5656529139896547696}
   - {fileID: 5659509615421508570}
   - {fileID: 6435675770442955811}
   m_Father: {fileID: 0}
@@ -587,7 +684,8 @@ MonoBehaviour:
   jumpBufferDuration: 0.1
   ground: {fileID: 8889760176166310530}
   jumpSound: {fileID: 11400000, guid: b9ecd1b1ccd7e485b8fbbac26f531c96, type: 2}
-  jumpDamageSource: {fileID: 7488241554786542298}
+  jumpDamageSource: {fileID: 2228848043381946792}
+  fallDamageSource: {fileID: 7488241554786542298}
   minBounceDuration: 0.1
   walljumpHeight: 4
   walljumpBoost: 15
@@ -970,7 +1068,7 @@ GameObject:
   - component: {fileID: 6853283347965880594}
   - component: {fileID: 7488241554786542298}
   m_Layer: 0
-  m_Name: Jump Damage Source
+  m_Name: Fall Damage Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

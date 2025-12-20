@@ -11,7 +11,6 @@ public class CollectableRegistryUI : MonoBehaviour
     [SerializeField] private Color allCollectedColor;
     [SerializeField] private List<Graphic> graphics;
     [SerializeField] private TextMeshProUGUI collected;
-    [SerializeField] private TextMeshProUGUI total;
     [SerializeField] private GameObject content;
     
     [Header("Registration")]
@@ -41,7 +40,6 @@ public class CollectableRegistryUI : MonoBehaviour
     private void UpdateUI()
     {
         collected.text = registry.CollectedCount.ToString();
-        total.text = registry.TotalCount.ToString();
         
         var graphicColor = registry.AllCollected
             ? allCollectedColor
