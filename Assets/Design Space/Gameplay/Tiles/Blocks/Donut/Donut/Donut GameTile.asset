@@ -16,5 +16,5 @@ MonoBehaviour:
   paletteIcon: {fileID: -1554253085616129903, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
   tileBase: {fileID: 11400000, guid: 702594e7d15e8402eb1377b4cc0ad922, type: 2}
   tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  tooltip: Donut Platform
+  tooltip: Fragile Platform
   linkable: 0
