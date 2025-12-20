@@ -179,7 +179,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 0.25}
+  m_Size: {x: 1.9, y: 0.25}
   m_EdgeRadius: 0
 --- !u!1 &1808144609010010792
 GameObject:
@@ -517,7 +517,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 0.25}
+  m_Size: {x: 1.9, y: 0.25}
   m_EdgeRadius: 0
 --- !u!1 &5622814922021288690
 GameObject:
@@ -613,6 +613,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  damageDealt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5293018931237938956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,7 +635,6 @@ MonoBehaviour:
   damaged:
     m_PersistentCalls:
       m_Calls: []
-  invincible: 0
 --- !u!1 &7962677847293415594
 GameObject:
   m_ObjectHideFlags: 0
