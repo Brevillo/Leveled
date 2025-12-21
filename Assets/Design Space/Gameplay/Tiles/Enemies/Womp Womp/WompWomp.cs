@@ -3,7 +3,7 @@ using OliverBeebe.UnityUtilities.Runtime;
 using UnityEngine;
 using StateMachine = OliverBeebe.UnityUtilities.Runtime.StateMachine;
 
-public class Thwomp : MonoBehaviour
+public class WompWomp : MonoBehaviour
 {
     [SerializeField] private TargetingStrategy targetingStrategy;
     [SerializeField] private new Rigidbody2D rigidbody;
@@ -46,8 +46,6 @@ public class Thwomp : MonoBehaviour
             .AddTransition<Idle>(() => stateMachine.StateDuration > riseDelay && (transform.position.y >= startHeight || ceilingCheck.Touching));
         
         stateMachine.InitializeAllStatesWithContext(this);
-        
-        stateMachine.SetDefaultState<Idle>();
     }
     
     private void Update()
@@ -55,10 +53,10 @@ public class Thwomp : MonoBehaviour
         stateMachine.Update(Time.deltaTime);
     }
     
-    private class Idle : IContextStateBehavior<Thwomp>
+    private class Idle : IContextStateBehavior<WompWomp>
     {
         public float StateDuration { get; set; }
-        public Thwomp Context { get; set; }
+        public WompWomp Context { get; set; }
 
         public void Enter()
         {
@@ -70,10 +68,10 @@ public class Thwomp : MonoBehaviour
         public void Exit() { }
     }
 
-    private class Dropping : IContextStateBehavior<Thwomp>
+    private class Dropping : IContextStateBehavior<WompWomp>
     {
         public float StateDuration { get; set; }
-        public Thwomp Context { get; set; }
+        public WompWomp Context { get; set; }
 
         public void Enter() { }
 
@@ -93,10 +91,10 @@ public class Thwomp : MonoBehaviour
         public void Exit() { }
     }
 
-    private class Rising : IContextStateBehavior<Thwomp>
+    private class Rising : IContextStateBehavior<WompWomp>
     {
         public float StateDuration { get; set; }
-        public Thwomp Context { get; set; }
+        public WompWomp Context { get; set; }
         
         public void Enter() { }
 

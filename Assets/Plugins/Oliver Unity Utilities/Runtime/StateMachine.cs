@@ -31,7 +31,7 @@ namespace OliverBeebe.UnityUtilities.Runtime
             currentState?.behavior.Exit();
 
             currentState = previousState = defaultState;
-            stateDuration = float.MaxValue;
+            stateDuration = 0f;
 
             currentState.behavior.Enter();
         }
@@ -105,11 +105,11 @@ namespace OliverBeebe.UnityUtilities.Runtime
 
     public interface IStateBehavior
     {
+        public float StateDuration { get; set; }
+        
         public void Enter();
         public void Update();
         public void Exit();
-        
-        public float StateDuration { get; set; }
     }
 
     public interface IContextStateBehavior<T> : IStateBehavior
