@@ -13,8 +13,19 @@ MonoBehaviour:
   m_Name: Audio Service
   m_EditorClassIdentifier: 
   audioSourcePool: {fileID: 11400000, guid: 6de408ac7e9fa4101824c50e3f5caa0d, type: 2}
-  mixerGroupMappings:
-  - sfxCategory: 0
-    mixerGroup: {fileID: 7089676266713347750, guid: 7f5175040cb50457d896405c6946f117, type: 2}
-  - sfxCategory: 1
-    mixerGroup: {fileID: -8028514421387589846, guid: 7f5175040cb50457d896405c6946f117, type: 2}
+  volumeSettings:
+  - volumeParameter: Master Volume
+    setting: {fileID: 11400000, guid: 6d309b896523545e597c5424e29fd4b6, type: 2}
+  - volumeParameter: Game Volume
+    setting: {fileID: 11400000, guid: ac138d69cc1504561a437ec7770da8b6, type: 2}
+  - volumeParameter: Game Music Volume
+    setting: {fileID: 11400000, guid: f3e6653de280c44d0a1b8901df17c6f4, type: 2}
+  - volumeParameter: Game Sound Volume
+    setting: {fileID: 11400000, guid: 13b5bae131dcf4199a0e248da308897a, type: 2}
+  - volumeParameter: Editor Volume
+    setting: {fileID: 11400000, guid: dae1d0866e3614c3784260d85b70eb72, type: 2}
+  - volumeParameter: Editor Music Volume
+    setting: {fileID: 11400000, guid: 4588de98337a445b7a2f3a81d342689b, type: 2}
+  - volumeParameter: Editor Sound Volume
+    setting: {fileID: 11400000, guid: 3eb46a8b7c85041498813869ee1ed625, type: 2}
+  audioMixer: {fileID: 24100000, guid: 7f5175040cb50457d896405c6946f117, type: 2}

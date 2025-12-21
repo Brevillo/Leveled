@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: UI_Tiles_SelectionSizeChange
   m_EditorClassIdentifier: 
   audioResource: {fileID: 6418180475301049370, guid: f6f151b2a083cf548b24da4a4f6a2f55, type: 2}
-  sfxCategory: 1
+  mixerGroup: {fileID: -8854645075906520292, guid: 7f5175040cb50457d896405c6946f117, type: 2}
   preventOverlap: 0
   maxPlayFrequency: 0.05

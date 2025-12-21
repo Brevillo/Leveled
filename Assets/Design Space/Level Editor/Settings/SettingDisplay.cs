@@ -9,7 +9,12 @@ public abstract class SettingDisplay : ScriptableObject
     [SerializeField] private string displayName;
     [SerializeField] private SettingsSection section;
     
-    public string DisplayName => displayName;
+    public string DisplayName
+    {
+        get => displayName;
+        set => displayName = value;
+    }
+
     public SettingsSection Section => section;
 
     public abstract bool DefaultValue { get; }

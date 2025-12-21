@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SFX_EndGoal_Win
   m_EditorClassIdentifier: 
   audioResource: {fileID: 8300000, guid: f9c6014fb4af44763884135d98afc951, type: 3}
-  sfxCategory: 0
+  mixerGroup: {fileID: -8708687991459351034, guid: 7f5175040cb50457d896405c6946f117, type: 2}
   preventOverlap: 0
+  maxPlayFrequency: 0

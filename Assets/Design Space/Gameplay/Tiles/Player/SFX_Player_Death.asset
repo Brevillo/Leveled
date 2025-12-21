@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
   m_Name: SFX_Player_Death
   m_EditorClassIdentifier: 
-  audioResource: {fileID: 8300000, guid: 0b67bee185c2f4abd9ffe959e04dbe5f, type: 3}
-  sfxCategory: 0
+  audioResource: {fileID: 0}
+  mixerGroup: {fileID: -8708687991459351034, guid: 7f5175040cb50457d896405c6946f117, type: 2}
   preventOverlap: 0
+  maxPlayFrequency: 0

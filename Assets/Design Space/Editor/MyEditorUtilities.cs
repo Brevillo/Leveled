@@ -127,9 +127,10 @@ public static class MyEditorUtilities
                         && go.TryGetComponent(out T _)
                         && PrefabUtility.IsPartOfPrefabAsset(go));
 
-    public static void CreateScriptableObjectFromAssetSelection<TAsset, TScriptableObject>(
+    public static Object[] CreateScriptableObjectFromAssetSelection<TAsset, TScriptableObject>(
         Action<TAsset, TScriptableObject> setupAction,
-        Func<TAsset, string> namingScheme)
+        Func<TAsset, string> namingScheme,
+        bool selectCreated = true)
         where TAsset : Object
         where TScriptableObject : ScriptableObject
     {
@@ -138,7 +139,7 @@ public static class MyEditorUtilities
         foreach (var guid in Selection.assetGUIDs)
         {
             var asset = AssetDatabase.LoadAssetAtPath<TAsset>(AssetDatabase.GUIDToAssetPath(guid));
-
+            
             if (asset == null) continue;
             
             var scriptableObject = ScriptableObject.CreateInstance<TScriptableObject>();
@@ -157,7 +158,14 @@ public static class MyEditorUtilities
             AssetDatabase.CreateAsset(scriptableObject, assetPath);
         }
 
-        Selection.objects = createdScriptableObjects.ToArray();
+        var created = createdScriptableObjects.ToArray();
+        
+        if (selectCreated)
+        {
+            Selection.objects = created;
+        }
+
+        return created;
     }
 
 }

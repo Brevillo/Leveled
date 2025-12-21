@@ -1,27 +1,47 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OliverBeebe.UnityUtilities.Runtime.Pooling;
+using OliverBeebe.UnityUtilities.Runtime.Settings;
 using UnityEngine;
 using UnityEngine.Audio;
-
-public enum SFXCategory
-{
-    Gameplay = 0,
-    Editor = 1,
-}
 
 [CreateAssetMenu(menuName = ProjectConstants.ServicesFolder + "Audio Service")]
 public class AudioService : GameService
 {
     [SerializeField] private GameObjectPool audioSourcePool;
-    [SerializeField] private List<SFXCategoryMixerGroupMapping> mixerGroupMappings;
+    [SerializeField] private List<VolumeSetting> volumeSettings;
+    [SerializeField] private AudioMixer audioMixer;
 
     [Serializable]
-    private class SFXCategoryMixerGroupMapping
+    private class VolumeSetting
     {
-        public SFXCategory sfxCategory;
-        public AudioMixerGroup mixerGroup;
+        public string volumeParameter;
+        public FloatSetting setting;
+
+        private AudioService context;
+        
+        public void Initialize(AudioService context)
+        {
+            this.context = context;
+            setting.ValueChanged += SetVolume;
+            
+            Update();
+        }
+
+        public void Cleanup()
+        {
+            setting.ValueChanged -= SetVolume;
+        }
+
+        public void Update()
+        {
+            SetVolume(setting.Value);
+        }
+        
+        private void SetVolume(float value)
+        {
+            context.audioMixer.SetFloat(volumeParameter, PercentToDb(value));
+        }
     }
     
     private static AudioService instance;
@@ -31,10 +51,30 @@ public class AudioService : GameService
     protected override void Initialize()
     {
         instance = this;
+
+        foreach (var volumeSetting in volumeSettings)
+        {
+            volumeSetting.Initialize(this);
+        }
     }
 
-    public AudioMixerGroup GetMixerGroupMapping(SFXCategory sfxCategory) => mixerGroupMappings
-        .FirstOrDefault(mapping => mapping.sfxCategory == sfxCategory)?.mixerGroup;
-    
+    protected override void Start()
+    {
+        foreach (var volumeSetting in volumeSettings)
+        {
+            volumeSetting.Update();
+        }
+    }
+
+    protected override void InstanceDestroyed()
+    {
+        foreach (var volumeSetting in volumeSettings)
+        {
+            volumeSetting.Cleanup();
+        }
+    }
+
     public Poolable GetAudioSource() => audioSourcePool.Retrieve();
+    
+    private static float PercentToDb(float percent) => percent == 0 ? -80f : Mathf.Log(percent) * 10f;
 }

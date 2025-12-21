@@ -1,7 +1,6 @@
 using OliverBeebe.UnityUtilities.Runtime.Settings;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class EditorActionButton : MonoBehaviour

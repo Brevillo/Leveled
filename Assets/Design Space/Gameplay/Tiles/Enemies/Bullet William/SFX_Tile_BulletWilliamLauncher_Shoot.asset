@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SFX_Tile_BulletWilliamLauncher_Shoot
   m_EditorClassIdentifier: 
   audioResource: {fileID: 6418180475301049370, guid: 9bb3b1ecbbc6a485f9e023905c43c9d7, type: 2}
-  sfxCategory: 0
+  mixerGroup: {fileID: -8708687991459351034, guid: 7f5175040cb50457d896405c6946f117, type: 2}
   preventOverlap: 0
   maxPlayFrequency: 0

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: UI_Hover
   m_EditorClassIdentifier: 
   audioResource: {fileID: 6418180475301049370, guid: ca0b565cc5e754b788674ca674b3d76a, type: 2}
-  sfxCategory: 1
-  allowOverlap: 1
+  mixerGroup: {fileID: -8854645075906520292, guid: 7f5175040cb50457d896405c6946f117, type: 2}
+  preventOverlap: 0
+  maxPlayFrequency: 0

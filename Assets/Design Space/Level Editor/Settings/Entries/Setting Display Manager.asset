@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86675c3b650cc458f84e5e0c3c6ea203, type: 3}
+  m_Name: Setting Display Manager
+  m_EditorClassIdentifier: 
+  settingDisplays:
+  - {fileID: 11400000, guid: 5f0739901510b474fba94e922e7cf200, type: 2}
+  - {fileID: 11400000, guid: 644b3252ef5dd47c6b7e55d034ba17da, type: 2}
+  - {fileID: 11400000, guid: 6f122569cd26c4ea581b2e1c6f550c14, type: 2}
+  - {fileID: 11400000, guid: fa78f7cb476994d5495cdbe7d7efdb1e, type: 2}
+  - {fileID: 11400000, guid: 1db94522ff1954b57862e8603e2f9983, type: 2}
+  - {fileID: 11400000, guid: 2e67b9062bf4f49e5ad1ebcf9f8d6bf9, type: 2}
+  - {fileID: 11400000, guid: 9d78ea4e8a58944539e995901af7bb44, type: 2}
+  - {fileID: 11400000, guid: 04f00cb099b074b98b5b5d66410ce03c, type: 2}
+  - {fileID: 11400000, guid: dc610bdf442be412091a55ebaba7af51, type: 2}
+  - {fileID: 11400000, guid: ef8e52a59dc9f4a60961ddb5c05c1dcc, type: 2}

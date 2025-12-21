@@ -11,9 +11,7 @@ public class EnumSettingHub : SettingHub<EnumSettingDisplay>
 
     protected override Selectable Initialize()
     {
-        dropdown.options = display.Options
-            .Select(option => new TMP_Dropdown.OptionData(option))
-            .ToList();
+        dropdown.options = display.Options;
         
         display.Setting.ValueChanged += dropdown.SetValueWithoutNotify;
         

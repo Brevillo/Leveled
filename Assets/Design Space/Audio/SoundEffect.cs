@@ -7,7 +7,7 @@ using UnityEngine.Audio;
 public class SoundEffect : ScriptableObject
 {
     [SerializeField] private AudioResource audioResource;
-    [SerializeField] private SFXCategory sfxCategory;
+    [SerializeField] private AudioMixerGroup mixerGroup;
     [SerializeField] private bool preventOverlap;
     [SerializeField] private float maxPlayFrequency;
     
@@ -29,7 +29,7 @@ public class SoundEffect : ScriptableObject
         var audioSource = activeSource.GetComponent<AudioSource>(); 
 
         audioSource.resource = audioResource;
-        audioSource.outputAudioMixerGroup = AudioService.Instance.GetMixerGroupMapping(sfxCategory);
+        audioSource.outputAudioMixerGroup = mixerGroup;
         audioSource.Play();
     }
 

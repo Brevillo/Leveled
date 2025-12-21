@@ -13,7 +13,11 @@ public class FloatSettingDisplay : SettingDisplay
     [SerializeField] private float displayValueMultiple;
     [SerializeField] private string numberSuffix;
 
-    public FloatSetting Setting => setting;
+    public FloatSetting Setting
+    {
+        get => setting;
+        set => setting = value;
+    }
 
     public float Minimum => minimum;
     public float Maximum => maximum;

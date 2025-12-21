@@ -8,7 +8,11 @@ public class BoolSettingDisplay : SettingDisplay
 {
     [SerializeField] private BoolSetting setting;
 
-    public BoolSetting Setting => setting;
+    public BoolSetting Setting
+    {
+        get => setting;
+        set => setting = value;
+    }
 
     public override bool DefaultValue => setting.Value == setting.DefaultValue;
 

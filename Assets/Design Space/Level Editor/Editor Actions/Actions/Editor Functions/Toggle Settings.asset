@@ -15,4 +15,4 @@ MonoBehaviour:
   inputActionReference: {fileID: -1149728721811952213, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validEditorStates: 3
   tooltip: Settings
-  icon: {fileID: 21300000, guid: 4def1ea4842c24992883783da869a8f7, type: 3}
+  icon: {fileID: 21300000, guid: 33068790de1ea4cb28192b2d70fa9f36, type: 3}

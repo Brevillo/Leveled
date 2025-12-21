@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f78d7fd5f849e4800b518bbf9e6b0a82
+guid: 5c4e428b0d1e94cb3baef1a20bf10ea1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5930384173837249105
-    second: button_square_line_0
+      213: -2855061980118337861
+    second: Round Rect Outline 8px_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,24 +96,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: button_square_line_0
+      name: Round Rect Outline 8px_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fa515d0b30b03bda0800000000000000
-      internalID: -5930384173837249105
+      spriteID: bb6b25f7148c068d0800000000000000
+      internalID: -2855061980118337861
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      button_square_line_0: -5930384173837249105
+      Round Rect Outline 8px_0: -2855061980118337861
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

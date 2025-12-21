@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a527bcae57c4b42fb82faaf0565e13c1, type: 3}
+  m_Name: Audio
+  m_EditorClassIdentifier: 
+  displayName: Audio
+  priority: 10
+  sectionSelectEditorAction: {fileID: 11400000, guid: 1c0d882a781ab4dedbb1ed552e7c096f, type: 2}

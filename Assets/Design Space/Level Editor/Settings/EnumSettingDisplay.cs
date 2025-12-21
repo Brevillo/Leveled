@@ -5,27 +5,34 @@ using OliverBeebe.UnityUtilities.Runtime.Settings;
 using UnityEngine.Rendering.Universal;
 using System.Linq;
 using System;
+using TMPro;
 
 [CreateAssetMenu(menuName = CreateAssetMenuPath + "Enum Setting Display")]
 public class EnumSettingDisplay : SettingDisplay
 {
     [SerializeField] private IntSetting setting;
     [SerializeField] private EnumTypes enumType;
+    [SerializeField] private List<TMP_Dropdown.OptionData> optionOverrides;
 
-    public IntSetting Setting => setting;
+    public IntSetting Setting
+    {
+        get => setting;
+        set => setting = value;
+    }
 
-    public string[] Options => EnumTypeOptions[enumType];
+    public List<TMP_Dropdown.OptionData> Options => optionOverrides.Count > 0
+        ? optionOverrides
+        : EnumTypeOptions[enumType].Select(name => new TMP_Dropdown.OptionData(name)).ToList();
 
     private enum EnumTypes
     {
-        AntialiasingMode,
-        AntialiasingQuality,
-        Resolutions,
+        AntialiasingMode = 0,
+        AntialiasingQuality = 1,
+        Resolutions = 2,
+        AutoSaveOptions = 3,
     }
 
-    private static string[] GetNames(Type enumerable) => Enum.GetNames(enumerable)
-        // .Select(name => name.AddSpacesToSentence())
-        .ToArray();
+    private static string[] GetNames(Type enumerable) => Enum.GetNames(enumerable);
 
     private static Dictionary<EnumTypes, string[]> EnumTypeOptions => new()
     {
@@ -41,6 +48,10 @@ public class EnumSettingDisplay : SettingDisplay
             EnumTypes.Resolutions,
             Screen.resolutions.Select(resolution => $"{resolution.width} X {resolution.height} at {resolution.refreshRateRatio.value:00.0}Hz").ToArray()
         },
+        {
+            EnumTypes.AutoSaveOptions,
+            GetNames(typeof(AutosaveOptions))
+        }
     };
 
     public override bool DefaultValue => setting.Value == setting.DefaultValue;

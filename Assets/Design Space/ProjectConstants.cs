@@ -1,5 +1,3 @@
-using UnityEditor.SearchService;
-
 public static class ProjectConstants
 {
     public const string ProjectName = "Design Space";
