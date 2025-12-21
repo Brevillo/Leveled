@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallDelay: 0.6
-  fallSpeed: 10
+  fallSpeed: 5
   respawnDelay: 0.5
   standingDetection: {fileID: 3663435879416279181}
   respawnCheck: {fileID: 5359211876991823770}

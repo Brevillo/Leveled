@@ -48,14 +48,13 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("References")] 
     [SerializeField] private new Rigidbody2D rigidbody;
-    [SerializeField] private Transform visuals;
     [SerializeField] private PositionRecorder positionRecorder;
     [SerializeField] private Bounceable bounceable;
-    [SerializeField] private Targetable targetable;
     [SerializeField] private HeavyObject heavyObject;
+    [SerializeField] private LevelResettable levelResettable;
+    [SerializeField] private CheckpointEnjoyer checkpointEnjoyer;
 
     private Vector2 spawnPoint;
-    private Checkpoint checkpoint;
 
     private float respawnTime;
     private int extraJumpsUsed;
@@ -74,6 +73,10 @@ public class PlayerMovement : MonoBehaviour
     private bool JumpInput => jumpBuffer.IsBuffered && !IgnoringInput;
 
     private bool IgnoringInput => Time.time < respawnTime + respawnIgnoreInputDuration; 
+    
+    private Vector2 MoveInput => IgnoringInput 
+        ? Vector2.zero
+        : moveInput.action.ReadValue<Vector2>();
 
     public void Immobilize(bool immobilized)
     {
@@ -82,19 +85,13 @@ public class PlayerMovement : MonoBehaviour
         stateMachine.Reset();
     }
     
-    private Vector2 MoveInput => IgnoringInput 
-        ? Vector2.zero
-        : moveInput.action.ReadValue<Vector2>();
-
-    private static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
-    
-    public void Respawn()
+    private void Respawn()
     {
         positionRecorder.AddPosition();
 
         rigidbody.interpolation = RigidbodyInterpolation2D.None;
-        transform.position = checkpoint != null 
-            ? checkpoint.transform.position
+        transform.position = checkpointEnjoyer.HasCheckpoint 
+            ? checkpointEnjoyer.Checkpoint.transform.position
             : spawnPoint;
         rigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
         
@@ -105,34 +102,26 @@ public class PlayerMovement : MonoBehaviour
         respawnTime = Time.time;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out Checkpoint newCheckpoint)
-            && checkpoint != newCheckpoint)
-        {
-            if (checkpoint != null)
-            {
-                checkpoint.Deactivate();
-            }
-
-            checkpoint = newCheckpoint;
-            
-            checkpoint.Activate();
-        }
-    }
-
     private void Awake()
     {
-        InitStateMachine();
-
         spawnPoint = transform.position;
         
         bounceable.Bounced += OnBounced;
         fallDamageSource.DamageDealt += OnFallDamageDealt;
+        levelResettable.Reset += OnReset;
+
+        InitStateMachine();
 
         respawnTime = Time.time;
 
         jumpBuffer = new(jumpBufferDuration);
+    }
+
+    #region Event Responses
+    
+    private void OnReset()
+    {
+        Respawn();
     }
 
     private void OnBounced(BounceParams bounceParams)
@@ -148,6 +137,8 @@ public class PlayerMovement : MonoBehaviour
         stateMachine.ChangeState<Bouncing>();
     }
 
+    #endregion
+    
     private void Update()
     {
         if (immobilized) return;
@@ -155,13 +146,9 @@ public class PlayerMovement : MonoBehaviour
         jumpBuffer.BufferUpdate(jumpInput.action.WasPerformedThisFrame());
         
         stateMachine.Update(Time.deltaTime);
-
-        if (MoveInput.x != 0f)
-        {
-            targetable.facingDirection = new(MoveInput.x, 0f);
-            visuals.localScale = new(Mathf.Sign(MoveInput.x), 1f, 1f);
-        }
     }
+
+    #region Movement States
 
     private void InitStateMachine()
     {
@@ -228,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
         
         stateMachine.SetDefaultState<Grounded>();
     }
-
+    
     private class State : IContextStateBehavior<PlayerMovement>
     {
         public float StateDuration { get; set; }
@@ -442,10 +429,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    /*
-    private class Template : State
-    {
-        public Template(PlayerMovement context) : base(context) { }
-    }
-    */
+    #endregion
+    
+    private static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
 }

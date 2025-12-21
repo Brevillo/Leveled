@@ -15,6 +15,7 @@ public class PowerupManager : MonoBehaviour
     public PowerupModifierPrioritizer<Material> SpriteMaterial => spriteMaterial;
     public PowerupModifierPrioritizer<Sprite> Sprite => sprite;
     public PowerupModifierPrioritizer<List<DamageType>> AcceptedDamageTypes => acceptedDamageTypes;
+    public Damageable Damageable => damageable;
 
     private void Awake()
     {

@@ -28,15 +28,15 @@ public class Damageable : MonoBehaviour
     public List<DamageType> acceptedDamageTypes;
     [SerializeField] private bool destroyOnDamaged;
     [SerializeField] private GameObject destroyTarget;
-    [SerializeField] private UnityEvent damaged;
-    public event Action Damaged;
+    [SerializeField] private UnityEvent<Damage> damaged;
+    public event Action<Damage> Damaged;
     
     public DamageResult TakeDamage(Damage damage)
     {
         if (!acceptedDamageTypes.Exists(type => damage.damageTypes.Contains(type))) return default;
         
-        Damaged?.Invoke();
-        damaged.Invoke();
+        Damaged?.Invoke(damage);
+        damaged.Invoke(damage);
 
         if (destroyOnDamaged)
         {

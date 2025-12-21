@@ -1,16 +1,19 @@
 using System;
 using UnityEngine;
 
-public class Star : MonoBehaviour
+public class BasicRunAndJumpMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float gravity;
     [SerializeField] private float jumpHeight;
+    [SerializeField] private float jumpFrequency;
     [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private CollisionAggregate2D rightBouncer;
     [SerializeField] private CollisionAggregate2D leftBouncer;
     [SerializeField] private CollisionAggregate2D downBouncer;
 
+    private float groundedTimer;
+    
     private float JumpVelocity => Mathf.Sqrt(2f * gravity * jumpHeight);
 
     private void Start()
@@ -34,8 +37,18 @@ public class Star : MonoBehaviour
 
         if (downBouncer.Touching)
         {
-            velocity.y = JumpVelocity;
+            groundedTimer += Time.deltaTime;
+            
+            if (groundedTimer > jumpFrequency)
+            {
+                velocity.y = JumpVelocity;
+            }
         }
+        else
+        {
+            groundedTimer = 0f;
+        }
+
 
         velocity.y -= gravity * Time.deltaTime;
         
