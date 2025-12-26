@@ -82,6 +82,21 @@ MonoBehaviour:
   direction: {x: 0, y: 1}
   snapAxis: 1
   bouncePosition: {fileID: 6667233552417508015}
+  bounceSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: c976cec8106a1144fbdef439f9873a28, type: 2}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &1916934483381207544
 BoxCollider2D:
   m_ObjectHideFlags: 0

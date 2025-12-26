@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-4637523036360474983
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BouncePad_Bounce_4_{-4637523036360474983}
+  m_AudioClip: {fileID: 8300000, guid: 36dad00e1708543479757a418a7ca51b, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1730548913598317961
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BouncePad_Bounce_3_{1730548913598317961}
+  m_AudioClip: {fileID: 8300000, guid: d5cc2e0f88dade849941221ffe2d07a7, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1949394489498277661
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BouncePad_Bounce_2_{1949394489498277661}
+  m_AudioClip: {fileID: 8300000, guid: 516d55d53d365854f9729ea147df5643, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3773964205392400761
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BouncePad_Bounce_1_{3773964205392400761}
+  m_AudioClip: {fileID: 8300000, guid: 4e7ad728ff37067409e09508dff40394, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BouncePad Bounce
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -100, y: 0}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 3773964205392400761}
+  - {fileID: 1949394489498277661}
+  - {fileID: 1730548913598317961}
+  - {fileID: -4637523036360474983}
+  - {fileID: 6548314868762219239}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &6548314868762219239
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BouncePad_Bounce_5_{6548314868762219239}
+  m_AudioClip: {fileID: 8300000, guid: 07468c582159bb34c87173387aeb9840, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
