@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-7830367864732288828
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Teleporter_Teleport_4_{-7830367864732288828}
+  m_AudioClip: {fileID: 8300000, guid: e213acff3192ad44baf786eab385772b, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-3936478671623827132
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Teleporter_Teleport_5_{-3936478671623827132}
+  m_AudioClip: {fileID: 8300000, guid: cd100e13caa2b2142960a2ef170c1901, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-3224594647719170575
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Teleporter_Teleport_3_{-3224594647719170575}
+  m_AudioClip: {fileID: 8300000, guid: 4e6f1855c5069c541aba9e556d85b553, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-3125707928327987252
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Teleporter_Teleport_2_{-3125707928327987252}
+  m_AudioClip: {fileID: 8300000, guid: a2076b9c629d4c9408dd4ee195c86fc2, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-462478553661166451
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Teleporter_Teleport_1_{-462478553661166451}
+  m_AudioClip: {fileID: 8300000, guid: bfa0b85bba45c7a46a5ce1af4b9df766, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Teleporter Teleport
+  m_Volume: -6
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -100, y: 100}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: -462478553661166451}
+  - {fileID: -3125707928327987252}
+  - {fileID: -3224594647719170575}
+  - {fileID: -7830367864732288828}
+  - {fileID: -3936478671623827132}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0

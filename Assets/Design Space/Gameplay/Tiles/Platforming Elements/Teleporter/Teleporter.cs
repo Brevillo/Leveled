@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Teleporter : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private SpriteRenderer arrow;
+    [SerializeField] private UnityEvent onTeleport;
 
     private Teleporter connection;
     private string linkingGroup;
@@ -61,6 +63,7 @@ public class Teleporter : MonoBehaviour
         {
             teleportable.Teleport(connection.transform.position);
             connection.ignore.Add(teleportable);
+            onTeleport.Invoke();
         }
     }
 
