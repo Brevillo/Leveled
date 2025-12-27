@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
 
-public class BouncePad : MonoBehaviour
+public class BounceSource : MonoBehaviour
 {
     [SerializeField] private float force;
-    [SerializeField] private Vector2 direction;
+    public Vector2 direction;
     [SerializeField] private BounceSnapAxis snapAxis;
     [SerializeField] private Transform bouncePosition;
     [SerializeField] private UnityEvent bounceSound;

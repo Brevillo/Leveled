@@ -35,11 +35,13 @@ public class PlayerAnimation : MonoBehaviour
             spriteRenderer.color = Color.white;
         }
 
-        float xInput = Mathf.Sign(moveInput.action.ReadValue<Vector2>().x);
+        float xInput = moveInput.action.ReadValue<Vector2>().x.Sign0();
        
         if (xInput != 0f)
         {
-            targetable.facingDirection = new(xInput, 0f);
+            var facingDirection = new Vector2(xInput, 0f);
+            targetable.facingDirection = facingDirection;
+            
             visuals.localScale = new(xInput, 1f, 1f);
         }
     }

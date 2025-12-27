@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c55db346294c2896643d556cc5f3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 3
+  duration: 12
   spriteMaterial: {fileID: 2100000, guid: d88b07eaaffc34d14a6c795ceeeb3546, type: 2}
   damageTypes:
   - {fileID: 11400000, guid: 447ed8d08b72b403a963930a8f240e69, type: 2}

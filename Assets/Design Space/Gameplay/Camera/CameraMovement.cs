@@ -1,9 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.Serialization;
-using UnityEngine.Tilemaps;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -17,9 +12,6 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float zoomSmoothing;
     [SerializeField] private float defaultZoom;
     [SerializeField] private TilePlacer placer;
-    [SerializeField] private float minPlaySize;
-    [SerializeField] private float playMoveSpeed;
-    [SerializeField] private float playSizeBuffer;
     [SerializeField] private float cameraSnapBufferMult;
 
     private float zoomTarget;
@@ -44,20 +36,6 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        switch (gameStateManager.EditorState)
-        {
-            case EditorState.Editing:
-                EditModeCamera();
-                break;
-            
-            case EditorState.Playing:
-                PlayModeCamera();
-                break;
-        }
-    }
-
-    private void EditModeCamera()
-    {
         bool pointerOverUI = editorState.PointerOverUI;
         
         if (!pointerOverUI)
@@ -67,45 +45,12 @@ public class CameraMovement : MonoBehaviour
             zoomTarget = Mathf.Clamp(newZoom, maxZoom, minZoom);
         }
         
+        mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, zoomTarget, ref zoomVelocity, zoomSmoothing);
+        
         Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        UpdateCameraZoom();
         transform.position += mouseWorldPosition - mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
-    
-    private void PlayModeCamera()
-    {
-        if (CameraTrackable.trackables.Count == 0) return;
-        
-        var trackableBounds = new Bounds(CameraTrackable.trackables[0].transform.position, Vector3.zero);
-        
-        foreach (var trackable in CameraTrackable.trackables)
-        {
-            trackableBounds.Encapsulate(trackable.transform.position);
-        }
-        
-        zoomTarget = Mathf.Max(minPlaySize, GetZoomForSize(trackableBounds.size + Vector3.right * playSizeBuffer));
-        UpdateCameraZoom();
-        
-        Vector2 position =
-            Vector2.SmoothDamp(transform.position, trackableBounds.center, ref playPositionVelocity, playMoveSpeed);
 
-        var levelBounds = placer.Bounds;
-        Vector2 cameraRect = mainCamera.rect.size * new Vector2((float)Screen.width / Screen.height, 1f);
-        Vector2 cameraExtents = mainCamera.orthographicSize * cameraRect;
-        Vector2 min = (Vector2)levelBounds.min + cameraExtents;
-        Vector2 max = (Vector2)levelBounds.max - cameraExtents;
-
-        position.x = min.x > max.x ? (min.x + max.x) / 2f : Mathf.Clamp(position.x, min.x, max.x);
-        position.y = min.y > max.y ? (min.y + max.y) / 2f : Mathf.Clamp(position.y, min.y, max.y);
-
-        transform.position = position;
-    }
-
-    private void UpdateCameraZoom()
-    {
-        mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, zoomTarget, ref zoomVelocity, zoomSmoothing);
-    }
-    
     public void CenterCameraOnLevel()
     {
         if (gameStateManager.EditorState == EditorState.Playing) return;
@@ -115,5 +60,9 @@ public class CameraMovement : MonoBehaviour
         SetSize(placer.Bounds.size * cameraSnapBufferMult);
     }
 
-    private float GetZoomForSize(Vector2 size) => Mathf.Max(size.y, size.x * (Screen.height * mainCamera.rect.height) / (Screen.width * mainCamera.rect.width)) / 2f;
+    private float GetZoomForSize(Vector2 size)
+    {
+        var cameraRect = mainCamera.rect;
+        return Mathf.Max(size.y, size.x * Screen.height / Screen.width * cameraRect.height / cameraRect.width) / 2f;
+    }
 }

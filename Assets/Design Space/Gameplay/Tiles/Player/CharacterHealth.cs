@@ -15,13 +15,32 @@ public class CharacterHealth : MonoBehaviour
     [SerializeField] private UnityEvent killed;
     
     public event Action Killed;
+    public event Action HitpointsUpdated;
     
     private int hitpoints;
     private float invincibilityExpiration;
+    private bool invincible;
+    
+    public bool Invincible
+    {
+        get => invincible || Time.time < invincibilityExpiration;
+        set => invincible = value;
+    }
 
-    public bool Invincible => Time.time < invincibilityExpiration;
-    public int Hitpoints => hitpoints;
-    public int HitpointsPercent => hitpoints / maxHitpoints;
+    public int Hitpoints
+    {
+        get => hitpoints;
+        set
+        {
+            if (hitpoints == value) return;
+
+            hitpoints = value;
+            
+            HitpointsUpdated?.Invoke();
+        }
+    }
+
+    public float HitpointsPercent => (float)Hitpoints / maxHitpoints;
 
     private void Awake()
     {
@@ -40,18 +59,18 @@ public class CharacterHealth : MonoBehaviour
     
     private void OnDamaged(Damage damage)
     {
-        if (hitpoints == 0 || Invincible) return;
+        if (Hitpoints == 0 || Invincible) return;
         
         if (instantKillDamageTypes.Intersect(damage.damageTypes).Any())
         {
-            hitpoints = 0;
+            Hitpoints = 0;
         }
         else
         {
-            hitpoints = (int)Mathf.MoveTowards(hitpoints, 0, 1);
+            Hitpoints = (int)Mathf.MoveTowards(Hitpoints, 0, 1);
         }
         
-        if (hitpoints == 0)
+        if (Hitpoints == 0)
         {
             Kill();
         }
@@ -63,17 +82,17 @@ public class CharacterHealth : MonoBehaviour
 
     public void Heal(int healAmount)
     {
-        hitpoints = (int)Mathf.MoveTowards(hitpoints, maxHitpoints, healAmount);
+        Hitpoints = (int)Mathf.MoveTowards(hitpoints, maxHitpoints, healAmount);
     }
     
     public void FullHeal()
     {
-        hitpoints = maxHitpoints;
+        Hitpoints = maxHitpoints;
     }
     
     public void ResetHitpoints()
     {
-        hitpoints = startingHitpoints;
+        Hitpoints = startingHitpoints;
     }
     
     public void Kill()

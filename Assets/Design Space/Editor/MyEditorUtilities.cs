@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
 public static class MyEditorUtilities
@@ -168,4 +169,8 @@ public static class MyEditorUtilities
         return created;
     }
 
+    public static void SetDisplayed(this VisualElement visualElement, bool display)
+    {
+        visualElement.style.display = new(display ? DisplayStyle.Flex : DisplayStyle.None);
+    }
 }

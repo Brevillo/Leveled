@@ -77,7 +77,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 30, y: 20}
+  m_Size: {x: 48, y: 18}
   m_EdgeRadius: 0
 --- !u!114 &4738194850434038318
 MonoBehaviour:
@@ -236,7 +236,8 @@ MonoBehaviour:
   shootDirections:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
-  shootFrequency: 1.5
+  firstShootDelay: 0.5
+  shootFrequency: 2
   shootSound: {fileID: 11400000, guid: 336e9380c6e574164ad05a5a2786a8ee, type: 2}
   bulletWilliamRegistry: {fileID: 11400000, guid: f2cdbc58b551f4040a47b503faaf47e1, type: 2}
 --- !u!61 &4864564852814639214

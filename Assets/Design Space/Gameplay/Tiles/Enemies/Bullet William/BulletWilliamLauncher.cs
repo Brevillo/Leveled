@@ -10,6 +10,7 @@ public class BulletWilliamLauncher : MonoBehaviour
     [SerializeField] private TargetingStrategy targetingStrategy;
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private List<Vector2> shootDirections;
+    [SerializeField] private float firstShootDelay;
     [SerializeField] private float shootFrequency;
     [SerializeField] private SoundEffect shootSound;
     [SerializeField] private GameObjectRegistry bulletWilliamRegistry;
@@ -18,19 +19,24 @@ public class BulletWilliamLauncher : MonoBehaviour
     
     private float shootTimer;
 
+    private void Start()
+    {
+        shootTimer = firstShootDelay;
+    }
+
     private void Update()
     {
         if (targetingStrategy.activeTarget == null)
         {
-            shootTimer = 0f;
+            shootTimer = firstShootDelay;
             return;
         }
 
-        shootTimer += Time.deltaTime;
+        shootTimer -= Time.deltaTime;
 
-        if (shootTimer > shootFrequency)
+        if (shootTimer < 0)
         {
-            shootTimer = 0f;
+            shootTimer = shootFrequency;
             Shoot();
         }
     }

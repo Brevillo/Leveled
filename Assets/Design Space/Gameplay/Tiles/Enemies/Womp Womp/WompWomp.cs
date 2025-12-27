@@ -40,10 +40,14 @@ public class WompWomp : MonoBehaviour
             .AddTransition<Dropping>(() => targetingStrategy.activeTarget != null);
 
         stateMachine.AddState<Dropping>(new())
-            .AddTransition<Rising>(() => stateMachine.StateDuration > dropDelay && groundCheck.Touching);
+            .AddTransition<Grounded>(() => groundCheck.Touching);
+
+        stateMachine.AddState<Grounded>(new())
+            .AddTransition<Rising>(() => stateMachine.StateDuration > riseDelay);
         
         stateMachine.AddState<Rising>(new())
-            .AddTransition<Idle>(() => stateMachine.StateDuration > riseDelay && (transform.position.y >= startHeight || ceilingCheck.Touching));
+            .AddTransition<Idle>(() => transform.position.y >= startHeight, () => rigidbody.MovePosition(new(rigidbody.position.x, startHeight)))
+            .AddTransition<Idle>(() => ceilingCheck.Touching);
         
         stateMachine.InitializeAllStatesWithContext(this);
     }
@@ -52,30 +56,18 @@ public class WompWomp : MonoBehaviour
     {
         stateMachine.Update(Time.deltaTime);
     }
-    
-    private class Idle : IContextStateBehavior<WompWomp>
-    {
-        public float StateDuration { get; set; }
-        public WompWomp Context { get; set; }
 
-        public void Enter()
+    private class Idle : ContextStateBehavior<WompWomp>
+    {
+        public override void Enter()
         {
             Context.rigidbody.linearVelocity = Vector2.zero;
         }
-
-        public void Update() { }
-
-        public void Exit() { }
     }
 
-    private class Dropping : IContextStateBehavior<WompWomp>
+    private class Dropping : ContextStateBehavior<WompWomp>
     {
-        public float StateDuration { get; set; }
-        public WompWomp Context { get; set; }
-
-        public void Enter() { }
-
-        public void Update()
+        public override void Update()
         {
             if (StateDuration < Context.dropDelay)
             {
@@ -87,30 +79,18 @@ public class WompWomp : MonoBehaviour
                 -Context.maxDropSpeed, 
                 Context.dropAcceleration * Time.deltaTime);
         }
-
-        public void Exit() { }
     }
 
-    private class Rising : IContextStateBehavior<WompWomp>
+    private class Grounded : ContextStateBehavior<WompWomp> { }
+    
+    private class Rising : ContextStateBehavior<WompWomp>
     {
-        public float StateDuration { get; set; }
-        public WompWomp Context { get; set; }
-        
-        public void Enter() { }
-
-        public void Update()
+        public override void Update()
         {
-            if (StateDuration < Context.riseDelay)
-            {
-                return;
-            }
-
             Context.rigidbody.linearVelocityY = Mathf.MoveTowards(
                 Context.rigidbody.linearVelocityY,
                 Context.maxRiseSpeed, 
                 Context.riseAcceleration * Time.deltaTime);
         }
-
-        public void Exit() { }
     }
 }

@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 8824733926338973866}
   - component: {fileID: 5531390275591907590}
   - component: {fileID: 7617321489427983349}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Womp Womp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +311,7 @@ Transform:
   - {fileID: 2742198479054386133}
   - {fileID: 2873489293386004350}
   - {fileID: 1280062454241725391}
-  - {fileID: 3148323264716810483}
+  - {fileID: 5694705808250816532}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2965665280900602747
@@ -330,7 +330,7 @@ MonoBehaviour:
   rigidbody: {fileID: 5531390275591907590}
   groundCheck: {fileID: 117892409460859409}
   ceilingCheck: {fileID: 7463968346848377880}
-  dropDelay: 0.25
+  dropDelay: 0.1
   dropAcceleration: 100
   maxDropSpeed: 20
   riseDelay: 1
@@ -364,7 +364,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -392,10 +392,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -423,7 +423,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1.875, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &3180495667533401541
 GameObject:
@@ -519,7 +519,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.9, y: 0.25}
   m_EdgeRadius: 0
---- !u!1 &5622814922021288690
+--- !u!1 &7662695568658211815
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -527,39 +527,55 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3148323264716810483}
-  - component: {fileID: 3138005273431691010}
-  - component: {fileID: 4150736278144949207}
-  - component: {fileID: 5293018931237938956}
+  - component: {fileID: 5694705808250816532}
+  - component: {fileID: 1246118587961690517}
+  - component: {fileID: 1532398157945058005}
   m_Layer: 0
-  m_Name: Hitbox
+  m_Name: Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3148323264716810483
+--- !u!4 &5694705808250816532
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5622814922021288690}
+  m_GameObject: {fileID: 7662695568658211815}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536187869221501527}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3138005273431691010
+--- !u!114 &1246118587961690517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7662695568658211815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageTypes:
+  - {fileID: 11400000, guid: b462bd9af6d924a3591c41676e50a3ad, type: 2}
+  damageDealt:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!61 &1532398157945058005
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5622814922021288690}
+  m_GameObject: {fileID: 7662695568658211815}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -597,44 +613,8 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.7, y: 1.7}
+  m_Size: {x: 1.75, y: 0.25}
   m_EdgeRadius: 0
---- !u!114 &4150736278144949207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5622814922021288690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageTypes:
-  - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
-  damageDealt:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &5293018931237938956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5622814922021288690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f4e0c075b826444882d637a77196b24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  acceptedDamageTypes:
-  - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
-  destroyOnDamaged: 1
-  destroyTarget: {fileID: 2859683549599696478}
-  damaged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7962677847293415594
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,5 +707,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6, y: 10}
+  m_Size: {x: 5, y: 10}
   m_EdgeRadius: 0

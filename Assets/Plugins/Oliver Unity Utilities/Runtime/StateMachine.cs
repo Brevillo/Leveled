@@ -116,16 +116,28 @@ namespace OliverBeebe.UnityUtilities.Runtime
     {
         public T Context { get; set; }
     }
+
+    public abstract class ContextStateBehavior<T> : IContextStateBehavior<T>
+    {
+        public float StateDuration { get; set; }
+        public T Context { get; set; }
+
+        public virtual void Enter() { }
+        public virtual void Update() { }
+        public virtual void Exit() { }
+    }
     
     public delegate bool TransitionCondition();
 
     public static class StateMachineUtility
     {
-        public static void ChangeState<T>(this StateMachine stateMachine)
-            where T : IStateBehavior =>
-            stateMachine.ChangeState(
-                stateMachine.stateGraph.FirstOrDefault(state => state.behavior.GetType() == typeof(T)), null);
+        public static void ChangeState<T>(this StateMachine stateMachine) where T : IStateBehavior =>
+            stateMachine.ChangeState(typeof(T));
 
+        public static void ChangeState(this StateMachine stateMachine, Type stateType) =>
+            stateMachine.ChangeState(
+                stateMachine.stateGraph.FirstOrDefault(state => state.behavior.GetType() == stateType), null);
+        
         public static State AddState<T>(this StateMachine stateMachine, T behavior)
             where T : IStateBehavior
         {

@@ -162,7 +162,7 @@ MonoBehaviour:
   defaultZoom: 9
   placer: {fileID: 0}
   minPlaySize: 9
-  playMoveSpeed: 0.05
+  playMoveSpeed: 0.1
   playSizeBuffer: 10
   cameraSnapBufferMult: 1.1
 --- !u!114 &6211406440507286250

@@ -3,7 +3,7 @@
     "name": "Input Actions",
     "maps": [
         {
-            "name": "Player",
+            "name": "Gameplay",
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
@@ -37,6 +37,15 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Debug Menu",
+                    "type": "Button",
+                    "id": "c248600b-1998-4197-81f5-5dc09d299f6d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -283,6 +292,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "455b1e3f-1deb-4447-9dd9-b2635c6b046b",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Debug Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

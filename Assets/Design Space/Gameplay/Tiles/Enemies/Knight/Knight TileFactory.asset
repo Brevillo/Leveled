@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
+  m_Name: Knight TileFactory
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 4547697354170655046, guid: c3ad4e44f8dfe4ddb8ea5578a61170e8, type: 3}
+  previewTileSprite: {fileID: 1612576785287064648, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
+  prefabSpawnerPrefab: {fileID: 6057428776556928874, guid: 90349452163624e659bcaa399a4e6df4, type: 3}

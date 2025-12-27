@@ -147,14 +147,14 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: Art_Tile_Player_Concept_0
     originalName: 
-    pivot: {x: 0.47058824, y: 0.44444445}
+    pivot: {x: 0.64705884, y: 0.33333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 0
-      y: 0
+      y: 18
       width: 17
       height: 18
     spriteID: 38830bb8deec5604e905337e42bb531d

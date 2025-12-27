@@ -6,6 +6,8 @@ using OliverBeebe.UnityUtilities.Runtime;
 
 public class CollisionAggregate2D : MonoBehaviour
 {
+    [SerializeField] private GameObjectFilter collisionFilter;
+    
     public bool Touching => touching;
 
     public bool TriggerTouching => triggerTouching;
@@ -38,19 +40,20 @@ public class CollisionAggregate2D : MonoBehaviour
     
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (!colliders.Contains(other))
-        {
-            colliders.Add(other);
-            triggerColliders.Add(other);
-        }
+        CheckCollision(other, triggerColliders);
     }
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (!colliders.Contains(other.collider))
+        CheckCollision(other.collider, collisionColliders);
+    }
+
+    private void CheckCollision(Collider2D collider, List<Collider2D> specialCollisionRecord)
+    {
+        if (!colliders.Contains(collider) && (collisionFilter == null || collisionFilter.Filter(collider.gameObject)))
         {
-            colliders.Add(other.collider);
-            collisionColliders.Add(other.collider);
+            colliders.Add(collider);
+            specialCollisionRecord.Add(collider);
         }
     }
 

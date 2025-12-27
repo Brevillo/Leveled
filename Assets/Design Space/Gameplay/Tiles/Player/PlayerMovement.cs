@@ -45,9 +45,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float startWallSlideSpeed;
     [SerializeField] private float maxWallSlideSpeed;
     [SerializeField] private float wallSlideAccel;
+
+    [SerializeField] private float noClipSpeed;
+    [SerializeField] private float noClipAcceleration;
+    [SerializeField] private float noClipDecceleration;
     
     [Header("References")] 
     [SerializeField] private new Rigidbody2D rigidbody;
+    [SerializeField] private new BoxCollider2D collider;
     [SerializeField] private PositionRecorder positionRecorder;
     [SerializeField] private Bounceable bounceable;
     [SerializeField] private HeavyObject heavyObject;
@@ -77,6 +82,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 MoveInput => IgnoringInput 
         ? Vector2.zero
         : moveInput.action.ReadValue<Vector2>();
+
+    public bool NoClip 
+    { 
+        get => stateMachine.CurrentState is NoClipping;
+        set => stateMachine.ChangeState(value ? typeof(NoClipping) : typeof(Falling));
+    }
 
     public void Immobilize(bool immobilized)
     {
@@ -172,14 +183,14 @@ public class PlayerMovement : MonoBehaviour
                                   || rigidbody.linearVelocityY <= 0,
 
             canWallSlide = () => WallDirection != 0 && WallDirection == MoveInput.x && !ground.Touching,
-            canEndWallSlide = () => WallDirection == 0 || Sign0(MoveInput.x) == -WallDirection,
+            canEndWallSlide = () => WallDirection == 0 || MoveInput.x.Sign0() == -WallDirection,
 
             canFall = () => !ground.Touching;
         
         stateMachine.AddState<Grounded>(new())
             .AddTransition<Jumping>(canJump)
             .AddTransition<Falling>(canFall);
-
+        
         // Jump Types
         stateMachine.AddState<Jumping>(new())
             .AddTransition<Falling>(canEndJumpPeak)
@@ -211,16 +222,15 @@ public class PlayerMovement : MonoBehaviour
             .AddTransition<WallJumping>(canWalljump)
             .AddTransition<Grounded>(canGround);
 
+        stateMachine.AddState<NoClipping>(new());
+        
         stateMachine.InitializeAllStatesWithContext(this);
         
         stateMachine.SetDefaultState<Grounded>();
     }
     
-    private class State : IContextStateBehavior<PlayerMovement>
+    private class State : ContextStateBehavior<PlayerMovement>
     {
-        public float StateDuration { get; set; }
-        public PlayerMovement Context { get; set; }
-
         protected float VelocityX
         {
             get => Context.rigidbody.linearVelocityX;
@@ -233,6 +243,12 @@ public class PlayerMovement : MonoBehaviour
             set => Context.rigidbody.linearVelocityY = value;
         }
 
+        protected Vector2 Velocity
+        {
+            get => Context.rigidbody.linearVelocity;
+            set => Context.rigidbody.linearVelocity = value;
+        }
+        
         protected void AirRun()
         {
             float activeAirControlMultiplier = Mathf.Lerp(1, Context.peakAirControlMultiplier,
@@ -250,10 +266,32 @@ public class PlayerMovement : MonoBehaviour
 
         protected void Fall(float gravity) => 
             VelocityY = Mathf.MoveTowards(VelocityY, -Context.maxFallSpeed, gravity * Time.deltaTime);
+    }
 
-        public virtual void Enter() { }
-        public virtual void Update() { }
-        public virtual void Exit() { }
+    private class NoClipping : State
+    {
+        public override void Enter()
+        {
+            base.Enter();
+
+            Context.collider.enabled = false;
+        }
+
+        public override void Update()
+        {
+            Vector2 targetVelocity = Context.MoveInput * Context.noClipSpeed;
+            float accel = Context.MoveInput != Vector2.zero ? Context.noClipAcceleration : Context.noClipDecceleration;
+            Velocity = Vector2.MoveTowards(Velocity, targetVelocity, accel * Time.deltaTime);
+            
+            base.Update();
+        }
+
+        public override void Exit()
+        {
+            Context.collider.enabled = true;
+            
+            base.Exit();
+        }
     }
     
     private class Grounded : State
@@ -394,7 +432,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float input = Context.MoveInput.x;
             
-            if (Sign0(input) == Context.WallDirection)
+            if (input.Sign0() == Context.WallDirection)
             {
                 input = 0;
             }
@@ -430,6 +468,4 @@ public class PlayerMovement : MonoBehaviour
     }
     
     #endregion
-    
-    private static float Sign0(float f) => f > 0 ? 1 : f < 0 ? -1 : 0;
 }
