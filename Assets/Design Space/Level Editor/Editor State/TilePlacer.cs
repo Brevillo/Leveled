@@ -28,7 +28,7 @@ public class TilePlacer : MonoBehaviour
     {
         tilemaps = new();
 
-        tilePlacerReference.tilePlacer = this;
+        tilePlacerReference.value = this;
     }
 
     private void OnEnable()

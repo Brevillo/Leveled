@@ -45,9 +45,10 @@ public class CameraMovement : MonoBehaviour
             zoomTarget = Mathf.Clamp(newZoom, maxZoom, minZoom);
         }
         
+        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        
         mainCamera.orthographicSize = Mathf.SmoothDamp(mainCamera.orthographicSize, zoomTarget, ref zoomVelocity, zoomSmoothing);
         
-        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         transform.position += mouseWorldPosition - mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 

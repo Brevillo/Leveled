@@ -7,7 +7,7 @@ public class DestroyOutOfLevelBounds : MonoBehaviour
 
     private void Update()
     {
-        if (!tilePlacerReference.tilePlacer.Bounds.Contains(transform.position))
+        if (!tilePlacerReference.value.Bounds.Contains(transform.position))
         {
             Destroy(gameObject);
         }
