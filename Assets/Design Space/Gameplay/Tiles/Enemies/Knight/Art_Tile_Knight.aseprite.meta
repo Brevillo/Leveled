@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Frame_0
     originalName: 
-    pivot: {x: 0.4666667, y: 0}
+    pivot: {x: 0.49999997, y: -0.84210527}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,8 +133,8 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 15
-      height: 31
+      width: 16
+      height: 19
     spriteID: 5717d789eec414b29af12e2c8145b0be
     spriteBone: []
     spriteOutline: []
@@ -146,17 +146,17 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Frame_1
     originalName: 
-    pivot: {x: 0.45454547, y: 0}
+    pivot: {x: 0.49999997, y: -1}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 27
-      y: 4
-      width: 11
-      height: 18
-    spriteID: fef0b16d8dbf5433aa257a86d74f9e85
+      x: 4
+      y: 31
+      width: 16
+      height: 16
+    spriteID: 6799e980bd7cb7c409982f38dff6518e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -164,7 +164,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 27, y: 4}
+    uvTransform: {x: 4, y: 31}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -183,20 +183,20 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 9
-        y: 0
-        width: 15
-        height: 31
+        x: 16
+        y: 16
+        width: 16
+        height: 19
       spriteId: 5717d789eec414b29af12e2c8145b0be
     - name: Frame_1
       frameIndex: 1
       additiveSortOrder: 0
       cellRect:
-        x: 11
-        y: 0
-        width: 11
-        height: 18
-      spriteId: fef0b16d8dbf5433aa257a86d74f9e85
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      spriteId: 6799e980bd7cb7c409982f38dff6518e
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -239,5 +239,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 48, y: 64}
+  previousTextureSize: {x: 32, y: 64}

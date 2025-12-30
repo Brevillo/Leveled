@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1322232797350946202}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
@@ -272,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
@@ -327,14 +329,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4bbdeac866454de2a8c02b668a0e2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDirection: -1
   moveSpeed: 5
   gravity: 10
   jumpHeight: 0
   jumpFrequency: Infinity
   rigidbody: {fileID: 3770291099405037255}
-  rightBouncer: {fileID: 4801717665028866843}
-  leftBouncer: {fileID: 4770186702615064239}
-  downBouncer: {fileID: 781112078512914518}
+  size: {x: 0, y: 0}
+  sideCheckSize: {x: 0, y: 0}
+  downCheckSize: {x: 0, y: 0}
+  groundCheckNormalRange: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  bounceable: {fileID: 0}
+  running: 1
 --- !u!114 &424699587750090250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fullHealth: {fileID: 1612576785287064648, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
-  halfHealth: {fileID: -5881159618615275593, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
+  halfHealth: {fileID: 9209072099887660752, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
   spriteRenderer: {fileID: 2278101925243622013}
   health: {fileID: 3371692808100298466}
 --- !u!114 &3371692808100298466
@@ -622,6 +631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
