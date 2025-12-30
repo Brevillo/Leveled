@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Art_Tile_EndGoal
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.16666667}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,8 +133,8 @@ ScriptedImporter:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 16
-      height: 16
+      width: 36
+      height: 48
     spriteID: 74b5063aa254945d9a3901b522c34037
     spriteBone: []
     spriteOutline: []
@@ -183,10 +183,10 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 16
-        height: 16
+        x: 14
+        y: 16
+        width: 36
+        height: 48
       spriteId: 74b5063aa254945d9a3901b522c34037
     linkedCells: []
     parentIndex: -1
@@ -230,5 +230,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 16, y: 16}
-  previousTextureSize: {x: 16, y: 16}
+  canvasSize: {x: 64, y: 64}
+  previousTextureSize: {x: 64, y: 64}
