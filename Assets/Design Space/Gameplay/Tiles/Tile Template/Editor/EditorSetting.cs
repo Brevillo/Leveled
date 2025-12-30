@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -14,6 +15,8 @@ public interface IEditorSettingHandler<T>
 
     VisualElement GetField(string label, T value);
 }
+
+#region Type Editor Setting Handlers
 
 public sealed class IntEditorSettingHandler : IEditorSettingHandler<int>
 {
@@ -94,6 +97,8 @@ public sealed class EnumEditorSettingHandler<T> : IEditorSettingHandler<T> where
     public VisualElement GetField(string label, T value) => new EnumField(label, value);
 }
 
+#endregion
+
 public static class EditorSettingHandler<T>
 {
     public static readonly IEditorSettingHandler<T> Instance = Create();
@@ -135,6 +140,8 @@ public class EditorSetting<T> : IEditorSetting
     private readonly T defaultValue;
     private readonly string fieldLabel;
     private readonly Func<T, T> valueProcessing;
+
+    private readonly IEditorSettingHandler<T> handler = EditorSettingHandler<T>.Instance;
     
     public EditorSetting(string editorPrefKey, T defaultValue = default, string fieldLabel = "", Func<T, T> valueProcessing = null)
     {
@@ -146,20 +153,20 @@ public class EditorSetting<T> : IEditorSetting
 
     public T Value
     {
-        get => EditorSettingHandler<T>.Instance.Get(editorPrefKey, defaultValue);
+        get => handler.Get(editorPrefKey, defaultValue);
         set
         {
             var processedValue = valueProcessing != null 
                 ? valueProcessing.Invoke(value) 
                 : value;
             
-            EditorSettingHandler<T>.Instance.Set(editorPrefKey, processedValue);
+            handler.Set(editorPrefKey, processedValue);
         }
     }
 
     public VisualElement GetField(Action valueChangeAction = null)
     {
-        var field = EditorSettingHandler<T>.Instance.GetField(fieldLabel, Value);
+        var field = handler.GetField(fieldLabel, Value);
 
         switch (field)
         {
@@ -194,18 +201,6 @@ public class EditorSetting<T> : IEditorSetting
             }
         }
         
-        return field;
-    }
-}
-
-public class ListEditorSetting<T> : IEditorSetting
-{
-    private readonly List<EditorSetting<T>> settings = new();
-
-    public VisualElement GetField(Action valueChangeAction = null)
-    {
-        var field = new ListView(settings);
-
         return field;
     }
 }

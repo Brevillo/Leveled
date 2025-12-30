@@ -145,9 +145,996 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: Art_Tilemap_Template_0
+  - name: Art_Tilemap_Conveyor_0
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 208
+      width: 16
+      height: 16
+    spriteID: f9bbec598f6c948ec9c43002afe692c7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 4a2259ad4eed64dd19b9ad00ac65baa4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 208
+      width: 16
+      height: 16
+    spriteID: a4cdd26be896b4460bd2cd01d28a73f4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 208
+      width: 16
+      height: 16
+    spriteID: def9c036a89d642d1845c7bc454fb32d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 6c72566ea68b649eeba6e3a17caab2d9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 6f8d563b0575549ff88fdfe0da2e781f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 84d5804397b824438be11859f24ed0ba
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_7
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 21de7226b7c744dc2a443d0e7392d754
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_8
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 192
+      width: 16
+      height: 16
+    spriteID: aa37a817bcc8748c59bc6c31678f4c39
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_9
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 192
+      width: 16
+      height: 16
+    spriteID: c2e8f63a0911f43ca97f7306f336a838
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_10
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 8a2f99d6e3a6d45bb97ecaa77251913a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_11
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 192
+      width: 16
+      height: 16
+    spriteID: fb023ea3c30d3463ca2386b25944cb73
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_12
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 14559237158a749948eb79b175057f1c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 12d3a6b50db0b4e3c9c437d42ba4d005
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_14
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 9b65c1ba20a654bf2b48c4eb0841bdb5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_15
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 905033ca4987b4468a31ca1a2b484ac4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_16
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 176
+      width: 16
+      height: 16
+    spriteID: f085ce7e464c744c2861bb8ace68ea77
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_17
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 19b277155d0c84f96952eb4a68e8b743
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_18
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 176
+      width: 16
+      height: 16
+    spriteID: d6c40e1842aa44d3d829f576945ef975
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_19
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 176
+      width: 16
+      height: 16
+    spriteID: b0a7804f3e9924c35973e5e79442b1fb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_20
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 176
+      width: 16
+      height: 16
+    spriteID: ca45f50913a174efbb92ff62d6616a52
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_21
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 578d75cd2cb5140cc9c9bdbd2fe44a43
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_22
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 15e7fbc29660347b983a72fed98ec4fd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_23
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 160
+      width: 16
+      height: 16
+    spriteID: c69d99625c86748e6b881de5d2de9375
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_24
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 160
+      width: 16
+      height: 16
+    spriteID: d9939373d10f945c9aa7120905b03a04
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_25
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 060df4a30ada04c2985e9097ff9c05a8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_26
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 160
+      width: 16
+      height: 16
+    spriteID: e8fb05cced75b470eb513bc6c660a9dc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_27
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 160
+      width: 16
+      height: 16
+    spriteID: d45e0b77a54b545269a767b0e9a1f8fc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_28
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 36db75e187725461981df94f5eef0a72
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_29
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 55fa20e4978db4c869ca8d30b659260a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_30
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 144
+      width: 16
+      height: 16
+    spriteID: af659e96265a04f3d9c8b86989e711a7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_31
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 144
+      width: 16
+      height: 16
+    spriteID: f2c6e6b4549a34251a27755783242c44
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_32
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 72bdad4cba83443fbad6bd5ba9eef18d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_33
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 7ad03d9973eae4815993ef5ebb91d9fd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_34
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 22366da690b194fe18435d447c780c9a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_35
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 49fd38bff74934c1a85393468bc6635d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_36
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 81529396c40ad406a919f4c0f1807433
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_37
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 6b42a74b24bf84187a777306f2c306ea
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_38
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 99d1fd1d44f654d8a8626e09afa61215
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_39
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 739020c14ee2a42e79beda83da9f039c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_40
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 128
+      width: 16
+      height: 16
+    spriteID: c934f78073e0e4134bbd5ece2c5a4e9c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_41
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 128
+      width: 16
+      height: 16
+    spriteID: f358449a7642e4aeb980727a3a50ab92
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_42
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 05f97b582372941f1b7dcc2ea12a0af7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_43
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 112
+      width: 16
+      height: 16
+    spriteID: db320cdee5f154d659cefe00cbd78d1e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_44
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 112
+      width: 16
+      height: 16
+    spriteID: f2c60fa9ab29a43be8a32a045bc95137
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_45
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 0a325cdd6e253478e99da43d29c8229a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_46
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 4442b6c46ceb049d78f864d9d03d003d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Art_Tilemap_Conveyor_47
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -157,7 +1144,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: d157705b7dc87418ea290756e57a43ab
+    spriteID: 0d68acc8794994308830370bbe948dc0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -166,9 +1153,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_1
+  - name: Art_Tilemap_Conveyor_48
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -178,7 +1165,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: e43546c7f957a489f9f2d204cd0f064b
+    spriteID: 7ec00e23e88be419594278bdfc10b780
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -187,9 +1174,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_2
+  - name: Art_Tilemap_Conveyor_49
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -199,7 +1186,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: 09b1f326e124b4ea986b2e12d205fe22
+    spriteID: 57d714ab3c13249eda4793f4a14a850b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -208,9 +1195,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_3
+  - name: Art_Tilemap_Conveyor_50
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -220,7 +1207,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: 8f49e69a929c34fc5aa2e67e44368a9d
+    spriteID: 43e89ec99c1f340088418e6c802b5af9
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -229,9 +1216,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_4
+  - name: Art_Tilemap_Conveyor_51
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -241,7 +1228,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: 9ec0420e441d34d42878a394626353f1
+    spriteID: 1837a2efa40e1440ba042f02e23088cd
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -250,9 +1237,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_5
+  - name: Art_Tilemap_Conveyor_52
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -262,7 +1249,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: e9b65424724914577b487c23aba187e8
+    spriteID: b3b6b5f7abd294cc9be5da9301edab2d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -271,9 +1258,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_6
+  - name: Art_Tilemap_Conveyor_53
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -283,7 +1270,7 @@ ScriptedImporter:
       y: 96
       width: 16
       height: 16
-    spriteID: d0025674153c241b2b54b9a62a27f27a
+    spriteID: b31a7708bf5f84ac4a800dabbfed3b34
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -292,9 +1279,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_7
+  - name: Art_Tilemap_Conveyor_54
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -304,7 +1291,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: 64fe778ac68be4847ae956108ce38b27
+    spriteID: eecae8351c4e0469fa84492939b34766
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -313,9 +1300,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_8
+  - name: Art_Tilemap_Conveyor_55
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -325,7 +1312,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: 3d5ea86b5b6e744cfbbb1ef223f069c5
+    spriteID: 4c0aa9092fd3b49219704302b4651f11
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -334,9 +1321,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_9
+  - name: Art_Tilemap_Conveyor_56
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -346,7 +1333,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: 64a9b906a7e16442796c9b43bfdc596d
+    spriteID: 714f86e95a96e4424b544449aefbb987
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -355,9 +1342,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_10
+  - name: Art_Tilemap_Conveyor_57
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -367,7 +1354,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: aada3bdc242dc46f3a1cbc1187a55111
+    spriteID: 71c8df29d6873499396114c14759cd73
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -376,9 +1363,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_11
+  - name: Art_Tilemap_Conveyor_58
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -388,7 +1375,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: 88b6a4975bfe747a9b1675f78f899c6e
+    spriteID: 100bc8a6e38204c0c92cb745722cd518
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -397,9 +1384,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_12
+  - name: Art_Tilemap_Conveyor_59
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -409,7 +1396,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: 700dac6c66b224cd587060e8cf2b5348
+    spriteID: 8b986df899d934abdae408a48f94a1d1
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -418,9 +1405,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_13
+  - name: Art_Tilemap_Conveyor_60
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -430,7 +1417,7 @@ ScriptedImporter:
       y: 80
       width: 16
       height: 16
-    spriteID: 8dc48b522a0f347c59f7bbf156cdad4c
+    spriteID: 37beb878cbb4644c7aff6c0816f1fc5c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -439,9 +1426,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_14
+  - name: Art_Tilemap_Conveyor_61
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -451,7 +1438,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: ab01f9e2af19f41d3b387df34f2d665e
+    spriteID: 8aa936700497c4c91856a1b7e2e2516c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -460,9 +1447,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_15
+  - name: Art_Tilemap_Conveyor_62
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -472,7 +1459,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: 7ce849d9da2cd447db9874591587ad33
+    spriteID: c5b4dfea7c1ed44959b98426327bd519
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -481,9 +1468,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_16
+  - name: Art_Tilemap_Conveyor_63
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -493,7 +1480,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: 9ee1b50150cc148b48d9f8de8c0b3831
+    spriteID: 1257112ea60dc4481b57630c847c99ed
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -502,9 +1489,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_17
+  - name: Art_Tilemap_Conveyor_64
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -514,7 +1501,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: 8583122f5c3b3413c9786f297f3bb15d
+    spriteID: 1ff59b36c5a0541bb86c3f19379e223d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -523,9 +1510,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_18
+  - name: Art_Tilemap_Conveyor_65
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -535,7 +1522,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: 543c14296377c49bc89523f36660e93d
+    spriteID: 40a6c528d9612482eb885d14c8926517
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -544,9 +1531,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_19
+  - name: Art_Tilemap_Conveyor_66
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -556,7 +1543,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: 5ce54a648ccc34270b949dd0d5f40719
+    spriteID: e47ff6c3d6de14f1793ddfcbb4ae3f7e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -565,9 +1552,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_20
+  - name: Art_Tilemap_Conveyor_67
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -577,7 +1564,7 @@ ScriptedImporter:
       y: 64
       width: 16
       height: 16
-    spriteID: c6611238a61694be89cc9899961ec30a
+    spriteID: d0626034a9f99483a88969d1c01fc436
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -586,9 +1573,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_21
+  - name: Art_Tilemap_Conveyor_68
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -598,7 +1585,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: f53dc0414ac1d46b9923d332af5ce161
+    spriteID: b7e9630018242464a8c8baf0eb7e9eae
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -607,9 +1594,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_22
+  - name: Art_Tilemap_Conveyor_69
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -619,7 +1606,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: dcc8b469fba8b4847973dc0b5643bc45
+    spriteID: edcbd642207924b04ae1660e18067e48
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -628,9 +1615,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_23
+  - name: Art_Tilemap_Conveyor_70
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -640,7 +1627,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: f71ac017c3db7462997e53fd1c9ccf0a
+    spriteID: 089d41f692aec4d9c9a0e08cbf266a1a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -649,9 +1636,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_24
+  - name: Art_Tilemap_Conveyor_71
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -661,7 +1648,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: f6482dc416d274045a1d615c44267176
+    spriteID: 90d111abc56564e71a1850a93cacf73d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -670,9 +1657,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_25
+  - name: Art_Tilemap_Conveyor_72
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -682,7 +1669,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: f7403bdc7c03b443d9d05d19faae3436
+    spriteID: 623e4eb80f63c40199ef102b6294d8a7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -691,9 +1678,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_26
+  - name: Art_Tilemap_Conveyor_73
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -703,7 +1690,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: 4220a820cfd904e6cae290cf1a70e17b
+    spriteID: c6c4c37bb60524fb58cc720b56789f19
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -712,9 +1699,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_27
+  - name: Art_Tilemap_Conveyor_74
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -724,7 +1711,7 @@ ScriptedImporter:
       y: 48
       width: 16
       height: 16
-    spriteID: bf8db89e155d546189fbd89c81dcfb41
+    spriteID: fb9cf0adff0ba4960874609eb4cd5547
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -733,9 +1720,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_28
+  - name: Art_Tilemap_Conveyor_75
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -745,7 +1732,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: 53dd07459c8c34586bc229557f654d10
+    spriteID: f4100d90c64c947cfb8868f89741fccc
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -754,9 +1741,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_29
+  - name: Art_Tilemap_Conveyor_76
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -766,7 +1753,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: 50dcb7f6f310e4ec693a003e2e7b5c81
+    spriteID: 2791909404e9a41adbb5b4ff56577b18
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -775,9 +1762,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_30
+  - name: Art_Tilemap_Conveyor_77
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -787,7 +1774,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: cb78b47f57f374fb5bbbc11485680dc9
+    spriteID: 9d1b13d68f8754085b218da10fbf8a09
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -796,9 +1783,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_31
+  - name: Art_Tilemap_Conveyor_78
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -808,7 +1795,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: 27ae79ea37d1f41f18186241967ea4a8
+    spriteID: 3d99f8ea63dfc4e699072bb50d471c13
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -817,9 +1804,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_32
+  - name: Art_Tilemap_Conveyor_79
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -829,7 +1816,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: b363aaf1f688844bf944b38c52b2e792
+    spriteID: 4338c1638c9454dcc9d82235c8c65aab
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -838,9 +1825,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_33
+  - name: Art_Tilemap_Conveyor_80
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -850,7 +1837,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: 714ede3abc627457fa2d257acf082cd0
+    spriteID: 6afb36ab4b20a494fa79786a7780142e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -859,9 +1846,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_34
+  - name: Art_Tilemap_Conveyor_81
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -871,7 +1858,7 @@ ScriptedImporter:
       y: 32
       width: 16
       height: 16
-    spriteID: bc4bac390228746f98f3a2e9a572eb40
+    spriteID: d65c728baa88a4c4488b9128f9e5b14a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -880,9 +1867,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_35
+  - name: Art_Tilemap_Conveyor_82
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -892,7 +1879,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: a826784cc220a4e6c875f6f5c33ec5ec
+    spriteID: 2387e0879f303419ba2178ffde8dca0b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -901,9 +1888,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_36
+  - name: Art_Tilemap_Conveyor_83
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -913,7 +1900,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 14c3814203ba64a9c92cf0c6d61f9e5a
+    spriteID: abe6cbdf2a8df4bbaa1c170aa3d7a617
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -922,9 +1909,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_37
+  - name: Art_Tilemap_Conveyor_84
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -934,7 +1921,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 9cf6f5902d431469c9118f4671102b36
+    spriteID: a5cf39c171e3648b4b79047ace7ed288
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -943,9 +1930,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_38
+  - name: Art_Tilemap_Conveyor_85
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -955,7 +1942,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: fb8e43aee80dc43d7a94f925d7d72dd5
+    spriteID: fb6ea0d05079a4d9c997119040df4587
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -964,9 +1951,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_39
+  - name: Art_Tilemap_Conveyor_86
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -976,7 +1963,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 7bd476d20692d4237ae95dd9c28d20ae
+    spriteID: 3696c5590ac3745d8934ff837804a76e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -985,9 +1972,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_40
+  - name: Art_Tilemap_Conveyor_87
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -997,7 +1984,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 72be8785f13bb4b14a4d1f4873b92c9e
+    spriteID: 99503d30f7f2b4908adfa1581c12c713
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1006,9 +1993,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_41
+  - name: Art_Tilemap_Conveyor_88
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -1018,7 +2005,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 2192b32b6b0e3433bb82884a4cfc6f4c
+    spriteID: e211031cc71aa492487c82ad528d24d1
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1027,9 +2014,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_42
+  - name: Art_Tilemap_Conveyor_89
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -1039,7 +2026,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 8c6841736d41a45fe8eade53e5f8845d
+    spriteID: ae917b2d012424b8693a3791fd0e6517
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1048,9 +2035,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_43
+  - name: Art_Tilemap_Conveyor_90
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -1060,7 +2047,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 3a9e759f935c24d50af8bf16ea4b7506
+    spriteID: 1b91d85fb863b4e61adac4b07bb1f39d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1069,9 +2056,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_44
+  - name: Art_Tilemap_Conveyor_91
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -1081,7 +2068,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 8098be0221388460eaa03a37f896ba55
+    spriteID: e5b0d7a70b483421ab15bea75c44c600
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1090,9 +2077,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_45
+  - name: Art_Tilemap_Conveyor_92
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -1102,7 +2089,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 678e6326fa7104af3a535ad260d0996d
+    spriteID: 75e3177bbf5da49bda896ff580fb9950
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -1111,9 +2098,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Art_Tilemap_Template_46
+  - name: Art_Tilemap_Conveyor_93
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -1123,7 +2110,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 062eaba26236c4f368e26f4587d88907
+    spriteID: 3bf03b27f207449e7aa0c3484e340866
     spriteBone: []
     spriteOutline: []
     vertices: []

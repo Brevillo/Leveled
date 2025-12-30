@@ -174,7 +174,7 @@ public class RuleTileGenerator : EditorWindow
             var tileSprites = GetSprites(tilemap.Value);
             var templateSprites = GetSprites(templateTilemap.Value);
             
-            if (defaultSpriteIndex != -1 && tileSprites.Length == templateSprites.Length)
+            if (defaultSpriteIndex != -1 && tileSprites.Length % templateSprites.Length == 0)
             {
                 defaultSpriteField.value = tileSprites[defaultSpriteIndex];
             }
@@ -214,26 +214,32 @@ public class RuleTileGenerator : EditorWindow
             // Tilemap Previews
             
             previewBackground.Clear();
-
-            TilemapPreview(templateTilemap);
-            TilemapPreview(tilemap);
-            
-            void TilemapPreview(EditorSetting<Texture2D> tilemap)
-            {
-                if (tilemap.Value != null && tilemap.Value.isReadable)
-                {
-                    previewBackground.Add(CreateTilemapPreview(GetSprites(tilemap.Value), previewColumns.Value));
-                }
-            }
-
-            // Error Reporting
             
             var tileSprites = GetSprites(tilemap.Value);
             var templateSprites = GetSprites(templateTilemap.Value);
 
-            unequalSpriteCount.SetDisplayed(templateSprites.Length != tileSprites.Length);
+            if (templateTilemap.Value != null && templateTilemap.Value.isReadable)
+            {
+                previewBackground.Add(CreateTilemapPreview(templateSprites, previewColumns.Value));
+            }
+
+            if (tilemap.Value != null && tilemap.Value.isReadable)
+            {
+                int tileCount = templateSprites.Length;
+                
+                for (int i = 0; i < tileSprites.Length / tileCount; i++)
+                {
+                    var tiles = tileSprites[(tileCount * i)..((i + 1) * tileCount)];
+
+                    previewBackground.Add(CreateTilemapPreview(tiles, previewColumns.Value));
+                }
+            }
+
+            // Error Reporting
+
+            unequalSpriteCount.SetDisplayed(tileSprites.Length % templateSprites.Length != 0);
             unequalSpriteCount.text =
-                "Template and tilemap must have the same number of sprites.\n" + 
+                "Tilemap must have a multiple of the number of template tiles.\n" + 
                 $"Template has {templateSprites.Length} sprites.\n" +
                 $"Tilemap has {tileSprites.Length} sprites.";
             
@@ -254,7 +260,7 @@ public class RuleTileGenerator : EditorWindow
 
             if (tilemap.Value == null || templateTilemap.Value == null 
                 || !tilemap.Value.isReadable || !templateTilemap.Value.isReadable
-                || tileSprites.Length != templateSprites.Length)
+                || tileSprites.Length % templateSprites.Length != 0)
             {
                 return;
             }
@@ -285,23 +291,27 @@ public class RuleTileGenerator : EditorWindow
         tile.m_DefaultSprite = defaultSprite.Value;
         tile.m_DefaultColliderType = defaultColliderType.Value;
         tile.m_DefaultGameObject = defaultGameObject.Value;
-        
+
+        int templateSpriteCount = GetSprites(templateTilemap.Value).Length;
         var tileSprites = GetSprites(tilemap.Value);
 
         // Set tiling rules
-        tile.m_TilingRules = Enumerable.Range(0, tileSprites.Length)
+        tile.m_TilingRules = Enumerable.Range(0, templateSpriteCount)
             .Select(i => new TilingRule 
             { 
-                m_Sprites           = new[] { tileSprites[i] },
-                m_GameObject        = tile.m_DefaultGameObject,
+                m_Sprites = Enumerable.Range(0, tileSprites.Length / templateSpriteCount)
+                    .Select(offset => tileSprites[i + offset * templateSpriteCount])
+                    .ToArray(),
+                
+                m_GameObject = tile.m_DefaultGameObject,
                 m_MinAnimationSpeed = minAnimationSpeed.Value,
                 m_MaxAnimationSpeed = maxAnimationSpeed.Value,
-                m_PerlinScale       = perlinScale.Value,
-                m_Output            = defaultOutput.Value,
-                m_Neighbors         = templateNeighbors[i],
-                m_RuleTransform     = ruleTransform.Value,
-                m_ColliderType      = tile.m_DefaultColliderType,
-                m_RandomTransform   = randomTransform.Value,
+                m_PerlinScale = perlinScale.Value,
+                m_Output = defaultOutput.Value,
+                m_Neighbors = templateNeighbors[i],
+                m_RuleTransform = ruleTransform.Value,
+                m_ColliderType = tile.m_DefaultColliderType,
+                m_RandomTransform = randomTransform.Value,
             })
             .ToList();
         
