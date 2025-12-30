@@ -1145,7 +1145,7 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: RuleTile Generator Template
+    - name: RuleTile Generator Template Full
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
