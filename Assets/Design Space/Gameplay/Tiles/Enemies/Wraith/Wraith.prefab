@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
@@ -174,8 +175,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -448038509
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: -4225740353191325585, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -286,6 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
@@ -373,6 +375,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  damageDealt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &717847417823062382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +397,6 @@ MonoBehaviour:
   damaged:
     m_PersistentCalls:
       m_Calls: []
-  invincible: 0
 --- !u!1 &6799291018397145350
 GameObject:
   m_ObjectHideFlags: 0

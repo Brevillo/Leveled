@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
@@ -167,8 +168,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2087772545
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 5004427659667788350, guid: d9963549f8f6d49c98e7bfd112270f1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -272,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0
@@ -401,14 +403,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4bbdeac866454de2a8c02b668a0e2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDirection: -1
   moveSpeed: 5
   gravity: 10
   jumpHeight: 0
   jumpFrequency: Infinity
   rigidbody: {fileID: 6087477761649752984}
-  rightBouncer: {fileID: 7699003646424727253}
-  leftBouncer: {fileID: 4512699352001922694}
-  downBouncer: {fileID: 4695095132934486896}
+  size: {x: 0, y: 0}
+  sideCheckSize: {x: 0, y: 0}
+  downCheckSize: {x: 0, y: 0}
+  groundCheckNormalRange: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  bounceable: {fileID: 0}
+  running: 1
 --- !u!1 &5266844912420687193
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763f87a64d7ec452d89335417e1879be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionFilter: {fileID: 0}
   touching: 0
   triggerTouching: 0
   collisionTouching: 0

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
+  m_Script: {fileID: 11500000, guid: df6a0f3481dbe4574a1550267a952114, type: 3}
   m_Name: Lava
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 6879241340619285368, guid: cbed2e3e0774740549e1a2370e3cdd5d, type: 3}
+  m_DefaultSprite: {fileID: 4087290966128412642, guid: cbed2e3e0774740549e1a2370e3cdd5d, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
@@ -1003,3 +1003,6 @@ MonoBehaviour:
     - {x: 0, y: -1, z: 0}
     - {x: 1, y: -1, z: 0}
     m_RuleTransform: 0
+  neighbors:
+  - {fileID: 11400000, guid: 65dc3a5f3203d4bbfa3cdfc8963a0c61, type: 2}
+  - {fileID: 11400000, guid: 1c5314c4bd8975441bff1e0411fb6160, type: 2}

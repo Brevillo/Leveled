@@ -3025,8 +3025,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -633104105
+  m_SortingLayer: -20
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9590,7 +9590,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000f1b1fd2f75f264c63311766c
+  m_ApplyToSortingLayers: 00000000f1b1fd2f75f264c63311766cf18ae7461b4057eb8b06aaf0b3900f2ca989e514df58b918119f1833f90f422593794be5cd16a451f702ae466d4118aa3bcf33b74f1357eef3fe65117f1e8f838f49c6d5179943da01bb6553d962cd58
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -19780,7 +19780,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 30
   orthographic: 0
   orthographic size: 9
   m_Depth: -1

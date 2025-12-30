@@ -1,322 +1,473 @@
-//This tool is a part of the VinTools Unity Package: https://vinarkgames.itch.io/vintools
+// Code originally from the VinTools Unity Package: https://vinarkgames.itch.io/vintools
+// Heavily modified by Oliver Beebe
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+using static UnityEngine.RuleTile;
+using Object = UnityEngine.Object;
 
-#if UNITY_EDITOR
 public class RuleTileGenerator : EditorWindow
 {
-    Vector2 scrollpos;
-
-    public string tileName = "NewRuleTile";
-
-    //default neighbor positions, copied from the rule tile script so we don't need a reference to it
-    public List<Vector3Int> NeighborPositions = new List<Vector3Int>()
-    {
-        new Vector3Int(-1, 1, 0),
-        new Vector3Int(0, 1, 0),
-        new Vector3Int(1, 1, 0),
-        new Vector3Int(-1, 0, 0),
-        new Vector3Int(1, 0, 0),
-        new Vector3Int(-1, -1, 0),
-        new Vector3Int(0, -1, 0),
-        new Vector3Int(1, -1, 0),
-    };
-
-    [MenuItem("VinTools/Editor Windows/Rule Tile Generator")]
+    [MenuItem(ProjectConstants.ToolMenuItems + "Rule Tile Generator")]
     public static void ShowWindow()
+        => GetWindow<RuleTileGenerator>("Rule Tile Generator",
+            Type.GetType("UnityEditor.InspectorWindow,UnityEditor.dll"));
+    
+    // Tilemaps
+    
+    private readonly EditorSetting<Texture2D> templateTilemap = 
+        new(nameof(templateTilemap), fieldLabel: "Template");
+    
+    private readonly EditorSetting<Texture2D> tilemap = 
+        new(nameof(tilemap), fieldLabel: "Tilemap");
+
+    // Template Preview
+    
+    private readonly EditorSetting<int> previewColumns = 
+        new(nameof(previewColumns), 7, "Columns", value => Mathf.Max(value, 1));
+    
+    // Rule Tile Settings
+    
+    private readonly EditorSetting<Tile.ColliderType> defaultColliderType =
+        new(nameof(defaultColliderType), Tile.ColliderType.Sprite, "Default Collider");
+    
+    private readonly EditorSetting<OutputSprite> defaultOutput =
+        new(nameof(defaultOutput), OutputSprite.Single, "Default Rule Output");
+    
+    private readonly EditorSetting<Sprite> defaultSprite = 
+        new(nameof(defaultSprite), fieldLabel: "Default Sprite");
+    
+    private readonly EditorSetting<GameObject> defaultGameObject = 
+        new(nameof(defaultGameObject), fieldLabel: "Default GameObject");
+
+    private readonly EditorSetting<float> minAnimationSpeed =
+        new(nameof(minAnimationSpeed), 1f, "Min Speed");
+    
+    private readonly EditorSetting<float> maxAnimationSpeed =
+        new(nameof(maxAnimationSpeed), 1f, "Min Speed");
+
+    private readonly EditorSetting<float> perlinScale =
+        new(nameof(perlinScale), 0.5f, "Perlin Scale");
+    
+    private readonly EditorSetting<TilingRuleOutput.Transform> ruleTransform =
+        new(nameof(ruleTransform), TilingRuleOutput.Transform.Fixed, "Rule Transform");
+
+    private readonly EditorSetting<TilingRuleOutput.Transform> randomTransform =
+        new(nameof(randomTransform), TilingRuleOutput.Transform.Fixed, "Shuffle");
+    
+    private IEditorSetting[] RuleTileSettings => new IEditorSetting[]
     {
-        GetWindow<RuleTileGenerator>("Rule Tile Generator");
+        defaultColliderType,
+        defaultGameObject,
+        defaultOutput,
+        minAnimationSpeed,
+        maxAnimationSpeed,
+        perlinScale,
+        ruleTransform,
+        randomTransform,
+    };
+    
+    // Tile Generation
+    
+    private readonly EditorSetting<string> tileName =
+        new(nameof(tileName), "Generated Rule Tile", "Tile Name");
+    
+    private List<int>[] templateNeighbors;
+    private int defaultSpriteIndex = -1;
+
+    private void CreateGUI()
+    {
+        // Error Reporting
+
+        var errorReports = new VisualElement();
+        
+        var unequalSpriteCount = new HelpBox("", HelpBoxMessageType.Error);
+        errorReports.Add(unequalSpriteCount);
+
+        var noTilemapSprites = new HelpBox("Tilemap texture has no sprites.", HelpBoxMessageType.Error);
+        errorReports.Add(noTilemapSprites);
+
+        var templateReadable = new HelpBox("Template must be marked as read/write enabled.", HelpBoxMessageType.Error);
+        errorReports.Add(templateReadable);
+        
+        var tilemapReadable = new HelpBox("Tilemap must be marked as read/write enabled.", HelpBoxMessageType.Error);
+        errorReports.Add(tilemapReadable);
+        
+        // Asset Preview
+
+        var assetPreview = new Foldout
+        {
+            text = "Generated Tile Preview",
+        };
+        
+        var assetInspector = new VisualElement
+        {
+            enabledSelf = false,
+            style =
+            {
+                backgroundColor = new Color(0.1f, 0.1f, 0.1f),
+                
+                marginBottom = 5f,
+                marginTop = 5f,
+                marginLeft = 5f,
+                marginRight = 5f,
+
+                paddingBottom = 5f,
+                paddingTop = 5f,
+                paddingLeft = 5f,
+                paddingRight = 5f,
+            },
+        };
+        assetPreview.Add(assetInspector);
+
+        // Template Preview
+        
+        var templatePreview = new Foldout { text = "Template Preview" };
+
+        var previewBackground = new VisualElement
+        {
+            style =
+            {
+                flexDirection = FlexDirection.Row,
+                alignContent = Align.Center,
+                overflow = Overflow.Hidden,
+            },
+        };
+        
+        templatePreview.Add((IntegerField)previewColumns.GetField(UpdateGUI));
+        templatePreview.Add(previewBackground);
+        
+        // Rule Tile Settings
+        
+        var ruleTileSettings = new Foldout { text = "Rule Tile Settings" };
+
+        var defaultSpriteField = (ObjectField)defaultSprite.GetField(UpdateAssetPreview);
+        ruleTileSettings.Add(defaultSpriteField);
+        
+        foreach (var value in RuleTileSettings)
+        {
+            ruleTileSettings.Add(value.GetField(UpdateAssetPreview));
+        }
+        
+        // Template and Tilemap Fields
+
+        var tilemapFields = new VisualElement();
+        
+        tilemapFields.Add(templateTilemap.GetField(() =>
+        {
+            LoadTemplate();
+            UpdateGUI();
+        }));
+        tilemapFields.Add(tilemap.GetField(() =>
+        {
+            UpdateGUI();
+
+            var tileSprites = GetSprites(tilemap.Value);
+            var templateSprites = GetSprites(templateTilemap.Value);
+            
+            if (defaultSpriteIndex != -1 && tileSprites.Length == templateSprites.Length)
+            {
+                defaultSpriteField.value = tileSprites[defaultSpriteIndex];
+            }
+        }));
+        
+        // Tile Generation
+
+        var tileGeneration = new VisualElement();
+        
+        tileGeneration.Add(tileName.GetField());
+        tileGeneration.Add(new Button(() => SaveAsset(GenerateRuleTile(), tileName.Value)) { text = "Generate Tile" });
+        
+        // Root Construction
+
+        var root = new ScrollView(ScrollViewMode.Vertical);
+        
+        foreach (var section in new[]
+                 {
+                     tilemapFields,
+                     errorReports,
+                     templatePreview,
+                     ruleTileSettings,
+                     tileGeneration,
+                     assetPreview,
+                 })
+        {
+            root.Add(section);
+        }
+        
+        rootVisualElement.Add(root);
+
+        LoadTemplate();
+        UpdateGUI();
+
+        void UpdateGUI()
+        {
+            // Tilemap Previews
+            
+            previewBackground.Clear();
+
+            TilemapPreview(templateTilemap);
+            TilemapPreview(tilemap);
+            
+            void TilemapPreview(EditorSetting<Texture2D> tilemap)
+            {
+                if (tilemap.Value != null && tilemap.Value.isReadable)
+                {
+                    previewBackground.Add(CreateTilemapPreview(GetSprites(tilemap.Value), previewColumns.Value));
+                }
+            }
+
+            // Error Reporting
+            
+            var tileSprites = GetSprites(tilemap.Value);
+            var templateSprites = GetSprites(templateTilemap.Value);
+
+            unequalSpriteCount.SetDisplayed(templateSprites.Length != tileSprites.Length);
+            unequalSpriteCount.text =
+                "Template and tilemap must have the same number of sprites.\n" + 
+                $"Template has {templateSprites.Length} sprites.\n" +
+                $"Tilemap has {tileSprites.Length} sprites.";
+            
+            noTilemapSprites.SetDisplayed(tileSprites.Length == 0);
+            
+            templateReadable.SetDisplayed(templateTilemap.Value == null || !templateTilemap.Value.isReadable);
+            tilemapReadable.SetDisplayed(tilemap.Value == null || !tilemap.Value.isReadable);
+            
+            UpdateAssetPreview();
+        }
+
+        void UpdateAssetPreview()
+        {
+            assetInspector.Clear();
+            
+            var tileSprites = GetSprites(tilemap.Value);
+            var templateSprites = GetSprites(templateTilemap.Value);
+
+            if (tilemap.Value == null || templateTilemap.Value == null 
+                || !tilemap.Value.isReadable || !templateTilemap.Value.isReadable
+                || tileSprites.Length != templateSprites.Length)
+            {
+                return;
+            }
+
+            var asset = GenerateRuleTile();
+            var editor = Editor.CreateEditor(asset);
+            
+            var container = new IMGUIContainer
+            {
+                onGUIHandler = () =>
+                {
+                    if (editor != null)
+                    {
+                        editor.OnInspectorGUI();
+                    }
+                },
+            };
+
+            assetInspector.Add(container);
+        }
     }
 
-    private void OnGUI()
+    private RuleTile GenerateRuleTile()
     {
-        scrollpos = GUILayout.BeginScrollView(scrollpos);
+        var tile = CreateInstance<ExtraNeighbors>();
 
-        //if no rule preset is set
-        if (templ_neighbors.Count == 0)
-        {
-            EditorGUILayout.Space();
-            GUILayout.Label("Template setup", EditorStyles.boldLabel);
-            EditorGUILayout.Space();
+        // Set default tile
+        tile.m_DefaultSprite = defaultSprite.Value;
+        tile.m_DefaultColliderType = defaultColliderType.Value;
+        tile.m_DefaultGameObject = defaultGameObject.Value;
+        
+        var tileSprites = GetSprites(tilemap.Value);
 
-            ScriptableObject target = this;
-            SerializedObject so = new SerializedObject(target);
-            SerializedProperty prp = so.FindProperty("templateSprites");
-            EditorGUILayout.PropertyField(prp, true); // True means show children
-            so.ApplyModifiedProperties(); //apply modified properties
-
-            GUILayout.Box("Shift select all of the sprites and drag them here. The texture needs to be read/write enabled in order to get colors from it.", EditorStyles.helpBox);
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Load Template"))
-            {
-                LoadTemplate();
-            }
-        }
-
-        //if there is a preset loaded 
-        if (templ_neighbors.Count > 0)
-        {
-            EditorGUILayout.Space();
-            GUILayout.Label("Preview", EditorStyles.boldLabel);
-            EditorGUILayout.Space();
-
-            collumns = EditorGUILayout.IntField("Number of collumns", collumns);
-            collumns = Mathf.Clamp(collumns, 1, int.MaxValue);
-            previewBG = EditorGUILayout.ColorField("Preview BG color", previewBG);
-
-            EditorGUILayout.Space();
-
-            //show textures
-            if (templateSprites.Length != tileSprites.Length) DisplayTilemapPreview(collumns, templateSprites);
-            else DisplayTilemapPreview(collumns, tileSprites);
-
-            EditorGUILayout.Space();
-
-            GUILayout.Label("Tile Setup", EditorStyles.boldLabel);
-            EditorGUILayout.Space();
-
-            ScriptableObject target = this;
-            SerializedObject so = new SerializedObject(target);
-            SerializedProperty prp = so.FindProperty("tileSprites");
-            EditorGUILayout.PropertyField(prp, true); // True means show children
-            so.ApplyModifiedProperties(); //apply modified properties
-
-            EditorGUILayout.Space();
-
-            if (tileSprites.Length == 0) GUILayout.Box("Set sprites to show other options", EditorStyles.helpBox);
-            else if (tileSprites.Length != templateSprites.Length) GUILayout.Box("Amount of sprites needs to be the same as the template", EditorStyles.helpBox);
-            else
-            {
-                if (setDefaultIndex)
-                {
-                    defaultSprite = tileSprites[defaultIndex];
-                }
-
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PrefixLabel("Default sprite");
-                defaultSprite = (Sprite)EditorGUILayout.ObjectField(defaultSprite, typeof(Sprite), false);
-                EditorGUILayout.EndHorizontal();
-
-                colliderType = (Tile.ColliderType)EditorGUILayout.EnumPopup("Default collider", colliderType);
-
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PrefixLabel("Default gameobject");
-                defaultGameobject = (GameObject)EditorGUILayout.ObjectField(defaultGameobject, typeof(GameObject), false);
-                EditorGUILayout.EndHorizontal();
-
-                addGameobjectsToRules = EditorGUILayout.Toggle("Add gameobject to rules", addGameobjectsToRules);
-
-                EditorGUILayout.Space();
-
-                tileName = EditorGUILayout.TextField("Tile name", tileName);
-
-                EditorGUILayout.Space();
-
-                if (GUILayout.Button("Create tile!"))
-                {
-                    SaveTile(GenerateRuleTile(), tileName);
-                }
-            }
-
-        }
-
-        GUILayout.EndScrollView();
-    }
-
-
-    public Sprite[] templateSprites = new Sprite[0];
-
-    public List<List<int>> templ_neighbors = new List<List<int>>();
-
-    int defaultIndex = 0;
-    bool setDefaultIndex = false;
-
-    void LoadTemplate()
-    {
-        //reset lists
-        templ_neighbors = new List<List<int>>();
-
-        //loop through the template sprites
-        int i = 0;
-        foreach (var item in templateSprites)
-        {
-            //create a new list to store the rules in
-            List<int> neighborRules = new List<int>();
-
-            //get slice data
-            Rect slice = item.rect;
-            Color[] cols = item.texture.GetPixels((int)slice.x, (int)slice.y, (int)slice.width, (int)slice.height);
-
-            //create texture
-            Texture2D tex = new Texture2D((int)slice.width, (int)slice.height, TextureFormat.ARGB32, false);
-            tex.SetPixels(0, 0, (int)slice.width, (int)slice.height, cols);
-            tex.filterMode = FilterMode.Point;
-            tex.Apply();
-
-            //get the size of the texture
-            Vector2Int size = new Vector2Int(tex.width, tex.height);
-
-            bool def = true;
-
-            //set rules based on the color of the pixels
-            foreach (var neighbor in NeighborPositions)
-            {
-                int xPos = 0;
-                int yPos = 0;
-
-                //get x pixel coordinate
-                switch (neighbor.x)
-                {
-                    case 0:
-                        xPos = size.x / 2;
-                        break;
-                    case 1:
-                        xPos = size.x - 1;
-                        break;
-                }
-
-                //get y pixel coordinate
-                switch (neighbor.y)
-                {
-                    case 0:
-                        yPos = size.y / 2;
-                        break;
-                    case 1:
-                        yPos = size.y - 1;
-                        break;
-                }
-
-                //get the pixel color
-                Color c = tex.GetPixel(xPos, yPos);
-
-                //add the color to the array
-                if (c == Color.white)
-                {
-                    neighborRules.Add(0);
-                }
-                else if (c == Color.green)
-                {
-                    neighborRules.Add(RuleTile.TilingRule.Neighbor.This);
-                    def = false;
-                }
-                else if (c == Color.red)
-                {
-                    neighborRules.Add(RuleTile.TilingRule.Neighbor.NotThis);
-                }
-            }
-
-            //set default index if available
-            if (def)
-            {
-                defaultIndex = i;
-                setDefaultIndex = true;
-            }
-
-            //add the list to the list of lists
-            templ_neighbors.Add(neighborRules);
-
-            i++;
-        }
-    }
-
-    int collumns = 6;
-
-    public Color previewBG;
-
-    void DisplayTilemapPreview(int collumns, Sprite[] tiles)
-    {
-        //set up values
-        float sidePadding = position.width * .05f;
-        float size = (position.width * .9f / (float)collumns) * .9f; 
-        float fullSize = (position.width * .9f / (float)collumns);
-        float space = (position.width * .9f / (float)collumns) * .05f;
-        float yPos = GUILayoutUtility.GetLastRect().y + sidePadding + space;
-
-        int rows = (tiles.Length / collumns) + (tiles.Length % collumns > 0 ? 1 : 0);
-
-        //draw BG color
-        Texture2D bg = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-        bg.SetPixel(0, 0, previewBG);
-        bg.filterMode = FilterMode.Point;
-        bg.Apply();
-
-        EditorGUI.DrawPreviewTexture(new Rect(0, yPos + 10 - sidePadding - space, position.width, rows * fullSize + 2 * sidePadding), bg);
-
-        //draw grid
-        for (int y = 0, i = 0; y < rows; y++)
-        {
-            for (int x = 0; x < collumns; x++)
-            {
-                if (i < tiles.Length)
-                {
-                    //get slice data
-                    Rect slice = tiles[i].rect;
-                    Color[] cols = tiles[i].texture.GetPixels((int)slice.x, (int)slice.y, (int)slice.width, (int)slice.height);
-
-                    //create texture
-                    Texture2D texture = new Texture2D((int)slice.width, (int)slice.height, TextureFormat.ARGB32, false);
-                    texture.SetPixels(0, 0, (int)slice.width, (int)slice.height, cols);
-                    texture.filterMode = FilterMode.Point;
-                    texture.Apply();
-
-                    //draw picture
-                    EditorGUI.DrawPreviewTexture(new Rect(sidePadding + space + x * fullSize, yPos + 10 + y * fullSize, size, size), texture);
-
-                    i++;
-                }
-            }
-
-            EditorGUILayout.Space(fullSize);
-        }
-
-        EditorGUILayout.Space(2 * (sidePadding + space));
-    }
-
-    public Sprite[] tileSprites;
-
-    public Sprite defaultSprite;
-    public Tile.ColliderType colliderType = Tile.ColliderType.Sprite;
-    public GameObject defaultGameobject;
-    public bool addGameobjectsToRules;
-
-    public RuleTile GenerateRuleTile()
-    {
-        RuleTile tile = ScriptableObject.CreateInstance<RuleTile>();
-
-        //set default tile
-        tile.m_DefaultSprite = defaultSprite;
-        tile.m_DefaultColliderType = colliderType;
-        tile.m_DefaultGameObject = defaultGameobject;
-
-        //set tiling rules
-        for (int i = 0; i < tileSprites.Length; i++)
-        {
-            RuleTile.TilingRule rule = new RuleTile.TilingRule();
-            rule.m_Sprites[0] = tileSprites[i];
-            rule.m_Neighbors = templ_neighbors[i];
-            rule.m_ColliderType = colliderType;
-            if (addGameobjectsToRules) rule.m_GameObject = defaultGameobject;
-
-            tile.m_TilingRules.Add(rule);
-        }
-
+        // Set tiling rules
+        tile.m_TilingRules = Enumerable.Range(0, tileSprites.Length)
+            .Select(i => new TilingRule 
+            { 
+                m_Sprites           = new[] { tileSprites[i] },
+                m_GameObject        = tile.m_DefaultGameObject,
+                m_MinAnimationSpeed = minAnimationSpeed.Value,
+                m_MaxAnimationSpeed = maxAnimationSpeed.Value,
+                m_PerlinScale       = perlinScale.Value,
+                m_Output            = defaultOutput.Value,
+                m_Neighbors         = templateNeighbors[i],
+                m_RuleTransform     = ruleTransform.Value,
+                m_ColliderType      = tile.m_DefaultColliderType,
+                m_RandomTransform   = randomTransform.Value,
+            })
+            .ToList();
+        
         return tile;
     }
-
-    public static void SaveTile(RuleTile tile, string name)
+    
+    private void LoadTemplate()
     {
-        AssetDatabase.CreateAsset(tile, $"Assets/{name}.asset");
+        if (templateTilemap.Value == null || !templateTilemap.Value.isReadable) return;
+
+        var sprites = GetSprites(templateTilemap.Value);
+        
+        templateNeighbors = new List<int>[sprites.Length];
+        defaultSpriteIndex = -1;
+        
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            var sprite = sprites[i];
+            
+            Vector2Int offset = Vector2Int.FloorToInt(sprite.rect.position);
+            Vector2Int size = Vector2Int.FloorToInt(sprite.rect.size);
+            
+            // Gather sprite colors
+            var neighborColors = new TilingRule().m_NeighborPositions
+                .Select(neighbor => sprite.texture.GetPixel(
+                    offset.x + neighbor.x switch
+                    {
+                        0 => size.x / 2,
+                        1 => size.x - 1,
+                        _ => 0,
+                    },
+                    offset.y + neighbor.y switch
+                    {
+                        0 => size.y / 2,
+                        1 => size.y - 1,
+                        _ => 0,
+                    }))
+                .ToArray();
+
+            // Set default sprite if no green
+            if (!neighborColors.Contains(Color.green))
+            {
+                defaultSpriteIndex = i;
+            }
+
+            // Set rules based on the color of the pixels
+            templateNeighbors[i] = neighborColors
+                .Select(color => (color.r, color.g, color.b) switch
+                {
+                    (1, 0, 0) => Neighbor.NotThis,
+                    (0, 1, 0) => Neighbor.This,
+                    _ => 0,
+                })
+                .ToList();
+        }
+    }
+
+    private static VisualElement CreateTilemapPreview(Sprite[] sprites, int columns)
+    {
+        var root = new VisualElement
+        {
+            style =
+            {
+                flexDirection = FlexDirection.Column,
+                alignItems = Align.Center,
+                flexGrow = 1f,
+            },
+        };
+        
+        int rows = sprites.Length / columns + (sprites.Length % columns > 0 ? 1 : 0);
+
+        float tileMargin = 2f;
+        float tileSize = 30f;
+            
+        int i = 0;
+            
+        for (int y = 0; y < rows; y++)
+        {
+            var row = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    alignItems = Align.Center,
+                    height = tileSize,
+
+                    marginBottom = tileMargin,
+                    marginTop = tileMargin,
+                },
+            };
+            root.Add(row);
+                
+            for (int x = 0; x < columns; x++)
+            {
+                row.Add(new Image
+                {
+                    image = i < sprites.Length
+                        ? CreateSpriteTexture(sprites[i])
+                        : null,
+
+                    style =
+                    {
+                        flexGrow = 1f,
+                        height = tileSize,
+                        width = tileSize,
+                                                    
+                        marginLeft = tileMargin,
+                        marginRight = tileMargin,
+                    },
+                        
+                });
+                    
+                i++;
+            }
+        }
+
+        return root;
+    }
+    
+    private static Texture2D CreateSpriteTexture(Sprite sprite)
+    {
+        // Get slice data
+        var slice = new RectInt(
+            Vector2Int.FloorToInt(sprite.rect.position), 
+            Vector2Int.FloorToInt(sprite.rect.size));
+        
+        var colors = sprite.texture.GetPixels(slice.x, slice.y, slice.width, slice.height);
+
+        // Create texture
+        Texture2D texture = new Texture2D(slice.width, slice.height, TextureFormat.ARGB32, false);
+        texture.SetPixels(0, 0, slice.width, slice.height, colors);
+        texture.filterMode = FilterMode.Point;
+        texture.Apply();
+        return texture;
+    }
+    
+    private static void SaveAsset(Object tile, string name)
+    {
+        string folder = TryGetActiveFolderPath(out string activeFolder) ? activeFolder : "Assets";
+        AssetDatabase.CreateAsset(tile, $"{folder}/{name}.asset");
         AssetDatabase.SaveAssets();
 
         EditorUtility.FocusProjectWindow();
 
         Selection.activeObject = tile;
     }
-}
-#endif
+    
+    private static bool TryGetActiveFolderPath( out string path )
+    {
+        var tryGetActiveFolderPath = typeof(ProjectWindowUtil).GetMethod( "TryGetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic );
+
+        object[] args = { null };
+        bool found = (bool)tryGetActiveFolderPath?.Invoke( null, args );
+        path = (string)args[0];
+
+        return found;
+    }
+    
+    private static Sprite[] GetSprites(Texture2D texture2D) => texture2D == null 
+        ? Array.Empty<Sprite>()
+        : AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(texture2D))
+            .Where(asset => asset != texture2D)
+            .OrderBy(asset => PadNumbers(asset.name))
+            .OfType<Sprite>()
+            .ToArray();
+
+    private static string PadNumbers(string input) => 
+        Regex.Replace(input, "[0-9]+", match => match.Value.PadLeft(10, '0'));
+};

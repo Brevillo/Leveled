@@ -14,6 +14,10 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private LineRenderer backLine;
     [SerializeField] private float lineAngleRange;
     [SerializeField] private int pointsPerLine;
+    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private string frontLayer;
+    [SerializeField] private string backLayer;
+    [SerializeField] private AnimationCurve sizeOverRangeCurve;
     
     private float rotationTimer;
 
@@ -40,7 +44,16 @@ public class Asteroid : MonoBehaviour
 
         hitbox.SetActive(rotationTimer < hitboxDuration);
 
-        float rads = (rotationAnchor + rotationTimer / rotationDuration * 360f * rotationDirection) * Mathf.Deg2Rad;
+        float rotationPercent = rotationTimer / rotationDuration;
+
+        sprite.sortingLayerName = (rotationPercent - 0.5f) * rotationDirection > 0f
+            ? frontLayer
+            : backLayer;
+
+        float sizePercent = 1f - Mathf.InverseLerp(0f, lineAngleRange / 360f, 1f - Mathf.Abs(1f - 2f * rotationPercent));
+        projectilePivot.localScale = Vector3.one * sizeOverRangeCurve.Evaluate(sizePercent);
+
+        float rads = (rotationAnchor + rotationPercent * 360f * rotationDirection) * Mathf.Deg2Rad;
         projectilePivot.localPosition = new Vector3(0f, Mathf.Cos(rads) - 1f, Mathf.Sin(rads)) * rotationRadius;
     }
 }

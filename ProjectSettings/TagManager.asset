@@ -38,6 +38,66 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Backrgound Stars
+    uniqueID: 3661863191
+    locked: 0
+  - name: Asteroid Path Back
+    uniqueID: 1489855193
+    locked: 0
+  - name: Teleporter
+    uniqueID: 3998683983
+    locked: 0
+  - name: Gnome
+    uniqueID: 414800095
+    locked: 0
+  - name: End Goal
+    uniqueID: 3073625915
+    locked: 0
+  - name: Ground
+    uniqueID: 1189579505
+    locked: 0
+  - name: Bounce Pad
+    uniqueID: 1185809143
+    locked: 0
+  - name: Checkpoint
+    uniqueID: 2853716333
+    locked: 0
+  - name: Bullet William Launcher
+    uniqueID: 739217587
+    locked: 0
+  - name: Fragile Platform
+    uniqueID: 3948363803
+    locked: 0
+  - name: Coin
+    uniqueID: 4037674635
+    locked: 0
+  - name: Bullet William
+    uniqueID: 350587305
+    locked: 0
+  - name: Knirt and Sqirt
+    uniqueID: 857251601
+    locked: 0
+  - name: Womps
+    uniqueID: 625086457
+    locked: 0
+  - name: Wraith
+    uniqueID: 3846928787
+    locked: 0
+  - name: Helmet
+    uniqueID: 1369708237
+    locked: 0
+  - name: Player
+    uniqueID: 291897075
+    locked: 0
+  - name: Mushroom
+    uniqueID: 2207194751
+    locked: 0
+  - name: Star
+    uniqueID: 3586541967
+    locked: 0
+  - name: Asteroid Path Front
+    uniqueID: 1399175937
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
