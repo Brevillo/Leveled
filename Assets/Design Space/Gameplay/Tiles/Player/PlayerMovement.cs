@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float minBounceDuration;
     
     [Header("Walljumping")]
+    [SerializeField] private bool walljumpingEnabled;
     [SerializeField] private float walljumpHeight;
     [SerializeField] private float walljumpBoost;
     [SerializeField] private float walljumpNoTurnDuration;
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CollisionAggregate2D rightWall;
 
     [Header("Wall sliding")] 
+    [SerializeField] private bool wallSlidingEnabled;
     [SerializeField] private float startWallSlideSpeed;
     [SerializeField] private float maxWallSlideSpeed;
     [SerializeField] private float wallSlideAccel;
@@ -178,11 +180,9 @@ public class PlayerMovement : MonoBehaviour
             
             canEndJumpPeak = () => rigidbody.linearVelocityY <= 0,
 
-            canWalljump = () => WallDirection != 0 && JumpInput,
-            canEndWalljump = () => stateMachine.StateDuration > walljumpNoTurnDuration
-                                  || rigidbody.linearVelocityY <= 0,
-
-            canWallSlide = () => WallDirection != 0 && WallDirection == MoveInput.x && !ground.Touching,
+            canWalljump = () => walljumpingEnabled && WallDirection != 0 && JumpInput,
+            
+            canWallSlide = () => wallSlidingEnabled && WallDirection != 0 && WallDirection == MoveInput.x && !ground.Touching,
             canEndWallSlide = () => WallDirection == 0 || MoveInput.x.Sign0() == -WallDirection,
 
             canFall = () => !ground.Touching;

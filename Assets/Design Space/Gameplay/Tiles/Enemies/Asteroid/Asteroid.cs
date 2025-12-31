@@ -20,14 +20,14 @@ public class Asteroid : MonoBehaviour
 
     private void Update()
     {
-        rigidbody.linearVelocity += Vector2.down * (gravity * Time.deltaTime);
-
         float bottom = tilePlacerReference.value.Bounds.min.y - bottomOffset;
         
-        if (rigidbody.position.y < bottom)
+        if (rigidbody.position.y <= bottom)
         {
             bottomTimer += Time.deltaTime;
+            
             rigidbody.position = new Vector2(startingPosition.x, bottom);
+            rigidbody.linearVelocity = Vector2.zero;
 
             if (bottomTimer > bottomDuration)
             {
@@ -36,6 +36,7 @@ public class Asteroid : MonoBehaviour
         }
         else
         {
+            rigidbody.linearVelocity += Vector2.down * (gravity * Time.deltaTime);
             bottomTimer = 0f;
         }
     }
