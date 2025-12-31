@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Art_Tile_Teleporter
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.49999997, y: 0.90000004}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,8 +133,8 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 16
-      height: 16
+      width: 32
+      height: 20
     spriteID: 4f31f57b865b84e79b267ab75e42027e
     spriteBone: []
     spriteOutline: []
@@ -162,10 +162,10 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 16
-        height: 16
+        x: 8
+        y: 14
+        width: 32
+        height: 20
       spriteId: 4f31f57b865b84e79b267ab75e42027e
     linkedCells: []
     parentIndex: -1
@@ -209,5 +209,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 16, y: 16}
-  previousTextureSize: {x: 32, y: 32}
+  canvasSize: {x: 48, y: 64}
+  previousTextureSize: {x: 64, y: 32}
