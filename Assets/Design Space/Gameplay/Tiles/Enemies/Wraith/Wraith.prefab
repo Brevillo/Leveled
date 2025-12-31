@@ -176,7 +176,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -448038509
-  m_SortingLayer: -1
+  m_SortingLayer: -6
   m_SortingOrder: 0
   m_Sprite: {fileID: -4225740353191325585, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -456,6 +456,24 @@ MonoBehaviour:
   passiveSprite: {fileID: 3916541323027260211, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
   scaredSprite: {fileID: 4947695438144089426, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
   followingSprite: {fileID: -4225740353191325585, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
+  lookingToward:
+    m_PersistentCalls:
+      m_Calls: []
+  lookingAway:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: c5f79b843abde174ea3eed882530e71a, type: 2}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!50 &3760216881361232014
 Rigidbody2D:
   serializedVersion: 5

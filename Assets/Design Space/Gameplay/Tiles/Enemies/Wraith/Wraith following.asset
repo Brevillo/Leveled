@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-4570621128082276526
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Wraith_Follow_2_{-4570621128082276526}
+  m_AudioClip: {fileID: 8300000, guid: 390dd2916c0e56d40a5625317ce66be9, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-3157305148273874351
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Wraith_Follow_4_{-3157305148273874351}
+  m_AudioClip: {fileID: 8300000, guid: 621039ed5c1ee0842b01c32b2cc690ee, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &6399784885107842138
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Wraith_Follow_5_{6399784885107842138}
+  m_AudioClip: {fileID: 8300000, guid: 2da64666595bf59409a569eee205c08d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Wraith following
+  m_Volume: -6
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -200, y: 0}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 8626343318126895517}
+  - {fileID: -4570621128082276526}
+  - {fileID: 8026042351628274999}
+  - {fileID: -3157305148273874351}
+  - {fileID: 6399784885107842138}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &8026042351628274999
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Wraith_Follow_3_{8026042351628274999}
+  m_AudioClip: {fileID: 8300000, guid: 0d4550ada1a50584a8f6ed16168d9dd0, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &8626343318126895517
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Wraith_Follow_1_{8626343318126895517}
+  m_AudioClip: {fileID: 8300000, guid: cf1139230fa319e42b43d849a13f706e, type: 3}
+  m_Volume: 0
+  m_Enabled: 1

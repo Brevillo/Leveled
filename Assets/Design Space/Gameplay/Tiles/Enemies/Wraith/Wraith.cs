@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Wraith : MonoBehaviour
 {
@@ -13,7 +14,10 @@ public class Wraith : MonoBehaviour
     [SerializeField] private Sprite passiveSprite;
     [SerializeField] private Sprite scaredSprite;
     [SerializeField] private Sprite followingSprite;
-
+    [SerializeField] private UnityEvent lookingToward;
+    [SerializeField] private UnityEvent lookingAway;
+    
+    private bool wasLookedAt;
     private Targetable target;
     
     private void Update()
@@ -44,6 +48,18 @@ public class Wraith : MonoBehaviour
             spriteRenderer.sprite = lookedAt
                 ? scaredSprite
                 : followingSprite;
+
+            if (lookedAt && !wasLookedAt)
+            {
+                lookingToward.Invoke();
+            }
+
+            if (!lookedAt && wasLookedAt)
+            {
+                lookingAway.Invoke();
+            }
+
+            wasLookedAt = lookedAt;
         }
         else
         {
