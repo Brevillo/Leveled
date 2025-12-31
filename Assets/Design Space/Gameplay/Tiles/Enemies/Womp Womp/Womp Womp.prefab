@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 625086457
-  m_SortingLayer: -1
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 1268485005462236661, guid: a3d1ce82d09064fbba81af656926cdf2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -337,6 +337,21 @@ MonoBehaviour:
   riseDelay: 1
   riseAcceleration: 100
   maxRiseSpeed: 3
+  onGrounded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 37843a900828d2b459c655b03bd6fa9a, type: 2}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8824733926338973866
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using OliverBeebe.UnityUtilities.Runtime;
 using UnityEngine;
+using UnityEngine.Events;
 using StateMachine = OliverBeebe.UnityUtilities.Runtime.StateMachine;
 
 public class WompWomp : MonoBehaviour
@@ -17,6 +18,8 @@ public class WompWomp : MonoBehaviour
     [SerializeField] private float riseDelay;
     [SerializeField] private float riseAcceleration;
     [SerializeField] private float maxRiseSpeed;
+    [Header("Grounded")]
+    [SerializeField] private UnityEvent onGrounded;
 
     private StateMachine stateMachine;
 
@@ -81,7 +84,13 @@ public class WompWomp : MonoBehaviour
         }
     }
 
-    private class Grounded : ContextStateBehavior<WompWomp> { }
+    private class Grounded : ContextStateBehavior<WompWomp>
+    {
+        public override void Enter()
+        {
+            Context.onGrounded.Invoke();
+        }
+    }
     
     private class Rising : ContextStateBehavior<WompWomp>
     {
