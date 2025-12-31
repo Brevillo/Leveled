@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 18
   paletteIcon: {fileID: -2535901058958154764, guid: 4a87aeb0a53434000a05b7cc36cf20cc, type: 3}
   tileBase: {fileID: 11400000, guid: b2e7347e1eba94835b5948a1bf835951, type: 2}
-  tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Red Gnome
   linkable: 0

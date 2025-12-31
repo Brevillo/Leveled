@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 3
   paletteIcon: {fileID: 6737232272589169390, guid: c5e8f966857669747b88e592c6022644, type: 3}
   tileBase: {fileID: 11400000, guid: 80dbe6948e95640ff8ecf7159cdbe72f, type: 2}
-  tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Player
   linkable: 0

@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(GameTile))]
+[CustomEditor(typeof(GameTile)), CanEditMultipleObjects]
 public class GameTileEditor : Editor
 {
     public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height) =>

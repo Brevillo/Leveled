@@ -15,6 +15,8 @@ MonoBehaviour:
   id: 4
   paletteIcon: {fileID: 4150586571126316013, guid: cbed2e3e0774740549e1a2370e3cdd5d, type: 3}
   tileBase: {fileID: 11400000, guid: 1f535df1b8dd00e4b8f1f3ae1303df81, type: 2}
-  tilemapPrefab: {fileID: 7211183380168987404, guid: dd8bc77b1b6c64b4f96c5547108a884c, type: 3}
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: dd8bc77b1b6c64b4f96c5547108a884c, type: 3}
   tooltip: Lava (Hazard)
   linkable: 0

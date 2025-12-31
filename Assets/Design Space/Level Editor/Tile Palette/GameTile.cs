@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,13 +8,13 @@ public class GameTile : ScriptableObject
     [SerializeField] private int id;
     [SerializeField] private Sprite paletteIcon;
     [SerializeField] private TileBase tileBase;
-    [SerializeField] private Tilemap tilemapPrefab;
+    [SerializeField] private List<Tilemap> tilemapPrefabs;
     [SerializeField] private string tooltip;
     [SerializeField] private bool linkable;
 
     public int ID => id;
     public Sprite PaletteIcon => paletteIcon;
-    public Tilemap TilemapPrefab => tilemapPrefab;
+    public List<Tilemap> TilemapPrefabs => tilemapPrefabs;
     public string Tooltip => tooltip;
     public bool Linkable => linkable;
 

@@ -19,14 +19,14 @@ public class TilePlacer : MonoBehaviour
 
     private Bounds bounds;
     private BoundsInt boundsInt;
-    private Dictionary<Tilemap, Tilemap> tilemaps;
+    private Dictionary<Tilemap, Tilemap> tilemapInstances;
     
     public Bounds Bounds => bounds;
     public BoundsInt BoundsInt => boundsInt;
     
     private void Awake()
     {
-        tilemaps = new();
+        tilemapInstances = new();
 
         tilePlacerReference.value = this;
     }
@@ -43,34 +43,47 @@ public class TilePlacer : MonoBehaviour
 
     public void PlaceTiles(Vector2Int[] positions, TileData[] tiles)
     {
-        var tilemapGroups = Enumerable.Range(0, positions.Length)
-            .Select(i =>
-            {
-                var tile = tiles[i];
-                
-                return (position: positions[i], tileData: tile, tilemap: GetTilemap(tile));
-            })
-            .GroupBy(item => item.tilemap)
-            .ToArray();
+        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles)>();
         
-        foreach (var group in tilemapGroups)
+        // Sort tiles based on tilemap prefab
+        for (int i = 0; i < positions.Length; i++)
         {
-            var positionArray = group.Select(item => (Vector3Int)item.position).ToArray();
-            
-            if (group.Key != null)
+            var tile = tiles[i];
+
+            if (tile.gameTile == null || tile.gameTile.TileBase == null) continue;
+                
+            foreach (var tilemapInstance in tile.gameTile.TilemapPrefabs.Select(GetTilemapInstance))
             {
-                var tileArray = group.Select(item => item.tileData.gameTile.TileBase).ToArray();
-                group.Key.SetTiles(positionArray, tileArray);
+                if (!tilemapInstanceData.TryGetValue(tilemapInstance, out var tilemapData))
+                {
+                    tilemapData = (new(), new());
+                    tilemapInstanceData.Add(tilemapInstance, tilemapData);
+                }
+                
+                tilemapData.positions.Add((Vector3Int)positions[i]);
+                tilemapData.tiles.Add(tile.gameTile.TileBase);
             }
-            
-            var nullTiles = new TileBase[positionArray.Length];
-            Array.Fill(nullTiles, null);
-            
-            foreach (var tilemap in tilemaps.Values)
-            {
-                if (tilemap == group.Key) continue;
+        }
+
+        // Clear drawing positions on all tilemaps
+        var positions3 = positions.Select(position => (Vector3Int)position).ToArray();
+        var nullTiles = new TileBase[positions.Length];
+        Array.Fill(nullTiles, null);
         
-                tilemap.SetTiles(positionArray, nullTiles);
+        foreach (var tilemap in tilemapInstances.Values)
+        {
+            tilemap.SetTiles(positions3, nullTiles);
+        }
+        
+        // Set tiles
+        foreach (var (tilemap, (vector3Ints, tileBases)) in tilemapInstanceData)
+        {
+            var tilemapPositions = vector3Ints.ToArray();
+            var tilemapTiles = tileBases.ToArray();
+
+            if (tilemap != null)
+            {
+                tilemap.SetTiles(tilemapPositions, tilemapTiles);
             }
         }
     }
@@ -101,11 +114,11 @@ public class TilePlacer : MonoBehaviour
         bounds = default;
         boundsInt = default;
         
-        if (tilemaps.Count == 0) return;
+        if (tilemapInstances.Count == 0) return;
         
-        boundsInt = tilemaps.Values.First().cellBounds; 
+        boundsInt = tilemapInstances.Values.First().cellBounds; 
         
-        foreach (var tilemap in tilemaps.Values)
+        foreach (var tilemap in tilemapInstances.Values)
         {
             tilemap.CompressBounds();
             tilemap.CompressBounds();
@@ -125,7 +138,7 @@ public class TilePlacer : MonoBehaviour
 
         bounds = new(spaceUtility.Grid.transform.TransformPoint(boundsInt.center), boundsInt.size);
         
-        Vector2 wallSize = new(wallThickness, bounds.size.y + wallHeightBuffer); 
+        Vector2 wallSize = new(wallThickness, bounds.size.y + wallHeightBuffer);
         
         leftWall.transform.position = new Vector2(bounds.min.x - wallThickness / 2f, bounds.center.y + wallHeightBuffer / 2f);
         leftWall.size = wallSize;
@@ -137,23 +150,16 @@ public class TilePlacer : MonoBehaviour
         bottomHazard.size = new(bounds.size.x, wallThickness);
     }
     
-    private Tilemap GetTilemap(TileData tileData)
+    private Tilemap GetTilemapInstance(Tilemap tilemapPrefab)
     {
-        if (tileData.IsEmpty || tileData.gameTile.TilemapPrefab == null)
+        if (tilemapInstances.TryGetValue(tilemapPrefab, out var tilemapInstance))
         {
-            return null;
-        }
-
-        var tilemapPrefab = tileData.gameTile.TilemapPrefab;
-        
-        if (tilemaps.TryGetValue(tilemapPrefab, out var tilemap))
-        {
-            return tilemap;
+            return tilemapInstance;
         }
         
-        tilemap = Instantiate(tilemapPrefab, tilemapsParent);
-        tilemaps[tilemapPrefab] = tilemap;
+        tilemapInstance = Instantiate(tilemapPrefab, tilemapsParent);
+        tilemapInstances[tilemapPrefab] = tilemapInstance;
     
-        return tilemap;
+        return tilemapInstance;
     }
 }

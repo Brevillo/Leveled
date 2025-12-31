@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 7
   paletteIcon: {fileID: -2192925913240220939, guid: aadf0682978a4574693629ffe018eec4, type: 3}
   tileBase: {fileID: 11400000, guid: c7bd1c174e2354402ba44447470d30b7, type: 2}
-  tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Upward Bounce Pad
   linkable: 0

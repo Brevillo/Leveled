@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 17
   paletteIcon: {fileID: -2535901058958154764, guid: f29c0073f079d46c9a5d56417fea68bb, type: 3}
   tileBase: {fileID: 11400000, guid: 673485ee996ec4070a44263f4bfa03a5, type: 2}
-  tilemapPrefab: {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Green Gnome
   linkable: 0
