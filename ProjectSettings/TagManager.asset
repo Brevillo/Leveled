@@ -41,9 +41,6 @@ TagManager:
   - name: Backrgound Stars
     uniqueID: 3661863191
     locked: 0
-  - name: Asteroid Path Back
-    uniqueID: 1489855193
-    locked: 0
   - name: Teleporter
     uniqueID: 3998683983
     locked: 0
@@ -95,7 +92,7 @@ TagManager:
   - name: Star
     uniqueID: 3586541967
     locked: 0
-  - name: Asteroid Path Front
+  - name: Asteroid
     uniqueID: 1399175937
     locked: 0
   - name: Default
