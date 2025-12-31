@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 67bd82272926240429f0a11af20eff7c
+guid: 8417706801fa3674c9c4f39fa6ee15d8
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -80,12 +80,12 @@ ScriptedImporter:
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 0
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -93,12 +93,12 @@ ScriptedImporter:
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 0
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639027180091297399
+  platformSettingsDirtyTick: 639027181227410290
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,7 +123,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Art_Icon_Conveyor_Clockwise
+  - name: Art_Icon_Conveyor_CounterClockwise
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -131,11 +131,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
+      x: 0
+      y: 0
       width: 16
       height: 16
-    spriteID: d37a0889b9f802d40a91525f8c79e7c4
+    spriteID: eb627be0f5afe9f4cb09daf9fc8b1328
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -143,9 +143,9 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 0, y: 0}
   spriteSheetImportData:
-  - name: Art_Icon_Conveyor_Clockwise_0
+  - name: Art_Icon_Conveyor_CounterClockwise_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -157,7 +157,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 04f664c43bfe98a4f93577a8b5bbd667
+    spriteID: 946e1a9add4500a4caad5edc64a3018f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -169,17 +169,17 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 879770334
+      value0: 4088016634
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Art_Icon_Conveyor_Clockwise
+    name: Art_Icon_Conveyor_CounterClockwise
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Art_Icon_Conveyor_Clockwise
+    - name: Art_Icon_Conveyor_CounterClockwise
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
@@ -187,7 +187,7 @@ ScriptedImporter:
         y: 0
         width: 16
         height: 16
-      spriteId: d37a0889b9f802d40a91525f8c79e7c4
+      spriteId: eb627be0f5afe9f4cb09daf9fc8b1328
     linkedCells: []
     parentIndex: -1
   platformSettings:

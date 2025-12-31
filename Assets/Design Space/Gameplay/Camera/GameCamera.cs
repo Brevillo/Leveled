@@ -14,7 +14,7 @@ public class GameCamera : MonoBehaviour
     private Vector2 velocity;
     private float zoomVelocity;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (CameraTrackable.trackables.Count == 0) return;
         
