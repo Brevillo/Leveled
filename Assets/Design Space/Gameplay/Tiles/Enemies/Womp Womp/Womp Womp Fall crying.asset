@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-3231197077585696582
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_WompWomp_FallCry_2_{-3231197077585696582}
+  m_AudioClip: {fileID: 8300000, guid: b9aa8e8b17383d442be9b221f40368f8, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1780717857417452476
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_WompWomp_FallCry_3_{1780717857417452476}
+  m_AudioClip: {fileID: 8300000, guid: 52b11caa6fdcb8a48b23c855e98e5e1f, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &2488029942034989181
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_WompWomp_FallCry_1_{2488029942034989181}
+  m_AudioClip: {fileID: 8300000, guid: 5c3ca6d86f57633469999bfe8cd52839, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Womp Womp Fall crying
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -200, y: 0}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 2488029942034989181}
+  - {fileID: -3231197077585696582}
+  - {fileID: 1780717857417452476}
+  - {fileID: 7344104167137398465}
+  - {fileID: 6754903300355783867}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &6754903300355783867
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_WompWomp_FallCry_5_{6754903300355783867}
+  m_AudioClip: {fileID: 8300000, guid: f685a81b53a6d9042be5ebb41ca3ae97, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &7344104167137398465
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_WompWomp_FallCry_4_{7344104167137398465}
+  m_AudioClip: {fileID: 8300000, guid: 48f71ade905d1ec418844b8bf37a1fde, type: 3}
+  m_Volume: 0
+  m_Enabled: 1

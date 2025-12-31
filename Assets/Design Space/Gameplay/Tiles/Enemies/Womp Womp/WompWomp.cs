@@ -14,6 +14,7 @@ public class WompWomp : MonoBehaviour
     [SerializeField] private float dropDelay;
     [SerializeField] private float dropAcceleration;
     [SerializeField] private float maxDropSpeed;
+    [SerializeField] private UnityEvent onDrop;
     [Header("Rising")]
     [SerializeField] private float riseDelay;
     [SerializeField] private float riseAcceleration;
@@ -81,6 +82,11 @@ public class WompWomp : MonoBehaviour
                 Context.rigidbody.linearVelocityY,
                 -Context.maxDropSpeed, 
                 Context.dropAcceleration * Time.deltaTime);
+        }
+
+        public override void Enter()
+        {
+            Context.onDrop.Invoke();
         }
     }
 
