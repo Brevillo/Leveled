@@ -458,7 +458,19 @@ MonoBehaviour:
   followingSprite: {fileID: -4225740353191325585, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
   lookingToward:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 4014597998b3f8546a644a3c011294f6, type: 2}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   lookingAway:
     m_PersistentCalls:
       m_Calls:
