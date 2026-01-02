@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-3408051345374613877
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_ReallyFragilePlatforming_Crumbling_4_{-3408051345374613877}
+  m_AudioClip: {fileID: 8300000, guid: 716498e7e3f6d814aa1d7e5729bb1f91, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &260465205890484283
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_ReallyFragilePlatforming_Crumbling_5_{260465205890484283}
+  m_AudioClip: {fileID: 8300000, guid: 7ae6222a0bce34140beb19d425f7edd9, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &623383776288627526
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_ReallyFragilePlatforming_Crumbling_3_{623383776288627526}
+  m_AudioClip: {fileID: 8300000, guid: 44562faa907dd4d47a3a9c7eea432f6e, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Really fragile platform crumbling
+  m_Volume: -6
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -100, y: 100}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 6760142858811446027}
+  - {fileID: 6743616632478019289}
+  - {fileID: 623383776288627526}
+  - {fileID: -3408051345374613877}
+  - {fileID: 260465205890484283}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &6743616632478019289
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_ReallyFragilePlatforming_Crumbling_2_{6743616632478019289}
+  m_AudioClip: {fileID: 8300000, guid: ff291ea744e575549b9182d4f608c58f, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &6760142858811446027
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_ReallyFragilePlatforming_Crumbling_1_{6760142858811446027}
+  m_AudioClip: {fileID: 8300000, guid: 40ede37ff0d567f4ba7d87ec4fb10b38, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
