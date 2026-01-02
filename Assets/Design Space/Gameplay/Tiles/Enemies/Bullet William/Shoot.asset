@@ -1,5 +1,25 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-2802322639383560837
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BulletWilliamLauncher_Shoot_2_{-2802322639383560837}
+  m_AudioClip: {fileID: 8300000, guid: 13063870ec56dda45bff0f22b1fcc73e, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-2112746154415189001
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_BulletWilliamLauncher_Shoot_1_{-2112746154415189001}
+  m_AudioClip: {fileID: 8300000, guid: c51e130e279cb54409d6b68467ba02e3, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
 --- !u!1307931743 &6418180475301049370
 AudioRandomContainer:
   m_ObjectHideFlags: 0
@@ -7,32 +27,23 @@ AudioRandomContainer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shoot
-  m_Volume: -17.9
+  m_Volume: -6
   m_Pitch: 0
   m_AutomaticTriggerTime: 0
   m_LoopCount: 1
   m_VolumeRandomizationRange: {x: 0, y: 0}
-  m_PitchRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -600, y: 600}
   m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
   m_LoopCountRandomizationRange: {x: 0, y: 0}
   m_Elements:
-  - {fileID: 8748419512113640038}
+  - {fileID: -2112746154415189001}
+  - {fileID: -2802322639383560837}
   m_AvoidRepeatingLast: 0
-  m_PlaybackMode: 2
+  m_PlaybackMode: 1
   m_TriggerMode: 0
   m_AutomaticTriggerMode: 1
   m_LoopMode: 2
   m_VolumeRandomizationEnabled: 0
-  m_PitchRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
   m_AutomaticTriggerTimeRandomizationEnabled: 0
   m_LoopCountRandomizationEnabled: 0
---- !u!1233149941 &8748419512113640038
-AudioContainerElement:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 212601__pgi__machine-gun-001-single-shot_{8748419512113640038}
-  m_AudioClip: {fileID: 8300000, guid: 061d5650e707743f8acf282509a907de, type: 3}
-  m_Volume: 0
-  m_Enabled: 1
