@@ -8,6 +8,7 @@ public class GiveCollectable : MonoBehaviour
     [SerializeField] private Collectable giveCollectable;
     [SerializeField] private int count;
     [SerializeField] private UnityEvent allCollectablesGiven;
+    [SerializeField] private UnityEvent noMoreCollectablesGiven;
 
     private List<Collectable> collectables;
     private int given;
@@ -29,7 +30,11 @@ public class GiveCollectable : MonoBehaviour
 
     public void Give()
     {
-        if (given >= count) return;
+        if (given >= count)
+        {
+            noMoreCollectablesGiven.Invoke();
+            return;
+        }
 
         collectables[given].Collect();
         
