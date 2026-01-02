@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 26
   paletteIcon: {fileID: 3824510413988851868, guid: fbd89bd5ae5c542e8948a9d5b6041149, type: 3}
-  tileBase: {fileID: 11400000, guid: bcd65f92307a840f3a57f063b8fb02ed, type: 2}
+  tileBase: {fileID: 11400000, guid: c9f9358795deb4601b0983598e7d7d0b, type: 2}
+  entity: {fileID: 3097680473690378226, guid: a2e0cae95689c4893a322dc5d5615d95, type: 3}
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Womp
   linkable: 0

@@ -248,6 +248,8 @@ public class TileEditorState : GameService
         get => showPlayerPositionRecording;
         set => SendEditorChange(new ShowPlayerPositionRecordingChangeInfo(showPlayerPositionRecording, value), false);
     }
+
+    public Dictionary<Vector2Int, TileData> AllTiles => tiles;
     
     #endregion
 

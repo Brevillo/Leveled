@@ -15,6 +15,8 @@ MonoBehaviour:
   id: 6
   paletteIcon: {fileID: 849109395259260800, guid: 28c1c57e5f68844f5bdde8002129e813, type: 3}
   tileBase: {fileID: 11400000, guid: 02bf4be99963b45e88abae7e7135f94a, type: 2}
+  entity: {fileID: 0}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Teleporter

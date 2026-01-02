@@ -21,14 +21,14 @@ public class CollectableRegistryUI : MonoBehaviour
     {
         registry.Collected += UpdateUI;
         registry.CountChanged += UpdateVisibility;
-        gameStateManager.GameStateChanged += OnGameStateChanged;
+        gameStateManager.EditorStateChanged += OnEditorStateChanged;
     }
 
     private void OnDisable()
     {
         registry.Collected -= UpdateUI;
         registry.CountChanged -= UpdateVisibility;
-        gameStateManager.GameStateChanged -= OnGameStateChanged;
+        gameStateManager.EditorStateChanged -= OnEditorStateChanged;
     }
 
     private void UpdateVisibility()
@@ -48,7 +48,7 @@ public class CollectableRegistryUI : MonoBehaviour
         graphics.ForEach(graphic => graphic.color = graphicColor);
     }
 
-    private void OnGameStateChanged(EditorState editorState)
+    private void OnEditorStateChanged(EditorState editorState)
     {
         UpdateVisibility();
     }

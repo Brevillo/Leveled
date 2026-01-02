@@ -50,7 +50,7 @@ public class TilePlacer : MonoBehaviour
         {
             var tile = tiles[i];
 
-            if (tile.gameTile == null || tile.gameTile.TileBase == null) continue;
+            if (tile.gameTile == null || tile.gameTile.IsNullTileBase) continue;
                 
             foreach (var tilemapInstance in tile.gameTile.TilemapPrefabs.Select(GetTilemapInstance))
             {

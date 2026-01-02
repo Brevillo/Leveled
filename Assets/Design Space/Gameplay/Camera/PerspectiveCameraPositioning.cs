@@ -9,6 +9,12 @@ public class PerspectiveCameraPositioning : MonoBehaviour
 
     public float virtualHeight;
 
+    public Rect CameraRect => new Rect
+    {
+        size = new(virtualHeight / Screen.height * Screen.width, virtualHeight),
+        center = transform.position,
+    };
+    
     public float PerspectiveDistance =>
         virtualHeight / 2f * Mathf.Tan((90f - perspectiveCamera.fieldOfView / 2f) * Mathf.Deg2Rad);
     

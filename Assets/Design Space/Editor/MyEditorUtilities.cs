@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -173,4 +174,26 @@ public static class MyEditorUtilities
     {
         visualElement.style.display = new(display ? DisplayStyle.Flex : DisplayStyle.None);
     }
+    
+    public static string GetActiveFolderPath()
+    {
+        var tryGetActiveFolderPath = typeof(ProjectWindowUtil).GetMethod( "TryGetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic );
+
+        object[] args = { null };
+        bool found = (bool)tryGetActiveFolderPath?.Invoke( null, args );
+        string path = (string)args[0];
+
+        return found ? path : "Assets";
+    }
+    
+    public static T[] GetSubAssets<T>(Object asset) where T : Object => asset == null 
+        ? Array.Empty<T>()
+        : AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(asset))
+            .Where(subAsset => subAsset != asset)
+            .OrderBy(subAsset => PadNumbers(subAsset.name))
+            .OfType<T>()
+            .ToArray();
+    
+    private static string PadNumbers(string input) => 
+        Regex.Replace(input, "[0-9]+", match => match.Value.PadLeft(10, '0'));
 }

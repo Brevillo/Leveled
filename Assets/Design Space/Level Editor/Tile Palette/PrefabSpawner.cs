@@ -22,17 +22,17 @@ public class PrefabSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        gameStateManager.GameStateChanged += OnGameStateChanged;
+        gameStateManager.EditorStateChanged += OnEditorStateChanged;
 
         spriteRenderer.sprite = previewSprite;
     }
 
     private void OnDisable()
     {
-        gameStateManager.GameStateChanged -= OnGameStateChanged;
+        gameStateManager.EditorStateChanged -= OnEditorStateChanged;
     }
 
-    public void OnGameStateChanged(EditorState editorState)
+    private void OnEditorStateChanged(EditorState editorState)
     {
         switch (editorState)
         {

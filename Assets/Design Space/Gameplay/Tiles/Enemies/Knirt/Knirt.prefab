@@ -97,12 +97,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4651902673468147602}
   - component: {fileID: 5942824831597102096}
-  - component: {fileID: 424699587750090250}
-  - component: {fileID: 3371692808100298466}
   - component: {fileID: 4237349877676064121}
   - component: {fileID: 7177963833152825757}
   - component: {fileID: 3770291099405037255}
   - component: {fileID: 8051734380657957360}
+  - component: {fileID: 6852264589396031817}
   m_Layer: 0
   m_Name: Knirt
   m_TagString: Untagged
@@ -154,57 +153,6 @@ MonoBehaviour:
     m_Bits: 65
   bounceable: {fileID: 0}
   running: 1
---- !u!114 &424699587750090250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4547697354170655046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea645d20fae6644aa903084c8354f337, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fullHealth: {fileID: 1612576785287064648, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
-  halfHealth: {fileID: 9209072099887660752, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
-  spriteRenderer: {fileID: 2278101925243622013}
-  health: {fileID: 3371692808100298466}
---- !u!114 &3371692808100298466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4547697354170655046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f20051a377546433aa9b51014ba04dea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHitpoints: 2
-  startingHitpoints: 2
-  invincibilityDuration: 0.1
-  damageable: {fileID: 4237349877676064121}
-  levelResettable: {fileID: 0}
-  instantKillDamageTypes:
-  - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
-  - {fileID: 11400000, guid: b462bd9af6d924a3591c41676e50a3ad, type: 2}
-  killed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4547697354170655046}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &4237349877676064121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,11 +169,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d22c334ad94f340d286916918d4d7763, type: 2}
   - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
   - {fileID: 11400000, guid: b462bd9af6d924a3591c41676e50a3ad, type: 2}
-  destroyOnDamaged: 0
-  destroyTarget: {fileID: 0}
+  destroyOnDamaged: 1
+  destroyTarget: {fileID: 4547697354170655046}
   damaged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6852264589396031817}
+        m_TargetAssemblyTypeName: CallEntitySpawnerSpawn, Assembly-CSharp
+        m_MethodName: Spawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7177963833152825757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,3 +278,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.75, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6852264589396031817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4547697354170655046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13aca816c32164e1481aacd356f1ea7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entitySpawner: {fileID: 11400000, guid: 108b99fd2c0414afe9fa813d07438cc3, type: 2}
+  entityPrefab: {fileID: 7912995684054677592, guid: 6ca91687934874d3193590323967a10d, type: 3}
+  spawnPosition: {fileID: 4651902673468147602}

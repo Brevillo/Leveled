@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11
   paletteIcon: {fileID: -1554253085616129903, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
-  tileBase: {fileID: 11400000, guid: 702594e7d15e8402eb1377b4cc0ad922, type: 2}
+  tileBase: {fileID: 11400000, guid: ebe5055d871c949eba3d871b433f9740, type: 2}
+  entity: {fileID: 3035277352086094400, guid: 7f8015105892941b3b23fe5edbc0d445, type: 3}
+  globalEntity: 1
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Fragile Platform
   linkable: 0

@@ -11,15 +11,15 @@ public class GameStateChangeEvents : MonoBehaviour
     
     private void OnEnable()
     {
-        gameStateManager.GameStateChanged += OnGameStateChanged;
+        gameStateManager.EditorStateChanged += OnEditorStateChanged;
     }
 
     private void OnDisable()
     {
-        gameStateManager.GameStateChanged -= OnGameStateChanged;
+        gameStateManager.EditorStateChanged -= OnEditorStateChanged;
     }
 
-    private void OnGameStateChanged(EditorState editorState)
+    private void OnEditorStateChanged(EditorState editorState)
     {
         gameStateChanged.Invoke(editorState);
         

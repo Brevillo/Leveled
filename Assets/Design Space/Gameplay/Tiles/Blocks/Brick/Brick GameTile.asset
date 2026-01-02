@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 24
   paletteIcon: {fileID: -6270238251305359887, guid: 31b5a26095b040d4a81995b8d3f2d17e, type: 3}
-  tileBase: {fileID: 11400000, guid: 1f207d960ad4341bbbfd546b92c49447, type: 2}
+  tileBase: {fileID: 11400000, guid: 7909a5f8e8afc44038ad5f149ad4a943, type: 2}
+  entity: {fileID: 4621125527985047284, guid: 92599d6f9ac904d44a50c637a93f9513, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Brick Block
   linkable: 0

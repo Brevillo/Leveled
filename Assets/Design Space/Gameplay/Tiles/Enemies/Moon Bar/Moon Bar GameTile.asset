@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 25
   paletteIcon: {fileID: 4582712641527702365, guid: 81b0c6e8deb364326bb22e8194a539ee, type: 3}
-  tileBase: {fileID: 11400000, guid: 65123d53dec3248389a67b7b2f02a19b, type: 2}
+  tileBase: {fileID: 11400000, guid: 60f735df9408d45ac8e490a39748401c, type: 2}
+  entity: {fileID: 199891500583357772, guid: 0a88246149c8942a2b9bedf08c171681, type: 3}
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Moon Bar
   linkable: 0

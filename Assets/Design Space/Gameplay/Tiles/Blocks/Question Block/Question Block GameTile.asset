@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 16
   paletteIcon: {fileID: 2374812461160784421, guid: af5aa14421bba4b70be0dbef2ba2269a, type: 3}
-  tileBase: {fileID: 11400000, guid: 7f5fad517bc5244aa836c6e8c9fc4df9, type: 2}
+  tileBase: {fileID: 11400000, guid: d66eac356ceb64b318fb2da425d2218a, type: 2}
+  entity: {fileID: 4621125527985047284, guid: aa073ef93e2344593b59cbe1cafc6c7a, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Question Block
   linkable: 0

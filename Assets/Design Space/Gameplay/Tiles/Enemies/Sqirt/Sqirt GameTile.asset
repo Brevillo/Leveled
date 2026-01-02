@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
+  m_Name: Sqirt GameTile
+  m_EditorClassIdentifier: 
+  id: 27
+  paletteIcon: {fileID: 1612576785287064648, guid: 944eb8c9fa0de42dab7ec3108f77b408, type: 3}
+  tileBase: {fileID: 11400000, guid: f58879e2397424f87943cde0a69c3676, type: 2}
+  entity: {fileID: 7912995684054677592, guid: 6ca91687934874d3193590323967a10d, type: 3}
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
+  tooltip: Sqirt
+  linkable: 0

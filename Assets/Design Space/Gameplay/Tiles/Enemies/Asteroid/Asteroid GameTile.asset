@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 22
   paletteIcon: {fileID: 8096771745544250846, guid: 4bc6745fb8c3f446bab62e9f9b0634fd, type: 3}
-  tileBase: {fileID: 11400000, guid: acfdcfc24c4284b4bb90dd7b24c28832, type: 2}
+  tileBase: {fileID: 11400000, guid: e2a6a67efd2cc4f21ba1c071500197ac, type: 2}
+  entity: {fileID: 2059840401459340804, guid: 8447bb88ec4144e26b33ef966846b564, type: 3}
+  globalEntity: 1
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Asteroid Enemy
   linkable: 0

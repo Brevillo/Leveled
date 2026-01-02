@@ -8,6 +8,8 @@ public class GameTile : ScriptableObject
     [SerializeField] private int id;
     [SerializeField] private Sprite paletteIcon;
     [SerializeField] private TileBase tileBase;
+    [SerializeField] private GameObject entity;
+    [SerializeField] private bool globalEntity;
     [SerializeField] private List<Tilemap> tilemapPrefabs;
     [SerializeField] private string tooltip;
     [SerializeField] private bool linkable;
@@ -23,6 +25,10 @@ public class GameTile : ScriptableObject
     public TileBase TileBase => tileBase is TileBaseFactory factory
         ? factory.TileBase
         : tileBase;
+
+    public GameObject Entity => entity;
+
+    public bool GlobalEntity => globalEntity;
 
     public static string NullableToString(GameTile tile) => tile != null
         ? tile.Tooltip

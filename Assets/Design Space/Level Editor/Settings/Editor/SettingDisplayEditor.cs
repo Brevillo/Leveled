@@ -25,12 +25,11 @@ public class SettingDisplayEditor : Editor
     }
     
     private const string CreateSettingDisplayPath = ProjectConstants.CreateAssetMenuValidators + "Create Setting Display";
-    private const int Priority = ProjectConstants.CreateAssetMenuValidatorsPriority;
 
     [MenuItem(CreateSettingDisplayPath, true)]
     private static bool Validate() => Selection.objects.Any(selection => selection is BoolSetting or FloatSetting or IntSetting);
 
-    [MenuItem(CreateSettingDisplayPath, priority = Priority)]
+    [MenuItem(CreateSettingDisplayPath, priority = ProjectConstants.CreateAssetMenuValidatorsPriority)]
     private static void Create()
     {
         var created = new List<Object>();

@@ -34,5 +34,7 @@ public class Collectable : MonoBehaviour
         collected.Invoke();
         
         visuals.SetActive(false);
+
+        Destroy(gameObject);
     }
 }

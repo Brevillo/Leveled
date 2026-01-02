@@ -450,7 +450,7 @@ public class RuleTileGenerator : EditorWindow
     
     private static void SaveAsset(Object tile, string name)
     {
-        string folder = TryGetActiveFolderPath(out string activeFolder) ? activeFolder : "Assets";
+        string folder = MyEditorUtilities.GetActiveFolderPath();
         AssetDatabase.CreateAsset(tile, $"{folder}/{name}.asset");
         AssetDatabase.SaveAssets();
 
@@ -458,26 +458,7 @@ public class RuleTileGenerator : EditorWindow
 
         Selection.activeObject = tile;
     }
-    
-    private static bool TryGetActiveFolderPath( out string path )
-    {
-        var tryGetActiveFolderPath = typeof(ProjectWindowUtil).GetMethod( "TryGetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic );
 
-        object[] args = { null };
-        bool found = (bool)tryGetActiveFolderPath?.Invoke( null, args );
-        path = (string)args[0];
+    private static Sprite[] GetSprites(Texture2D texture2D) => MyEditorUtilities.GetSubAssets<Sprite>(texture2D);
 
-        return found;
-    }
-    
-    private static Sprite[] GetSprites(Texture2D texture2D) => texture2D == null 
-        ? Array.Empty<Sprite>()
-        : AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(texture2D))
-            .Where(asset => asset != texture2D)
-            .OrderBy(asset => PadNumbers(asset.name))
-            .OfType<Sprite>()
-            .ToArray();
-
-    private static string PadNumbers(string input) => 
-        Regex.Replace(input, "[0-9]+", match => match.Value.PadLeft(10, '0'));
 };

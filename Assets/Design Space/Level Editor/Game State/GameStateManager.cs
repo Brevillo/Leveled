@@ -6,7 +6,7 @@ public class GameStateManager : ScriptableObject
 {
     private EditorState editorState;
 
-    public event Action<EditorState> GameStateChanged;
+    public event Action<EditorState> EditorStateChanged;
 
     public void EnterPlayMode()
     {
@@ -45,6 +45,6 @@ public class GameStateManager : ScriptableObject
     {
         editorState = value;
 
-        GameStateChanged?.Invoke(value);
+        EditorStateChanged?.Invoke(value);
     }
 }

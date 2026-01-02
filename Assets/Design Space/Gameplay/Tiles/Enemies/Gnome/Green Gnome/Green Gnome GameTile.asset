@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 17
   paletteIcon: {fileID: -2535901058958154764, guid: f29c0073f079d46c9a5d56417fea68bb, type: 3}
-  tileBase: {fileID: 11400000, guid: 673485ee996ec4070a44263f4bfa03a5, type: 2}
+  tileBase: {fileID: 11400000, guid: 1a7fff6c879e24f22988ffde9efc5a6a, type: 2}
+  entity: {fileID: 4731393081277014656, guid: 46bcf33d1a9914b62a792d12dac80a2a, type: 3}
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Green Gnome
   linkable: 0
