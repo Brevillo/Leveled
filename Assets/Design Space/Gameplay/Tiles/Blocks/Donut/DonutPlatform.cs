@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using OliverBeebe.UnityUtilities.Runtime;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DonutPlatform : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public class DonutPlatform : MonoBehaviour
     [SerializeField] private Sprite normalSprite;
     [SerializeField] private Sprite triggeredSprite;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    
+    [Header("Audio")] 
+    [SerializeField] private UnityEvent platformCrumble;
+
+    private bool onStep;
     private float startHeight;
 
     private StateMachine stateMachine;
@@ -72,11 +76,17 @@ public class DonutPlatform : MonoBehaviour
             {
                 fallTimer += Time.deltaTime;
                 Context.spriteRenderer.sprite = Context.triggeredSprite;
+                if (Context.onStep)
+                {
+                    Context.platformCrumble.Invoke();
+                    Context.onStep = false;
+                }
             }
             else
             {
                 Context.spriteRenderer.sprite = Context.normalSprite;
                 fallTimer = 0f;
+                Context.onStep = true;
             }
 
             if (fallTimer >= Context.fallDelay)
