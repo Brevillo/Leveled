@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 8824733926338973866}
   - component: {fileID: 5531390275591907590}
   - component: {fileID: 7617321489427983349}
+  - component: {fileID: 2680528179988365301}
   m_Layer: 6
   m_Name: Womp Womp
   m_TagString: Untagged
@@ -456,6 +457,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.875, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &2680528179988365301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2859683549599696478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4e0c075b826444882d637a77196b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceptedDamageTypes:
+  - {fileID: 11400000, guid: 949bdbf0773a44461bd30cf1c8d7c5b5, type: 2}
+  destroyOnDamaged: 1
+  destroyTarget: {fileID: 2859683549599696478}
+  damaged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3180495667533401541
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +618,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: b462bd9af6d924a3591c41676e50a3ad, type: 2}
+  noDamageToFallingPlayer: 0
+  validDamageRanges: []
   damageDealt:
     m_PersistentCalls:
       m_Calls: []

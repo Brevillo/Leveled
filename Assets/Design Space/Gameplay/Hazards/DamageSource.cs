@@ -61,19 +61,22 @@ public class DamageSource : MonoBehaviour
         float arcRadius = 2f;
 
         Gizmos.color = Color.green;
-        
-        foreach (var range in validDamageRanges)
-        {
-            float start = Vector2.SignedAngle(Vector2.right, range.direction) - range.arcWidth / 2f;
-            
-            Gizmos.DrawLineStrip(Enumerable.Range(0, linePoints)
-                .Select(i =>
-                {
-                    float angle = (start + (float)i / (linePoints - 1) * range.arcWidth) * Mathf.Deg2Rad;
 
-                    return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * arcRadius;
-                })
-                .ToArray(), false);
+        if (validDamageRanges != null)
+        {
+            foreach (var range in validDamageRanges)
+            {
+                float start = Vector2.SignedAngle(Vector2.right, range.direction) - range.arcWidth / 2f;
+                
+                Gizmos.DrawLineStrip(Enumerable.Range(0, linePoints)
+                    .Select(i =>
+                    {
+                        float angle = (start + (float)i / (linePoints - 1) * range.arcWidth) * Mathf.Deg2Rad;
+
+                        return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * arcRadius;
+                    })
+                    .ToArray(), false);
+            }
         }
     }
 }
