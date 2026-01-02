@@ -165,11 +165,21 @@ public class TileEditorState : GameService
     {
         get
         {
+            Vector2 mousePosition = Input.mousePosition;
+
+            if (mousePosition.x < 0
+                || mousePosition.x > Screen.width
+                || mousePosition.y < 0
+                || mousePosition.y > Screen.height)
+            {
+                return true;
+            }
+            
             int uiLayer = LayerMask.NameToLayer("UI");
             
             var eventData = new PointerEventData(EventSystem.current)
             {
-                position = Input.mousePosition,
+                position = mousePosition,
             };
             var results = new List<RaycastResult>();
             

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd0813cfcd124bb7bc74df2acfe60ffb, type: 3}
-  m_Name: Knight TileFactory
+  m_Name: Knirt TileFactory
   m_EditorClassIdentifier: 
   prefab: {fileID: 4547697354170655046, guid: c3ad4e44f8dfe4ddb8ea5578a61170e8, type: 3}
   previewTileSprite: {fileID: 1612576785287064648, guid: abf213d7545374b91b661b5dfc91e337, type: 3}

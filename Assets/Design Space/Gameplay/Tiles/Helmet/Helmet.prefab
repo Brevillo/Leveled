@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1369708237
-  m_SortingLayer: -1
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -2913055755966979844, guid: 7a58c343ac5eb418992b41009b55b668, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -160,17 +160,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startDirection: -1
   moveSpeed: 10
+  moveAcceleration: 200
   gravity: 10
   jumpHeight: 0
   jumpFrequency: 0
   rigidbody: {fileID: 8860065277577607020}
-  size: {x: 0.875, y: 0.6875}
+  size: {x: 0.975, y: 0.7875}
   sideCheckSize: {x: 0.25, y: 0.5}
   downCheckSize: {x: 0.5, y: 0.25}
   groundCheckNormalRange: 5
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 65
   bounceable: {fileID: 4179395916653277363}
   running: 0
 --- !u!50 &8860065277577607020
@@ -289,13 +290,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6664337683090464510}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78b0ba050572f427b83516bdd079b143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: b462bd9af6d924a3591c41676e50a3ad, type: 2}
+  noDamageToFallingPlayer: 1
+  validDamageRanges: []
   damageDealt:
     m_PersistentCalls:
       m_Calls: []

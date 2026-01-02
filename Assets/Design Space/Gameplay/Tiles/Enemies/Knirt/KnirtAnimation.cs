@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class KnightAnimation : MonoBehaviour
+public class KnirtAnimation : MonoBehaviour
 {
     [SerializeField] private Sprite fullHealth;
     [SerializeField] private Sprite halfHealth;

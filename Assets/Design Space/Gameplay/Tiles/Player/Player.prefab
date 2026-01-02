@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 496563397041680685}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.375, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -762,11 +762,13 @@ MonoBehaviour:
   jumpDamageSource: {fileID: 2228848043381946792}
   fallDamageSource: {fileID: 7426507833372005783}
   minBounceDuration: 0.1
+  walljumpingEnabled: 0
   walljumpHeight: 4
   walljumpBoost: 15
   walljumpNoTurnDuration: 0.2
   leftWall: {fileID: 8585256108961048065}
   rightWall: {fileID: 7204901590545820916}
+  wallSlidingEnabled: 0
   startWallSlideSpeed: 0
   maxWallSlideSpeed: 10
   wallSlideAccel: 20

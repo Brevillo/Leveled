@@ -6,13 +6,14 @@ using UnityEngine;
 
 public static class Physics2DUtilities
 {
-    public static ContactFilter2D Normal(this ContactFilter2D contactFilter2D, Vector2 anchor, float range)
+    public static ContactFilter2D Normal(this ContactFilter2D contactFilter2D, Vector2 anchor, float range, bool useOutsideNormalAngle = false)
     {
         float angle = Vector2.SignedAngle(Vector2.right, anchor);
 
         contactFilter2D.useNormalAngle = true;
         contactFilter2D.maxNormalAngle = angle + range / 2f;
         contactFilter2D.minNormalAngle = angle - range / 2f;
+        contactFilter2D.useOutsideNormalAngle = useOutsideNormalAngle;
 
         return contactFilter2D;
     }
@@ -24,9 +25,15 @@ public static class Physics2DUtilities
 
         return contactFilter2D;
     }
+    
+    
+    public static bool WithinDistance(this BoxCast2D boxCast2D, Transform transform, float distance) =>
+        boxCast2D.Hits
+            .Where(hit => hit.transform != transform)
+            .Any(hit => (hit.point - (Vector2)transform.position).sqrMagnitude < distance * distance);
 }
 
-public readonly struct BoxCast2D
+public class BoxCast2D
 {
     private readonly Vector2 origin;
     private readonly Transform originTransform;
@@ -104,9 +111,6 @@ public readonly struct BoxCast2D
 
     public Vector2 HitPoint => Hits.FirstOrDefault().point;
 
-    public bool WithinDistance(Vector2 position, float distance) =>
-        (HitPoint - position).sqrMagnitude < distance * distance;
-
     public void Update() => Physics2D.BoxCast(Origin, size, angle, direction, contactFilter, hits, distance);
 
     private Vector2 Origin => originTransform != null ? (Vector2)originTransform.position + origin : origin;
@@ -146,6 +150,11 @@ public readonly struct BoxCast2D
         float radius = 0.03f;
         Gizmos.DrawSphere(Origin - startEndOffsetAdjustment, radius);
         Gizmos.DrawSphere(endPosition + startEndOffsetAdjustment, radius);
+
+        foreach (var hit in hits)
+        {
+            Gizmos.DrawRay(hit.point, hit.normal);
+        }
     }
 }
 
@@ -174,7 +183,7 @@ public class BoxCaster2D : MonoBehaviour
 
     public Vector2 HitPoint => boxCast.HitPoint;
 
-    public bool WithinDistance(Vector2 position, float distance) => boxCast.WithinDistance(position, distance);
+    public bool WithinDistance(Transform transform, float distance) => boxCast.WithinDistance(transform, distance);
     
     private void FixedUpdate()
     {

@@ -49,9 +49,9 @@ public class SpaceUtility : ScriptableObject
     #region Mouse Positions
     
     public Vector3 MouseScreen => Input.mousePosition;
-    public Vector3 MouseWorld => mainCamera.ScreenToWorldPoint(Input.mousePosition);
-    public Vector3 MouseViewport => mainCamera.ScreenToViewportPoint(Input.mousePosition);
-    public Vector3 MouseWindow => ScreenToWindow(Input.mousePosition);
+    public Vector3 MouseWorld => mainCamera.ScreenToWorldPoint(MouseScreen);
+    public Vector3 MouseViewport => mainCamera.ScreenToViewportPoint(MouseScreen);
+    public Vector3 MouseWindow => ScreenToWindow(MouseScreen);
 
     public Vector3 MouseCanvas(RectTransform rectTransform) => ScreenToCanvas(MouseScreen, rectTransform);
     

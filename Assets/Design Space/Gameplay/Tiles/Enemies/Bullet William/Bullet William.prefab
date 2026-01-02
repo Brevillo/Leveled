@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 350587305
-  m_SortingLayer: -1
+  m_SortingLayer: -9
   m_SortingOrder: 0
   m_Sprite: {fileID: 3432847899485859518, guid: 186c5d1775630483990037c58bade2f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -212,6 +212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  noDamageToFallingPlayer: 1
+  validDamageRanges: []
   damageDealt:
     m_PersistentCalls:
       m_Calls: []

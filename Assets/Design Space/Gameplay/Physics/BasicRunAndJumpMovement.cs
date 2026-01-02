@@ -5,6 +5,7 @@ public class BasicRunAndJumpMovement : MonoBehaviour
 {
     [SerializeField] private int startDirection = -1;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveAcceleration;
     [SerializeField] private float gravity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpFrequency;
@@ -50,7 +51,7 @@ public class BasicRunAndJumpMovement : MonoBehaviour
                 direction,
                 new ContactFilter2D()
                     .LayerMask(groundMask)
-                    .Normal(direction, groundCheckNormalRange),
+                    .Normal(-direction, groundCheckNormalRange),
                 originTransform: transform); 
     }
 
@@ -82,23 +83,28 @@ public class BasicRunAndJumpMovement : MonoBehaviour
         rightCaster.DrawGizmos();
         leftCaster.DrawGizmos();
         downCaster.DrawGizmos();
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position, size);
     }
 
     private void Update()
     {
-        if (rightCaster.WithinDistance(transform.position, size.x))
+        if (rightCaster.WithinDistance(transform, size.x / 2f))
         {
             direction = -1;
         }
 
-        if (leftCaster.WithinDistance(transform.position, size.x))
+        if (leftCaster.WithinDistance(transform, size.x / 2f))
         {
             direction = 1;
         }
 
-        rigidbody.linearVelocityX = running ? direction * moveSpeed : 0f;
+        float targetSpeed = running ? direction * moveSpeed : 0f;
+        rigidbody.linearVelocityX =
+            Mathf.MoveTowards(rigidbody.linearVelocityX, targetSpeed, moveAcceleration * Time.deltaTime); 
 
-        if (downCaster.WithinDistance(transform.position, size.y))
+        if (downCaster.WithinDistance(transform, size.y / 2f) && rigidbody.linearVelocityY <= 0f)
         {
             groundedTimer += Time.deltaTime;
 
