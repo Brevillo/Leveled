@@ -35,15 +35,15 @@ public static class Physics2DUtilities
 
 public class BoxCast2D
 {
-    private readonly Vector2 origin;
-    private readonly Transform originTransform;
-    private readonly Vector2 size;
-    private readonly Vector2 direction;
-    private readonly float angle;
-    private readonly ContactFilter2D contactFilter;
-    private readonly float distance;
-    private readonly bool useOffsetsAsEdges;
-    private readonly Vector2 startEndOffsetAdjustment;
+    public Vector2 origin;
+    public Transform originTransform;
+    public Vector2 size;
+    public Vector2 direction;
+    public float angle;
+    public ContactFilter2D contactFilter;
+    public float distance;
+    public bool useOffsetsAsEdges;
+    public Vector2 startEndOffsetAdjustment;
    
     private readonly List<RaycastHit2D> hits;
 

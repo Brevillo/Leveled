@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
+  m_Name: Leaping Knirt GameTile
+  m_EditorClassIdentifier: 
+  id: 28
+  paletteIcon: {fileID: 1612576785287064648, guid: 574c68981e0fe4aa0a1b80d3db9f0d3f, type: 3}
+  tileBase: {fileID: 11400000, guid: 27edda1e2ccf746f7bf0e7fc0b337ad9, type: 2}
+  entity: {fileID: 2856120769769974037, guid: 90bbe268e9f1a44b1889db0f2386a351, type: 3}
+  globalEntity: 0
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
+  tooltip: Leaping Knirt
+  linkable: 0

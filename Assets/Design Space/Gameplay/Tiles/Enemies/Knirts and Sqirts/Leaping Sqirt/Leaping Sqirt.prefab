@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2418031204458559436
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 50971928531508494, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: jumpFrequency
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5571305277830187875, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1612576785287064648, guid: d51ea14b6a4154c9e9e0b49e5be52dab, type: 3}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9111063834906740148}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Spawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CallEntitySpawnerSpawn, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494594799706137703, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: damaged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912995684054677592, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      propertyPath: m_Name
+      value: Leaping Sqirt
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7912995684054677592, guid: 6ca91687934874d3193590323967a10d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9111063834906740148}
+  m_SourcePrefab: {fileID: 100100000, guid: 6ca91687934874d3193590323967a10d, type: 3}
+--- !u!4 &3732432152069531968 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1315844757826969228, guid: 6ca91687934874d3193590323967a10d, type: 3}
+  m_PrefabInstance: {fileID: 2418031204458559436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5502845930493759380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7912995684054677592, guid: 6ca91687934874d3193590323967a10d, type: 3}
+  m_PrefabInstance: {fileID: 2418031204458559436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9111063834906740148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502845930493759380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13aca816c32164e1481aacd356f1ea7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entitySpawner: {fileID: 11400000, guid: 108b99fd2c0414afe9fa813d07438cc3, type: 2}
+  entityPrefab: {fileID: 7912995684054677592, guid: 6ca91687934874d3193590323967a10d, type: 3}
+  spawnPosition: {fileID: 3732432152069531968}

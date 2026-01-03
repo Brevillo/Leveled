@@ -141,7 +141,7 @@ MonoBehaviour:
   moveSpeed: 2.5
   moveAcceleration: 100
   gravity: 15
-  jumpHeight: 0
+  jumpHeight: 2.5
   jumpFrequency: Infinity
   rigidbody: {fileID: 3770291099405037255}
   size: {x: 0.85, y: 1.1}

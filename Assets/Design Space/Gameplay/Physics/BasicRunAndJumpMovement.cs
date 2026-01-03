@@ -9,6 +9,7 @@ public class BasicRunAndJumpMovement : MonoBehaviour
     [SerializeField] private float gravity;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpFrequency;
+    [SerializeField] private bool avoidLedges;
     [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private Vector2 size;
     [SerializeField] private Vector2 sideCheckSize;
@@ -17,12 +18,13 @@ public class BasicRunAndJumpMovement : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Bounceable bounceable;
 
-    private BoxCast2D rightCaster, leftCaster, downCaster;
+    private BoxCast2D rightCaster, leftCaster, downCaster, ledgeCaster;
     
     public bool running = true;
 
     private int direction;
     private float groundedTimer;
+    private int ledgeCastDirection;
     
     private float JumpVelocity => Mathf.Sqrt(2f * gravity * jumpHeight);
     
@@ -36,6 +38,7 @@ public class BasicRunAndJumpMovement : MonoBehaviour
         CreateCasters();
 
         direction = startDirection;
+        groundedTimer = 0f;
     }
 
     private void CreateCasters()
@@ -52,7 +55,18 @@ public class BasicRunAndJumpMovement : MonoBehaviour
                 new ContactFilter2D()
                     .LayerMask(groundMask)
                     .Normal(-direction, groundCheckNormalRange),
-                originTransform: transform); 
+                originTransform: transform);
+
+        ledgeCaster = new(Vector2.zero,
+            Vector2.one * 0.1f,
+            0f,
+            Vector2.down,
+            new ContactFilter2D()
+                .LayerMask(groundMask)
+                .Normal(Vector2.up, groundCheckNormalRange),
+            originTransform: transform,
+            distance: size.y / 2f + 0.1f,
+            useOffsetsAsEdges: true);
     }
 
     private void OnBounced(BounceParams bounceParams)
@@ -61,35 +75,24 @@ public class BasicRunAndJumpMovement : MonoBehaviour
         rigidbody.linearVelocity = bounceParams.force;
     }
 
-    private void Start()
-    {
-        rigidbody.linearVelocity = new Vector2(moveSpeed, JumpVelocity);
-    }
-
     private void FixedUpdate()
     {
         rightCaster.Update();
         leftCaster.Update();
         downCaster.Update();
-    }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (!Application.IsPlaying(this))
-        {
-            CreateCasters();
-        }
-        
-        rightCaster.DrawGizmos();
-        leftCaster.DrawGizmos();
-        downCaster.DrawGizmos();
-        
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, size);
+        ledgeCastDirection = direction;
+        ledgeCaster.origin = Vector2.right * ((size.x / 2f + 0.05f) * ledgeCastDirection);
+        ledgeCaster.Update();
     }
 
     private void Update()
     {
+        if (!ledgeCaster.IsHitting && downCaster.IsHitting && avoidLedges)
+        {
+            direction = ledgeCastDirection * -1;
+        }
+        
         if (rightCaster.WithinDistance(transform, size.x / 2f))
         {
             direction = -1;
@@ -120,5 +123,21 @@ public class BasicRunAndJumpMovement : MonoBehaviour
             groundedTimer = 0f;
             rigidbody.linearVelocity += Vector2.down * (gravity * Time.deltaTime);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!Application.IsPlaying(this))
+        {
+            CreateCasters();
+        }
+        
+        rightCaster.DrawGizmos();
+        leftCaster.DrawGizmos();
+        downCaster.DrawGizmos();
+        ledgeCaster.DrawGizmos();
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position, size);
     }
 }
