@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region Parameters
+    
     [SerializeField] private float respawnIgnoreInputDuration;
     
     [Header("Running")]
@@ -13,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDeccel;
     [SerializeField] private float airAccel;
     [SerializeField] private float airDeccel;
+    [SerializeField] private float groundDownForce;
+    [SerializeField] private BoxCaster2D groundFollow;
 
     [Header("Jumping")] 
     [SerializeField] private InputActionReference jumpInput;
@@ -26,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxFallSpeed;
     [SerializeField] private float coyoteTime;
     [SerializeField] private float jumpBufferDuration;
-    [SerializeField] private CollisionAggregate2D ground;
+    [SerializeField] private BoxCaster2D ground;
     [SerializeField] private SoundEffect jumpSound;
     [SerializeField] private DamageSource jumpDamageSource;
     [SerializeField] private DamageSource fallDamageSource;
@@ -60,7 +64,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private HeavyObject heavyObject;
     [SerializeField] private LevelResettable levelResettable;
     [SerializeField] private CheckpointEnjoyer checkpointEnjoyer;
-
+    [SerializeField] private VelocityResolver velocityResolver;
+    
+    #endregion
+    
     private Vector2 spawnPoint;
 
     private float respawnTime;
@@ -71,6 +78,21 @@ public class PlayerMovement : MonoBehaviour
     private StateMachine stateMachine;
 
     private bool immobilized;
+    
+    public void Immobilize(bool immobilized)
+    {
+        this.immobilized = immobilized;
+        
+        stateMachine.Reset();
+    }
+    
+    public bool NoClip 
+    { 
+        get => stateMachine.CurrentState is NoClipping;
+        set => stateMachine.ChangeState(value ? typeof(NoClipping) : typeof(Falling));
+    }
+    
+    #region Helper Properties
 
     private int WallDirection 
         => rightWall.Touching ? 1
@@ -85,35 +107,13 @@ public class PlayerMovement : MonoBehaviour
         ? Vector2.zero
         : moveInput.action.ReadValue<Vector2>();
 
-    public bool NoClip 
-    { 
-        get => stateMachine.CurrentState is NoClipping;
-        set => stateMachine.ChangeState(value ? typeof(NoClipping) : typeof(Falling));
-    }
-
-    public void Immobilize(bool immobilized)
+    private Vector2 Velocity
     {
-        this.immobilized = immobilized;
-        
-        stateMachine.Reset();
+        get => velocityResolver.GetLiveVelocity(this);
+        set => velocityResolver.SetVelocity(this, value);
     }
     
-    private void Respawn()
-    {
-        positionRecorder.AddPosition();
-
-        rigidbody.interpolation = RigidbodyInterpolation2D.None;
-        transform.position = checkpointEnjoyer.HasCheckpoint 
-            ? checkpointEnjoyer.Checkpoint.transform.position
-            : spawnPoint;
-        rigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
-        
-        rigidbody.linearVelocity = Vector2.zero;
-     
-        positionRecorder.NewSegment();
-
-        respawnTime = Time.time;
-    }
+    #endregion
 
     private void Awake()
     {
@@ -129,28 +129,6 @@ public class PlayerMovement : MonoBehaviour
 
         jumpBuffer = new(jumpBufferDuration);
     }
-
-    #region Event Responses
-    
-    private void OnReset()
-    {
-        Respawn();
-    }
-
-    private void OnBounced(BounceParams bounceParams)
-    {
-        stateMachine.ChangeState<Bouncing>();
-
-        rigidbody.MovePosition(bounceParams.SnapPosition(rigidbody.position));
-        rigidbody.linearVelocity = bounceParams.force;
-    }
-
-    private void OnFallDamageDealt()
-    {
-        stateMachine.ChangeState<Bouncing>();
-    }
-
-    #endregion
     
     private void Update()
     {
@@ -160,7 +138,41 @@ public class PlayerMovement : MonoBehaviour
         
         stateMachine.Update(Time.deltaTime);
     }
+    
+    #region Event Responses
+    
+    private void OnReset()
+    {
+        positionRecorder.AddPosition();
 
+        rigidbody.interpolation = RigidbodyInterpolation2D.None;
+        transform.position = checkpointEnjoyer.HasCheckpoint 
+            ? checkpointEnjoyer.Checkpoint.transform.position
+            : spawnPoint;
+        rigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
+        
+        Velocity = Vector2.zero;
+     
+        positionRecorder.NewSegment();
+
+        respawnTime = Time.time;
+    }
+
+    private void OnBounced(BounceParams bounceParams)
+    {
+        stateMachine.ChangeState<Bouncing>();
+
+        rigidbody.MovePosition(bounceParams.SnapPosition(rigidbody.position));
+        Velocity = bounceParams.force;
+    }
+
+    private void OnFallDamageDealt()
+    {
+        stateMachine.ChangeState<Bouncing>();
+    }
+
+    #endregion
+    
     #region Movement States
 
     private void InitStateMachine()
@@ -169,23 +181,23 @@ public class PlayerMovement : MonoBehaviour
         
         TransitionCondition
 
-            canGround = () => ground.Touching,
+            canGround = () => ground.IsHitting,
 
-            canJump = () => JumpInput && ground.Touching,
+            canJump = () => JumpInput && ground.IsHitting,
             canCoyoteJump = () => JumpInput && stateMachine.PreviousState is Grounded && stateMachine.StateDuration < coyoteTime,
             canDoubleJump = () => JumpInput && extraJumpsUsed < maxExtraJumps,
             
             canEndJump = () => !jumpInput.action.IsPressed(),
             canEndBounce = () => !jumpInput.action.IsPressed() && stateMachine.StateDuration > minBounceDuration,
             
-            canEndJumpPeak = () => rigidbody.linearVelocityY <= 0,
+            canEndJumpPeak = () => Velocity.y <= 0,
 
             canWalljump = () => walljumpingEnabled && WallDirection != 0 && JumpInput,
             
-            canWallSlide = () => wallSlidingEnabled && WallDirection != 0 && WallDirection == MoveInput.x && !ground.Touching,
+            canWallSlide = () => wallSlidingEnabled && WallDirection != 0 && WallDirection == MoveInput.x && !ground.IsHitting,
             canEndWallSlide = () => WallDirection == 0 || MoveInput.x.Sign0() == -WallDirection,
 
-            canFall = () => !ground.Touching;
+            canFall = () => !ground.IsHitting;
         
         stateMachine.AddState<Grounded>(new())
             .AddTransition<Jumping>(canJump)
@@ -233,20 +245,20 @@ public class PlayerMovement : MonoBehaviour
     {
         protected float VelocityX
         {
-            get => Context.rigidbody.linearVelocityX;
-            set => Context.rigidbody.linearVelocityX = value;
+            get => Velocity.x;
+            set => Velocity = new(value, Velocity.y);
         }
         
         protected float VelocityY
         {
-            get => Context.rigidbody.linearVelocityY;
-            set => Context.rigidbody.linearVelocityY = value;
+            get => Velocity.y;
+            set => Velocity = new(Velocity.x, value);
         }
 
         protected Vector2 Velocity
         {
-            get => Context.rigidbody.linearVelocity;
-            set => Context.rigidbody.linearVelocity = value;
+            get => Context.Velocity;
+            set => Context.Velocity = value;
         }
         
         protected void AirRun()
@@ -308,6 +320,8 @@ public class PlayerMovement : MonoBehaviour
         public override void Update()
         {
             Run(Context.groundAccel, Context.groundDeccel);
+
+            VelocityY = -Context.groundDownForce;
             
             base.Update();
         }
@@ -315,6 +329,8 @@ public class PlayerMovement : MonoBehaviour
         public override void Exit()
         {
             Context.heavyObject.grounded = false;
+
+            Context.velocityResolver.UnsetVelocity(this);
 
             base.Exit();
         }
@@ -326,7 +342,7 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Enter();
             
-            Context.rigidbody.linearVelocityY = Mathf.Sqrt(2f * Context.jumpHeight * Context.jumpGravity);
+            Context.velocityResolver.SetTotalVelocityY(Context, Mathf.Sqrt(2f * Context.jumpHeight * Context.jumpGravity));
             
             Context.jumpBuffer.Reset();
             
@@ -417,7 +433,7 @@ public class PlayerMovement : MonoBehaviour
             
             Context.extraJumpsUsed = 0;
 
-            Context.rigidbody.linearVelocity = new Vector2
+            Velocity = new Vector2
             {
                 y = Mathf.Sqrt(2f * Context.walljumpHeight * Context.jumpGravity),
                 x = Context.walljumpBoost * -Context.WallDirection,
@@ -455,12 +471,12 @@ public class PlayerMovement : MonoBehaviour
         {
             base.Enter();
             
-            Context.rigidbody.linearVelocityY = Mathf.Max(Context.rigidbody.linearVelocityY, -Context.startWallSlideSpeed);
+            VelocityY = Mathf.Max(VelocityY, -Context.startWallSlideSpeed);
         }
 
         public override void Update()
         {
-            Context.rigidbody.linearVelocityY = Mathf.MoveTowards(Context.rigidbody.linearVelocityY,
+            VelocityY = Mathf.MoveTowards(VelocityY,
                 -Context.maxWallSlideSpeed, Context.wallSlideAccel * Time.deltaTime);
 
             base.Update();

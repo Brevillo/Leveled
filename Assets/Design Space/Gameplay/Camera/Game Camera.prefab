@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8390593596269643193
+--- !u!1 &6414350207929919391
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2499522939867274582}
-  - component: {fileID: 1528913052914530624}
-  - component: {fileID: 1281660115709538391}
-  - component: {fileID: 317814571967448287}
-  - component: {fileID: 106619020174259359}
-  - component: {fileID: 6211406440507286250}
+  - component: {fileID: 2794967164180564645}
+  - component: {fileID: 2949498457438175973}
+  - component: {fileID: 2789438720011775469}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: Camera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2499522939867274582
+--- !u!4 &2794967164180564645
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390593596269643193}
+  m_GameObject: {fileID: 6414350207929919391}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -15.588458}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4665362062430042840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &1528913052914530624
+--- !u!20 &2949498457438175973
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390593596269643193}
+  m_GameObject: {fileID: 6414350207929919391}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
@@ -67,10 +64,10 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -10
-  far clip plane: 10
-  field of view: 34
-  orthographic: 1
+  near clip plane: 0.01
+  far clip plane: 1000
+  field of view: 30
+  orthographic: 0
   orthographic size: 9
   m_Depth: -1
   m_CullingMask:
@@ -87,21 +84,13 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1281660115709538391
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390593596269643193}
-  m_Enabled: 1
---- !u!114 &317814571967448287
+--- !u!114 &2789438720011775469
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390593596269643193}
+  m_GameObject: {fileID: 6414350207929919391}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
@@ -139,44 +128,81 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &106619020174259359
+--- !u!1 &6799644084658515120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4665362062430042840}
+  - component: {fileID: 7516840360761676397}
+  - component: {fileID: 5016966297924175125}
+  - component: {fileID: 3792975523012079719}
+  m_Layer: 0
+  m_Name: Game Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4665362062430042840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6799644084658515120}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2794967164180564645}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &7516840360761676397
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6799644084658515120}
+  m_Enabled: 1
+--- !u!114 &5016966297924175125
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390593596269643193}
+  m_GameObject: {fileID: 6799644084658515120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b39d22ef064440b492763a573d8f264, type: 3}
+  m_Script: {fileID: 11500000, guid: a915fc88b28064eca9310c2b3dab515b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
-  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
-  mainCamera: {fileID: 1528913052914530624}
-  zoomSpeed: 0.005
-  zoomFactor: 10
-  maxZoom: 1
-  minZoom: 300
-  zoomSmoothing: 0.025
-  defaultZoom: 9
+  moveSpeed: 0.1
+  sizeBuffer: 10
+  zoomSpeed: 0.1
+  minSize: 18
   placer: {fileID: 0}
-  minPlaySize: 9
-  playMoveSpeed: 0.1
-  playSizeBuffer: 10
-  cameraSnapBufferMult: 1.1
---- !u!114 &6211406440507286250
+  cameraPositioning: {fileID: 3792975523012079719}
+  mainCamera: {fileID: 2949498457438175973}
+--- !u!114 &3792975523012079719
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8390593596269643193}
+  m_GameObject: {fileID: 6799644084658515120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 072d553c888974e1f809854025f4859e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7dfb95d4ed46c4ce8b2496e78c4586bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 1528913052914530624}
-  grid: {fileID: 0}
-  spaceUtility: {fileID: 11400000, guid: 0a480216e2341450da0c4b745d3cfb44, type: 2}
+  perspectiveCamera: {fileID: 2949498457438175973}
+  orthographicCamera: []
+  pivot: {fileID: 2794967164180564645}
+  virtualHeight: 18

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
-  m_Name: Fast Donut GameTile
+  m_Name: Falling Platform GameTile
   m_EditorClassIdentifier: 
-  id: 12
-  paletteIcon: {fileID: -7567844679814543264, guid: ec3c3419970dd431487ef6f4f1872af8, type: 3}
-  tileBase: {fileID: 11400000, guid: 2566f31c34b844f38b82e0d26ac3e7ac, type: 2}
-  entity: {fileID: 406311510554859605, guid: 8ab8396ac784d4b15bb8d2956cf7449a, type: 3}
+  id: 31
+  paletteIcon: {fileID: 1499738066832686295, guid: ab5cc21d147e44ada81e873d22a2f620, type: 3}
+  tileBase: {fileID: 11400000, guid: fe055f35efb124ab79b590b28f86e2eb, type: 2}
+  entity: {fileID: 955107117994739556, guid: 2eba24d684db74764b545ce610b8684c, type: 3}
   globalEntity: 1
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
-  tooltip: Really Fragile Platform
+  tooltip: Falling Platform
   linkable: 0

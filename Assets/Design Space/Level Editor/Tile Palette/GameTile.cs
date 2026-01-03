@@ -20,11 +20,9 @@ public class GameTile : ScriptableObject
     public string Tooltip => tooltip;
     public bool Linkable => linkable;
 
-    public bool IsNullTileBase => TileBase == null;
+    public bool IsNullTileBase => tileBase == null;
 
-    public TileBase TileBase => tileBase is TileBaseFactory factory
-        ? factory.TileBase
-        : tileBase;
+    public TileBase TileBase => tileBase;
 
     public GameObject Entity => entity;
 

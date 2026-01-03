@@ -1,15 +1,33 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ConveyorTrigger : MonoBehaviour
 {
     [SerializeField] private Vector2 speed;
 
-    private void OnTriggerStay2D(Collider2D other)
+    private HashSet<VelocityResolver> activeResolvers;
+
+    private void Awake()
     {
-        if (other.TryGetComponent(out Rigidbody2D rigidbody))
+        activeResolvers = new();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out VelocityResolver velocityResolver))
         {
-            rigidbody.position += speed * Time.fixedDeltaTime;
+            velocityResolver.SetVelocity(this, speed);
+            activeResolvers.Add(velocityResolver);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out VelocityResolver velocityResolver) && activeResolvers.Contains(velocityResolver))
+        {
+            velocityResolver.UnsetVelocity(this);
+            activeResolvers.Remove(velocityResolver);
         }
     }
 }

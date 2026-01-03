@@ -168,8 +168,10 @@ public class BoxCaster2D : MonoBehaviour
     public ContactFilter2D contactFilter;
 
     private BoxCast2D boxCast;
+    private BoxCast2D BoxCast => boxCast ?? GetNewBoxCast();
+
     private BoxCast2D GetNewBoxCast() =>
-        BoxCast2D.StartEnd(startOffset,
+        boxCast = BoxCast2D.StartEnd(startOffset,
             endOffset,
             transform,
             size,
@@ -177,18 +179,18 @@ public class BoxCaster2D : MonoBehaviour
             contactFilter,
             offsetsAsEdges);
 
-    public IReadOnlyList<RaycastHit2D> Hits => boxCast.Hits;
+    public IReadOnlyList<RaycastHit2D> Hits => BoxCast.Hits;
 
-    public bool IsHitting => boxCast.IsHitting;
+    public bool IsHitting => BoxCast.IsHitting;
 
-    public Vector2 HitPoint => boxCast.HitPoint;
+    public Vector2 HitPoint => BoxCast.HitPoint;
 
-    public bool WithinDistance(Transform transform, float distance) => boxCast.WithinDistance(transform, distance);
+    public bool WithinDistance(Transform transform, float distance) => BoxCast.WithinDistance(transform, distance);
     
     private void FixedUpdate()
     {
-        boxCast = GetNewBoxCast();
-        boxCast.Update();
+        GetNewBoxCast();
+        BoxCast.Update();
     }
     
     private void OnValidate()
@@ -200,9 +202,9 @@ public class BoxCaster2D : MonoBehaviour
     {
         if (!Application.IsPlaying(this))
         {
-            boxCast = GetNewBoxCast();
+            GetNewBoxCast();
         }
         
-        boxCast.DrawGizmos();
+        BoxCast.DrawGizmos();
     }
 }
