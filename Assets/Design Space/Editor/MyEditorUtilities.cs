@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
@@ -86,6 +87,116 @@ public static class MyEditorUtilities
                 manager = AssetDatabase.LoadAssetAtPath<TManager>(path);
                 return true;
         }
+    }
+
+    public static VisualElement CreateDefaultManagerGUI<T, TManager>(
+        Object[] targets,
+        Func<TManager, List<T>> getList)
+        where TManager : Object
+    {
+        var targetsCasted = targets.Cast<T>().ToArray();
+        
+        float padding = 4f;
+        
+        var managerFields = AssetDatabase.FindAssets($"t:{typeof(TManager).Name}")
+            .Select(AssetDatabase.GUIDToAssetPath)
+            .Select(AssetDatabase.LoadAssetAtPath<TManager>)
+            .Select(manager =>
+            {
+                var horizontal = new VisualElement
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                
+                        paddingLeft = padding,
+                        paddingRight = padding,
+                    },
+                };
+
+                var list = getList.Invoke(manager);
+                
+                var field = new ObjectField
+                {
+                    objectType = typeof(TManager),
+                    value = manager,
+                    style = { flexGrow = 1f },
+                    enabledSelf = false,
+                };
+
+                var addToManagerButton = new Button
+                {
+                    text =  "Add",
+                    style = { width = 50f },
+                };
+                
+                field.RegisterValueChangedCallback(_ => UpdateUI());
+
+                bool AnyMissing() => targetsCasted.Any(target => !list.Contains(target));
+                
+                addToManagerButton.clicked += () =>
+                {
+                    if (AnyMissing())
+                    {
+                        foreach (var target in targetsCasted)
+                        {
+                            if (!list.Contains(target))
+                            {
+                                list.Add(target);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var target in targetsCasted)
+                        {
+                            list.Remove(target);
+                        }
+                    }
+
+                    EditorUtility.SetDirty(manager);
+                    AssetDatabase.SaveAssets();
+
+                    UpdateUI();
+                };
+                
+                UpdateUI();
+                
+                void UpdateUI()
+                {
+                    addToManagerButton.text = AnyMissing() ? "Add" : "Remove";
+                }
+                
+                horizontal.Add(field);
+                horizontal.Add(addToManagerButton);
+
+                return horizontal;
+            })
+            .ToArray();
+        
+        var root = new VisualElement
+        {
+            style =
+            {
+                backgroundColor = new Color(0.2f, 0.2f, 0.2f),
+                
+                paddingBottom = padding,
+                paddingTop = padding,
+                paddingLeft = padding,
+                paddingRight = padding,
+            },
+            
+            focusable = false,
+        };
+        
+        root.Add(new Label($"Add to {ObjectNames.NicifyVariableName(typeof(TManager).Name)}"));
+
+        foreach (var field in managerFields)
+        {
+            root.Add(field);
+        }
+        
+        return root;
     }
 
     public static void DefaultManagerGUI<TManager>(

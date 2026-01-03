@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TilePaletteItem : MonoBehaviour, IPointerClickHandler
+public class TilePaletteItem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
     [SerializeField] private Image background;
     [SerializeField] private Color primaryColor;
@@ -12,6 +13,8 @@ public class TilePaletteItem : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private Image iconImage;
     [SerializeField] private UITooltip tooltip;
+    [SerializeField] private UnityEvent selected;
+    [SerializeField] private UnityEvent hovered;
 
     private GameTile gameTile;
     
@@ -49,6 +52,8 @@ public class TilePaletteItem : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        selected.Invoke();
+        
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
@@ -63,5 +68,10 @@ public class TilePaletteItem : MonoBehaviour, IPointerClickHandler
                 
                 break;
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hovered.Invoke();
     }
 }

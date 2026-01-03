@@ -11138,6 +11138,7 @@ MonoBehaviour:
   editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   primaryTileIcon: {fileID: 1069637057}
   secondaryTileIcon: {fileID: 1724537030}
+  noTileSprite: {fileID: -6730801941677389369, guid: 3c579e5b76357459a9eb779c1b0da849, type: 3}
 --- !u!114 &871474558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12511,51 +12512,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7813723287874962971, guid: db36904ad4db6409b8a55acd6705bc82, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1028282804}
+      insertIndex: -1
+      addedObject: {fileID: 8952257934329542996}
     - targetCorrespondingSourceObject: {fileID: 7813723287874962971, guid: db36904ad4db6409b8a55acd6705bc82, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1028282806}
+      addedObject: {fileID: 8952257934329542997}
   m_SourcePrefab: {fileID: 100100000, guid: db36904ad4db6409b8a55acd6705bc82, type: 3}
---- !u!114 &1028282804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813723287283195828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d3c9097d57fb4aea84afb5d775c4199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  palette: {fileID: 11400000, guid: a173a35d3d2ae43e8b5389cc1f04a55d, type: 2}
-  content: {fileID: 8952257934329542994}
-  tileItemPrefab: {fileID: 3275246838468309653, guid: 2e2d713be1c434326826017197ab77e2, type: 3}
---- !u!114 &1028282806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813723287283195828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 67.5, y: 67.5}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
 --- !u!1 &1043902096
 GameObject:
   m_ObjectHideFlags: 0
@@ -14748,7 +14710,7 @@ MonoBehaviour:
   selectedColor: {r: 0.2, g: 0.2, b: 0.2, a: 0.5019608}
   idleColor: {r: 0, g: 0, b: 0, a: 0}
   fadeInDistance: 40
-  defaultSnapWidth: 300
+  defaultSnapWidth: 320
   toggleMoveSpeed: 0.02
   cameraAdjustAnchoring: 0.5
   screenRect: {fileID: 715475546}
@@ -18343,7 +18305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22043,6 +22005,47 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8952257935315575037, guid: db36904ad4db6409b8a55acd6705bc82, type: 3}
   m_PrefabInstance: {fileID: 1028282799}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8952257934329542996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813723287283195828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &8952257934329542997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813723287283195828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a889143ed44de48cef4d45afd8d6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  content: {fileID: 8952257934329542994}
+  categoryItemPrefab: {fileID: 4803924756929153366, guid: 17157df805d67473282d3e63f4b1019e, type: 3}
+  palette: {fileID: 11400000, guid: a173a35d3d2ae43e8b5389cc1f04a55d, type: 2}
 --- !u!1 &9076333503024064258 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6799644084658515120, guid: 173d8d0c09c0a4d8ea32b05b8fad6d65, type: 3}

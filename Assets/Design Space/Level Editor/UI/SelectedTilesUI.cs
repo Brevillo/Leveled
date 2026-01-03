@@ -7,6 +7,7 @@ public class SelectedTilesUI : MonoBehaviour
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private Image primaryTileIcon;
     [SerializeField] private Image secondaryTileIcon;
+    [SerializeField] private Sprite noTileSprite;
 
     private void OnEnable()
     {
@@ -30,7 +31,9 @@ public class SelectedTilesUI : MonoBehaviour
                     PaletteChangeInfo.Type.Primary or _ => primaryTileIcon,
                 };
 
-                icon.sprite = paletteChangeInfo.newValue.PaletteIcon;
+                icon.sprite = paletteChangeInfo.newValue == null 
+                    ? noTileSprite
+                    : paletteChangeInfo.newValue.PaletteIcon;
                 
                 break;
         }

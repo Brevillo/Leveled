@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 189d8f885ac274472ba57518d0d64e52, type: 3}
+  m_Name: Platforming Elements
+  m_EditorClassIdentifier: 
+  displayTitle: Platforming Elements
+  gameTiles:
+  - {fileID: 11400000, guid: b7fe6e186bed54d11b6e5996a85e6472, type: 2}
+  - {fileID: 11400000, guid: 0898bcf4005ed4198b658db180ed87f7, type: 2}
+  - {fileID: 11400000, guid: e2e5160e9a80a48b391c4f423209352d, type: 2}
+  - {fileID: 11400000, guid: cbd2863b665f34dfd8c658be4d97e484, type: 2}
+  - {fileID: 11400000, guid: fe226b0cad3ad4e45a3fb421d28af3e8, type: 2}
+  - {fileID: 11400000, guid: 2b21549133c5f4c959f576422560ac3d, type: 2}
+  - {fileID: 11400000, guid: ef1b13d8abfd941c794f8fe245841887, type: 2}
+  - {fileID: 11400000, guid: 6ca3b9a754cf34cdaa85338111f56881, type: 2}

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 189d8f885ac274472ba57518d0d64e52, type: 3}
+  m_Name: Hazards
+  m_EditorClassIdentifier: 
+  displayTitle: Hazards
+  gameTiles:
+  - {fileID: 11400000, guid: 42de83b85080d42ebb2d4d6fbd5a3d0b, type: 2}
+  - {fileID: 11400000, guid: 862218feb16544a3cbe3c81617aa7c6a, type: 2}
+  - {fileID: 11400000, guid: 5fb495ffb092c4908a80003c8861718d, type: 2}
+  - {fileID: 11400000, guid: ec02265f60ae94773a3231e98eafbe1d, type: 2}
+  - {fileID: 11400000, guid: 011151c05e64a4ddfa3d853db239d350, type: 2}
+  - {fileID: 11400000, guid: c02934c5f3dae4fecb6c0fd6ddc6cf37, type: 2}
+  - {fileID: 11400000, guid: 2bd9aabeec034435982b9bc2f813d926, type: 2}
+  - {fileID: 11400000, guid: 91dac80bf73ba4c068c9e8a7488bc67e, type: 2}
+  - {fileID: 11400000, guid: 37537fc4b6fda437c97a6f91ba6f23ac, type: 2}
+  - {fileID: 11400000, guid: 9b7e79989c9e640b1b964a9c49c500f3, type: 2}
+  - {fileID: 11400000, guid: b373001d24b1e4c08bbae072defdef9b, type: 2}
+  - {fileID: 11400000, guid: 8e5b31c1903124d8d803db725563ec9f, type: 2}
+  - {fileID: 11400000, guid: 649b60f4632594b52ba53aef52494706, type: 2}
+  - {fileID: 11400000, guid: 67335b86c6af4413b92e8f72c0f016ca, type: 2}

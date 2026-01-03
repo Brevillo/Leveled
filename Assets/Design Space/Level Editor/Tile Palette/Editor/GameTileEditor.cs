@@ -47,12 +47,15 @@ public class GameTileEditor : Editor
             enabledSelf = DuplicateID,
         };
 
-        idField.RegisterValueChangeCallback(changeEvent =>
+        idField.RegisterValueChangeCallback(_ =>
         {
             generateID.SetEnabled(DuplicateID);
         });
         
         root.Insert(root.IndexOf(idField) + 1, generateID);
+
+        root.Add(MyEditorUtilities.CreateDefaultManagerGUI<GameTile, GameTileCategory>(targets,
+            category => category.GameTiles));
 
         return root;
     }
