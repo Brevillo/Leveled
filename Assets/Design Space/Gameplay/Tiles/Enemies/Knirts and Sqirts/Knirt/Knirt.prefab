@@ -139,10 +139,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startDirection: -1
   moveSpeed: 2.5
-  moveAcceleration: 100
+  moveAcceleration: 50
   gravity: 15
   jumpHeight: 2.5
   jumpFrequency: Infinity
+  avoidLedges: 0
   rigidbody: {fileID: 3770291099405037255}
   size: {x: 0.85, y: 1.1}
   sideCheckSize: {x: 0.1, y: 0.75}

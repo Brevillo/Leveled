@@ -43,8 +43,7 @@ public class DamageSource : MonoBehaviour
             
         if (validDamageRanges.Any(range => !range.Within(angle))) return;
 
-        if (noDamageToFallingPlayer && other.bounds.min.y > transform.position.y &&
-            other.TryGetComponent(out Rigidbody2D rigidbody) && rigidbody.linearVelocityY < 0f) return;
+        if (noDamageToFallingPlayer && other.bounds.min.y > transform.position.y) return;
         
         var result = damageable.TakeDamage(new(damageTypes));
 
