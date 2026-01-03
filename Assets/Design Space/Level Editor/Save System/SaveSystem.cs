@@ -152,6 +152,8 @@ public abstract class SaveSystem<TData>
         }
     }
 
+    public string FilePath(string name) => $"{Directory.FullName}/{name}{extension}";
+    
     public event Action FolderUpdated;
 
     #region Internals
@@ -169,8 +171,6 @@ public abstract class SaveSystem<TData>
         string json = File.ReadAllText(FilePath(name));
         return JsonConvert.DeserializeObject<TData>(json);
     }
-    
-    private string FilePath(string name) => $"{Directory.FullName}/{name}{extension}";
     
     void IPlayerPrefResettable.ResetPlayerPrefs()
     {

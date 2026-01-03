@@ -35,7 +35,7 @@ public class GameCamera : MonoBehaviour
 
         var levelBounds = placer.Bounds;
         Vector2 cameraRect = mainCamera.rect.size * new Vector2((float)Screen.width / Screen.height, 1f);
-        Vector2 cameraExtents = mainCamera.orthographicSize * cameraRect;
+        Vector2 cameraExtents = cameraPositioning.virtualHeight / 2f * cameraRect;
         Vector2 min = (Vector2)levelBounds.min + cameraExtents;
         Vector2 max = (Vector2)levelBounds.max - cameraExtents;
 

@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class LinkingGroupSetter : MonoBehaviour
@@ -19,6 +18,7 @@ public class LinkingGroupSetter : MonoBehaviour
     [SerializeField] private List<string> preGenerateOptions;
     [SerializeField] private Vector2 windowOffset;
     [SerializeField] private Vector2 screenEdgeBuffer;
+    [SerializeField] private GameStateManager gameStateManager;
     
     private List<GameObject> spawnedOptions;
 
@@ -73,6 +73,7 @@ public class LinkingGroupSetter : MonoBehaviour
         if (linkingGroup == "") return;
         
         content.SetActive(false);
+        gameStateManager.EnterEditMode();
         
         linkingGroupAction?.Invoke(linkingGroup);
         linkingGroupAction = null;

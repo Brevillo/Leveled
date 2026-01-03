@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using System.IO;
 using OliverBeebe.UnityUtilities.Runtime.Settings;
 using SFB;
+using UnityEngine.UI;
 
 public enum AutosaveOptions
 {
@@ -23,6 +25,7 @@ public class SaveDataManager : MonoBehaviour
     [SerializeField] private IntSetting autosaveSetting;
     [Header("Save UI")] 
     [SerializeField] private ConfirmationMenu confirmationMenu;
+    [SerializeField] private GameObject dirtyFlag;
     [Header("Level Select UI")]
     [SerializeField] private Changelog changelog;
     [SerializeField] private TMP_InputField levelName;
@@ -40,12 +43,14 @@ public class SaveDataManager : MonoBehaviour
     private void OnEnable()
     {
         changelog.ChangeEvent += OnChangeEvent;
+        changelog.LogUpdated += OnChangelogUpdated;
         saveSystem.FolderUpdated += OnFolderUpdated;
     }
 
     private void OnDisable()
     {
         changelog.ChangeEvent -= OnChangeEvent;
+        changelog.LogUpdated -= OnChangelogUpdated;
         saveSystem.FolderUpdated -= OnFolderUpdated;
     }
 
@@ -55,6 +60,11 @@ public class SaveDataManager : MonoBehaviour
         {
             TrySaveLevel();
         }
+    }
+
+    private void OnChangelogUpdated(Changelog.LogUpdateType logUpdateType)
+    {
+        dirtyFlag.SetActive(changelog.ActiveLevelDirty);
     }
 
     private void OnFolderUpdated()
@@ -97,11 +107,17 @@ public class SaveDataManager : MonoBehaviour
             
             option.Select.onClick.AddListener(() => RequestSaveLevel(() => LoadLevel(levelName)));
             option.Delete.onClick.AddListener(() => DeleteLevel(levelName, option));
+            option.ViewFile.onClick.AddListener(() => ViewFile(levelName));
 
             option.Selected = saveSystem.ActiveSaveName == levelName;
             
             levelSelectOptionInstances.Add(option);
         }
+    }
+
+    private void ViewFile(string levelName)
+    {
+        Process.Start(saveSystem.FolderPath);
     }
 
     private void DeleteLevel(string levelName, LevelSelectOption option)

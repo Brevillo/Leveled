@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f430703523c441c5b7f207e2976202d, type: 3}
   m_Name: UI_Select
   m_EditorClassIdentifier: 
-  audioResource: {fileID: 6418180475301049370, guid: bc749cc3bd838486fb9e1414f9da8b09, type: 2}
+  audioResource: {fileID: 6418180475301049370, guid: ca0b565cc5e754b788674ca674b3d76a, type: 2}
   mixerGroup: {fileID: -8854645075906520292, guid: 7f5175040cb50457d896405c6946f117, type: 2}
   preventOverlap: 0
   maxPlayFrequency: 0

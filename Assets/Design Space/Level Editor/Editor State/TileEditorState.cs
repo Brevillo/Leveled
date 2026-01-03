@@ -267,7 +267,7 @@ public class TileEditorState : GameService
     
     public LevelData GetLevelData() => new()
     {
-        positions = tiles.Keys.ToArray(),
+        positions = tiles.Keys.Select(vector => (SimpleVector2Int)vector).ToArray(),
         gameTileIds = tiles.Values.Select(data => data.gameTile.ID).ToArray(),
         linkingGroups = tiles.Values.Select(data => data.linkingGroup).ToArray(),
     };
@@ -293,7 +293,7 @@ public class TileEditorState : GameService
         
         // Fill new level
         SetTiles(
-            levelData.positions,
+            levelData.positions.Select(simple => (Vector2Int)simple).ToArray(),
             Enumerable.Range(0, levelData.positions.Length)
                 .Select(i => new TileData(palette.GetTile(levelData.gameTileIds[i]), levelData.linkingGroups[i]))
                 .ToArray(),
