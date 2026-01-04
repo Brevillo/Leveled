@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class DonutPlatform : MonoBehaviour
 {
+    [SerializeField] private bool guaranteeFall;
     [SerializeField] private float fallDelay;
     [SerializeField] private float fallSpeed;
     [SerializeField] private float respawnDelay;
@@ -23,7 +24,6 @@ public class DonutPlatform : MonoBehaviour
     [Header("Audio")] 
     [SerializeField] private UnityEvent platformCrumble;
 
-    private bool onStep;
     private float startHeight;
 
     private StateMachine stateMachine;
@@ -48,16 +48,15 @@ public class DonutPlatform : MonoBehaviour
         stateMachine.Update(Time.deltaTime);
     }
 
-    private class Idle : IContextStateBehavior<DonutPlatform>
+    private class Idle : ContextStateBehavior<DonutPlatform>
     {
-        public float StateDuration { get; set; }
-        public DonutPlatform Context { get; set; }
-
         private float fallTimer;
+        private bool fallTriggered;
 
-        public void Enter()
+        public override void Enter()
         {
             fallTimer = 0f;
+            fallTriggered = false;
             
             Vector2 position = Context.rigidbody.position;
             position.y = Context.startHeight;
@@ -69,24 +68,26 @@ public class DonutPlatform : MonoBehaviour
             Context.collider.enabled = true;
         }
 
-        public void Update()
+        public override void Update()
         {
             if (Context.standingDetection.Colliders
-                .Any(collider => collider.TryGetComponent<HeavyObject>(out var heavy) && heavy.grounded))
+                .Any(collider => collider.TryGetComponent<HeavyObject>(out var heavy) && heavy.grounded)
+                || (fallTriggered && Context.guaranteeFall))
             {
-                fallTimer += Time.deltaTime;
-                Context.spriteRenderer.sprite = Context.triggeredSprite;
-                if (Context.onStep)
+                fallTriggered = true;
+                
+                if (fallTimer == 0f)
                 {
                     Context.platformCrumble.Invoke();
-                    Context.onStep = false;
                 }
+                
+                fallTimer += Time.deltaTime;
+                Context.spriteRenderer.sprite = Context.triggeredSprite;
             }
             else
             {
                 Context.spriteRenderer.sprite = Context.normalSprite;
                 fallTimer = 0f;
-                Context.onStep = true;
             }
 
             if (fallTimer >= Context.fallDelay)
@@ -94,44 +95,34 @@ public class DonutPlatform : MonoBehaviour
                 Context.stateMachine.ChangeState<Falling>();
             }
         }
-
-        public void Exit() { }
     }
 
-    private class Falling : IContextStateBehavior<DonutPlatform>
+    private class Falling : ContextStateBehavior<DonutPlatform>
     {
-        public DonutPlatform Context { get; set; }
-        public float StateDuration { get; set; }
-
-        public void Enter()
+        public override void Enter()
         {
             Context.platformEffector.enabled = true;
         }
         
-        public void Update()
+        public override void Update()
         {
             Context.rigidbody.linearVelocityY = -Context.fallSpeed;
         }
 
-        public void Exit()
+        public override void Exit()
         {
             Context.platformEffector.enabled = false;
         }
     }
 
-    private class Respawning : IContextStateBehavior<DonutPlatform>
+    private class Respawning : ContextStateBehavior<DonutPlatform>
     {
-        public float StateDuration { get; set; }
-        public DonutPlatform Context { get; set; }
-
-        public void Enter()
+        public override void Enter()
         {
             Context.content.SetActive(false);
         }
-
-        public void Update() { }
-
-        public void Exit()
+        
+        public override void Exit()
         {
             Context.content.SetActive(true);
         }

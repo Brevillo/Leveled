@@ -17,6 +17,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -7567844679814543264, guid: ec3c3419970dd431487ef6f4f1872af8, type: 3}
     - target: {fileID: 2715036184918048647, guid: 7f8015105892941b3b23fe5edbc0d445, type: 3}
+      propertyPath: guaranteeFall
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715036184918048647, guid: 7f8015105892941b3b23fe5edbc0d445, type: 3}
       propertyPath: triggeredSprite
       value: 
       objectReference: {fileID: 2437953485991325250, guid: ec3c3419970dd431487ef6f4f1872af8, type: 3}

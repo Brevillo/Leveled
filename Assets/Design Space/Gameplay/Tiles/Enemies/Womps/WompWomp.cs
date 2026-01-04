@@ -14,6 +14,7 @@ public class WompWomp : MonoBehaviour
     [SerializeField] private float dropDelay;
     [SerializeField] private float dropAcceleration;
     [SerializeField] private float maxDropSpeed;
+    [SerializeField] private GameObject fallingDamage;
     [SerializeField] private UnityEvent onDrop;
     [Header("Rising")]
     [SerializeField] private float riseDelay;
@@ -34,6 +35,8 @@ public class WompWomp : MonoBehaviour
     private void Start()
     {
         startHeight = transform.position.y;
+        
+        fallingDamage.SetActive(false);
     }
 
     private void InitStateMachine()
@@ -71,6 +74,13 @@ public class WompWomp : MonoBehaviour
 
     private class Dropping : ContextStateBehavior<WompWomp>
     {
+        public override void Enter()
+        {
+            Context.fallingDamage.SetActive(true);
+            
+            Context.onDrop.Invoke();
+        }
+
         public override void Update()
         {
             if (StateDuration < Context.dropDelay)
@@ -84,9 +94,9 @@ public class WompWomp : MonoBehaviour
                 Context.dropAcceleration * Time.deltaTime);
         }
 
-        public override void Enter()
+        public override void Exit()
         {
-            Context.onDrop.Invoke();
+            Context.fallingDamage.SetActive(false);
         }
     }
 

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
-  m_Name: Clockwise Conveyor GameTile
+  m_Name: Counter Clockwise Conveyor
   m_EditorClassIdentifier: 
-  id: 23
-  paletteIcon: {fileID: 4298106566957945607, guid: 67bd82272926240429f0a11af20eff7c, type: 3}
-  tileBase: {fileID: 11400000, guid: 738a7aa5efd2e4fa0a47a90d3e884b7f, type: 2}
+  id: 33
+  paletteIcon: {fileID: 8996154359256311800, guid: 8417706801fa3674c9c4f39fa6ee15d8, type: 3}
+  tileBase: {fileID: 11400000, guid: 2a0366935ba794dd5941c8776eec198a, type: 2}
   entity: {fileID: 0}
   globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
-  - {fileID: 7211183380168987404, guid: 3ed793944a1a94e26973a3ea1edd74d4, type: 3}
-  tooltip: Right Conveyor
+  - {fileID: 6115209390515039589, guid: 000bc6092e354452a9e41ea2f1f407d9, type: 3}
+  tooltip: Left Conveyor
   linkable: 0

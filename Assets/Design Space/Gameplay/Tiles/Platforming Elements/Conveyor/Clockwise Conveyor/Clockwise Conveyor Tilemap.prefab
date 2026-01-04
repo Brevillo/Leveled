@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b384e786890ae4b98984b4446f5810c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 5, y: 0}
+  speed: {x: 2, y: 0}
 --- !u!1839735485 &7211183380168987404
 Tilemap:
   m_ObjectHideFlags: 0

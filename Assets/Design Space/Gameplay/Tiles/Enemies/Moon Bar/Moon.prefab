@@ -84,6 +84,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  noDamageToFallingPlayer: 0
+  validDamageRanges: []
   damageDealt:
     m_PersistentCalls:
       m_Calls: []
@@ -131,7 +133,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8253686014402545288, guid: 81b0c6e8deb364326bb22e8194a539ee, type: 3}
+  m_Sprite: {fileID: 4582712641527702365, guid: 81b0c6e8deb364326bb22e8194a539ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

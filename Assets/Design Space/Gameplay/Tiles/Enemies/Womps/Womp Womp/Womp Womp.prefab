@@ -335,6 +335,7 @@ MonoBehaviour:
   dropDelay: 0.1
   dropAcceleration: 100
   maxDropSpeed: 20
+  fallingDamage: {fileID: 7662695568658211815}
   onDrop:
     m_PersistentCalls:
       m_Calls:

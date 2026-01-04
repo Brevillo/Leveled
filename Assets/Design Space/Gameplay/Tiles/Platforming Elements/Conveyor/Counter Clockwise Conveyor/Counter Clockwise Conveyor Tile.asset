@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df6a0f3481dbe4574a1550267a952114, type: 3}
+  m_Name: Counter Clockwise Conveyor Tile
+  m_EditorClassIdentifier: 
+  m_DefaultSprite: {fileID: -1024411940979674798, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+  m_DefaultGameObject: {fileID: 0}
+  m_DefaultColliderType: 1
+  m_TilingRules:
+  - m_Id: 0
+    m_Sprites:
+    - {fileID: -7060699540089963831, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 541896768637891226, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 4419721435332809245, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 83180713644286014, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    m_GameObject: {fileID: 0}
+    m_MinAnimationSpeed: 10
+    m_MaxAnimationSpeed: 10
+    m_PerlinScale: 0.5
+    m_Output: 2
+    m_ColliderType: 1
+    m_RandomTransform: 0
+    m_Neighbors: 0000000000000000000000000100000001000000000000000000000000000000
+    m_NeighborPositions:
+    - {x: -1, y: 1, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 1, y: 1, z: 0}
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 1, y: -1, z: 0}
+    m_RuleTransform: 0
+  - m_Id: 0
+    m_Sprites:
+    - {fileID: -2718456061971558422, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 7173110497411303283, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: -6853067084737899248, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: -4307821784405617536, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    m_GameObject: {fileID: 0}
+    m_MinAnimationSpeed: 10
+    m_MaxAnimationSpeed: 10
+    m_PerlinScale: 0.5
+    m_Output: 2
+    m_ColliderType: 1
+    m_RandomTransform: 0
+    m_Neighbors: 0000000000000000000000000000000001000000000000000000000000000000
+    m_NeighborPositions:
+    - {x: -1, y: 1, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 1, y: 1, z: 0}
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 1, y: -1, z: 0}
+    m_RuleTransform: 0
+  - m_Id: 0
+    m_Sprites:
+    - {fileID: -5820524151942464526, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: -2863450299269810041, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: -8558458577888331284, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 420482344590313108, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    m_GameObject: {fileID: 0}
+    m_MinAnimationSpeed: 10
+    m_MaxAnimationSpeed: 10
+    m_PerlinScale: 0.5
+    m_Output: 2
+    m_ColliderType: 1
+    m_RandomTransform: 0
+    m_Neighbors: 0000000000000000000000000100000000000000000000000000000000000000
+    m_NeighborPositions:
+    - {x: -1, y: 1, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 1, y: 1, z: 0}
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 1, y: -1, z: 0}
+    m_RuleTransform: 0
+  - m_Id: 0
+    m_Sprites:
+    - {fileID: -1024411940979674798, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 341685960954575965, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: 5590504473754518602, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    - {fileID: -6802718763132574831, guid: 9d005457a80504abda83e869b8bc5f9e, type: 3}
+    m_GameObject: {fileID: 0}
+    m_MinAnimationSpeed: 10
+    m_MaxAnimationSpeed: 10
+    m_PerlinScale: 0.5
+    m_Output: 2
+    m_ColliderType: 1
+    m_RandomTransform: 0
+    m_Neighbors: 0000000000000000000000000000000000000000000000000000000000000000
+    m_NeighborPositions:
+    - {x: -1, y: 1, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 1, y: 1, z: 0}
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 1, y: -1, z: 0}
+    m_RuleTransform: 0
+  neighbors: []

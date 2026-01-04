@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3196276266937543527}
   - component: {fileID: 6391023643166197936}
   m_Layer: 0
-  m_Name: Moon Bar
+  m_Name: Small Moon Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,17 +46,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e6996a1fa49a41d58f1747671d7ab08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moonCount: 5
+  length: 4.5
   rotationDirection: 1
-  rotationSpeed: 30
-  moonSpacing: 1
-  firstMoonOffset: 1.25
+  rotationSpeed: 80
+  moonSpacing: 0.75
+  firstMoonOffset: 1
   moonWiggleSpeed: 2
   moonWiggleAmplitude: 0.25
   moonPrefab: {fileID: 7362356907655350272, guid: 2776451605afb42d98d83581ccf51fba, type: 3}
   moonParent: {fileID: 5810621575219150413}
-  planetWiggleSpeed: 6
-  planetWiggleAmplitude: 0.1
+  planetWiggleSpeed: 1
+  planetWiggleAmplitude: 0.25
   planetPivot: {fileID: 3610674644367855061}
 --- !u!1 &5019229359493138971
 GameObject:
@@ -134,7 +134,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4582712641527702365, guid: 81b0c6e8deb364326bb22e8194a539ee, type: 3}
+  m_Sprite: {fileID: 4582712641527702365, guid: 531fa034e5c98459daf7cb44ea18a5fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
