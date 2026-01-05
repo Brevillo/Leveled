@@ -3,44 +3,25 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class LevelState
-{
-    private Dictionary<Vector2Int, TileData> tiles = new();
-    
-    public Vector2Int[] Positions => tiles.Keys.ToArray();
-    public TileData[] TileData => tiles.Values.ToArray();
-    
-    public Dictionary<Vector2Int, TileData> EntityTiles => new(tiles.Where(kv => !kv.Value.IsEmpty && kv.Value.gameTile.Entity != null));
-    
-    public TileData[] NullTiles => new TileData[tiles.Count];
-
-    public void SetTile(Vector2Int position, TileData tileData)
-    {
-        if (tileData.IsEmpty)
-        {
-            tiles.Remove(position);
-        }
-        else
-        {
-            tiles[position] = tileData;
-        }
-    }
-
-    public TileData GetTile(Vector2Int position) => tiles.GetValueOrDefault(position);
-
-    public void ClearTiles()
-    {
-        tiles.Clear();
-    }
-}
-
 [CreateAssetMenu(menuName = ProjectConstants.ServicesFolder + "Tile Editor State")]
 public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;
 
-    private readonly LevelState level = new LevelState();
+    private readonly Dictionary<Vector2Int, TileData> tiles = new();
 
+    public Dictionary<Vector2Int, TileData> EntityTiles =>
+        new(tiles.Where(kv => !kv.Value.IsEmpty && kv.Value.gameTile.Entity != null));
+    public IEnumerable<TileData> TileData => tiles.Values;
+
+    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description) =>
+        changelog.SendChange(new TileChangeInfo(positions, positions.Select(GetTile).ToArray(), tiles, description));
+
+    public TileData GetTile(Vector2Int position) => 
+        tiles.GetValueOrDefault(position);
+
+    #region Changelog
+    
     protected override void Initialize()
     {
         changelog.StateUpdated += OnStateUpdated;
@@ -61,34 +42,37 @@ public class TileEditorState : GameService
                 {
                     var tile = tileChangeInfo.newTiles[i];
 
-                    Level.SetTile(tileChangeInfo.positions[i], tile);
+                    Vector2Int position = tileChangeInfo.positions[i];
+                    if (tile.IsEmpty)
+                    {
+                        tiles.Remove(position);
+                    }
+                    else
+                    {
+                        tiles[position] = tile;
+                    }
                 }
 
                 break;
         }
     }
-
-    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description) =>
-        changelog.SendChange(new TileChangeInfo(positions, positions.Select(Level.GetTile).ToArray(), tiles, description));
-
-    public LevelState Level => level;
     
-    public LevelData GetLevelData() => new()
-    {
-        positions = Level.Positions.Select(vector => (SimpleVector2Int)vector).ToArray(),
-        gameTileIds = Level.TileData.Select(data => data.gameTile.ID).ToArray(),
-        linkingGroups = Level.TileData.Select(data => data.linkingGroup).ToArray(),
-    };
+    #endregion
+    
+    #region Saving
+    
+    public void ClearAllTiles() => changelog.SendChange(new TileChangeInfo(
+        tiles.Keys.ToArray(),
+        tiles.Values.ToArray(),
+        new TileData[tiles.Count],
+        "Clear all tiles"));
 
-    public void ClearAllTiles()
+    public LevelData LevelData => new()
     {
-        // Clear Tiles
-        SetTiles(Level.Positions, Level.NullTiles, "Cleared all tiles");
-        
-        // Reset editor state
-        changelog.ClearChangelog();
-        Level.ClearTiles();
-    }
+        positions = tiles.Keys.Select(vector => (SimpleVector2Int)vector).ToArray(),
+        gameTileIds = tiles.Values.Select(data => data.gameTile.ID).ToArray(),
+        linkingGroups = tiles.Values.Select(data => data.linkingGroup).ToArray(),
+    };
     
     public void SetLevelData(LevelData levelData, GameTilePalette palette)
     {
@@ -106,4 +90,6 @@ public class TileEditorState : GameService
         // Clear changelog
         changelog.ClearChangelog();
     }
+    
+    #endregion
 }

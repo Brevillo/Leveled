@@ -19,7 +19,7 @@ public class LinkerToolAction : ToolbarAction
                 
                 foreach (Vector2Int position in selection.allPositionsWithin)
                 {
-                    var tile = EditorState.Level.GetTile(position);
+                    var tile = EditorState.GetTile(position);
 
                     if (tile.Linkable)
                     {

@@ -177,7 +177,7 @@ public class SaveDataManager : MonoBehaviour
     
     private void SaveLevel()
     {
-        saveSystem.SaveActiveSave(editorState.GetLevelData());
+        saveSystem.SaveActiveSave(editorState.LevelData);
         changelog.NotifySaved();
         RefreshLevels();
     }
@@ -238,6 +238,7 @@ public class SaveDataManager : MonoBehaviour
             if (path == "") return;
             
             editorState.ClearAllTiles();
+            changelog.ClearChangelog();
             
             levelName.SetTextWithoutNotify(Path.GetFileNameWithoutExtension(path));
             

@@ -93,7 +93,7 @@ public class EntitySpawner : MonoBehaviour
         {
             case EditorState.Playing:
 
-                managedEntities = tileEditorState.Level.EntityTiles
+                managedEntities = tileEditorState.EntityTiles
                     .Select(kv => new Entity(spaceUtility.CellToWorld(kv.Key), kv.Value, this))
                     .ToList();
                 

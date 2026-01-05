@@ -120,7 +120,7 @@ public class SelectionToolAction : ToolbarAction
                 var nullTiles = new TileData[originPositions.Count];
 
                 var originTiles = originPositions
-                    .Select(EditorState.Level.GetTile)
+                    .Select(EditorState.GetTile)
                     .ToArray();
 
                 Vector2Int delta = SpaceUtility.MouseCell - dragStart;
@@ -178,7 +178,7 @@ public class SelectionToolAction : ToolbarAction
         foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
         {
             clipboardPositions.Add(position);
-            clipboardTiles.Add(EditorState.Level.GetTile(position));
+            clipboardTiles.Add(EditorState.GetTile(position));
         }
     }
 
