@@ -201,6 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  - {fileID: 11400000, guid: 447ed8d08b72b403a963930a8f240e69, type: 2}
   noDamageToFallingPlayer: 1
   validDamageRanges: []
   damageDealt:
