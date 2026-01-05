@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Small Moon Bar GameTile
   m_EditorClassIdentifier: 
   id: 25
-  paletteIcon: {fileID: 4582712641527702365, guid: e2cb433c6d5eca849af14442bb96414d, type: 3}
+  paletteIcon: {fileID: 4582712641527702365, guid: 14d384e915e390a449df4aaea3e8d648, type: 3}
   tileBase: {fileID: 11400000, guid: 60f735df9408d45ac8e490a39748401c, type: 2}
   entity: {fileID: 199891500583357772, guid: 0a88246149c8942a2b9bedf08c171681, type: 3}
   globalEntity: 0
