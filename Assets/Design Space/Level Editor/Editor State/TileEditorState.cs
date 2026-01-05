@@ -7,11 +7,12 @@ using System.Linq;
 public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;
-
+    
     private readonly Dictionary<Vector2Int, TileData> tiles = new();
 
     public Dictionary<Vector2Int, TileData> EntityTiles =>
         new(tiles.Where(kv => !kv.Value.IsEmpty && kv.Value.gameTile.Entity != null));
+    
     public IEnumerable<TileData> TileData => tiles.Values;
 
     public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description) =>
