@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knirt GameTile
   m_EditorClassIdentifier: 
   id: 20
-  paletteIcon: {fileID: 1612576785287064648, guid: 63703d85b55c2d1428c39c9d25bff3f7, type: 3}
+  paletteIcon: {fileID: 1612576785287064648, guid: abf213d7545374b91b661b5dfc91e337, type: 3}
   tileBase: {fileID: 11400000, guid: ccd503bdadf994ac38ca64edd3df88e1, type: 2}
   entity: {fileID: 4547697354170655046, guid: c3ad4e44f8dfe4ddb8ea5578a61170e8, type: 3}
   globalEntity: 0
