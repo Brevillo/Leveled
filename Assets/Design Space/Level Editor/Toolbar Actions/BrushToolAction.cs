@@ -10,13 +10,6 @@ public class BrushToolAction : ToolbarAction
     private List<Vector2Int> brushedTiles = new();
 
     private Vector2Int previousMouseCell;
-
-    protected virtual GameTile DrawingTile => activeToolSide switch
-    {
-        ToolSide.Primary => EditorState.PrimaryTile,
-        ToolSide.Secondary => EditorState.SecondaryTile,
-        _ => null,
-    };
     
     protected override void OnDown()
     {

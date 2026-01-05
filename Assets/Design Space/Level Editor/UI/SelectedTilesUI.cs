@@ -4,38 +4,31 @@ using UnityEngine.UI;
 
 public class SelectedTilesUI : MonoBehaviour
 {
-    [SerializeField] private TileEditorState editorState;
     [SerializeField] private Image primaryTileIcon;
     [SerializeField] private Image secondaryTileIcon;
     [SerializeField] private Sprite noTileSprite;
+    [SerializeField] private Changelog changelog;
+    [SerializeField] private ChangeloggedGameTile primaryTile;
+    [SerializeField] private ChangeloggedGameTile secondaryTile;
 
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.ChangeEvent += OnChangeEvent;
     }
 
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
+        changelog.ChangeEvent -= OnChangeEvent;
     }
 
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnChangeEvent(ChangeInfo changeInfo)
     {
-        switch (changeInfo)
-        {
-            case PaletteChangeInfo paletteChangeInfo:
-
-                var icon = paletteChangeInfo.type switch
-                {
-                    PaletteChangeInfo.Type.Secondary => secondaryTileIcon,
-                    PaletteChangeInfo.Type.Primary or _ => primaryTileIcon,
-                };
-
-                icon.sprite = paletteChangeInfo.newValue == null 
-                    ? noTileSprite
-                    : paletteChangeInfo.newValue.PaletteIcon;
-                
-                break;
-        }
+        secondaryTileIcon.sprite = secondaryTile.Value != null 
+            ? secondaryTile.Value.PaletteIcon
+            : noTileSprite;
+        
+        primaryTileIcon.sprite = primaryTile.Value != null 
+            ? primaryTile.Value.PaletteIcon
+            : noTileSprite;
     }
 }

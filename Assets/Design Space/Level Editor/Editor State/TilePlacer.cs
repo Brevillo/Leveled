@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class TilePlacer : MonoBehaviour
 {
-    [SerializeField] private TileEditorState editorState;
+    [SerializeField] private Changelog changelog;
     [SerializeField] private Transform tilemapsParent;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private float wallThickness;
@@ -33,12 +33,12 @@ public class TilePlacer : MonoBehaviour
 
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.ChangeEvent += OnEditorChanged;
     }
 
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
+        changelog.ChangeEvent -= OnEditorChanged;
     }
 
     public void PlaceTiles(Vector2Int[] positions, TileData[] tiles)

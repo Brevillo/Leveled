@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96501e616ab5744f091731a863c9c7d3, type: 3}
+  m_Name: Sign GameTile
+  m_EditorClassIdentifier: 
+  id: 34
+  paletteIcon: {fileID: -8517934916895104127, guid: 84624f5665c8e4b61b739657ee6b8240, type: 3}
+  tileBase: {fileID: 11400000, guid: 0614dfd2d95da467c8384188153f112a, type: 2}
+  entity: {fileID: 1189398877888767743, guid: e954563a00d4c49a882459ad8be1d315, type: 3}
+  globalEntity: 0
+  tilemapPrefabs:
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
+  tooltip: Sign (Comment)
+  linkable: 0

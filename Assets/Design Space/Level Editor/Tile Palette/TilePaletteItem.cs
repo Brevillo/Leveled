@@ -10,11 +10,13 @@ public class TilePaletteItem : MonoBehaviour, IPointerClickHandler, IPointerEnte
     [SerializeField] private Color primaryColor;
     [SerializeField] private Color secondaryColor;
     [SerializeField] private Color regularColor;
-    [SerializeField] private TileEditorState editorState;
     [SerializeField] private Image iconImage;
     [SerializeField] private UITooltip tooltip;
     [SerializeField] private UnityEvent selected;
     [SerializeField] private UnityEvent hovered;
+    [SerializeField] private ChangeloggedGameTile primaryTile;
+    [SerializeField] private ChangeloggedGameTile secondaryTile;
+    [SerializeField] private Changelog changelog;
 
     private GameTile gameTile;
     
@@ -27,27 +29,20 @@ public class TilePaletteItem : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.ChangeEvent += OnChangeEvent;
     }
 
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
+        changelog.ChangeEvent -= OnChangeEvent;
     }
 
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnChangeEvent(ChangeInfo changeInfo)
     {
-        switch (changeInfo)
-        {
-            case PaletteChangeInfo:
-                
-                background.color
-                    = editorState.PrimaryTile == gameTile ? primaryColor 
-                    : editorState.SecondaryTile == gameTile ? secondaryColor
-                    : regularColor;
-
-                break;
-        }
+        background.color
+            = primaryTile.Value == gameTile ? primaryColor 
+            : secondaryTile.Value == gameTile ? secondaryColor
+            : regularColor;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -58,13 +53,13 @@ public class TilePaletteItem : MonoBehaviour, IPointerClickHandler, IPointerEnte
         {
             case PointerEventData.InputButton.Left:
 
-                editorState.PrimaryTile = gameTile;
+                primaryTile.Value = gameTile;
                 
                 break;
             
             case PointerEventData.InputButton.Right:
 
-                editorState.SecondaryTile = gameTile;
+                secondaryTile.Value = gameTile;
                 
                 break;
         }

@@ -81,15 +81,19 @@ public class EntitySpawner : MonoBehaviour
         
         gameStateManager.EditorStateChanged += OnEditorStateChanged;
     }
-    
+
+    private void OnDestroy()
+    {
+        gameStateManager.EditorStateChanged -= OnEditorStateChanged;
+    }
+
     private void OnEditorStateChanged(EditorState editorState)
     {
         switch (editorState)
         {
             case EditorState.Playing:
 
-                managedEntities = tileEditorState.AllTiles
-                    .Where(kv => kv.Value.gameTile != null && kv.Value.gameTile.Entity != null)
+                managedEntities = tileEditorState.Level.EntityTiles
                     .Select(kv => new Entity(spaceUtility.CellToWorld(kv.Key), kv.Value, this))
                     .ToList();
                 

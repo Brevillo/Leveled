@@ -32,6 +32,13 @@ public abstract class ToolbarAction : ScriptableObject
         }
     }
     
+    protected virtual GameTile DrawingTile => activeToolSide switch
+    {
+        ToolSide.Primary => blackboard.primaryTile.Value,
+        ToolSide.Secondary => blackboard.secondaryTile.Value,
+        _ => null,
+    };
+    
     public void InjectReferences(ToolbarBlackboard blackboard)
     {
         this.blackboard = blackboard;

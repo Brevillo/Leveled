@@ -15,14 +15,7 @@ public class RectBrushToolAction : ToolbarAction
     protected override void OnReleased()
     {
         placedSound.Play();
-        
-        GameTile tile = activeToolSide switch
-        {
-            ToolSide.Primary => EditorState.PrimaryTile,
-            ToolSide.Secondary => EditorState.SecondaryTile,
-            _ => null,
-        };
-        
+
         Vector2Int dragEnd = SpaceUtility.MouseCell;
         Vector2Int min = Vector2Int.Min(dragStart, dragEnd);
         Vector2Int max = Vector2Int.Max(dragStart, dragEnd);
@@ -33,16 +26,16 @@ public class RectBrushToolAction : ToolbarAction
             .ToArray();
 
         var tiles = new TileData[positions.Length];
-        Array.Fill(tiles, new(tile));
+        Array.Fill(tiles, new(DrawingTile));
     
-        if (tile != null && tile.Linkable)
+        if (DrawingTile != null && DrawingTile.Linkable)
         {
             TilePlacer.PlaceTiles(positions, tiles);
             
             LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup =>
             {
                 var linkedTiles = new TileData[positions.Length];
-                Array.Fill(linkedTiles, new(tile, linkingGroup));
+                Array.Fill(linkedTiles, new(DrawingTile, linkingGroup));
                 
                 EditorState.SetTiles(positions, linkedTiles, changelogMessage);
             });

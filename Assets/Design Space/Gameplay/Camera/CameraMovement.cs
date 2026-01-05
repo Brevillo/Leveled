@@ -36,7 +36,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        bool pointerOverUI = editorState.PointerOverUI;
+        bool pointerOverUI = UIUtility.PointerOverUI;
         
         if (!pointerOverUI)
         {

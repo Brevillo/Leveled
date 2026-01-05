@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToolbarActionSceneBindings : MonoBehaviour
 {
-    [SerializeField] private TileEditorState editorState;
+    [SerializeField] private ChangeloggedToolbarAction activeTool;
     [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private List<Binding> bindings;
 
@@ -12,7 +12,7 @@ public class ToolbarActionSceneBindings : MonoBehaviour
     {
         foreach (var binding in bindings)
         {
-            binding.Bind(gameStateManager, editorState);
+            binding.Bind(gameStateManager, activeTool);
         }
     }
 
@@ -39,11 +39,11 @@ public class ToolbarActionSceneBindings : MonoBehaviour
         [SerializeField] private EditorAction editorAction;
         [SerializeField] private ToolbarAction toolbarAction;
         
-        private TileEditorState editorState;
+        private ChangeloggedToolbarAction activeTool;
 
-        public void Bind(GameStateManager gameStateManager, TileEditorState editorState)
+        public void Bind(GameStateManager gameStateManager, ChangeloggedToolbarAction activeTool)
         {
-            this.editorState = editorState;
+            this.activeTool = activeTool;
             
             editorAction.Enable(gameStateManager);
             editorAction.Action += OnAction;
@@ -57,7 +57,7 @@ public class ToolbarActionSceneBindings : MonoBehaviour
         
         private void OnAction()
         {
-            editorState.ActiveTool = toolbarAction;
+            activeTool.Value = toolbarAction;
         }
 
         public void OnValidate()

@@ -11,7 +11,9 @@ public class LinkingGroupLabelsManager : MonoBehaviour
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Transform labelsParent;
-
+    [SerializeField] private ChangeloggedBool showLinkingGroups;
+    [SerializeField] private Changelog changelog;
+    
     private readonly HashSet<Vector2Int> linkableTiles = new();
     private readonly Dictionary<Vector2Int, Label> labels = new();
 
@@ -23,7 +25,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
 
         public Label(LinkingGroupLabelsManager context)
         {
-            this.poolable = context.popupPool.Retrieve();
+            poolable = context.popupPool.Retrieve();
             textMesh = poolable.GetComponentInChildren<TextMeshProUGUI>();
             transform = (RectTransform)poolable.transform;
             transform.SetParent(context.labelsParent);
@@ -39,15 +41,15 @@ public class LinkingGroupLabelsManager : MonoBehaviour
 
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.ChangeEvent += OnChangeEvent;
     }
 
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
+        changelog.ChangeEvent -= OnChangeEvent;
     }
 
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnChangeEvent(ChangeInfo changeInfo)
     {
         switch (changeInfo)
         {
@@ -100,19 +102,17 @@ public class LinkingGroupLabelsManager : MonoBehaviour
                 labels.Remove(position);
             }
         }
-
-        bool showLinkingGroups = editorState.ShowLinkingGroups;
         
         foreach (var label in labels)
         {
-            var tileData = editorState.GetTile(label.Key);
+            var tileData = editorState.Level.GetTile(label.Key);
             
             label.Value.textMesh.text = tileData.linkingGroup;
 
             Vector3 windowPoint = spaceUtility.WorldToWindow(spaceUtility.CellToWorld(label.Key) + Vector3.down * 0.5f);
             label.Value.transform.position = spaceUtility.GetCanvas(label.Value.transform).pixelRect.size * windowPoint;
             
-            label.Value.transform.gameObject.SetActive(showLinkingGroups);
+            label.Value.transform.gameObject.SetActive(showLinkingGroups.Value);
         }
     }
 }

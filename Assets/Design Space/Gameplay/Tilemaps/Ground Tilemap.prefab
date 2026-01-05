@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4423932827853221901}
   - component: {fileID: 7821406865352529986}
   m_Layer: 6
-  m_Name: Default Tilemap
+  m_Name: Ground Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

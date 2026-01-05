@@ -110,6 +110,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  showLinkingGroups: {fileID: 11400000, guid: 76232390be6f243fb9483dbee3d1baf0, type: 2}
+  changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
+  spaceUtility: {fileID: 11400000, guid: 0a480216e2341450da0c4b745d3cfb44, type: 2}
 --- !u!1 &8141041783738026575
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +187,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -296283313
-  m_SortingLayer: -14
+  m_SortingLayer: -18
   m_SortingOrder: 0
   m_Sprite: {fileID: 849109395259260800, guid: 28c1c57e5f68844f5bdde8002129e813, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -9,8 +9,13 @@ public class ToolbarBlackboard : ScriptableObject
     public SpaceUtility spaceUtility;
     public TilePlacer tilePlacer;
     public LinkingGroupSetter linkingGroupSetter;
+    public Changelog changelog;
+
+    public ChangeloggedToolbarAction activeTool;
+    public ChangeloggedGameTile primaryTile;
+    public ChangeloggedGameTile secondaryTile;
     
-    public BoundsInt selection;
+    public ChangeloggedBoundsInt selection;
     
     public BoundsInt hoverSelection;
     public bool hoverSelectionActive;
@@ -18,22 +23,15 @@ public class ToolbarBlackboard : ScriptableObject
 
     public void ResetValues()
     {
-        selection = default;
-
         hoverSelection = default;
         hoverSelectionActive = false;
         snapHoverSelection = false;
-    }
-
-    public void SetSelection(BoundsInt value, string description)
-    {
-        editorState.SendEditorChange(new AreaSelectionChangeInfo(selection, value, description));
     }
 
     public void Deselect()
     {
         if (selection == default) return;
         
-        SetSelection(default, deselectionChangelogMessage);
+        selection.Value = default;
     }
 }

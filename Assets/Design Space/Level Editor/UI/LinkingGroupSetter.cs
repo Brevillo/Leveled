@@ -51,7 +51,9 @@ public class LinkingGroupSetter : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(inputField.gameObject);
         
-        foreach (var linkingGroup in editorState.LinkingGroups
+        foreach (var linkingGroup in editorState.Level.TileData
+                     .GroupBy(tile => tile.linkingGroup)
+                     .Select(group => group.Key)
                      .Where(group => !preGenerateOptions.Contains(group)))
         {
             spawnedOptions.Add(SpawnOption(linkingGroup));

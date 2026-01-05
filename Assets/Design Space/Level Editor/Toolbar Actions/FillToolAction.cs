@@ -12,26 +12,19 @@ public class FillToolAction : ToolbarAction
 
     protected override void OnDown()
     {
-        var tile = activeToolSide switch
-        {
-            ToolSide.Primary => EditorState.PrimaryTile,
-            ToolSide.Secondary => EditorState.SecondaryTile,
-            _ => null,
-        };
-
         var fillPositions = GetFloodFillPositions(SpaceUtility.MouseCell);
         
         var tiles = new TileData[fillPositions.Length];
-        Array.Fill(tiles, new(tile));
+        Array.Fill(tiles, new(DrawingTile));
         
         TilePlacer.PlaceTiles(fillPositions, tiles);
 
-        if (tile != null && tile.Linkable)
+        if (DrawingTile != null && DrawingTile.Linkable)
         {
             LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup =>
             {
                 var linkedTiles = new TileData[fillPositions.Length];
-                Array.Fill(linkedTiles, new(tile, linkingGroup));
+                Array.Fill(linkedTiles, new(DrawingTile, linkingGroup));
                 
                 EditorState.SetTiles(fillPositions, linkedTiles, changelogMessage);
             });
@@ -48,7 +41,7 @@ public class FillToolAction : ToolbarAction
     {
         var bounds = TilePlacer.BoundsInt;
         
-        GameTile fillingTile = EditorState.GetTile(start).gameTile;
+        GameTile fillingTile = EditorState.Level.GetTile(start).gameTile;
         Queue<Vector2Int> checks = new();
         HashSet<Vector2Int> positions = new();
 
@@ -65,7 +58,7 @@ public class FillToolAction : ToolbarAction
 
             if (!bounds.Contains((Vector3Int)position) ||
                 positions.Contains(position) || 
-                EditorState.GetTile(position).gameTile != fillingTile)
+                EditorState.Level.GetTile(position).gameTile != fillingTile)
             {
                 continue;
             }

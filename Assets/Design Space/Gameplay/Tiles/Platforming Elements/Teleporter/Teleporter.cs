@@ -9,50 +9,38 @@ public class Teleporter : MonoBehaviour
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private SpriteRenderer arrow;
     [SerializeField] private UnityEvent onTeleport;
+    [SerializeField] private ChangeloggedBool showLinkingGroups;
+    [SerializeField] private Changelog changelog;
+    [SerializeField] private SpaceUtility spaceUtility;
 
     private Teleporter connection;
     private string linkingGroup;
+
     private List<Teleportable> ignore = new();
-    private ChangeInfo lastChangeInfo;
     
     private static readonly List<Teleporter> teleporters = new();
     
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.ChangeEvent += OnChangeEvent;
         
         teleporters.Add(this);
-        RecalculateAllConnections(editorState);
+        RecalculateAllConnections();
     }
     
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
-        
+        changelog.ChangeEvent -= OnChangeEvent;
+
         teleporters.Remove(this);
-        RecalculateAllConnections(editorState);
+        RecalculateAllConnections();
     }
 
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnChangeEvent(ChangeInfo changeInfo)
     {
-        switch (changeInfo)
-        {
-            case ShowLinkingGroupsChangeInfo showLinkingGroupsChangeInfo:
-                
-                arrow.gameObject.SetActive(showLinkingGroupsChangeInfo.newValue);
-                RecalculateAllConnections(editorState);
-                
-                break;
-            
-            case TileChangeInfo:
-
-                if (changeInfo != lastChangeInfo)
-                {
-                    lastChangeInfo = changeInfo;
-                    RecalculateAllConnections(editorState);
-                }
-                break;
-        }
+        arrow.gameObject.SetActive(showLinkingGroups.Value);
+        
+        RecalculateAllConnections();
     }
     
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,11 +55,12 @@ public class Teleporter : MonoBehaviour
         }
     }
 
-    private static void RecalculateAllConnections(TileEditorState editorState)
+    private void RecalculateAllConnections()
     {
         foreach (var teleporter in teleporters)
         {
-            teleporter.linkingGroup = editorState.GetLinkingGroup(teleporter.gameObject);
+            teleporter.linkingGroup = editorState.Level.GetTile(spaceUtility.WorldToCell(teleporter.transform.position))
+                .linkingGroup;
         }
         
         foreach (var self in teleporters)
@@ -87,7 +76,7 @@ public class Teleporter : MonoBehaviour
     
     private void UpdateConnectionArrow()
     {
-        if (connection != null && editorState.ShowLinkingGroups)
+        if (connection != null && showLinkingGroups.Value)
         {
             Vector2 self = transform.position + Vector3.up * 0.5f;
             Vector2 other = connection.transform.position + Vector3.down * 0.5f;

@@ -210,5 +210,5 @@ MonoBehaviour:
   background: {fileID: 3873963159433751797}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   regularColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   editorActionButton: {fileID: 7259592298358094959}
+  activeTool: {fileID: 11400000, guid: 266eb6a3fec7e451eae698b510cd6733, type: 2}

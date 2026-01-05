@@ -15,6 +15,8 @@ public enum ToolSide
 public class ToolbarActionsManager : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
+    [SerializeField] private Changelog changelog;
+    [SerializeField] private ChangeloggedToolbarAction activeTool;
     [SerializeField] private ToolbarActionPalette toolbarActionPalette;
     [SerializeField] private ToolbarBlackboard blackboard;
     [SerializeField] private GameStateManager gameStateManager;
@@ -26,7 +28,7 @@ public class ToolbarActionsManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private TilePlacer tilePlacer;
     [SerializeField] private LinkingGroupSetter linkingGroupSetter;
-
+    
     private ToolbarAction recentBrushType;
     
     private void Awake()
@@ -58,7 +60,7 @@ public class ToolbarActionsManager : MonoBehaviour
         secondaryToolInput.Enable();
         tertiaryToolInput.Enable();
         
-        editorState.EditorChanged += OnEditorChanged;
+        changelog.StateUpdated += OnStateUpdated;
     }
 
     private void OnDisable()
@@ -67,16 +69,16 @@ public class ToolbarActionsManager : MonoBehaviour
         secondaryToolInput.Disable();
         tertiaryToolInput.Disable();
         
-        editorState.EditorChanged -= OnEditorChanged;
+        changelog.StateUpdated -= OnStateUpdated;
     }
     
     private void Update()
     {
         if (gameStateManager.EditorState != EditorState.Editing) return;
         
-        if (editorState.ActiveTool != null)
+        if (activeTool.Value != null)
         {
-            editorState.ActiveTool.Update();
+            activeTool.Value.Update();
         }
 
         primaryToolInput.Update();
@@ -84,17 +86,11 @@ public class ToolbarActionsManager : MonoBehaviour
         tertiaryToolInput.Update();
     }
     
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnStateUpdated(ChangeInfo changeInfo)
     {
         switch (changeInfo)
         {
-            case AreaSelectionChangeInfo areaSelectionChangeInfo:
-
-                blackboard.selection = areaSelectionChangeInfo.newValue;
-                
-                break;
-            
-            case ToolbarChangeInfo toolbarChangeInfo:
+            case ValueChangeInfo<ToolbarAction> toolbarChangeInfo:
 
                 if (toolbarChangeInfo.newValue == toolbarChangeInfo.previousValue) break;
                 
@@ -119,9 +115,9 @@ public class ToolbarActionsManager : MonoBehaviour
                 
                 break;
             
-            case PaletteChangeInfo:
+            case ValueChangeInfo<GameTile>:
 
-                editorState.ActiveTool = recentBrushType;
+                activeTool.Value = recentBrushType;
                 
                 break;
         }
@@ -142,7 +138,7 @@ public class ToolbarActionsManager : MonoBehaviour
         
         private ToolbarAction Action => overrideAction != null
             ? overrideAction
-            : manager.editorState.ActiveTool;
+            : manager.activeTool.Value;
 
         public void Init(ToolbarActionsManager manager, List<ToolInput> allToolInputs, ToolSide toolSide)
         {
@@ -165,7 +161,7 @@ public class ToolbarActionsManager : MonoBehaviour
 
         private void OnToolDown(InputAction.CallbackContext context)
         {
-            if (manager.editorState.PointerOverUI
+            if (UIUtility.PointerOverUI
                 || manager.gameStateManager.EditorState != EditorState.Editing
                 || allToolInputs.Exists(input => input.pressed))
             {

@@ -5,16 +5,16 @@ public class PickerToolAction : ToolbarAction
 {
     protected override void OnReleased()
     {
-        var gameTile = EditorState.GetTile(SpaceUtility.MouseCell).gameTile;
+        var gameTile = EditorState.Level.GetTile(SpaceUtility.MouseCell).gameTile;
         
         switch (activeToolSide)
         {
             case ToolSide.Primary:
-                EditorState.PrimaryTile = gameTile;
+                blackboard.primaryTile.Value = gameTile;
                 break;
             
             case ToolSide.Secondary:
-                EditorState.SecondaryTile = gameTile;
+                blackboard.secondaryTile.Value = gameTile;
                 break;
         }
     }

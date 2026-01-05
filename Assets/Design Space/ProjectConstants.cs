@@ -11,6 +11,7 @@ public static class ProjectConstants
     public const string ToolbarActionsFolder = ProjectFolder + "Toolbar Actions/";
     public const string AudioFolder = ProjectFolder + "Audio/";
     public const string SettingsFolder = ProjectFolder + "Settings/";
+    public const string ChangelogFolder = ProjectFolder + "Changelog/";
 
     public const string ToolMenuItems = ProjectFolder + "Tools/";
 

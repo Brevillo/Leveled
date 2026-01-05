@@ -16,3 +16,4 @@ MonoBehaviour:
   gameTiles:
   - {fileID: 11400000, guid: dbe7098351f30403195a240c8a4bf4be, type: 2}
   - {fileID: 11400000, guid: 13e4624953c984c5eae04ba0f098a2f7, type: 2}
+  - {fileID: 11400000, guid: 8e306db1f471f4f83b6ecf7879087e68, type: 2}

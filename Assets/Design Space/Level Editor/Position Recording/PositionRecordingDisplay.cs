@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using OliverBeebe.UnityUtilities.Runtime.Pooling;
 using UnityEngine;
 
@@ -8,8 +6,8 @@ public class PositionRecordingDisplay : MonoBehaviour
 {
     [SerializeField] private List<PositionRecording> recordings;
     [SerializeField] private GameObjectPool lineRendererPool;
-    [SerializeField] private TileEditorState editorState;
-
+    [SerializeField] private ChangeloggedBool showPlayerPositionRecording;
+    
     private class LineSegment
     {
         public readonly Poolable poolable;
@@ -43,7 +41,7 @@ public class PositionRecordingDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        editorState.EditorChanged += OnEditorChanged;
+        showPlayerPositionRecording.ChangeEvent += OnChangeEvent;
 
         foreach (var recording in recordings)
         {
@@ -54,7 +52,7 @@ public class PositionRecordingDisplay : MonoBehaviour
 
     private void OnDisable()
     {
-        editorState.EditorChanged -= OnEditorChanged;
+        showPlayerPositionRecording.ChangeEvent -= OnChangeEvent;
 
         foreach (var recording in recordings)
         {
@@ -63,28 +61,21 @@ public class PositionRecordingDisplay : MonoBehaviour
         }
     }
 
-    private void OnEditorChanged(ChangeInfo changeInfo)
+    private void OnChangeEvent(ChangeInfo changeInfo)
     {
-        switch (changeInfo)
+        if (showPlayerPositionRecording.Value)
         {
-            case ShowPlayerPositionRecordingChangeInfo showPlayerPositionRecording:
-
-                if (showPlayerPositionRecording.newValue)
-                {
-                    DisplayRecordings();
-                }
-                else
-                {
-                    ClearRecordings();
-                }
-                
-                break;
+            DisplayRecordings();
+        }
+        else
+        {
+            ClearRecordings();
         }
     }
 
     private void OnSegmentUpdated(PositionRecording recording, PositionRecording.Segment segment)
     {
-        if (!editorState.ShowPlayerPositionRecording) return;
+        if (!showPlayerPositionRecording.Value) return;
         
         var lineSegments = GetLineSegments(recording);
         
@@ -102,7 +93,7 @@ public class PositionRecordingDisplay : MonoBehaviour
     
     private void OnRecordingRecordingUpdated(PositionRecording recording)
     {
-        if (!editorState.ShowPlayerPositionRecording) return;
+        if (!showPlayerPositionRecording.Value) return;
 
         var lineSegments = GetLineSegments(recording);
         

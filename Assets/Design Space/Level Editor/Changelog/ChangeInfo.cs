@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class ChangeInfo
 {
-    protected string description;
+    protected readonly string description;
 
     public abstract ChangeInfo Reverted { get; }
 
@@ -15,16 +15,20 @@ public abstract class ChangeInfo
     public override string ToString() => description;
 }
 
-public abstract class ValueChangeInfo<T> : ChangeInfo
+public class ValueChangeInfo<T> : ChangeInfo
 {
+    public readonly string name;
     public readonly T previousValue;
     public readonly T newValue;
 
-    public ValueChangeInfo(T previousValue, T newValue, string description) : base(description)
+    public ValueChangeInfo(string name, T previousValue, T newValue, string description) : base(description)
     {
+        this.name = name;
         this.previousValue = previousValue;
         this.newValue = newValue;
     }
+
+    public override ChangeInfo Reverted => new ValueChangeInfo<T>(name, newValue, previousValue, description);
 }
 
 public class ChangeInfoBundle : ChangeInfo
@@ -55,63 +59,4 @@ public class TileChangeInfo : ChangeInfo
     }
 
     public override ChangeInfo Reverted => new TileChangeInfo(positions, newTiles, previousTiles, description);
-}
-
-public class ToolbarChangeInfo : ValueChangeInfo<ToolbarAction>
-{
-    public ToolbarChangeInfo(ToolbarAction previousValue, ToolbarAction newValue) : base(previousValue, newValue,
-        $"Changed tool to {(newValue != null ? newValue.ToolName : "None")}")
-    {
-    }
-
-    public override ChangeInfo Reverted => new ToolbarChangeInfo(newValue, previousValue);
-}
-
-public class PaletteChangeInfo : ValueChangeInfo<GameTile>
-{
-    public enum Type
-    {
-        Primary,
-        Secondary,
-    }
-
-    public readonly Type type; 
-    
-    public PaletteChangeInfo(GameTile previousValue, GameTile newValue, Type type) : base(previousValue, newValue,
-        $"Changed {type} tile from {GameTile.NullableToString(previousValue)} to {GameTile.NullableToString(newValue)}")
-    {
-        this.type = type;
-    }
-
-    public override ChangeInfo Reverted => new PaletteChangeInfo(newValue, previousValue, type);
-}
-
-public class ShowLinkingGroupsChangeInfo : ValueChangeInfo<bool>
-{
-    public ShowLinkingGroupsChangeInfo(bool previousValue, bool newValue) : base(previousValue, newValue,
-        $"Changed 'Show Linking Group' from {previousValue} to {newValue}")
-    {
-    }
-
-    public override ChangeInfo Reverted => new ShowLinkingGroupsChangeInfo(newValue, previousValue);
-}
-
-public class ShowPlayerPositionRecordingChangeInfo : ValueChangeInfo<bool>
-{
-    public ShowPlayerPositionRecordingChangeInfo(bool previousValue, bool newValue) : base(previousValue, newValue,
-        $"Changed 'Show Player Position Recording' from {previousValue} to {newValue}")
-    {
-    }
-
-    public override ChangeInfo Reverted => new ShowPlayerPositionRecordingChangeInfo(newValue, previousValue);
-}
-
-public class AreaSelectionChangeInfo : ValueChangeInfo<BoundsInt>
-{
-    public AreaSelectionChangeInfo(BoundsInt previousValue, BoundsInt newValue, string description) : 
-        base(previousValue, newValue, description)
-    {
-    }
-
-    public override ChangeInfo Reverted => new AreaSelectionChangeInfo(newValue, previousValue, description);
 }

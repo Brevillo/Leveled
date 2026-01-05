@@ -168,7 +168,6 @@ MonoBehaviour:
   primaryColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   secondaryColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
   regularColor: {r: 0, g: 0, b: 0, a: 0}
-  editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   iconImage: {fileID: 1598078662488992308}
   tooltip: {fileID: 3083650495915813684}
   selected:
@@ -201,6 +200,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  primaryTile: {fileID: 11400000, guid: 205b30df3c4ae43869fb462ced13b6ec, type: 2}
+  secondaryTile: {fileID: 11400000, guid: 58ea519e36a9d4f26bc866077d435a40, type: 2}
+  changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
 --- !u!114 &3083650495915813684
 MonoBehaviour:
   m_ObjectHideFlags: 0

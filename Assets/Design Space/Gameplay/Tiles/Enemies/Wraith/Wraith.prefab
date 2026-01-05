@@ -375,6 +375,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  noDamageToFallingPlayer: 0
+  validDamageRanges: []
   damageDealt:
     m_PersistentCalls:
       m_Calls: []
@@ -446,7 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24be23aebc704348b28ee25863f6c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 2.5
   moveAcceleration: 10
   rigidbody: {fileID: 3760216881361232014}
   detectionTargeting: {fileID: 6312055605369114200}
