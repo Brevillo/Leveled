@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Star GameTile
   m_EditorClassIdentifier: 
   id: 15
-  paletteIcon: {fileID: 5357892413042959192, guid: 03e1086bf4a2bd141bab17916588d6d6, type: 3}
+  paletteIcon: {fileID: 5357892413042959192, guid: 9481fae03570a46fab97b13f027fcbd3, type: 3}
   tileBase: {fileID: 11400000, guid: f1dadf953c9824e7bafb82657b599f31, type: 2}
   entity: {fileID: 4004441214831596812, guid: 014d2485c8af64fafbdb187060906d3d, type: 3}
   globalEntity: 0

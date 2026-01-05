@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Leaping Sqirt GameTile
   m_EditorClassIdentifier: 
   id: 29
-  paletteIcon: {fileID: 1612576785287064648, guid: 1c0b9cd8a273d944c8512ebb5fefab37, type: 3}
+  paletteIcon: {fileID: 1612576785287064648, guid: d51ea14b6a4154c9e9e0b49e5be52dab, type: 3}
   tileBase: {fileID: 11400000, guid: 6e7127f2d74f54e8283b72052383bfc3, type: 2}
   entity: {fileID: 5502845930493759380, guid: b3d8f72aa55b94e6daffae04c56c5e3b, type: 3}
   globalEntity: 0

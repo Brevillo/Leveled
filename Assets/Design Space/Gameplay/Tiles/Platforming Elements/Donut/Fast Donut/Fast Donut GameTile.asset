@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fast Donut GameTile
   m_EditorClassIdentifier: 
   id: 12
-  paletteIcon: {fileID: -7567844679814543264, guid: 9ceecb716adfb6042b00d6b2ea23fd22, type: 3}
+  paletteIcon: {fileID: -7567844679814543264, guid: ec3c3419970dd431487ef6f4f1872af8, type: 3}
   tileBase: {fileID: 11400000, guid: 2566f31c34b844f38b82e0d26ac3e7ac, type: 2}
   entity: {fileID: 406311510554859605, guid: 8ab8396ac784d4b15bb8d2956cf7449a, type: 3}
   globalEntity: 1

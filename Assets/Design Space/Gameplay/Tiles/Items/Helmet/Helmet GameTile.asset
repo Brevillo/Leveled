@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Helmet GameTile
   m_EditorClassIdentifier: 
   id: 21
-  paletteIcon: {fileID: -2913055755966979844, guid: 95804f99123d1ab44bd8fb42bc6368d9, type: 3}
+  paletteIcon: {fileID: -2913055755966979844, guid: 7a58c343ac5eb418992b41009b55b668, type: 3}
   tileBase: {fileID: 11400000, guid: 2ad7f3465b38e405f82b3837a3f5b679, type: 2}
   entity: {fileID: 6664337683090464510, guid: 6803353e22ac14033aac349f468f3e68, type: 3}
   globalEntity: 0

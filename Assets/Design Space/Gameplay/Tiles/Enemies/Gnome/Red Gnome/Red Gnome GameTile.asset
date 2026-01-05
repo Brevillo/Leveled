@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Red Gnome GameTile
   m_EditorClassIdentifier: 
   id: 18
-  paletteIcon: {fileID: -2535901058958154764, guid: a19369a8a07adba488c0d5738614eb2d, type: 3}
+  paletteIcon: {fileID: -2535901058958154764, guid: 4a87aeb0a53434000a05b7cc36cf20cc, type: 3}
   tileBase: {fileID: 11400000, guid: f85ee4925e3b640c1b70fb9f985678e8, type: 2}
   entity: {fileID: 333814064006363826, guid: 18a4597fb65b645969b40136bd55f4ea, type: 3}
   globalEntity: 0

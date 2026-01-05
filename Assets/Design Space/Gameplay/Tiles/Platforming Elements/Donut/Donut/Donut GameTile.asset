@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Donut GameTile
   m_EditorClassIdentifier: 
   id: 11
-  paletteIcon: {fileID: -1554253085616129903, guid: 2e5f7b56e065f6a4f9dc3773cc4190bb, type: 3}
+  paletteIcon: {fileID: -1554253085616129903, guid: 97b5b4b6688a34509a7c27d399c4f8dc, type: 3}
   tileBase: {fileID: 11400000, guid: ebe5055d871c949eba3d871b433f9740, type: 2}
   entity: {fileID: 3035277352086094400, guid: 7f8015105892941b3b23fe5edbc0d445, type: 3}
   globalEntity: 1

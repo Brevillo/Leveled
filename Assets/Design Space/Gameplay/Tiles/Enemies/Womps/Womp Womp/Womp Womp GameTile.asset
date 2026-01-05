@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Womp Womp GameTile
   m_EditorClassIdentifier: 
   id: 10
-  paletteIcon: {fileID: 1268485005462236661, guid: 311c2e4a3bb749646b46836eeff49709, type: 3}
+  paletteIcon: {fileID: 1268485005462236661, guid: a3d1ce82d09064fbba81af656926cdf2, type: 3}
   tileBase: {fileID: 11400000, guid: fb96a3abed74d463eb5818643467dd5e, type: 2}
   entity: {fileID: 2859683549599696478, guid: 0ccad76fdf1914a06b3eea7636706b50, type: 3}
   globalEntity: 0
