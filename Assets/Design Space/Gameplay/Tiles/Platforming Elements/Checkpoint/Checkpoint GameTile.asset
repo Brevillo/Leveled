@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Checkpoint GameTile
   m_EditorClassIdentifier: 
   id: 5
-  paletteIcon: {fileID: -7780428971645752040, guid: bef78579788be084891e3d4212eb061f, type: 3}
+  paletteIcon: {fileID: -7780428971645752040, guid: 5dad53e1fb6a4a0459938a9f3ad0bd84, type: 3}
   tileBase: {fileID: 11400000, guid: 896b4ff3d25f546aa838c6d847e2e95f, type: 2}
   entity: {fileID: 8464604153204394415, guid: 11d90bd5b082b43c19b723451568306a, type: 3}
   globalEntity: 1

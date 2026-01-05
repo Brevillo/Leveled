@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Mushroom GameTile
   m_EditorClassIdentifier: 
   id: 19
-  paletteIcon: {fileID: 5004427659667788350, guid: d9963549f8f6d49c98e7bfd112270f1a, type: 3}
+  paletteIcon: {fileID: 5004427659667788350, guid: 72fd93added002749bad0f8e85fe40b5, type: 3}
   tileBase: {fileID: 11400000, guid: 289a4a43361a04f8680e1eadb4248188, type: 2}
   entity: {fileID: 4968221304795043080, guid: bdf645133f1a5429fac25dd983e5530d, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Mushroom Powerup

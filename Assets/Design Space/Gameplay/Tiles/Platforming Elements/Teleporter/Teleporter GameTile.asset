@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Teleporter GameTile
   m_EditorClassIdentifier: 
   id: 6
-  paletteIcon: {fileID: 849109395259260800, guid: 28c1c57e5f68844f5bdde8002129e813, type: 3}
+  paletteIcon: {fileID: 849109395259260800, guid: 6a09ee1a5acefe747bc888b20ca64c65, type: 3}
   tileBase: {fileID: 11400000, guid: 02bf4be99963b45e88abae7e7135f94a, type: 2}
   entity: {fileID: 0}
   globalEntity: 0

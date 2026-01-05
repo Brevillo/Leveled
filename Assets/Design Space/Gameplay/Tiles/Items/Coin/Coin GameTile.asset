@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Coin GameTile
   m_EditorClassIdentifier: 
   id: 8
-  paletteIcon: {fileID: -5424993114282701351, guid: 2286139ca2f4fe04694902db169a149f, type: 3}
+  paletteIcon: {fileID: -5424993114282701351, guid: 692a0bdd319f57348a0d38f432b83125, type: 3}
   tileBase: {fileID: 11400000, guid: bb6b84440b22e4b51b54aafce99ee392, type: 2}
   entity: {fileID: 8533733473996816380, guid: d608f7f1f1de3433ea8a17e2dd256494, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Coin

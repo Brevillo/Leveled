@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player GameTile
   m_EditorClassIdentifier: 
   id: 3
-  paletteIcon: {fileID: 6737232272589169390, guid: c5e8f966857669747b88e592c6022644, type: 3}
+  paletteIcon: {fileID: 6737232272589169390, guid: a47ef323a6a509745ae188116bddd3b7, type: 3}
   tileBase: {fileID: 11400000, guid: 60f90ea0530654424bb607ad8c2fd55b, type: 2}
   entity: {fileID: 4706571802681261726, guid: f4f14fa1f3a334bac8fb4a0aa8594682, type: 3}
   globalEntity: 1

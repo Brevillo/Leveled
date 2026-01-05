@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Upward Bounce Pad GameTile
   m_EditorClassIdentifier: 
   id: 7
-  paletteIcon: {fileID: -2192925913240220939, guid: aadf0682978a4574693629ffe018eec4, type: 3}
+  paletteIcon: {fileID: -2192925913240220939, guid: 11e37727c3f73cb4588256a2d7b6d610, type: 3}
   tileBase: {fileID: 11400000, guid: 9dffb6e7b11344f58aab24aff43d5027, type: 2}
   entity: {fileID: 4808804451769082295, guid: be821cc38ecd34472a3a2cf19a4248c5, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Upward Bounce Pad

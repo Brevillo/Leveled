@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Falling Platform GameTile
   m_EditorClassIdentifier: 
   id: 31
-  paletteIcon: {fileID: 1499738066832686295, guid: ab5cc21d147e44ada81e873d22a2f620, type: 3}
+  paletteIcon: {fileID: 1499738066832686295, guid: 266ab460e023f8f408fbb1b978fdf0d1, type: 3}
   tileBase: {fileID: 11400000, guid: fe055f35efb124ab79b590b28f86e2eb, type: 2}
   entity: {fileID: 955107117994739556, guid: 2eba24d684db74764b545ce610b8684c, type: 3}
   globalEntity: 1

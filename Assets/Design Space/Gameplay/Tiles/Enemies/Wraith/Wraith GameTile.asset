@@ -16,6 +16,7 @@ MonoBehaviour:
   paletteIcon: {fileID: 3916541323027260211, guid: f075d1fbcfde348d6990e62af5772b89, type: 3}
   tileBase: {fileID: 11400000, guid: ffc3bdb7d21824be3939299b9e293be1, type: 2}
   entity: {fileID: 6799291018397145350, guid: a4bf14c1a58a447f9a01dbad64fadaf0, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Wraith

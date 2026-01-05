@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Red Knirt GameTile
   m_EditorClassIdentifier: 
   id: 30
-  paletteIcon: {fileID: 1612576785287064648, guid: e00404d3428034d5eaea17fed10c9f4b, type: 3}
+  paletteIcon: {fileID: 1612576785287064648, guid: a0c9212bdd784f240ac76d81b95f01d3, type: 3}
   tileBase: {fileID: 11400000, guid: 08f24d0cfe8ad4ed2b9d7f6a79553df4, type: 2}
   entity: {fileID: 7258659736442285568, guid: c214c1a835a3c430698b4d004341b4b5, type: 3}
   globalEntity: 0

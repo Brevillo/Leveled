@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Green Gnome GameTile
   m_EditorClassIdentifier: 
   id: 17
-  paletteIcon: {fileID: -2535901058958154764, guid: f29c0073f079d46c9a5d56417fea68bb, type: 3}
+  paletteIcon: {fileID: -2535901058958154764, guid: da345dfbcea1ae34b9ae3ac914969e82, type: 3}
   tileBase: {fileID: 11400000, guid: 1a7fff6c879e24f22988ffde9efc5a6a, type: 2}
   entity: {fileID: 4731393081277014656, guid: 46bcf33d1a9914b62a792d12dac80a2a, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Green Gnome

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Bullet William GameTile
   m_EditorClassIdentifier: 
   id: 13
-  paletteIcon: {fileID: 3432847899485859518, guid: 186c5d1775630483990037c58bade2f7, type: 3}
+  paletteIcon: {fileID: 3432847899485859518, guid: 0ac42ed9be00178499f30ab201725d1c, type: 3}
   tileBase: {fileID: 11400000, guid: 05b72b23d47c74f52a11d6fda389aaaa, type: 2}
   entity: {fileID: 4793193494671217304, guid: 14edac0a0576b4cfc9a719a950d0c0b2, type: 3}
+  globalEntity: 0
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Bullet William Launcher

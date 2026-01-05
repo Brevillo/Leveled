@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Leaping Knirt GameTile
   m_EditorClassIdentifier: 
   id: 28
-  paletteIcon: {fileID: 1612576785287064648, guid: 574c68981e0fe4aa0a1b80d3db9f0d3f, type: 3}
+  paletteIcon: {fileID: 1612576785287064648, guid: f243cf8c14b50c94d89e215e2dfddf7a, type: 3}
   tileBase: {fileID: 11400000, guid: 27edda1e2ccf746f7bf0e7fc0b337ad9, type: 2}
   entity: {fileID: 2856120769769974037, guid: 90bbe268e9f1a44b1889db0f2386a351, type: 3}
   globalEntity: 0
