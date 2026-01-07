@@ -277,9 +277,9 @@ public class Level
 
     public LevelData GetData() => new()
     {
-        positions = layer.AllPositions.Select(position => (SimpleVector2Int)position).ToArray(),
-        gameTileIds = layer.AllTiles.Select(tileData => tileData.gameTile.ID).ToArray(),
-        linkingGroups = layer.AllTiles.Select(tileData => tileData.linkingGroup).ToArray(),
+        positions = AllPositions.Select(position => (SimpleVector2Int)position).ToArray(),
+        gameTileIds = AllTiles.Select(tileData => tileData.gameTile.ID).ToArray(),
+        linkingGroups = AllTiles.Select(tileData => tileData.linkingGroup).ToArray(),
     };
 }
 
