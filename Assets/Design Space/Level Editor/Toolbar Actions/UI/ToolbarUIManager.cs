@@ -24,7 +24,7 @@ public class ToolbarUIManager : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
         foreach (var action in actions)
         {

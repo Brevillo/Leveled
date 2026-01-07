@@ -37,6 +37,7 @@ public class LinkingGroupSetter : MonoBehaviour
 
     public void GetLinkingGroupAtMouse(Action<string> linkingGroupAction) =>
         GetLinkingGroup(spaceUtility.MouseCellCenterWorld + Vector3.down * 0.5f, linkingGroupAction);
+    
     public void GetLinkingGroup(Vector2 worldPosition, Action<string> linkingGroupAction)
     {
         content.SetActive(true);
@@ -51,9 +52,7 @@ public class LinkingGroupSetter : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(inputField.gameObject);
         
-        foreach (var linkingGroup in editorState.TileData
-                     .GroupBy(tile => tile.linkingGroup)
-                     .Select(group => group.Key)
+        foreach (var linkingGroup in editorState.Level.AllLinkingGroups
                      .Where(group => !preGenerateOptions.Contains(group)))
         {
             spawnedOptions.Add(SpawnOption(linkingGroup));

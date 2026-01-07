@@ -13,7 +13,7 @@ public class ToolbarActionsUI : MonoBehaviour
     [SerializeField] private ToolbarBlackboard blackboard;
     [SerializeField] private TilePlacer tilePlacer;
 
-    private Vector3Int previousSelectionSize;
+    private Vector2Int previousSelectionSize;
     
     private void LateUpdate()
     {
@@ -34,7 +34,7 @@ public class ToolbarActionsUI : MonoBehaviour
                                             !UIUtility.PointerOverUI &&
                                             blackboard.hoverSelectionActive);
         
-        tilemapBoundsOutline.SetSize(tilePlacer.BoundsInt);
-        tilemapBoundsOutline.gameObject.SetActive(tilePlacer.BoundsInt != default);
+        tilemapBoundsOutline.SetSize(tilePlacer.RectInt);
+        tilemapBoundsOutline.gameObject.SetActive(tilePlacer.RectInt != default);
     }
 }

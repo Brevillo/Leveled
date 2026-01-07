@@ -39,9 +39,9 @@ public class FillToolAction : ToolbarAction
 
     private Vector2Int[] GetFloodFillPositions(Vector2Int start)
     {
-        var bounds = TilePlacer.BoundsInt;
+        var bounds = TilePlacer.RectInt;
         
-        GameTile fillingTile = EditorState.GetTile(start).gameTile;
+        GameTile fillingTile = EditorState.Level.GetTile(start).gameTile;
         Queue<Vector2Int> checks = new();
         HashSet<Vector2Int> positions = new();
 
@@ -56,9 +56,9 @@ public class FillToolAction : ToolbarAction
             
             Vector2Int position = checks.Dequeue();
 
-            if (!bounds.Contains((Vector3Int)position) ||
+            if (!bounds.Contains(position) ||
                 positions.Contains(position) || 
-                EditorState.GetTile(position).gameTile != fillingTile)
+                EditorState.Level.GetTile(position).gameTile != fillingTile)
             {
                 continue;
             }

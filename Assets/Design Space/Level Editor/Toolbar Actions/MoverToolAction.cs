@@ -22,7 +22,7 @@ public class MoverToolAction : ToolbarAction
 
         mousePosition += delta;
 
-        blackboard.hoverSelection = new((Vector3Int)SpaceUtility.ScreenToCell(mousePosition), Vector3Int.one);
+        blackboard.hoverSelection = new(SpaceUtility.ScreenToCell(mousePosition), Vector2Int.one);
     }
 
     protected override void OnReleased()
@@ -40,7 +40,7 @@ public class MoverToolAction : ToolbarAction
                 ? SpaceUtility.Camera.ViewportToScreenPoint(Vector2.one / 2f)
                 : mousePosition);
 
-        blackboard.hoverSelection = new((Vector3Int)SpaceUtility.ScreenToCell(mousePosition), Vector3Int.one);
+        blackboard.hoverSelection = new(SpaceUtility.ScreenToCell(mousePosition), Vector2Int.one);
         // blackboard.snapHoverSelection = true;
     }
 }

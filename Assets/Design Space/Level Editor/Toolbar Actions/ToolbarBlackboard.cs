@@ -15,9 +15,9 @@ public class ToolbarBlackboard : ScriptableObject
     public ChangeloggedGameTile primaryTile;
     public ChangeloggedGameTile secondaryTile;
     
-    public ChangeloggedBoundsInt selection;
+    public ChangeloggedRectInt selection;
     
-    public BoundsInt hoverSelection;
+    public RectInt hoverSelection;
     public bool hoverSelectionActive;
     public bool snapHoverSelection;
 
@@ -30,7 +30,7 @@ public class ToolbarBlackboard : ScriptableObject
 
     public void Deselect()
     {
-        if (selection == default) return;
+        if (selection.Value == default) return;
         
         selection.Value = default;
     }

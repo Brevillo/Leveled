@@ -19,7 +19,7 @@ public abstract class ToolbarAction : ScriptableObject
     protected ToolSide activeToolSide;
     protected Vector2Int dragStart;
 
-    protected BoundsInt CurrentSelection
+    protected RectInt CurrentSelection
     {
         get
         {
@@ -28,7 +28,7 @@ public abstract class ToolbarAction : ScriptableObject
             Vector2Int min = Vector2Int.Min(current, dragStart);
             Vector2Int max = Vector2Int.Max(current, dragStart);
             
-            return new((Vector3Int)min, (Vector3Int)(max - min) + Vector3Int.one);
+            return new(min, max - min + Vector2Int.one);
         }
     }
     
@@ -81,7 +81,7 @@ public abstract class ToolbarAction : ScriptableObject
 
     public void Update()
     {
-        blackboard.hoverSelection = new BoundsInt((Vector3Int)SpaceUtility.MouseCell, Vector3Int.one);
+        blackboard.hoverSelection = new(SpaceUtility.MouseCell, Vector2Int.one);
 
         OnUpdate();
     }

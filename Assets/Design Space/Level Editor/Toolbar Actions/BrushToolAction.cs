@@ -40,7 +40,7 @@ public class BrushToolAction : ToolbarAction
         previousMouseCell = current;
     }
 
-    protected override void OnReleased()
+    protected override void OnReleased() 
     {
         if (DrawingTile != null && DrawingTile.Linkable)
         {

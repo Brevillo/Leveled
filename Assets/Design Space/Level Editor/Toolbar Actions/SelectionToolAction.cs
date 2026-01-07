@@ -19,12 +19,12 @@ public class SelectionToolAction : ToolbarAction
     {
         get
         {
-            Vector3 selectionCenterOffset = SpaceUtility.GetBoundsIntCenterWorld(blackboard.selection.Value);
+            Vector3 selectionCenterOffset = SpaceUtility.GetRectIntCenterWorld(blackboard.selection.Value);
             Vector3 worldPosition = SpaceUtility.MouseWorld + (Vector3)Vector2.one / 2f;
             Vector3 snappedWorldCenter = 
                 SpaceUtility.SnapWorldToCell(worldPosition - selectionCenterOffset) + selectionCenterOffset;
             
-            return SpaceUtility.WorldToCell(snappedWorldCenter - (Vector3)blackboard.selection.Value.size / 2f);
+            return SpaceUtility.WorldToCell(snappedWorldCenter - (Vector3)(Vector3Int)blackboard.selection.Value.size / 2f);
         }
     }
     
@@ -55,7 +55,7 @@ public class SelectionToolAction : ToolbarAction
         {
             case State.None:
                 
-                state = blackboard.selection.Value.Contains((Vector3Int)dragStart)
+                state = blackboard.selection.Value.Contains(dragStart)
                     ? State.MovingSelection
                     : State.Selecting;
                 
@@ -81,13 +81,13 @@ public class SelectionToolAction : ToolbarAction
             
             case State.MovingSelection:
                 
-                blackboard.hoverSelection = new(blackboard.selection.Value.position + (Vector3Int)(SpaceUtility.MouseCell - dragStart), blackboard.selection.Value.size);
+                blackboard.hoverSelection = new(blackboard.selection.Value.position + (SpaceUtility.MouseCell - dragStart), blackboard.selection.Value.size);
                 
                 break;
             
             case State.Copied:
                 
-                blackboard.hoverSelection = new((Vector3Int)CopySelectionMin, blackboard.selection.Value.size);
+                blackboard.hoverSelection = new(CopySelectionMin, blackboard.selection.Value.size);
                 
                 break;
         }
@@ -120,7 +120,7 @@ public class SelectionToolAction : ToolbarAction
                 var nullTiles = new TileData[originPositions.Count];
 
                 var originTiles = originPositions
-                    .Select(EditorState.GetTile)
+                    .Select(position => EditorState.Level.GetTile(position))
                     .ToArray();
 
                 Vector2Int delta = SpaceUtility.MouseCell - dragStart;
@@ -133,8 +133,8 @@ public class SelectionToolAction : ToolbarAction
                 EditorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection");
                 EditorState.SetTiles(destinationPositions, originTiles, "Filled new selection");
 
-                blackboard.selection.Value = new BoundsInt(blackboard.selection.Value.position 
-                                                           + (Vector3Int)delta, blackboard.selection.Value.size);
+                blackboard.selection.Value = new RectInt(blackboard.selection.Value.position + delta,
+                    blackboard.selection.Value.size);
 
                 blackboard.changelog.EndChangeBundle();
 
@@ -178,7 +178,7 @@ public class SelectionToolAction : ToolbarAction
         foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
         {
             clipboardPositions.Add(position);
-            clipboardTiles.Add(EditorState.GetTile(position));
+            clipboardTiles.Add(EditorState.Level.GetTile(position));
         }
     }
 

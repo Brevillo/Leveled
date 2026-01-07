@@ -5,7 +5,7 @@ public class InitializeEditorState : MonoBehaviour
 {
     [SerializeField] private Changelog changelog;
 
-    private void Awake()
+    private void Start()
     {
         changelog.Initialize();
     }

@@ -8,7 +8,7 @@ public class LinkerToolAction : ToolbarAction
     {
         var selection = CurrentSelection;
         
-        var boundsIntAnchorWorld = SpaceUtility.GetBoundsIntAnchorWorld(selection, new Vector2(0.5f, 0f));
+        var boundsIntAnchorWorld = SpaceUtility.GetRectIntAnchorWorld(selection, new Vector2(0.5f, 0f));
         
         LinkingGroupSetter.GetLinkingGroup(
             boundsIntAnchorWorld,
@@ -19,7 +19,7 @@ public class LinkerToolAction : ToolbarAction
                 
                 foreach (Vector2Int position in selection.allPositionsWithin)
                 {
-                    var tile = EditorState.GetTile(position);
+                    var tile = EditorState.Level.GetTile(position);
 
                     if (tile.Linkable)
                     {

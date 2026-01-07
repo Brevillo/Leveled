@@ -177,7 +177,7 @@ public class SaveDataManager : MonoBehaviour
     
     private void SaveLevel()
     {
-        saveSystem.SaveActiveSave(editorState.LevelData);
+        saveSystem.SaveActiveSave(editorState.Level.GetData());
         changelog.NotifySaved();
         RefreshLevels();
     }

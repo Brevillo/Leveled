@@ -34,7 +34,7 @@ public class DonutPlatform : MonoBehaviour
 
         stateMachine.AddState<Idle>(new());
         stateMachine.AddState<Falling>(new())
-            .AddTransition<Respawning>(() => rigidbody.position.y < tilePlacerReference.value.Bounds.min.y);
+            .AddTransition<Respawning>(() => rigidbody.position.y < tilePlacerReference.value.Rect.min.y);
         stateMachine.AddState<Respawning>(new())
             .AddTransition<Idle>(() => stateMachine.StateDuration > respawnDelay && !respawnCheck.CollisionTouching);
         

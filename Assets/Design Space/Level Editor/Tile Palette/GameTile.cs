@@ -26,6 +26,8 @@ public class GameTile : ScriptableObject
 
     public GameObject Entity => entity;
 
+    public bool HasEntity => entity != null;
+
     public bool GlobalEntity => globalEntity;
 
     public static string NullableToString(GameTile tile) => tile != null

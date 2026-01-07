@@ -56,9 +56,9 @@ public class CameraMovement : MonoBehaviour
     {
         if (gameStateManager.EditorState == EditorState.Playing) return;
         
-        transform.position = placer.Bounds.center;
+        transform.position = placer.Rect.center;
 
-        SetSize(placer.Bounds.size * cameraSnapBufferMult);
+        SetSize(placer.Rect.size * cameraSnapBufferMult);
     }
 
     private float GetZoomForSize(Vector2 size)

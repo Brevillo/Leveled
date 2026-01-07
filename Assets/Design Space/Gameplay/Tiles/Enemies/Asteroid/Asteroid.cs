@@ -20,7 +20,7 @@ public class Asteroid : MonoBehaviour
 
     private void Update()
     {
-        float bottom = tilePlacerReference.value.Bounds.min.y - bottomOffset;
+        float bottom = tilePlacerReference.value.Rect.min.y - bottomOffset;
         
         if (rigidbody.position.y <= bottom)
         {

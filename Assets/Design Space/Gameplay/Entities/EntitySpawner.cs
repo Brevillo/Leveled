@@ -12,10 +12,10 @@ public class EntitySpawner : MonoBehaviour
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Vector2 spawnBuffer;
     
-    private List<Entity> managedEntities;
+    private List<TileEntity> managedEntities;
     private List<GameObject> activeEntities;
 
-    private class Entity
+    private class TileEntity
     {
         public readonly Vector2 position;
         private readonly TileData tileData;
@@ -24,7 +24,7 @@ public class EntitySpawner : MonoBehaviour
         private bool active;
         private GameObject instance;
         
-        public Entity(Vector2 position, TileData tileData, EntitySpawner spawner)
+        public TileEntity(Vector2 position, TileData tileData, EntitySpawner spawner)
         {
             this.position = position;
             this.tileData = tileData;
@@ -86,27 +86,26 @@ public class EntitySpawner : MonoBehaviour
     {
         gameStateManager.EditorStateChanged -= OnEditorStateChanged;
     }
-
+    
     private void OnEditorStateChanged(EditorState editorState)
     {
         switch (editorState)
         {
             case EditorState.Playing:
 
-                managedEntities = tileEditorState.EntityTiles
-                    .Select(kv => new Entity(spaceUtility.CellToWorld(kv.Key), kv.Value, this))
-                    .ToList();
-                
+                managedEntities.AddRange(tileEditorState.Level.EntityPositions
+                    .Select(tile => new TileEntity(tile, tileEditorState.Level.GetTile(tile), this)));
+
                 break;
             
             default:
-                
-                managedEntities.Clear();
 
                 foreach (var entity in activeEntities.ToArray())
                 {
                     DestroyEntity(entity);
                 }
+                
+                managedEntities.Clear();
                 
                 break;
         }

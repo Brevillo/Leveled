@@ -17,12 +17,12 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private BoxCollider2D bottomHazard;
     [SerializeField] private TilePlacerReference tilePlacerReference;
 
-    private Bounds bounds;
-    private BoundsInt boundsInt;
+    private Rect rect;
+    private RectInt rectInt;
     private Dictionary<Tilemap, Tilemap> tilemapInstances;
     
-    public Bounds Bounds => bounds;
-    public BoundsInt BoundsInt => boundsInt;
+    public Rect Rect => rect;
+    public RectInt RectInt => rectInt;
     
     private void Awake()
     {
@@ -111,13 +111,18 @@ public class TilePlacer : MonoBehaviour
 
     private void CompressBounds()
     {
-        bounds = default;
-        boundsInt = default;
+        rect = default;
+        rectInt = default;
         
         if (tilemapInstances.Count == 0) return;
         
-        boundsInt = tilemapInstances.Values.First().cellBounds; 
-        
+        rectInt = GetRectInt(tilemapInstances.Values.First());
+
+        RectInt GetRectInt(Tilemap tilemap1)
+        {
+            return new RectInt((Vector2Int)tilemap1.cellBounds.position, (Vector2Int)tilemap1.cellBounds.size);
+        }
+
         foreach (var tilemap in tilemapInstances.Values)
         {
             tilemap.CompressBounds();
@@ -129,25 +134,29 @@ public class TilePlacer : MonoBehaviour
                 composite.GenerateGeometry();
             }
 
-            var tilemapBounds = tilemap.cellBounds;
+            var tilemapBounds = GetRectInt(tilemap);
 
-            boundsInt.SetMinMax(
-                Vector3Int.Min(boundsInt.min, tilemapBounds.min),
-                Vector3Int.Max(boundsInt.max, tilemapBounds.max));
+            rectInt.SetMinMax(
+                Vector2Int.Min(rectInt.min, tilemapBounds.min),
+                Vector2Int.Max(rectInt.max, tilemapBounds.max));
         }
 
-        bounds = new(spaceUtility.Grid.transform.TransformPoint(boundsInt.center), boundsInt.size);
+        rect = new Rect
+        {
+            size = rectInt.size,
+            center = spaceUtility.Grid.transform.TransformPoint(rectInt.center),
+        };
         
-        Vector2 wallSize = new(wallThickness, bounds.size.y + wallHeightBuffer);
+        Vector2 wallSize = new(wallThickness, rect.size.y + wallHeightBuffer);
         
-        leftWall.transform.position = new Vector2(bounds.min.x - wallThickness / 2f, bounds.center.y + wallHeightBuffer / 2f);
+        leftWall.transform.position = new Vector2(rect.min.x - wallThickness / 2f, rect.center.y + wallHeightBuffer / 2f);
         leftWall.size = wallSize;
 
-        rightWall.transform.position = new Vector2(bounds.max.x + wallThickness / 2f, bounds.center.y + wallHeightBuffer / 2f);
+        rightWall.transform.position = new Vector2(rect.max.x + wallThickness / 2f, rect.center.y + wallHeightBuffer / 2f);
         rightWall.size = wallSize;
 
-        bottomHazard.transform.position = new Vector2(bounds.center.x, bounds.min.y - wallThickness / 2f);
-        bottomHazard.size = new(bounds.size.x, wallThickness);
+        bottomHazard.transform.position = new Vector2(rect.center.x, rect.min.y - wallThickness / 2f);
+        bottomHazard.size = new(rect.size.x, wallThickness);
     }
     
     private Tilemap GetTilemapInstance(Tilemap tilemapPrefab)

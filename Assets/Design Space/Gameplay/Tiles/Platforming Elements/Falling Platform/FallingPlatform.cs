@@ -50,7 +50,7 @@ public class FallingPlatform : MonoBehaviour
 
         rigidbody.linearVelocityY = -startFallSpeed;
         
-        while (transform.position.y > tilePlacerReference.value.Bounds.min.y - destroyOffScreenBuffer)
+        while (transform.position.y > tilePlacerReference.value.Rect.min.y - destroyOffScreenBuffer)
         {
             rigidbody.linearVelocityY = Mathf.MoveTowards(
                 rigidbody.linearVelocityY,

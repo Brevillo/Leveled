@@ -33,7 +33,7 @@ public class GameCamera : MonoBehaviour
         Vector2 position =
             Vector2.SmoothDamp(transform.position, trackableBounds.center, ref velocity, moveSpeed);
 
-        var levelBounds = placer.Bounds;
+        var levelBounds = placer.Rect;
         Vector2 cameraRect = mainCamera.rect.size * new Vector2((float)Screen.width / Screen.height, 1f);
         Vector2 cameraExtents = cameraPositioning.virtualHeight / 2f * cameraRect;
         Vector2 min = (Vector2)levelBounds.min + cameraExtents;

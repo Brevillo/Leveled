@@ -5,7 +5,7 @@ public class PickerToolAction : ToolbarAction
 {
     protected override void OnReleased()
     {
-        var gameTile = EditorState.GetTile(SpaceUtility.MouseCell).gameTile;
+        var gameTile = EditorState.Level.GetTile(SpaceUtility.MouseCell).gameTile;
         
         switch (activeToolSide)
         {

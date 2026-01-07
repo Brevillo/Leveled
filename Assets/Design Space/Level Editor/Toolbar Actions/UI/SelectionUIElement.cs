@@ -12,7 +12,7 @@ public class SelectionUIElement : MonoBehaviour
     private Vector2 min, minVelocity;
     private Vector2 max, maxVelocity;
     
-    public void SetSize(BoundsInt bounds, bool snap = false)
+    public void SetSize(RectInt bounds, bool snap = false)
     {
         Vector2 minCanvas = GetCanvasPosition(bounds.min, ref min, ref minVelocity);
         Vector2 maxCanvas = GetCanvasPosition(bounds.max, ref max, ref maxVelocity);
@@ -26,9 +26,9 @@ public class SelectionUIElement : MonoBehaviour
         width.text = bounds.size.x.ToString();
         height.text = bounds.size.y.ToString();
         
-        Vector2 GetCanvasPosition(Vector3Int targetCell, ref Vector2 position, ref Vector2 velocity)
+        Vector2 GetCanvasPosition(Vector2Int targetCell, ref Vector2 position, ref Vector2 velocity)
         {
-            Vector2 target = spaceUtility.CellToWorld((Vector2Int)targetCell) - Vector3.one / 2f;
+            Vector2 target = spaceUtility.CellToWorld(targetCell) - Vector3.one / 2f;
             
             position = snap 
                 ? target

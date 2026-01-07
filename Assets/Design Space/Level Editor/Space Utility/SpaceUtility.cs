@@ -144,22 +144,22 @@ public class SpaceUtility : ScriptableObject
     public Vector2Int CanvasToCell(Vector3 position, RectTransform rectTransform) =>
         WorldToCell(CanvasToWorld(position, rectTransform)); // canvas -> world -> cell
 
-    #region BoundsInt
+    #region RectInt
     
-    public Vector3 GetBoundsIntCenterWorld(BoundsInt bounds) => GetBoundsIntAnchorWorld(bounds, Vector2.one / 2f);
+    public Vector3 GetRectIntCenterWorld(RectInt bounds) => GetRectIntAnchorWorld(bounds, Vector2.one / 2f);
 
-    public Vector3 GetBoundsIntAnchorWorld(BoundsInt bounds, Vector2 anchor)
+    public Vector3 GetRectIntAnchorWorld(RectInt bounds, Vector2 anchor)
     {
-        Vector2 min = grid.GetCellCenterWorld(bounds.min) - grid.cellSize / 2f;
-        Vector2 max = grid.GetCellCenterWorld(bounds.max - Vector3Int.one) + grid.cellSize / 2f;
+        Vector2 min = grid.GetCellCenterWorld((Vector3Int)bounds.min) - grid.cellSize / 2f;
+        Vector2 max = grid.GetCellCenterWorld((Vector3Int)bounds.max - Vector3Int.one) + grid.cellSize / 2f;
 
         return new Vector2(
             Mathf.LerpUnclamped(min.x, max.x, anchor.x),
             Mathf.LerpUnclamped(min.y, max.y, anchor.y));
     }
 
-    public Vector3 GetBoundsIntCenterCanvas(BoundsInt bounds, RectTransform rectTransform) =>
-        WorldToCanvas(GetBoundsIntCenterWorld(bounds), rectTransform); // cell -> world -> canvas
+    public Vector3 GetRectIntCenterCanvas(RectInt bounds, RectTransform rectTransform) =>
+        WorldToCanvas(GetRectIntCenterWorld(bounds), rectTransform); // cell -> world -> canvas
     
     #endregion
     

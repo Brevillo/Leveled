@@ -88,33 +88,30 @@ public class ToolbarActionsManager : MonoBehaviour
     
     private void OnStateUpdated(ChangeInfo changeInfo)
     {
+        if (activeTool.ThisChangeInfo(changeInfo, out var toolbarChangeInfo))
+        {
+            // Deactivate old tool and activate new
+            if (toolbarChangeInfo.previousValue != null)
+            {
+                toolbarChangeInfo.previousValue.Deactivate();
+            }
+            
+            if (toolbarChangeInfo.newValue != null)
+            {
+                toolbarChangeInfo.newValue.Activate();
+            }
+
+            // Save recent brush type
+            if (toolbarChangeInfo.newValue is BrushToolAction or RectBrushToolAction or FillToolAction)
+            {
+                recentBrushType = toolbarChangeInfo.newValue;
+            }
+
+            blackboard.Deselect();
+        }
+        
         switch (changeInfo)
         {
-            case ValueChangeInfo<ToolbarAction> toolbarChangeInfo:
-
-                if (toolbarChangeInfo.newValue == toolbarChangeInfo.previousValue) break;
-                
-                // Deactivate old tool and activate new
-                if (toolbarChangeInfo.previousValue != null)
-                {
-                    toolbarChangeInfo.previousValue.Deactivate();
-                }
-                
-                if (toolbarChangeInfo.newValue != null)
-                {
-                    toolbarChangeInfo.newValue.Activate();
-                }
-
-                // Save recent brush type
-                if (toolbarChangeInfo.newValue is BrushToolAction or RectBrushToolAction or FillToolAction)
-                {
-                    recentBrushType = toolbarChangeInfo.newValue;
-                }
-
-                blackboard.Deselect();
-                
-                break;
-            
             case ValueChangeInfo<GameTile>:
 
                 activeTool.Value = recentBrushType;

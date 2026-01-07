@@ -105,7 +105,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
         
         foreach (var label in labels)
         {
-            var tileData = editorState.GetTile(label.Key);
+            var tileData = editorState.Level.GetTile(label.Key);
             
             label.Value.textMesh.text = tileData.linkingGroup;
 

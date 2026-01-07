@@ -59,4 +59,7 @@ public abstract class ChangeloggedValue<T> : ChangeloggedValue
         add => changelog.ChangeEvent += value;
         remove => changelog.ChangeEvent -= value;
     }
+
+    public bool ThisChangeInfo(ChangeInfo changeInfo, out ValueChangeInfo<T> valueChangeInfo) =>
+        (valueChangeInfo = changeInfo as ValueChangeInfo<T>) != null && valueChangeInfo.name == name;
 }
