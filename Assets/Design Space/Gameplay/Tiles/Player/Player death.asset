@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-5668398192705012412
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Player_Death_3_{-5668398192705012412}
+  m_AudioClip: {fileID: 8300000, guid: a64b10492d59a5e48b93b244dfd238b7, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-3374652486801593128
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Player_Death_2_{-3374652486801593128}
+  m_AudioClip: {fileID: 8300000, guid: 83eb388366f4ecb4a82303402fb31b72, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-968456243839293668
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Player_Death_5_{-968456243839293668}
+  m_AudioClip: {fileID: 8300000, guid: 221c1a016250cfd4394a816d31de2ba4, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3133461532120427654
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Player_Death_1_{3133461532120427654}
+  m_AudioClip: {fileID: 8300000, guid: bca77a5960442494b8cf899bb5e33f08, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &5928703779254439524
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Player_Death_4_{5928703779254439524}
+  m_AudioClip: {fileID: 8300000, guid: 6275c8863cfa30a47bff60bdcb536c99, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Player death
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -200, y: 200}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 3133461532120427654}
+  - {fileID: -3374652486801593128}
+  - {fileID: -5668398192705012412}
+  - {fileID: 5928703779254439524}
+  - {fileID: -968456243839293668}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
