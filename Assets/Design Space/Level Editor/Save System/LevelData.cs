@@ -48,7 +48,7 @@ public class TileMetaData
     
     private Dictionary<Type, object> typedEntries = new();
 
-    public int Count => typedEntries.Count;
+    public int Count => typedEntries?.Count ?? 0;
     
     public T GetValueOrDefault<T>() => (T)typedEntries?.GetValueOrDefault(typeof(T));
     public void SetValue(object value)

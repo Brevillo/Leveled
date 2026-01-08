@@ -120,7 +120,7 @@ public class Level
                     .ToArray(),
                 metaData = new(layer.Value.AllPositions
                     .Select(position => new KeyValuePair<string, TileMetaData>(((SimpleVector2Int)position).ToString(), layer.Value.GetTileOrDefault(position).metaData))
-                    .Where(metaData => metaData.Value?.Count != 0)),
+                    .Where(metaData => metaData.Value != null && metaData.Value.Count != 0)),
             })
             .ToArray(),
     };
