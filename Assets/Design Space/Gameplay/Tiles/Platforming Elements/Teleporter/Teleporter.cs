@@ -14,7 +14,7 @@ public class Teleporter : MonoBehaviour
     [SerializeField] private SpaceUtility spaceUtility;
 
     private Teleporter connection;
-    private string linkingGroup;
+    private LinkingGroup linkingGroup;
 
     private List<Teleportable> ignore = new();
     
@@ -38,6 +38,11 @@ public class Teleporter : MonoBehaviour
 
     private void OnChangeEvent(ChangeInfo changeInfo)
     {
+        if (arrow == null)
+        {
+            return;
+        }
+        
         arrow.gameObject.SetActive(showLinkingGroups.Value);
         
         RecalculateAllConnections();
@@ -60,13 +65,13 @@ public class Teleporter : MonoBehaviour
         foreach (var teleporter in teleporters)
         {
             teleporter.linkingGroup = editorState.Level.GetTile(spaceUtility.WorldToCell(teleporter.transform.position))
-                .linkingGroup;
+                .GetMetaData<LinkingGroup>();
         }
         
         foreach (var self in teleporters)
         {
             self.connection = teleporters
-                .Where(teleporter => teleporter.linkingGroup == self.linkingGroup && teleporter != self)
+                .Where(teleporter => teleporter.linkingGroup.groupID == self.linkingGroup.groupID && teleporter != self)
                 .OrderBy(teleporter => Vector3.Distance(teleporter.transform.position, self.transform.position))
                 .FirstOrDefault();
             

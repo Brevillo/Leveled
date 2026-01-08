@@ -6,16 +6,15 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UIElements;
 #if UNITY_EDITOR
+using System.Diagnostics;
 using UnityEditor;
 using UnityEditor.UIElements;
 #endif
 
-public interface ISaveSystem<TData>
+public interface ISaveSystem
 {
     public string ActiveSaveName { get; }
-    
-    public TData ActiveSaveData { get; }
-    
+   
     public bool FolderChosen { get; }
     
     public string FolderPath { get; set; }
@@ -23,18 +22,23 @@ public interface ISaveSystem<TData>
     public string[] AllSaveNames { get; }
 
     public bool IsValidName(string name);
+    
+    public void CreateNewSave(string name);
+
+    public void Delete(string name);
+    
+    public event Action FolderUpdated;
+}
+
+public interface ISaveSystem<TData> : ISaveSystem
+{
+    public TData ActiveSaveData { get; }
 
     public bool TryLoad(string name, out TData data);
     
     public TData Load(string name);
 
     public void SaveActiveSave(TData data);
-
-    public void CreateNewSave(string name);
-
-    public void Delete(string name);
-
-    public event Action FolderUpdated;
 }
 
 public interface IPlayerPrefResettable
@@ -194,6 +198,11 @@ public class SaveSystemEditor : Editor
         root.Add(new Button(((IPlayerPrefResettable)target).ResetPlayerPrefs)
         {
             text = "Reset Folder Pref Data",
+        });
+        
+        root.Add(new Button(() => Process.Start(((ISaveSystem)target).FolderPath))
+        {
+            text = "Open Save Folder",
         });
 
         return root;

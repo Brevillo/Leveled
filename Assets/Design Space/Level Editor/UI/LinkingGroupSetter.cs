@@ -22,23 +22,23 @@ public class LinkingGroupSetter : MonoBehaviour
     
     private List<GameObject> spawnedOptions;
 
-    private Action<string> linkingGroupAction;
+    private Action<LinkingGroup> linkingGroupAction;
     
     private void Awake()
     {
-        inputField.onSubmit.AddListener(ChooseOption);
+        inputField.onSubmit.AddListener(input => ChooseOption(new(input)));
         spawnedOptions = new();
 
         foreach (var linkingGroup in preGenerateOptions)
         {
-            SpawnOption(linkingGroup);
+            SpawnOption(new(linkingGroup));
         }
     }
 
-    public void GetLinkingGroupAtMouse(Action<string> linkingGroupAction) =>
+    public void GetLinkingGroupAtMouse(Action<LinkingGroup> linkingGroupAction) =>
         GetLinkingGroup(spaceUtility.MouseCellCenterWorld + Vector3.down * 0.5f, linkingGroupAction);
     
-    public void GetLinkingGroup(Vector2 worldPosition, Action<string> linkingGroupAction)
+    public void GetLinkingGroup(Vector2 worldPosition, Action<LinkingGroup> linkingGroupAction)
     {
         content.SetActive(true);
         
@@ -53,25 +53,25 @@ public class LinkingGroupSetter : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(inputField.gameObject);
         
         foreach (var linkingGroup in editorState.Level.AllLinkingGroups
-                     .Where(group => !preGenerateOptions.Contains(group)))
+                     .Where(group => !preGenerateOptions.Exists(option => option == group.groupID)))
         {
             spawnedOptions.Add(SpawnOption(linkingGroup));
         }
     }
 
-    private GameObject SpawnOption(string linkingGroup)
+    private GameObject SpawnOption(LinkingGroup linkingGroup)
     {
         var option = Instantiate(optionPrefab, optionsParent);
 
-        option.GetComponentInChildren<TextMeshProUGUI>().text = linkingGroup;
+        option.GetComponentInChildren<TextMeshProUGUI>().text = linkingGroup.groupID;
         option.GetComponentInChildren<Button>().onClick.AddListener(() => ChooseOption(linkingGroup));
 
         return option;
     }
 
-    private void ChooseOption(string linkingGroup)
+    private void ChooseOption(LinkingGroup linkingGroup)
     {
-        if (linkingGroup == "") return;
+        if (linkingGroup.groupID == default) return;
         
         content.SetActive(false);
         gameStateManager.EnterEditMode();

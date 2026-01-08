@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -46,17 +47,22 @@ public class ChangeInfoBundle : ChangeInfo
 
 public class TileChangeInfo : ChangeInfo
 {
+    public readonly Guid layerID;
     public readonly Vector2Int[] positions;
     public readonly TileData[] previousTiles;
     public readonly TileData[] newTiles;
 
-    public TileChangeInfo(Vector2Int[] positions, TileData[] previousTiles, TileData[] newTiles, string description) 
+    public TileChangeInfo(string description, Guid layerID,
+        Vector2Int[] positions,
+        TileData[] previousTiles,
+        TileData[] newTiles)
         : base(description)
     {
+        this.layerID = layerID;
         this.positions = positions;
         this.previousTiles = previousTiles;
         this.newTiles = newTiles;
     }
 
-    public override ChangeInfo Reverted => new TileChangeInfo(positions, newTiles, previousTiles, description);
+    public override ChangeInfo Reverted => new TileChangeInfo(description, layerID, positions, newTiles, previousTiles);
 }

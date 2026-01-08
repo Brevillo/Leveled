@@ -244,4 +244,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageable: {fileID: 4307576369336608162}
-  destructionDelay: 0.25
+  destructionDelay: 0.1

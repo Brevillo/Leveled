@@ -10,17 +10,17 @@ public class LeveledSaveSystem : SaveSystem<LevelData>
         // Update last time accessed
         data.lastTimeAccessed = DateTime.Now;
         
-        // Compute grid size
-        Vector2Int min = Vector2Int.one * int.MaxValue;
-        Vector2Int max = Vector2Int.one * int.MinValue;
-        
-        foreach (var position in data.positions)
-        {
-            min = Vector2Int.Min(min, position);
-            max = Vector2Int.Max(max, position);
-        }
-
-        data.gridSize = max - min;
+        // // Compute grid size
+        // Vector2Int min = Vector2Int.one * int.MaxValue;
+        // Vector2Int max = Vector2Int.one * int.MinValue;
+        //
+        // foreach (var position in data.positions.Select(SimpleVector2Int.ToVector2Int))
+        // {
+        //     min = Vector2Int.Min(min, position);
+        //     max = Vector2Int.Max(max, position);
+        // }
+        //
+        // data.gridSize = SimpleVector2Int.FromVector2Int(max - min);
     }
 
     public string[] RecentSaves => AllSaveNames

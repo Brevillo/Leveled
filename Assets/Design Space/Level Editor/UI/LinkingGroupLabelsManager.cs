@@ -107,7 +107,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
         {
             var tileData = editorState.Level.GetTile(label.Key);
             
-            label.Value.textMesh.text = tileData.linkingGroup;
+            label.Value.textMesh.text = tileData.GetMetaData<LinkingGroup>().groupID;
 
             Vector3 windowPoint = spaceUtility.WorldToWindow(spaceUtility.CellToWorld(label.Key) + Vector3.down * 0.5f);
             label.Value.transform.position = spaceUtility.GetCanvas(label.Value.transform).pixelRect.size * windowPoint;

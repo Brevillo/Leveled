@@ -43,6 +43,14 @@ public class Changelog : ScriptableObject
             value.Initialize(this);
         }
     }
+    
+    public void AssignDefaultValues()
+    {
+        foreach (var value in changeloggedValues)
+        {
+            value.AssignDefaultValue();
+        }
+    }
 
     public void Cleanup()
     {

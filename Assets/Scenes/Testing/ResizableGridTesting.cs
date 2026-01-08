@@ -31,10 +31,10 @@ public class ResizableGridTesting : MonoBehaviour
 
     private void Update()
     {
-        gridDisplay.text = $"size: {grid.Size}\n";
+        gridDisplay.text = $"size: {grid.Rect.size}\n";
         gridDisplay.text += string.Join("\n\n",
-            Enumerable.Range(0, grid.Height).Select(y => string.Join("",
-                Enumerable.Range(0, grid.Width).Select(x =>
+            Enumerable.Range(0, grid.Rect.size.y).Select(y => string.Join("",
+                Enumerable.Range(0, grid.Rect.size.x).Select(x =>
                 {
                     var pos = new Vector2Int(x, y) + grid.Anchor;
                     return $"({pos.x}, {pos.y}) {(grid.TryGetTile(pos, out var tile) ? tile : default)}".PadRight(cellLogWidth);

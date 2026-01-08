@@ -120,7 +120,7 @@ public class SelectionToolAction : ToolbarAction
                 var nullTiles = new TileData[originPositions.Count];
 
                 var originTiles = originPositions
-                    .Select(position => EditorState.Level.GetTile(position))
+                    .Select(EditorState.Level.GetTile)
                     .ToArray();
 
                 Vector2Int delta = SpaceUtility.MouseCell - dragStart;

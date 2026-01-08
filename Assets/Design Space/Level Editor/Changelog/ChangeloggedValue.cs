@@ -3,8 +3,9 @@ using UnityEngine;
 
 public abstract class ChangeloggedValue : ScriptableObject
 {
-    public abstract void Initialize(Changelog changelog);
-    public abstract void Cleanup();
+    public virtual void Initialize(Changelog changelog) { }
+    public virtual void AssignDefaultValue() { }
+    public virtual void Cleanup() { }
 }
 
 public abstract class ChangeloggedValue<T> : ChangeloggedValue
@@ -24,10 +25,13 @@ public abstract class ChangeloggedValue<T> : ChangeloggedValue
         this.changelog = changelog;
         
         changelog.StateUpdated += OnStateUpdated;
-        
-        Value = defaultValue;
     }
 
+    public override void AssignDefaultValue()
+    {
+        Value = defaultValue;
+    }
+    
     public override void Cleanup()
     {
         changelog.StateUpdated -= OnStateUpdated;

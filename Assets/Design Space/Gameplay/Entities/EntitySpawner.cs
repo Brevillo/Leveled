@@ -94,7 +94,7 @@ public class EntitySpawner : MonoBehaviour
             case EditorState.Playing:
 
                 managedEntities.AddRange(tileEditorState.Level.EntityPositions
-                    .Select(tile => new TileEntity(tile, tileEditorState.Level.GetTile(tile), this)));
+                    .Select(tile => new TileEntity(spaceUtility.CellToWorld(tile), tileEditorState.Level.GetTile(tile), this)));
 
                 break;
             
