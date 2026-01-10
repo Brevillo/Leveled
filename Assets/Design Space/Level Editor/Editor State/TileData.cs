@@ -15,30 +15,36 @@ public readonly struct LinkingGroup
 public readonly struct TileData
 {
     public readonly GameTile gameTile;
-    public readonly TileMetaData metaData;
+    public readonly TileMetadata metadata;
 
-    public T GetMetaData<T>() => metaData == null ? default : metaData.GetValueOrDefault<T>();
+    public T GetMetaData<T>() => metadata == null ? default : metadata.GetValueOrDefault<T>();
     
     public TileData(GameTile gameTile, params object[] metaData)
     {
         this.gameTile = gameTile;
-        this.metaData = new();
+        this.metadata = new();
 
         foreach (var entry in metaData)
         {
-            this.metaData.SetValue(entry);
+            this.metadata.SetValue(entry);
         }
     }
 
-    public TileData(GameTile gameTile, TileMetaData metaData)
+    public TileData(GameTile gameTile, TileMetadata metadata)
     {
         this.gameTile = gameTile;
-        this.metaData = metaData;
+        this.metadata = metadata;
     }
 
     public bool Linkable => gameTile != null && gameTile.Linkable;
     public bool IsEmpty => gameTile == null || gameTile.IsNullTileBase;
 
+    public TileData SetMetaData(object entry)
+    {
+        metadata.SetValue(entry);
+        return this;
+    }
+    
     public static TileData[] GetTileData(LevelLayerData layer, GameTilePalette palette) => layer.AllPositions
         .Select((position, i) => new TileData(
             palette.GetTile(layer.gameTileIds[i]),

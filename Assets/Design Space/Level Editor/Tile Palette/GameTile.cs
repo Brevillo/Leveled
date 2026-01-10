@@ -13,6 +13,7 @@ public class GameTile : ScriptableObject
     [SerializeField] private List<Tilemap> tilemapPrefabs;
     [SerializeField] private string tooltip;
     [SerializeField] private bool linkable;
+    [SerializeField] private List<MetadataResolver> metadataResolvers;
 
     public int ID => id;
     public Sprite PaletteIcon => paletteIcon;
@@ -30,7 +31,5 @@ public class GameTile : ScriptableObject
 
     public bool GlobalEntity => globalEntity;
 
-    public static string NullableToString(GameTile tile) => tile != null
-        ? tile.Tooltip
-        : "null";
+    public List<MetadataResolver> MetadataResolvers => metadataResolvers;
 }

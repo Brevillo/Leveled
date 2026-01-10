@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using System.IO;
+using System.Runtime.InteropServices;
 using OliverBeebe.UnityUtilities.Runtime.Settings;
 using SFB;
 using UnityEngine.UI;
@@ -117,7 +118,23 @@ public class SaveDataManager : MonoBehaviour
 
     private void ViewFile(string levelName)
     {
-        Process.Start(saveSystem.FolderPath);
+        string path = saveSystem.FilePath(levelName);
+
+        if (!File.Exists(path)) return;
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "explorer.exe",
+                Arguments = $"/select,\"{path}\"",
+                UseShellExecute = true,
+            });
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            Process.Start("open", $"-R \"{path}\"");
+        }
     }
 
     private void DeleteLevel(string levelName, LevelSelectOption option)

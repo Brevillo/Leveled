@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class MovingPlatformToolAction : ToolbarAction
     {
         None,
         Selecting,
-        gg
     }
 
     protected override void OnActivated()
@@ -45,23 +45,27 @@ public class MovingPlatformToolAction : ToolbarAction
 
     protected override void OnReleased()
     {
-        switch (state)
-        {
-            case State.Selecting:
-
-                // blackboard.selection.Value = CurrentSelection;
-                //
-                // var positions = new List<Vector2Int>();
-                // foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
-                // {
-                //     positions.Add(position);
-                // }
-                //
-                // blackboard.changelog.StartChangeBundle("Moved tiles to new layer");
-                //
-                // EditorState.SetTiles(positions);
-                
-                break;
-        }
+        // switch (state)
+        // {
+        //     case State.Selecting:
+        //
+        //         blackboard.selection.Value = CurrentSelection;
+        //         
+        //         var positions = new List<Vector2Int>();
+        //         foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
+        //         {
+        //             positions.Add(position);
+        //         }
+        //         
+        //         EditorState.SetTiles(
+        //             positions.ToArray(),
+        //             positions.Select(EditorState.Level.GetTile).ToArray(),
+        //             "Move tiles to new layer",
+        //             Guid.NewGuid());
+        //
+        //         state = State.None;
+        //         
+        //         break;
+        // }
     }
 }

@@ -21,3 +21,5 @@ MonoBehaviour:
   - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
   tooltip: Teleporter
   linkable: 1
+  metadataResolvers:
+  - {fileID: 11400000, guid: cb78f1ae50336458f8a1630b1eb9b561, type: 2}

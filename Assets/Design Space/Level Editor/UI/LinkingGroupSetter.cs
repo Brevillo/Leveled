@@ -52,10 +52,13 @@ public class LinkingGroupSetter : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(inputField.gameObject);
         
-        foreach (var linkingGroup in editorState.Level.AllLinkingGroups
-                     .Where(group => !preGenerateOptions.Exists(option => option == group.groupID)))
+        foreach (var linkingGroupID in editorState.Level
+                     .GetAllMetadata<LinkingGroup>()
+                     .GroupBy(group => group.groupID)
+                     .Select(group => group.Key)
+                     .Where(groupID => !preGenerateOptions.Exists(option => option == groupID)))
         {
-            spawnedOptions.Add(SpawnOption(linkingGroup));
+            spawnedOptions.Add(SpawnOption(new(linkingGroupID)));
         }
     }
 

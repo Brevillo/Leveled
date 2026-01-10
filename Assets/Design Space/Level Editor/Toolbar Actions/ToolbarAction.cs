@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ToolbarAction : ScriptableObject
@@ -31,6 +32,18 @@ public abstract class ToolbarAction : ScriptableObject
             return new(min, max - min + Vector2Int.one);
         }
     }
+
+    protected IEnumerable<Vector2Int> SelectionPositions
+    {
+        get
+        {
+            foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
+            {
+                yield return position;
+            }
+
+        }
+    }
     
     protected virtual GameTile DrawingTile => activeToolSide switch
     {
@@ -53,6 +66,7 @@ public abstract class ToolbarAction : ScriptableObject
 
     public void Deactivate()
     {
+        OnDeactivated();
     }
     
     public void InputDown(ToolSide toolSide)
@@ -91,4 +105,5 @@ public abstract class ToolbarAction : ScriptableObject
     protected virtual void OnReleased() { }
     protected virtual void OnUpdate() { }
     protected virtual void OnActivated() { }
+    protected virtual void OnDeactivated() { }
 }

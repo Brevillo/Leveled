@@ -27,7 +27,7 @@ public class LevelLayerData
     [JsonProperty("layerID")] public Guid layerID;
     [JsonProperty("gridSize")] public SimpleVector2Int gridSize;
     [JsonProperty("gameTileIds")] public int[] gameTileIds;
-    [JsonProperty("metaData")] public Dictionary<string, TileMetaData> metaData;
+    [JsonProperty("metaData")] public Dictionary<string, TileMetadata> metaData;
     
     public Vector2Int[] AllPositions => Enumerable.Range(0, gridSize.x * gridSize.y)
         .Select(i => new Vector2Int(i / gridSize.y, i % gridSize.y))
@@ -35,7 +35,7 @@ public class LevelLayerData
 }
 
 [JsonObject(MemberSerialization.OptIn)]
-public class TileMetaData
+public class TileMetadata
 {
     [JsonProperty("entries",
         ItemTypeNameHandling = TypeNameHandling.All,
@@ -50,7 +50,11 @@ public class TileMetaData
 
     public int Count => typedEntries?.Count ?? 0;
     
-    public T GetValueOrDefault<T>() => (T)typedEntries?.GetValueOrDefault(typeof(T));
+    public T GetValueOrDefault<T>() =>
+        typedEntries != null && typedEntries.TryGetValue(typeof(T), out var value) && value is T t 
+            ? t
+            : default;
+
     public void SetValue(object value)
     {
         if (typedEntries == null) return;

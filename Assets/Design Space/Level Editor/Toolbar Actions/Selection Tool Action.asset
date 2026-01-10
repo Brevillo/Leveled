@@ -18,3 +18,4 @@ MonoBehaviour:
   pasteChangelogMessage: Pasted tiles
   cutChangelogMessage: Cut tiles
   selectionChangelogMessage: Created selection
+  metadataResolverUIManagerReference: {fileID: 11400000, guid: 17451d909758e4564b1b24b077a1857a, type: 2}

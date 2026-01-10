@@ -10,8 +10,8 @@ public class TileEditorState : GameService
     private Guid layerID = Guid.NewGuid();
     private readonly Level level = new Level();
 
-    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description) =>
-        changelog.SendChange(new TileChangeInfo(description, layerID, positions, positions.Select(Level.GetTile).ToArray(), tiles));
+    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description, Guid? layer = null) =>
+        changelog.SendChange(new TileChangeInfo(description, layer ?? layerID, positions, positions.Select(Level.GetTile).ToArray(), tiles));
 
     public Level Level => level;
     

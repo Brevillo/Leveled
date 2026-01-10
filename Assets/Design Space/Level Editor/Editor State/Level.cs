@@ -39,13 +39,12 @@ public class Level
     }
 
     private IEnumerable<TileData> AllTiles => layers.Values.SelectMany(layer => layer.AllTiles);
-    private IEnumerable<Vector2Int> AllPositions => layers.Values.SelectMany(layer => layer.AllPositions);
+
     private IEnumerable<(Vector2Int position, TileData tileData)> AllTilePositions =>
         layers.Values.SelectMany(layer => layer.AllTilePositions);
 
-    public IEnumerable<LinkingGroup> AllLinkingGroups => AllTiles
-        .GroupBy(group => group.GetMetaData<LinkingGroup>().groupID)
-        .Select(group => new LinkingGroup(group.Key));
+    public IEnumerable<TMetadata> GetAllMetadata<TMetadata>() =>
+        AllTiles.Select(tileData => tileData.GetMetaData<TMetadata>());
 
     public IEnumerable<Vector2Int> EntityPositions => AllTilePositions
         .Where(tile => tile.tileData.gameTile.HasEntity)
@@ -119,7 +118,7 @@ public class Level
                             : default)
                     .ToArray(),
                 metaData = new(layer.Value.AllPositions
-                    .Select(position => new KeyValuePair<string, TileMetaData>(((SimpleVector2Int)position).ToString(), layer.Value.GetTileOrDefault(position).metaData))
+                    .Select(position => new KeyValuePair<string, TileMetadata>(((SimpleVector2Int)position).ToString(), layer.Value.GetTileOrDefault(position).metadata))
                     .Where(metaData => metaData.Value != null && metaData.Value.Count != 0)),
             })
             .ToArray(),

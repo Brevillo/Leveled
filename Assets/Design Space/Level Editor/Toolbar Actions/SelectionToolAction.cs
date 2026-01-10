@@ -8,6 +8,7 @@ public class SelectionToolAction : ToolbarAction
     [SerializeField] private string pasteChangelogMessage;
     [SerializeField] private string cutChangelogMessage;
     [SerializeField] private string selectionChangelogMessage;
+    [SerializeField] private MetadataResolverUIManagerReference metadataResolverUIManagerReference;
     
     private State state;
 
@@ -41,15 +42,21 @@ public class SelectionToolAction : ToolbarAction
         state = State.None;
     }
 
+    protected override void OnDeactivated()
+    {
+        metadataResolverUIManagerReference.value.Close();
+    }
+
     protected override void OnDown()
     {
         if (activeToolSide == ToolSide.Secondary)
         {
-            state = State.None;
-            blackboard.Deselect();
-            
+            OpenMetadataEditor();
+
             return;
         }
+
+        metadataResolverUIManagerReference.value.Close();
 
         switch (state)
         {
@@ -68,7 +75,7 @@ public class SelectionToolAction : ToolbarAction
                 break;
         }
     }
-
+    
     protected override void OnUpdate()
     {
         switch (state)
@@ -99,7 +106,14 @@ public class SelectionToolAction : ToolbarAction
         {
             case State.Selecting:
 
-                blackboard.selection.Value = CurrentSelection;
+                if (CurrentSelection.size == Vector2Int.one)
+                {
+                    blackboard.Deselect();
+                }
+                else
+                {
+                    blackboard.selection.Value = CurrentSelection;
+                } 
 
                 state = State.None;
                         
@@ -111,13 +125,8 @@ public class SelectionToolAction : ToolbarAction
 
                 if (dragStart == SpaceUtility.MouseCell) break;
 
-                List<Vector2Int> originPositions = new();
-                foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
-                {
-                    originPositions.Add(position);
-                }
-
-                var nullTiles = new TileData[originPositions.Count];
+                var originPositions = SelectionPositions.ToArray();
+                var nullTiles = new TileData[originPositions.Length];
 
                 var originTiles = originPositions
                     .Select(EditorState.Level.GetTile)
@@ -142,6 +151,24 @@ public class SelectionToolAction : ToolbarAction
         }
     }
 
+    public void OpenMetadataEditor()
+    {
+        if (blackboard.selection.Value.Contains(dragStart))
+        {
+            metadataResolverUIManagerReference.value.Open(SelectionPositions.ToArray());
+        }
+        else if (blackboard.selection.Value == default)
+        {
+            metadataResolverUIManagerReference.value.Open(new[] { dragStart });
+        }
+        else
+        {
+            metadataResolverUIManagerReference.value.Close();
+            state = State.None;
+            blackboard.Deselect();
+        }
+    }
+    
     public void Cut()
     {
         if (blackboard.selection == default) return;
