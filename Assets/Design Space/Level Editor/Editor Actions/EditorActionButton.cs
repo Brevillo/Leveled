@@ -43,6 +43,15 @@ public class EditorActionButton : MonoBehaviour
         if (button != null)
         {
             button.onClick.AddListener(editorAction.InvokeAction);
+            editorAction.EnabledChanged += OnEditorActionEnabledChanged;
+        }
+    }
+
+    private void OnEditorActionEnabledChanged(bool enabled)
+    {
+        if (button != null)
+        {
+            button.interactable = enabled;
         }
     }
 
@@ -62,6 +71,7 @@ public class EditorActionButton : MonoBehaviour
         if (button != null)
         {
             button.onClick.RemoveListener(editorAction.InvokeAction);
+            editorAction.EnabledChanged -= OnEditorActionEnabledChanged;
         }
 
         if (showKeymap != null)

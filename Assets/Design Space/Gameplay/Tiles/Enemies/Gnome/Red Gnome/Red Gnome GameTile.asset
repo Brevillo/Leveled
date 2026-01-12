@@ -21,3 +21,5 @@ MonoBehaviour:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Red Gnome
   linkable: 0
+  metadataResolvers:
+  - {fileID: 11400000, guid: b1491e270bbf3480b895f4db6594a1bd, type: 2}

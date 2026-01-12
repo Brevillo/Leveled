@@ -12,6 +12,25 @@ public class EditorAction : ScriptableObject
     
     public event Action Action;
 
+    private bool active;
+    private bool enabled;
+
+    public event Action<bool> EnabledChanged;
+    
+    public bool Enabled
+    {
+        get => enabled && active;
+        set
+        {
+            if (active && enabled != value)
+            {
+                enabled = value;
+                
+                EnabledChanged?.Invoke(value);
+            }
+        }
+    }
+    
     public string Keymap
     {
         get
@@ -31,7 +50,7 @@ public class EditorAction : ScriptableObject
     
     private GameStateManager gameStateManager;
     
-    public void Enable(GameStateManager gameStateManager)
+    public void Initialize(GameStateManager gameStateManager)
     {
         this.gameStateManager = gameStateManager;
 
@@ -39,14 +58,18 @@ public class EditorAction : ScriptableObject
         {
             inputActionReference.action.performed += OnInputActionPerformed; 
         }
+
+        active = true;
     }
 
-    public void Disable()
+    public void Cleanup()
     {
         if (inputActionReference != null)
         {
             inputActionReference.action.performed -= OnInputActionPerformed;
         }
+
+        active = false;
     }
     
     private void OnInputActionPerformed(InputAction.CallbackContext context)

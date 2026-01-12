@@ -8,6 +8,9 @@ public abstract class ToolbarAction : ScriptableObject
     [SerializeField] private bool defaultHoverSelectionActive = true;
     [SerializeField] protected string changelogMessage;
     [SerializeField] private string toolName;
+    [SerializeField] private EditorAction setToolEditorAction;
+    [SerializeField] private CursorTemplate activeCursor;
+    [SerializeField] private CursorTemplate downCursor;
     
     protected ToolbarBlackboard blackboard;
 
@@ -15,6 +18,7 @@ public abstract class ToolbarAction : ScriptableObject
     protected TileEditorState EditorState => blackboard.editorState;
     protected TilePlacer TilePlacer => blackboard.tilePlacer;
     protected LinkingGroupSetter LinkingGroupSetter => blackboard.linkingGroupSetter;
+    
     public string ToolName => toolName;
     
     protected ToolSide activeToolSide;
@@ -32,18 +36,6 @@ public abstract class ToolbarAction : ScriptableObject
             return new(min, max - min + Vector2Int.one);
         }
     }
-
-    protected IEnumerable<Vector2Int> SelectionPositions
-    {
-        get
-        {
-            foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
-            {
-                yield return position;
-            }
-
-        }
-    }
     
     protected virtual GameTile DrawingTile => activeToolSide switch
     {
@@ -51,28 +43,50 @@ public abstract class ToolbarAction : ScriptableObject
         ToolSide.Secondary => blackboard.secondaryTile.Value,
         _ => null,
     };
-    
+
+    public EditorAction SetToolEditorAction => setToolEditorAction;
+
     public void InjectReferences(ToolbarBlackboard blackboard)
     {
         this.blackboard = blackboard;
+        
+        setToolEditorAction.Initialize(blackboard.gameStateManager);
+        setToolEditorAction.Action += OnSetToolEditorAction;
+    }
+
+    public void Cleanup()
+    {
+        setToolEditorAction.Cleanup();
+        setToolEditorAction.Action -= OnSetToolEditorAction;
+    }
+
+    private void OnSetToolEditorAction()
+    {
+        blackboard.activeTool.Value = this;
     }
     
     public void Activate()
     {
         blackboard.hoverSelectionActive = defaultHoverSelectionActive;
 
+        CursorTemplateService.Add(activeCursor);
+        
         OnActivated();
     }
 
     public void Deactivate()
     {
         OnDeactivated();
+        
+        CursorTemplateService.Remove(activeCursor);
     }
     
     public void InputDown(ToolSide toolSide)
     {
         activeToolSide = toolSide;
         dragStart = SpaceUtility.MouseCell;
+
+        CursorTemplateService.Add(downCursor);
 
         OnDown();
     }
@@ -83,12 +97,21 @@ public abstract class ToolbarAction : ScriptableObject
         
         OnPressed();
     }
+    
+    public void InputPressedLate(ToolSide toolSide)
+    {
+        if (activeToolSide != toolSide) return;
+
+        OnPressedLate();
+    }
 
     public void InputReleased(ToolSide toolSide)
     {
         if (activeToolSide != toolSide) return;
-        
+
         OnReleased();
+        
+        CursorTemplateService.Remove(downCursor);
 
         activeToolSide = ToolSide.None;
     }
@@ -102,6 +125,7 @@ public abstract class ToolbarAction : ScriptableObject
     
     protected virtual void OnDown() { }
     protected virtual void OnPressed() { }
+    protected virtual void OnPressedLate() { }
     protected virtual void OnReleased() { }
     protected virtual void OnUpdate() { }
     protected virtual void OnActivated() { }

@@ -54,6 +54,14 @@ public class ToolbarActionsManager : MonoBehaviour
         tertiaryToolInput.Init(this, toolInputs, ToolSide.Tertiary);
     }
 
+    private void OnDestroy()
+    {
+        foreach (var toolbarAction in toolbarActionPalette.Actions)
+        {
+            toolbarAction.Cleanup();
+        }
+    }
+
     private void OnEnable()
     {
         primaryToolInput.Enable();
@@ -61,6 +69,19 @@ public class ToolbarActionsManager : MonoBehaviour
         tertiaryToolInput.Enable();
         
         changelog.StateUpdated += OnStateUpdated;
+        gameStateManager.EditorStateChanged += OnEditorStateChanged;
+    }
+
+    private void OnEditorStateChanged(EditorState editorState)
+    {
+        switch (editorState)
+        {
+            case EditorState.Playing:
+
+                
+                
+                break;
+        }
     }
 
     private void OnDisable()
@@ -85,7 +106,16 @@ public class ToolbarActionsManager : MonoBehaviour
         secondaryToolInput.Update();
         tertiaryToolInput.Update();
     }
-    
+
+    private void LateUpdate()
+    {
+        if (gameStateManager.EditorState != EditorState.Editing) return;
+        
+        primaryToolInput.LateUpdate();
+        secondaryToolInput.LateUpdate();
+        tertiaryToolInput.LateUpdate();
+    }
+
     private void OnStateUpdated(ChangeInfo changeInfo)
     {
         if (activeTool.ThisChangeInfo(changeInfo, out var toolbarChangeInfo))
@@ -184,6 +214,16 @@ public class ToolbarActionsManager : MonoBehaviour
             if (pressed && Action != null)
             {
                 Action.InputPressed(toolSide);
+            }
+        }
+
+        public void LateUpdate()
+        {
+            if (manager.gameStateManager.EditorState == EditorState.Editing
+                && pressed
+                && Action != null)
+            {
+                Action.InputPressedLate(toolSide);
             }
         }
 

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a18d47d1da934533a460fc5f5be0223, type: 3}
-  m_Name: Linker Tool Action
+  m_Script: {fileID: 11500000, guid: 03b3a6413a92544ee9d1ef2e108cbede, type: 3}
+  m_Name: Grab
   m_EditorClassIdentifier: 
-  defaultHoverSelectionActive: 1
-  changelogMessage: Changed tile linkings
-  toolName: Linker
+  texture: {fileID: 2800000, guid: 3a3418b7c95044a2ea400df9b588764d, type: 3}
+  hotspot: {x: 8, y: 8}
+  priority: 10

@@ -15,4 +15,7 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: Brushed tiles
   toolName: Brush
+  setToolEditorAction: {fileID: 11400000, guid: 64d6fcf79b9e54ee6b9f8c3c5eb46b54, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 0}
   placedSound: {fileID: 11400000, guid: fb103600489dd4a2e8556569099812e1, type: 2}

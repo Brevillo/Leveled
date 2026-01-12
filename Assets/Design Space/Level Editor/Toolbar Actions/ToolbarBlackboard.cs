@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = ProjectConstants.ToolbarActionsFolder + "Toolbar Blackboard")]
@@ -20,7 +21,19 @@ public class ToolbarBlackboard : ScriptableObject
     public RectInt hoverSelection;
     public bool hoverSelectionActive;
     public bool snapHoverSelection;
+    public GameStateManager gameStateManager;
 
+    public IEnumerable<Vector2Int> SelectionPositions
+    {
+        get
+        {
+            foreach (Vector2Int position in selection.Value.allPositionsWithin)
+            {
+                yield return position;
+            }
+        }
+    }
+    
     public void ResetValues()
     {
         hoverSelection = default;
@@ -32,6 +45,6 @@ public class ToolbarBlackboard : ScriptableObject
     {
         if (selection.Value == default) return;
         
-        selection.Value = default;
+        selection.SetValue(default, "Removed Selection");
     }
 }

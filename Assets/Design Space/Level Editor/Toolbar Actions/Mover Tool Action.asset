@@ -15,3 +15,8 @@ MonoBehaviour:
   defaultHoverSelectionActive: 0
   changelogMessage: 
   toolName: Mover
+  setToolEditorAction: {fileID: 11400000, guid: 5c40eba5ba60646fda035159b02e6fb1, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 11400000, guid: 5eae24cac20fa4077a87cb225c40ca23, type: 2}
+  mouseDelta: {fileID: -6487276261438955514, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  deltaScaler: 4

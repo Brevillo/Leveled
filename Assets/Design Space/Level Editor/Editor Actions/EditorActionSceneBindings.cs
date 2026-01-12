@@ -53,13 +53,13 @@ public class EditorActionSceneBindings : MonoBehaviour
         
         public void Bind(GameStateManager gameStateManager)
         {
-            editorAction.Enable(gameStateManager);
+            editorAction.Initialize(gameStateManager);
             editorAction.Action += binding.Invoke;
         }
 
         public void Unbind()
         {
-            editorAction.Disable();
+            editorAction.Cleanup();
             editorAction.Action -= binding.Invoke;
         }
     }

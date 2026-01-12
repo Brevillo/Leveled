@@ -49,15 +49,20 @@ public abstract class ChangeloggedValue<T> : ChangeloggedValue
     public T Value
     {
         get => value;
-        set => changelog.SendChange(
+        set => SetValue(value, $"Changed '{changelogName}' from {this.value} to {value}");
+    }
+
+    public string ChangelogName => changelogName;
+
+    public void SetValue(T value, string changelogMessage) => 
+        changelog.SendChange(
             new ValueChangeInfo<T>(
                 name: changelogName,
                 previousValue: this.value,
                 newValue: value,
-                $"Changed '{changelogName}' from {this.value} to {value}"),
+                changelogMessage),
             log);
-    }
-    
+
     public event Action<ChangeInfo> ChangeEvent
     {
         add => changelog.ChangeEvent += value;

@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LinkingGroupMetadataResolver : MonoBehaviour
+[CreateAssetMenu(menuName = CreateAssetMenuPath + "Linking Group")]
+public class LinkingGroupMetadataResolver : MetadataResolver
 {
     [SerializeField] private string[] defaultOptions;
-    [SerializeField] private string placeholderText;
-    [SerializeField] private MetadataResolverUIStringID stringID;
-    [SerializeField] private MetadataResolverUI metadataResolverUI;
-    [SerializeField] private TileEditorState tileEditorState;
-
-    private string[] Options => defaultOptions
+    
+    public override string[] GetOptions(TileEditorState tileEditorState) => defaultOptions
         .Concat(tileEditorState.Level
             .GetAllMetadata<LinkingGroup>()
             .Select(group => group.groupID))
@@ -19,14 +14,8 @@ public class LinkingGroupMetadataResolver : MonoBehaviour
         .GroupBy(groupID => groupID)
         .Select(group => group.Key)
         .ToArray();
-    
-    private void Awake()
-    {
-        stringID.OptionSelected += OnOptionSelected;
-        metadataResolverUI.Initialized += OnInitialized;
-    }
 
-    private void OnInitialized(Vector2Int[] selection)
+    public override string GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
     {
         var selectedGroupIDs = selection
             .GroupBy(position => tileEditorState.Level.GetTile(position).GetMetaData<LinkingGroup>().groupID)
@@ -37,12 +26,9 @@ public class LinkingGroupMetadataResolver : MonoBehaviour
         string selected = selectedGroupIDs.Length == 1
             ? selectedGroupIDs.First()
             : "-";
-        
-        stringID.Initialize(selected, placeholderText, Options);
-    }
 
-    private void OnOptionSelected(string option)
-    {
-        metadataResolverUI.UpdateMetadata(new LinkingGroup(option));
+        return selected;
     }
+    
+    public override object Transform(string metadata) => new LinkingGroup(metadata);
 }

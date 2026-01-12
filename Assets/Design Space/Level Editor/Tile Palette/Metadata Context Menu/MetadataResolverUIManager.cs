@@ -12,14 +12,39 @@ public class MetadataResolverUIManager : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private RectTransform windowPivot;
+    [SerializeField] private GameObject noPropertiesContent;
+    [SerializeField] private EditorAction openMetadataEditor;
+    [SerializeField] private ToolbarBlackboard toolbarBlackboard;
 
     private List<MetadataResolverUISection> sectionInstances;
+
+    private (Vector2Int position, TileData tile)[] ResolvableTilePositions(Vector2Int[] selection) =>
+        selection
+            .Select(position => (position, tile: tileEditorState.Level.GetTile(position)))
+            .Where(item => !item.tile.IsEmpty && item.tile.gameTile.MetadataResolvers.Count > 0)
+            .ToArray();
 
     private void Awake()
     {
         content.SetActive(false);
         sectionInstances = new();
-    } 
+        
+        toolbarBlackboard.selection.ChangeEvent += OnSelectionChanged;
+    }
+
+    private void OnDestroy()
+    {
+        toolbarBlackboard.selection.ChangeEvent -= OnSelectionChanged;
+    }
+
+    private void OnSelectionChanged(ChangeInfo changeInfo)
+    {
+        if (changeInfo is ValueChangeInfo<RectInt> selectionChangeInfo
+            && selectionChangeInfo.name == toolbarBlackboard.selection.ChangelogName)
+        {
+            openMetadataEditor.Enabled = ResolvableTilePositions(toolbarBlackboard.SelectionPositions.ToArray()).Any();
+        }
+    }
 
     public void Open(Vector2Int[] selection)
     {
@@ -28,17 +53,17 @@ public class MetadataResolverUIManager : MonoBehaviour
         ClearSections();
         
         // Find all positions with resolvable tiles
-        var resolvableTilePositions = selection
-            .Select(position => (position, tile: tileEditorState.Level.GetTile(position)))
-            .Where(item => !item.tile.IsEmpty && item.tile.gameTile.MetadataResolvers.Count > 0)
-            .ToArray();
+        var resolvableTilePositions = ResolvableTilePositions(selection);
+        
+        content.SetActive(true);
 
         if (resolvableTilePositions.Length == 0)
         {
+            noPropertiesContent.SetActive(true);
             return;
         }
         
-        content.SetActive(true);
+        noPropertiesContent.SetActive(false);
 
         // Get all GameTiles
         var resolvableTiles = resolvableTilePositions
@@ -46,17 +71,17 @@ public class MetadataResolverUIManager : MonoBehaviour
             .Select(group => group.Key)
             .ToArray();
 
-        // If there are multiple resolvable tile types, create a section for shared resolvers
-        if (resolvableTiles.Length > 1)
-        {
-            // Get all MetadataResolvers that are common between all GameTiles
-            var commonResolvers = new HashSet<MetadataResolver>(resolvableTiles.First().MetadataResolvers);
+        // Get all MetadataResolvers that are common between all GameTiles
+        var commonResolvers = new HashSet<MetadataResolver>(resolvableTiles.First().MetadataResolvers);
 
-            foreach (var tile in resolvableTiles)
-            {
-                commonResolvers.RemoveWhere(resolver => !tile.MetadataResolvers.Contains(resolver));
-            }
-            
+        foreach (var tile in resolvableTiles)
+        {
+            commonResolvers.RemoveWhere(resolver => !tile.MetadataResolvers.Contains(resolver));
+        }
+        
+        // If there are multiple resolvable tile types, create a section for shared resolvers
+        if (resolvableTiles.Length > 1 && commonResolvers.Count > 0)
+        {
             // Get position of all tiles that contain at least one of the common MetadataResolvers
             var commonResolverPositions = resolvableTilePositions
                 .Where(item => commonResolvers.Overlaps(item.tile.gameTile.MetadataResolvers))

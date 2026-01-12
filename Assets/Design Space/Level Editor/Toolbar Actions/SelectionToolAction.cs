@@ -49,10 +49,9 @@ public class SelectionToolAction : ToolbarAction
 
     protected override void OnDown()
     {
-        if (activeToolSide == ToolSide.Secondary)
+        if (activeToolSide == ToolSide.Secondary && blackboard.selection.Value != default)
         {
             OpenMetadataEditor();
-
             return;
         }
 
@@ -112,11 +111,16 @@ public class SelectionToolAction : ToolbarAction
                 }
                 else
                 {
-                    blackboard.selection.Value = CurrentSelection;
+                    blackboard.selection.SetValue(CurrentSelection, "Created Selection");
                 } 
 
+                if (activeToolSide == ToolSide.Secondary)
+                {
+                    OpenMetadataEditor();
+                }
+
                 state = State.None;
-                        
+                
                 break;
                         
             case State.MovingSelection:
@@ -125,7 +129,7 @@ public class SelectionToolAction : ToolbarAction
 
                 if (dragStart == SpaceUtility.MouseCell) break;
 
-                var originPositions = SelectionPositions.ToArray();
+                var originPositions = blackboard.SelectionPositions.ToArray();
                 var nullTiles = new TileData[originPositions.Length];
 
                 var originTiles = originPositions
@@ -142,8 +146,8 @@ public class SelectionToolAction : ToolbarAction
                 EditorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection");
                 EditorState.SetTiles(destinationPositions, originTiles, "Filled new selection");
 
-                blackboard.selection.Value = new RectInt(blackboard.selection.Value.position + delta,
-                    blackboard.selection.Value.size);
+                blackboard.selection.SetValue(new RectInt(blackboard.selection.Value.position + delta,
+                    blackboard.selection.Value.size), "Moved Selection");
 
                 blackboard.changelog.EndChangeBundle();
 
@@ -155,7 +159,7 @@ public class SelectionToolAction : ToolbarAction
     {
         if (blackboard.selection.Value.Contains(dragStart))
         {
-            metadataResolverUIManagerReference.value.Open(SelectionPositions.ToArray());
+            metadataResolverUIManagerReference.value.Open(blackboard.SelectionPositions.ToArray());
         }
         else if (blackboard.selection.Value == default)
         {

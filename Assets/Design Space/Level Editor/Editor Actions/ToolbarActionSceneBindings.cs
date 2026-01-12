@@ -41,17 +41,19 @@ public class ToolbarActionSceneBindings : MonoBehaviour
         
         private ChangeloggedToolbarAction activeTool;
 
-        public void Bind(GameStateManager gameStateManager, ChangeloggedToolbarAction activeTool)
+        public void Bind(
+            GameStateManager gameStateManager,
+            ChangeloggedToolbarAction activeTool)
         {
             this.activeTool = activeTool;
             
-            editorAction.Enable(gameStateManager);
+            editorAction.Initialize(gameStateManager);
             editorAction.Action += OnAction;
         }
 
         public void Unbind()
         {
-            editorAction.Disable();
+            editorAction.Cleanup();
             editorAction.Action -= OnAction;
         }
         

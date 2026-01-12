@@ -16,13 +16,14 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private BoxCollider2D rightWall;
     [SerializeField] private BoxCollider2D bottomHazard;
     [SerializeField] private TilePlacerReference tilePlacerReference;
+    [SerializeField] private TileBase edgeTile;
+    [SerializeField] private TileEditorState tileEditorState;
 
-    private Rect rect;
-    private RectInt rectInt;
     private Dictionary<Tilemap, Tilemap> tilemapInstances;
+    private Vector3Int[] previousEdgePositions;
     
-    public Rect Rect => rect;
-    public RectInt RectInt => rectInt;
+    public Rect Rect => tileEditorState.WorldBounds;
+    public RectInt RectInt => tileEditorState.Level.Bounds;
     
     private void Awake()
     {
@@ -68,7 +69,6 @@ public class TilePlacer : MonoBehaviour
         // Clear drawing positions on all tilemaps
         var positions3 = positions.Select(position => (Vector3Int)position).ToArray();
         var nullTiles = new TileBase[positions.Length];
-        Array.Fill(nullTiles, null);
         
         foreach (var tilemap in tilemapInstances.Values)
         {
@@ -93,60 +93,44 @@ public class TilePlacer : MonoBehaviour
         switch (changeInfo)
         {
             case TileChangeInfo tileChangeInfo:
-                
+
+                ClearPreviousEdgeTiles();
+
                 PlaceTiles(tileChangeInfo.positions, tileChangeInfo.newTiles);
                 
-                CompressBounds();
+                UpdateEdgeTiles();
+
+                RefreshTilemaps();
 
                 StartCoroutine(WaitFrame());
                 IEnumerator WaitFrame()
                 {
                     yield return null;
-                    CompressBounds();
+                    RefreshTilemaps();
                 }
                 
                 break;
         }
     }
 
-    private void CompressBounds()
+    private void RefreshTilemaps()
     {
-        rect = default;
-        rectInt = default;
-        
         if (tilemapInstances.Count == 0) return;
-        
-        rectInt = GetRectInt(tilemapInstances.Values.First());
-
-        RectInt GetRectInt(Tilemap tilemap1)
-        {
-            return new RectInt((Vector2Int)tilemap1.cellBounds.position, (Vector2Int)tilemap1.cellBounds.size);
-        }
 
         foreach (var tilemap in tilemapInstances.Values)
         {
             tilemap.CompressBounds();
             tilemap.CompressBounds();
+            
             tilemap.RefreshAllTiles();
 
             if (tilemap.TryGetComponent(out CompositeCollider2D composite))
             {
                 composite.GenerateGeometry();
             }
-
-            var tilemapBounds = GetRectInt(tilemap);
-
-            rectInt.SetMinMax(
-                Vector2Int.Min(rectInt.min, tilemapBounds.min),
-                Vector2Int.Max(rectInt.max, tilemapBounds.max));
         }
-
-        rect = new Rect
-        {
-            size = rectInt.size,
-            center = spaceUtility.Grid.transform.TransformPoint(rectInt.center),
-        };
         
+        var rect = Rect;
         Vector2 wallSize = new(wallThickness, rect.size.y + wallHeightBuffer);
         
         leftWall.transform.position = new Vector2(rect.min.x - wallThickness / 2f, rect.center.y + wallHeightBuffer / 2f);
@@ -158,7 +142,51 @@ public class TilePlacer : MonoBehaviour
         bottomHazard.transform.position = new Vector2(rect.center.x, rect.min.y - wallThickness / 2f);
         bottomHazard.size = new(rect.size.x, wallThickness);
     }
+
+    [SerializeField] private List<Tilemap> edgeOnTilemaps;
     
+    private void UpdateEdgeTiles()
+    {
+        var rectInt = tileEditorState.Level.Bounds;
+        
+        // Fill edge tiles
+        Vector2 size = rectInt.size + Vector2Int.one;
+        var edgePositions = Enumerable.Range(0, (int)(size.x * 2 + size.y * 2 + 4))
+            .Select(i => (Vector3Int)(rectInt.min - Vector2Int.one) + new Vector3Int(
+                (int)Mathf.Clamp(size.x + size.y / 2 - Mathf.Abs(i - (size.y * 1.5f + size.x)), 0, size.x),
+                (int)Mathf.Clamp(size.y + size.x / 2 - Mathf.Abs(i - (size.y + size.x / 2)), 0, size.y)))
+            .ToArray();
+        
+        var edgeTiles = new TileBase[edgePositions.Length];
+        Array.Fill(edgeTiles, edgeTile);
+        
+        foreach (var tilemap in tilemapInstances)
+        {
+            if (edgeOnTilemaps.Contains(tilemap.Key))
+            {
+                tilemap.Value.SetTiles(edgePositions, edgeTiles);
+            }
+        }
+
+        previousEdgePositions = edgePositions;
+    }
+
+    private void ClearPreviousEdgeTiles()
+    {
+        if (previousEdgePositions != null)
+        {
+            var previousEdgeTiles = new TileBase[previousEdgePositions.Length];
+            
+            foreach (var tilemap in tilemapInstances)
+            {
+                if (edgeOnTilemaps.Contains(tilemap.Key))
+                {
+                    tilemap.Value.SetTiles(previousEdgePositions, previousEdgeTiles);
+                }
+            }
+        }
+    }
+
     private Tilemap GetTilemapInstance(Tilemap tilemapPrefab)
     {
         if (tilemapInstances.TryGetValue(tilemapPrefab, out var tilemapInstance))

@@ -8,7 +8,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -708,15 +708,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Linker",
-                    "type": "Button",
-                    "id": "38245247-e3b8-4fb1-84ba-fff36dfccfa2",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "SaveLevel",
                     "type": "Button",
                     "id": "b735f10d-b6f1-44a2-a932-8d643733c0fb",
@@ -832,6 +823,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MouseDelta",
+                    "type": "Value",
+                    "id": "933c104b-8ba0-45af-b877-872c27dd7b82",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1684,17 +1684,6 @@
                 },
                 {
                     "name": "",
-                    "id": "bf94f50f-066d-41f4-9009-4e1c54eac589",
-                    "path": "<Keyboard>/l",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Linker",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1c308eb0-ce36-4c72-b79a-6a4382b74954",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
@@ -2011,6 +2000,17 @@
                     "action": "Paste",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "4b82eb12-98b5-42d6-aaf9-fbbc1d9d7cb5",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

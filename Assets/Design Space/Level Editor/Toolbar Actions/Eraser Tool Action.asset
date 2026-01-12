@@ -15,3 +15,7 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: Erased tiles
   toolName: Eraser
+  setToolEditorAction: {fileID: 11400000, guid: a678f2336a5e84007850c32ef1478d0e, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 0}
+  placedSound: {fileID: 0}

@@ -23,7 +23,10 @@ MonoBehaviour:
   secondaryTile: {fileID: 11400000, guid: 58ea519e36a9d4f26bc866077d435a40, type: 2}
   selection: {fileID: 11400000, guid: ca88d80b471114714b98c5c36119fced, type: 2}
   hoverSelection:
-    m_Position: {x: -2, y: 16, z: 0}
-    m_Size: {x: 1, y: 1, z: 1}
+    x: 14
+    y: 17
+    width: 1
+    height: 1
   hoverSelectionActive: 1
   snapHoverSelection: 0
+  gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}

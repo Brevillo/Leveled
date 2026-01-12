@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Area Selection
   m_EditorClassIdentifier: 
   defaultValue:
-    m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 0, y: 0, z: 0}
+    x: 0
+    y: 0
+    width: 0
+    height: 0
   changelogName: Area Selection
+  overrideChangelogMessage: Changed Selection
   log: 1

@@ -15,6 +15,9 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: Moved tiles
   toolName: Area Selection
+  setToolEditorAction: {fileID: 11400000, guid: 6bde344b41b914827ab854d7b6a2b8df, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 0}
   pasteChangelogMessage: Pasted tiles
   cutChangelogMessage: Cut tiles
   selectionChangelogMessage: Created selection

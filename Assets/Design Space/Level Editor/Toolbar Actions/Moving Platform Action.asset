@@ -15,3 +15,6 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: 
   toolName: Moving Platform
+  setToolEditorAction: {fileID: 11400000, guid: 5ef5e0250256d4da6a31b6b7f68d1714, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 0}

@@ -15,5 +15,8 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: Filled tiles
   toolName: Fill
+  setToolEditorAction: {fileID: 11400000, guid: 48dcf4681c5c344a591375fb558c9de9, type: 2}
+  activeCursor: {fileID: 11400000, guid: e66b25c2779484e06adf7d54461629c0, type: 2}
+  downCursor: {fileID: 0}
   maxIterations: 100000
   placedSound: {fileID: 11400000, guid: fb103600489dd4a2e8556569099812e1, type: 2}

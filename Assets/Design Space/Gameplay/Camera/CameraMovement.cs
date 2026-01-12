@@ -11,7 +11,6 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float minZoom;
     [SerializeField] private float zoomSmoothing;
     [SerializeField] private float defaultZoom;
-    [SerializeField] private TilePlacer placer;
     [SerializeField] private float cameraSnapBufferMult;
 
     private float zoomTarget;
@@ -55,10 +54,11 @@ public class CameraMovement : MonoBehaviour
     public void CenterCameraOnLevel()
     {
         if (gameStateManager.EditorState == EditorState.Playing) return;
-        
-        transform.position = placer.Rect.center;
 
-        SetSize(placer.Rect.size * cameraSnapBufferMult);
+        var levelBounds = editorState.WorldBounds;
+        transform.position = levelBounds.center;
+
+        SetSize(levelBounds.size * cameraSnapBufferMult);
     }
 
     private float GetZoomForSize(Vector2 size)

@@ -1,51 +1,54 @@
 using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MetadataResolverUIStringID : MonoBehaviour
 {
+    [SerializeField] private MetadataResolverUI metadataResolverUI;
     [SerializeField] private GameObject popup;
+    [SerializeField] private GameObject inputFieldContent;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Button optionPrefab;
     [SerializeField] private Transform optionsParent;
     [SerializeField] private TextMeshProUGUI currentValueDisplay;
     [SerializeField] private TextMeshProUGUI previousValueDisplay;
     [SerializeField] private TextMeshProUGUI placeholderTextDisplay;
-    
-    private List<Button> optionInstances;
+    [SerializeField] private TileEditorState tileEditorState;
     
     public event Action<string> OptionSelected;
     
-    public void Initialize(string selected, string inputFieldPlaceholder, string[] options)
+    private void Awake()
     {
-        currentValueDisplay.text = selected;
-        placeholderTextDisplay.text = inputFieldPlaceholder;
+        inputField.onSubmit.AddListener(SelectOption);
         
-        foreach (var option in options)
+        metadataResolverUI.Initialized += Initialize;
+    }
+    
+    public void Initialize(Vector2Int[] selection)
+    {
+        var resolver = metadataResolverUI.Resolver;
+
+        currentValueDisplay.text =
+            resolver.GetCurrentValue(selection, tileEditorState);
+        
+        placeholderTextDisplay.text = resolver.InputFieldPlaceholder;
+        inputFieldContent.SetActive(placeholderTextDisplay.text != "");
+        
+        foreach (var option in resolver.GetOptions(tileEditorState))
         {
             var newOption = Instantiate(optionPrefab, optionsParent);
 
             newOption.GetComponentInChildren<TextMeshProUGUI>().text = option;
             newOption.onClick.AddListener(() => SelectOption(option));
-            
-            optionInstances.Add(newOption);
         }
     }
     
-    private void Awake()
-    {
-        optionInstances = new();
-        
-        inputField.onSubmit.AddListener(SelectOption);
-    }
-
     private void SelectOption(string value)
     {
         currentValueDisplay.text = value;
 
-        OptionSelected?.Invoke(value);
+        metadataResolverUI.UpdateMetadata(value);
 
         CloseValueEditor();
     }

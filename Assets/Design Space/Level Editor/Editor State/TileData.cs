@@ -12,6 +12,19 @@ public readonly struct LinkingGroup
     }
 }
 
+public enum TileRotation
+{
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+public readonly struct SignContents
+{
+    public readonly string text;
+}
+
 public readonly struct TileData
 {
     public readonly GameTile gameTile;
@@ -41,8 +54,11 @@ public readonly struct TileData
 
     public TileData SetMetaData(object entry)
     {
-        metadata.SetValue(entry);
-        return this;
+        var newMetadata = metadata ?? new();
+        
+        newMetadata.SetValue(entry);
+        
+        return new(gameTile, newMetadata);
     }
     
     public static TileData[] GetTileData(LevelLayerData layer, GameTilePalette palette) => layer.AllPositions

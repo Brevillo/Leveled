@@ -6,18 +6,23 @@ public class MetadataResolverUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI labelDisplay;
     
+    private MetadataResolver metadataResolver;
+
     public event Action<object> MetadataUpdated;
     public event Action<Vector2Int[]> Initialized;
-    
+
+    public MetadataResolver Resolver => metadataResolver;
+
     public void Initialize(MetadataResolver resolver, Vector2Int[] selection)
     {
-        labelDisplay.text = resolver.FieldName;
+        metadataResolver = resolver;
+        labelDisplay.text = metadataResolver.FieldName;
         
         Initialized?.Invoke(selection);
     }
     
-    public void UpdateMetadata(object metadata)
+    public void UpdateMetadata(string metadata)
     {
-        MetadataUpdated?.Invoke(metadata);
+        MetadataUpdated?.Invoke(metadataResolver.Transform(metadata));
     }
 }

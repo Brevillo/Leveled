@@ -13,21 +13,6 @@ MonoBehaviour:
   m_Name: Set Tool Selection
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: -4299738433961196397, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  validGameStates: 1
+  validEditorStates: 1
   tooltip: Area Selection
-  icon: {fileID: 21300000, guid: e4397b81fa0ff4232ae436b9ec940c99, type: 3}
-  action:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
-        m_TargetAssemblyTypeName: TileEditorState, Assembly-CSharp
-        m_MethodName: set_ActiveTool
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
-          m_ObjectArgumentAssemblyTypeName: ToolbarAction, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  icon: {fileID: 21300000, guid: 49572654a810e401fade78b0e7c33751, type: 3}

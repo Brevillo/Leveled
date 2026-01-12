@@ -15,4 +15,7 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: Rectangle brushed tiles
   toolName: Rectangle Brush
+  setToolEditorAction: {fileID: 11400000, guid: fd7450501670e4b8c90fccb3175601c1, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 0}
   placedSound: {fileID: 11400000, guid: fb103600489dd4a2e8556569099812e1, type: 2}

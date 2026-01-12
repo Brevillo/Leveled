@@ -6,7 +6,8 @@ using System.Linq;
 public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;
-
+    [SerializeField] private SpaceUtility spaceUtility;
+    
     private Guid layerID = Guid.NewGuid();
     private readonly Level level = new Level();
 
@@ -14,6 +15,12 @@ public class TileEditorState : GameService
         changelog.SendChange(new TileChangeInfo(description, layer ?? layerID, positions, positions.Select(Level.GetTile).ToArray(), tiles));
 
     public Level Level => level;
+
+    public Rect WorldBounds => new Rect
+    {
+        size = Level.Bounds.size,
+        center = spaceUtility.Grid.transform.TransformPoint(Level.Bounds.center),
+    };
     
     protected override void Initialize()
     {
@@ -36,6 +43,8 @@ public class TileEditorState : GameService
                    Level.SetTile(tileChangeInfo.positions[i], tileChangeInfo.newTiles[i], layerID);
                 }
 
+                Level.UpdateBounds();
+                
                 break;
         }
     }

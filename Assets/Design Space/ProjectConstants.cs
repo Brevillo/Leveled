@@ -12,7 +12,7 @@ public static class ProjectConstants
     public const string AudioFolder = ProjectFolder + "Audio/";
     public const string SettingsFolder = ProjectFolder + "Settings/";
     public const string ChangelogFolder = ProjectFolder + "Changelog/";
-
+    
     public const string ToolMenuItems = ProjectFolder + "Tools/";
 
     public const string CreateAssetMenuValidators = "Assets/Validators/";

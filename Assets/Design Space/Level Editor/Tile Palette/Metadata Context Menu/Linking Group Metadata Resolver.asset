@@ -9,8 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d005a16a434534936df7148add8b84, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f6435408f214a62b88b4dfd78d551a8, type: 3}
   m_Name: Linking Group Metadata Resolver
   m_EditorClassIdentifier: 
   fieldName: Linking Group
-  uiEntry: {fileID: 4452824917906387632, guid: 1376624d5d7d14e3e857542625b71eca, type: 3}
+  uiEntry: {fileID: 4731740944710711690, guid: de9b7c2d3683c47edb5a564c552339e0, type: 3}
+  inputFieldPlaceholder: Type New Gruop
+  defaultOptions:
+  - Alpha
+  - Beta
+  - Gamma

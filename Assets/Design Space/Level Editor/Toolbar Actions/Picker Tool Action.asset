@@ -15,3 +15,6 @@ MonoBehaviour:
   defaultHoverSelectionActive: 1
   changelogMessage: 
   toolName: Picker
+  setToolEditorAction: {fileID: 11400000, guid: a9c4c7a0dea8440c49a6d997acadef6a, type: 2}
+  activeCursor: {fileID: 0}
+  downCursor: {fileID: 0}

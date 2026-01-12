@@ -923,18 +923,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8052644154d4a7caa8d28f931d771f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  metadataResolverUI: {fileID: 4731740944710711690}
   popup: {fileID: 7000303992241060431}
+  inputFieldContent: {fileID: 1589470102224858528}
   inputField: {fileID: 5909863804471708593}
   optionPrefab: {fileID: 6876309033001852325, guid: dc7c697100b3447cca1647a86295ce6c, type: 3}
   optionsParent: {fileID: 7498467691056012438}
   currentValueDisplay: {fileID: 3028621843924687608}
   previousValueDisplay: {fileID: 2077175948682116848}
   placeholderTextDisplay: {fileID: 8419298005543809646}
+  tileEditorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
 --- !u!224 &1339373156545554465 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 550386742835563466, guid: 5def37aa93ac042d6b5e3db71e6c1992, type: 3}
   m_PrefabInstance: {fileID: 1528186033112032235}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4731740944710711690 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6097786245729753697, guid: 5def37aa93ac042d6b5e3db71e6c1992, type: 3}
+  m_PrefabInstance: {fileID: 1528186033112032235}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143270989511882761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4fcedbf1ad46f9a2e546ae607cc08f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2631426434260458376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1565,7 +1579,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7529892039922429192, guid: 3ae85b6996b05429b92e011646dfe567, type: 3}
       propertyPath: m_Name
-      value: Create New FValue
+      value: Create New Value
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529892039922429192, guid: 3ae85b6996b05429b92e011646dfe567, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8930635709805436963, guid: 3ae85b6996b05429b92e011646dfe567, type: 3}
       propertyPath: m_Pivot.x
@@ -1687,5 +1705,10 @@ RectTransform:
 --- !u!224 &404936475486347403 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8930635709805436963, guid: 3ae85b6996b05429b92e011646dfe567, type: 3}
+  m_PrefabInstance: {fileID: 9111171585555382440}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1589470102224858528 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7529892039922429192, guid: 3ae85b6996b05429b92e011646dfe567, type: 3}
   m_PrefabInstance: {fileID: 9111171585555382440}
   m_PrefabAsset: {fileID: 0}

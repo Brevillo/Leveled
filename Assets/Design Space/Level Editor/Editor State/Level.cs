@@ -7,6 +7,7 @@ public class Level
 {
     private readonly Grid<TileData> baseLayer;
     private readonly Dictionary<Guid, Grid<TileData>> layers = new();
+    private RectInt bounds;
 
     private static Grid<TileData> GetNewLayer() => 
         new DictionaryGrid();
@@ -21,6 +22,19 @@ public class Level
         }
         
         layer.SetTile(position, tileData);
+    }
+
+    public void UpdateBounds()
+    {
+        var allPositions = layers
+            .SelectMany(item => item.Value.AllPositions)
+            .ToArray();
+
+        bounds = new()
+        {
+            min = allPositions.Aggregate(Vector2Int.one * int.MaxValue, Vector2Int.Min),
+            max = allPositions.Aggregate(Vector2Int.one * int.MinValue, Vector2Int.Max) + Vector2Int.one,
+        };
     }
 
     #region Getters
@@ -71,6 +85,8 @@ public class Level
             })
             .ToArray()
     );
+
+    public RectInt Bounds => bounds;
 
     public ChangeInfo SetLevelData(LevelData levelData, GameTilePalette palette)
     {

@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Toolbar Action Palette
   m_EditorClassIdentifier: 
   actions:
+  - {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
   - {fileID: 11400000, guid: d1cfbbf31a72749e5b59e01f3d6eb422, type: 2}
   - {fileID: 11400000, guid: 7653619b9e4e94328a35d9259d0d2e7f, type: 2}
   - {fileID: 11400000, guid: ddae5089bacfd4988895257c5058a1fb, type: 2}
   - {fileID: 11400000, guid: 8a2fdd84459914d94b0594e0db96038f, type: 2}
   - {fileID: 11400000, guid: 6b444fb93f32d496e9e6705ba8bbe380, type: 2}
-  - {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
-  - {fileID: 11400000, guid: 32c40eac74e90438c827f465af40bf65, type: 2}
   - {fileID: 11400000, guid: 3d114608408a14ea589e07398a17be85, type: 2}
   - {fileID: 11400000, guid: 9651256f259e342d2aaa0d4389782ffb, type: 2}
