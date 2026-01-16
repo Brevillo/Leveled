@@ -47,12 +47,14 @@ public class ChangeInfoBundle : ChangeInfo
 
 public class TileChangeInfo : ChangeInfo
 {
-    public readonly Guid layerID;
+    public readonly int layerID;
     public readonly Vector2Int[] positions;
     public readonly TileData[] previousTiles;
     public readonly TileData[] newTiles;
 
-    public TileChangeInfo(string description, Guid layerID,
+    public TileChangeInfo(
+        string description, 
+        int layerID,
         Vector2Int[] positions,
         TileData[] previousTiles,
         TileData[] newTiles)

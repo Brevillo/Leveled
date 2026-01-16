@@ -105,7 +105,7 @@ public class LinkingGroupLabelsManager : MonoBehaviour
         
         foreach (var label in labels)
         {
-            var tileData = editorState.Level.GetTile(label.Key);
+            var tileData = editorState.LevelInstance.GetTileOnAnyLayer(label.Key);
             
             label.Value.textMesh.text = tileData.GetMetaData<LinkingGroup>().groupID;
 

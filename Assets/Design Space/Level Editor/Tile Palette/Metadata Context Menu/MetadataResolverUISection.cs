@@ -31,7 +31,7 @@ public class MetadataResolverUISection : MonoBehaviour
         tileEditorState.SetTiles(
             selection,
             selection
-                .Select(position => tileEditorState.Level.GetTile(position).SetMetaData(metadata))
+                .Select(position => tileEditorState.LevelInstance.GetTileOnAnyLayer(position).SetMetaData(metadata))
                 .ToArray(),
             "Updated tile metadata");
     }

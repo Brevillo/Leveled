@@ -24,13 +24,15 @@ public class LevelData
 [JsonObject(MemberSerialization.OptIn)]
 public class LevelLayerData
 {
-    [JsonProperty("layerID")] public Guid layerID;
+    [JsonProperty("layerID", DefaultValueHandling = DefaultValueHandling.Ignore)] public Guid layerID;
+    
     [JsonProperty("gridSize")] public SimpleVector2Int gridSize;
     [JsonProperty("gameTileIds")] public int[] gameTileIds;
+    [JsonProperty("minPosition")] public SimpleVector2Int minPosition;
     [JsonProperty("metaData")] public Dictionary<string, TileMetadata> metaData;
     
     public Vector2Int[] AllPositions => Enumerable.Range(0, gridSize.x * gridSize.y)
-        .Select(i => new Vector2Int(i / gridSize.y, i % gridSize.y))
+        .Select(i => minPosition + new Vector2Int(i / gridSize.y, i % gridSize.y))
         .ToArray();
 }
 

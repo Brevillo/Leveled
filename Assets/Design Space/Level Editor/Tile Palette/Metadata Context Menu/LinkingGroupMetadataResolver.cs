@@ -7,7 +7,7 @@ public class LinkingGroupMetadataResolver : MetadataResolver
     [SerializeField] private string[] defaultOptions;
     
     public override string[] GetOptions(TileEditorState tileEditorState) => defaultOptions
-        .Concat(tileEditorState.Level
+        .Concat(tileEditorState.LevelInstance
             .GetAllMetadata<LinkingGroup>()
             .Select(group => group.groupID))
         .Where(group => !string.IsNullOrEmpty(group))
@@ -18,7 +18,7 @@ public class LinkingGroupMetadataResolver : MetadataResolver
     public override string GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
     {
         var selectedGroupIDs = selection
-            .GroupBy(position => tileEditorState.Level.GetTile(position).GetMetaData<LinkingGroup>().groupID)
+            .GroupBy(position => tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<LinkingGroup>().groupID)
             .Select(group => group.Key)
             .Where(groupID => !string.IsNullOrEmpty(groupID))
             .ToArray();

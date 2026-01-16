@@ -129,22 +129,25 @@ public class SelectionToolAction : ToolbarAction
 
                 if (dragStart == SpaceUtility.MouseCell) break;
 
+                blackboard.changelog.StartChangeBundle(changelogMessage);
+
                 var originPositions = blackboard.SelectionPositions.ToArray();
                 var nullTiles = new TileData[originPositions.Length];
-
-                var originTiles = originPositions
-                    .Select(EditorState.Level.GetTile)
-                    .ToArray();
 
                 Vector2Int delta = SpaceUtility.MouseCell - dragStart;
                 var destinationPositions = originPositions
                     .Select(position => position + delta)
                     .ToArray();
 
-                blackboard.changelog.StartChangeBundle(changelogMessage);
+                foreach (var layer in EditorState.LevelInstance.AllLayerIDs)
+                {
+                    var originTiles = originPositions
+                        .Select(position => EditorState.LevelInstance.GetTile(position, layer))
+                        .ToArray();
 
-                EditorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection");
-                EditorState.SetTiles(destinationPositions, originTiles, "Filled new selection");
+                    EditorState.SetTiles(originPositions.ToArray(), nullTiles, "Deleted original selection", layer);
+                    EditorState.SetTiles(destinationPositions, originTiles, "Filled new selection", layer);
+                }
 
                 blackboard.selection.SetValue(new RectInt(blackboard.selection.Value.position + delta,
                     blackboard.selection.Value.size), "Moved Selection");
@@ -198,7 +201,7 @@ public class SelectionToolAction : ToolbarAction
         }
         
         state = State.Copied;
-        clipboardAnchor = (Vector2Int)blackboard.selection.Value.position;
+        clipboardAnchor = blackboard.selection.Value.position;
 
         clipboardPositions ??= new();
         clipboardTiles ??= new();
@@ -209,7 +212,7 @@ public class SelectionToolAction : ToolbarAction
         foreach (Vector2Int position in blackboard.selection.Value.allPositionsWithin)
         {
             clipboardPositions.Add(position);
-            clipboardTiles.Add(EditorState.Level.GetTile(position));
+            clipboardTiles.Add(EditorState.LevelInstance.GetTileOnAnyLayer(position));
         }
     }
 
@@ -223,5 +226,29 @@ public class SelectionToolAction : ToolbarAction
             clipboardPositions.Select(position => position + delta).ToArray(),
             clipboardTiles.ToArray(),
             pasteChangelogMessage);
+    }
+
+    public void ResetLayer()
+    {
+        if (blackboard.selection == default) return;
+
+        if (blackboard.activeTool.Value != this)
+        {
+            blackboard.activeTool.Value = this;
+        }
+        
+        EditorState.MoveTilesToLayer(blackboard.SelectionPositions.ToArray(), 0);
+    }
+
+    public void NewLayer()
+    {
+        if (blackboard.selection == default) return;
+
+        if (blackboard.activeTool.Value != this)
+        {
+            blackboard.activeTool.Value = this;
+        }
+        
+        EditorState.MoveTilesToLayer(blackboard.SelectionPositions.ToArray(), EditorState.LevelInstance.GetNewLayerID());
     }
 }

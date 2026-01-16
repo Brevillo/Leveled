@@ -7,19 +7,53 @@ public class TileEditorState : GameService
 {
     [SerializeField] private Changelog changelog;
     [SerializeField] private SpaceUtility spaceUtility;
+    [SerializeField] private TilePlacerReference tilePlacerReference;
     
-    private Guid layerID = Guid.NewGuid();
-    private readonly Level level = new Level();
+    private readonly LevelInstance levelInstance = new LevelInstance();
 
-    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description, Guid? layer = null) =>
-        changelog.SendChange(new TileChangeInfo(description, layer ?? layerID, positions, positions.Select(Level.GetTile).ToArray(), tiles));
+    public void MoveTilesToLayer(Vector2Int[] positions, int layerID)
+    {
+        changelog.StartChangeBundle("Move tiles to new layer");
 
-    public Level Level => level;
+        var movingTiles = positions.Select(LevelInstance.GetTileOnAnyLayer).ToArray();
+        var nullTiles = new TileData[positions.Length];
+        
+        
+        foreach (var layer in LevelInstance.AllLayerIDs)
+        {
+            if (layer == layerID) continue;
+            
+            SetTiles(
+                positions,
+                nullTiles,
+                $"Changed tiles on layer {layer}",
+                layer);
+        }
+        
+        SetTiles(
+            positions,
+            movingTiles,
+            $"Changed tiles on layer {layerID}",
+            layerID);
+        
+        changelog.EndChangeBundle();
+    }
+
+    public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description, int layerID = 0) =>
+        changelog.SendChange(new TileChangeInfo(
+            description,
+            layerID, 
+            positions,
+            positions
+                .Select(position => LevelInstance.GetTile(position, layerID))
+                .ToArray(), tiles));
+
+    public LevelInstance LevelInstance => levelInstance;
 
     public Rect WorldBounds => new Rect
     {
-        size = Level.Bounds.size,
-        center = spaceUtility.Grid.transform.TransformPoint(Level.Bounds.center),
+        size = LevelInstance.Bounds.size,
+        center = spaceUtility.Grid.transform.TransformPoint(LevelInstance.Bounds.center),
     };
     
     protected override void Initialize()
@@ -38,24 +72,30 @@ public class TileEditorState : GameService
         {
             case TileChangeInfo tileChangeInfo:
 
+                if (LevelInstance.UpdateLayers(tileChangeInfo.layerID)) return;
+                
                 for (int i = 0; i < tileChangeInfo.positions.Length; i++)
                 {
-                   Level.SetTile(tileChangeInfo.positions[i], tileChangeInfo.newTiles[i], layerID);
+                   LevelInstance.SetTile(tileChangeInfo.positions[i], tileChangeInfo.newTiles[i], tileChangeInfo.layerID);
                 }
 
-                Level.UpdateBounds();
+                LevelInstance.UpdateBounds();
                 
                 break;
         }
     }
     
-    public void ClearAllTiles() => changelog.SendChange(level.ClearAllTilesChangeInfo);
-    
+    public void ClearAllTiles()
+    {
+        changelog.SendChange(LevelInstance.ClearAllTilesChangeInfo);
+        tilePlacerReference.value.ResetTilemaps();
+    }
+
     public void SetLevelData(LevelData levelData, GameTilePalette palette)
     {
         ClearAllTiles();
         
-        changelog.SendChange(Level.SetLevelData(levelData, palette));
+        changelog.SendChange(LevelInstance.SetLevelData(levelData, palette));
         changelog.ClearChangelog();
     }
 }

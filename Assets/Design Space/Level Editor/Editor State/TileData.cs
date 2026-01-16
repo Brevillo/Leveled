@@ -60,10 +60,4 @@ public readonly struct TileData
         
         return new(gameTile, newMetadata);
     }
-    
-    public static TileData[] GetTileData(LevelLayerData layer, GameTilePalette palette) => layer.AllPositions
-        .Select((position, i) => new TileData(
-            palette.GetTile(layer.gameTileIds[i]),
-            layer.metaData?.FirstOrDefault(item => SimpleVector2Int.Parse(item.Key) == position).Value))
-        .ToArray();
 }

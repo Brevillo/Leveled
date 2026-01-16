@@ -64,7 +64,7 @@ public class Teleporter : MonoBehaviour
     {
         foreach (var teleporter in teleporters)
         {
-            teleporter.linkingGroup = editorState.Level.GetTile(spaceUtility.WorldToCell(teleporter.transform.position))
+            teleporter.linkingGroup = editorState.LevelInstance.GetTileOnAnyLayer(spaceUtility.WorldToCell(teleporter.transform.position))
                 .GetMetaData<LinkingGroup>();
         }
         

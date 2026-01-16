@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Tilemaps;
+using Object = UnityEngine.Object;
 
 public class TilePlacer : MonoBehaviour
 {
@@ -18,16 +19,98 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private TilePlacerReference tilePlacerReference;
     [SerializeField] private TileBase edgeTile;
     [SerializeField] private TileEditorState tileEditorState;
+    [SerializeField] private List<Tilemap> edgeOnTilemaps;
+    [SerializeField] private Color normalLayerColor;
+    [SerializeField] private Color dimmedLayerColor;
+    [SerializeField] private float layerColorChangeSpeed;
+    [SerializeField] private float layerZOffset;
 
-    private Dictionary<Tilemap, Tilemap> tilemapInstances;
+    private List<Layer> tilemapLayers;
     private Vector3Int[] previousEdgePositions;
+    private int selectedLayer;
+
+    private class Layer
+    {
+        private readonly Transform parent;
+        private readonly Dictionary<Tilemap, Tilemap> tilemapInstances;
+        private readonly TilePlacer context;
+        private readonly int layerID;
+        
+        private float dimPercent;
+
+        public Layer(TilePlacer context, int layerID)
+        {
+            this.layerID = layerID;
+            this.context = context;
+            var go = new GameObject($"Tilemap Layer {layerID}");
+            
+            parent = go.transform;
+            parent.parent = context.tilemapsParent;
+            parent.localPosition = Vector3.forward * (context.layerZOffset * layerID);
+
+            tilemapInstances = new();
+        }
+
+        public void UpdateDimming()
+        {
+            float dimPercentTarget = context.selectedLayer <= 0 || context.selectedLayer == layerID ? 0f : 1f;
+            float newDimPercent = Mathf.MoveTowards(dimPercent, dimPercentTarget,
+                Time.deltaTime / context.layerColorChangeSpeed);
+
+            if (newDimPercent == dimPercent) return;
+
+            dimPercent = newDimPercent; 
+
+            var color = Color.Lerp(context.normalLayerColor, context.dimmedLayerColor, dimPercent);
+            
+            foreach (var tilemap in AllInstances)
+            {
+                tilemap.color = color;
+            }
+        }
+        
+        public IEnumerable<Tilemap> AllInstances => tilemapInstances.Values;
+
+        public IEnumerable<Tilemap> GetEdgedTilemaps(List<Tilemap> edgeOnTilemaps) => tilemapInstances
+            .Where(kv => edgeOnTilemaps.Contains(kv.Key))
+            .Select(kv => kv.Value);
+        
+        public Tilemap GetTilemapInstance(Tilemap tilemapPrefab)
+        {
+            // Try getting existing tilemap instance
+            if (!tilemapInstances.TryGetValue(tilemapPrefab, out var tilemapInstance))
+            {
+                // Create new tilemap instance
+                tilemapInstance = Instantiate(tilemapPrefab, parent);
+                tilemapInstances[tilemapPrefab] = tilemapInstance;
+            }
+
+            return tilemapInstance;
+        }
+
+        public void Destroy()
+        {
+            foreach (var tilemapInstance in AllInstances)
+            {
+                Object.Destroy(tilemapInstance.gameObject);
+            }
+            
+            Object.Destroy(parent.gameObject);
+        }
+    }
     
     public Rect Rect => tileEditorState.WorldBounds;
-    public RectInt RectInt => tileEditorState.Level.Bounds;
+    public RectInt RectInt => tileEditorState.LevelInstance.Bounds;
+
+    private IEnumerable<Tilemap> AllTilemapInstances => tilemapLayers
+        .SelectMany(layer => layer.AllInstances);
+
+    private IEnumerable<Tilemap> EdgedTilemaps => tilemapLayers
+        .SelectMany(layer => layer.GetEdgedTilemaps(edgeOnTilemaps));
     
     private void Awake()
     {
-        tilemapInstances = new();
+        tilemapLayers = new();
 
         tilePlacerReference.value = this;
     }
@@ -42,18 +125,80 @@ public class TilePlacer : MonoBehaviour
         changelog.ChangeEvent -= OnEditorChanged;
     }
 
-    public void PlaceTiles(Vector2Int[] positions, TileData[] tiles)
+    private void OnEditorChanged(ChangeInfo changeInfo)
     {
-        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles)>();
+        switch (changeInfo)
+        {
+            case TileChangeInfo tileChangeInfo:
+
+                PlaceTiles(tileChangeInfo.positions, tileChangeInfo.newTiles, tileChangeInfo.layerID);
+            
+                break;
+        }
+    }
+
+    private void Update()
+    {
+        foreach (var layer in tilemapLayers)
+        {
+            layer.UpdateDimming();
+        }
+    }
+
+    public void SetSelectedLayer(int layer)
+    {
+        selectedLayer = layer;
+    }
+
+    public void ResetTilemaps()
+    {
+        foreach (var layer in tilemapLayers)
+        {
+            layer.Destroy();
+        }
         
+        tilemapLayers.Clear();
+    }
+    
+    public void PlaceTiles(Vector2Int[] positions, TileData[] tiles, int layerID = 0)
+    {
+        ClearPreviousEdgeTiles();
+
+        PlaceTilesInternal(positions, tiles, layerID);
+        
+        UpdateEdgeTiles();
+
+        RefreshTilemaps();
+
+        StartCoroutine(WaitFrame());
+        IEnumerator WaitFrame()
+        {
+            yield return null;
+            RefreshTilemaps();
+        }
+        
+        UpdateWalls();
+    }
+    
+    private void PlaceTilesInternal(Vector2Int[] positions, TileData[] tiles, int layerID)
+    {
+        // Add needed layers
+        while (tilemapLayers.Count <= layerID)
+        {
+            tilemapLayers.Add(new(this, tilemapLayers.Count));
+        }
+
+        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles)>();
+        var layer = tilemapLayers[layerID];
+
         // Sort tiles based on tilemap prefab
         for (int i = 0; i < positions.Length; i++)
         {
             var tile = tiles[i];
 
             if (tile.gameTile == null || tile.gameTile.IsNullTileBase) continue;
-                
-            foreach (var tilemapInstance in tile.gameTile.TilemapPrefabs.Select(GetTilemapInstance))
+            
+            foreach (var tilemapInstance in tile.gameTile.TilemapPrefabs.Select(layer.GetTilemapInstance))
             {
                 if (!tilemapInstanceData.TryGetValue(tilemapInstance, out var tilemapData))
                 {
@@ -70,7 +215,7 @@ public class TilePlacer : MonoBehaviour
         var positions3 = positions.Select(position => (Vector3Int)position).ToArray();
         var nullTiles = new TileBase[positions.Length];
         
-        foreach (var tilemap in tilemapInstances.Values)
+        foreach (var tilemap in layer.AllInstances)
         {
             tilemap.SetTiles(positions3, nullTiles);
         }
@@ -87,37 +232,12 @@ public class TilePlacer : MonoBehaviour
             }
         }
     }
-
-    private void OnEditorChanged(ChangeInfo changeInfo)
-    {
-        switch (changeInfo)
-        {
-            case TileChangeInfo tileChangeInfo:
-
-                ClearPreviousEdgeTiles();
-
-                PlaceTiles(tileChangeInfo.positions, tileChangeInfo.newTiles);
-                
-                UpdateEdgeTiles();
-
-                RefreshTilemaps();
-
-                StartCoroutine(WaitFrame());
-                IEnumerator WaitFrame()
-                {
-                    yield return null;
-                    RefreshTilemaps();
-                }
-                
-                break;
-        }
-    }
-
+    
     private void RefreshTilemaps()
     {
-        if (tilemapInstances.Count == 0) return;
+        if (tilemapLayers.Count == 0) return;
 
-        foreach (var tilemap in tilemapInstances.Values)
+        foreach (var tilemap in AllTilemapInstances)
         {
             tilemap.CompressBounds();
             tilemap.CompressBounds();
@@ -129,7 +249,10 @@ public class TilePlacer : MonoBehaviour
                 composite.GenerateGeometry();
             }
         }
-        
+    }
+
+    private void UpdateWalls()
+    {
         var rect = Rect;
         Vector2 wallSize = new(wallThickness, rect.size.y + wallHeightBuffer);
         
@@ -142,14 +265,12 @@ public class TilePlacer : MonoBehaviour
         bottomHazard.transform.position = new Vector2(rect.center.x, rect.min.y - wallThickness / 2f);
         bottomHazard.size = new(rect.size.x, wallThickness);
     }
-
-    [SerializeField] private List<Tilemap> edgeOnTilemaps;
     
     private void UpdateEdgeTiles()
     {
-        var rectInt = tileEditorState.Level.Bounds;
+        var rectInt = tileEditorState.LevelInstance.Bounds;
         
-        // Fill edge tiles
+        // Get edge positions
         Vector2 size = rectInt.size + Vector2Int.one;
         var edgePositions = Enumerable.Range(0, (int)(size.x * 2 + size.y * 2 + 4))
             .Select(i => (Vector3Int)(rectInt.min - Vector2Int.one) + new Vector3Int(
@@ -157,15 +278,13 @@ public class TilePlacer : MonoBehaviour
                 (int)Mathf.Clamp(size.y + size.x / 2 - Mathf.Abs(i - (size.y + size.x / 2)), 0, size.y)))
             .ToArray();
         
+        // Fill tilemaps
         var edgeTiles = new TileBase[edgePositions.Length];
         Array.Fill(edgeTiles, edgeTile);
         
-        foreach (var tilemap in tilemapInstances)
+        foreach (var tilemap in EdgedTilemaps)
         {
-            if (edgeOnTilemaps.Contains(tilemap.Key))
-            {
-                tilemap.Value.SetTiles(edgePositions, edgeTiles);
-            }
+            tilemap.SetTiles(edgePositions, edgeTiles);
         }
 
         previousEdgePositions = edgePositions;
@@ -173,30 +292,13 @@ public class TilePlacer : MonoBehaviour
 
     private void ClearPreviousEdgeTiles()
     {
-        if (previousEdgePositions != null)
-        {
-            var previousEdgeTiles = new TileBase[previousEdgePositions.Length];
-            
-            foreach (var tilemap in tilemapInstances)
-            {
-                if (edgeOnTilemaps.Contains(tilemap.Key))
-                {
-                    tilemap.Value.SetTiles(previousEdgePositions, previousEdgeTiles);
-                }
-            }
-        }
-    }
-
-    private Tilemap GetTilemapInstance(Tilemap tilemapPrefab)
-    {
-        if (tilemapInstances.TryGetValue(tilemapPrefab, out var tilemapInstance))
-        {
-            return tilemapInstance;
-        }
+        if (previousEdgePositions == null) return;
         
-        tilemapInstance = Instantiate(tilemapPrefab, tilemapsParent);
-        tilemapInstances[tilemapPrefab] = tilemapInstance;
-    
-        return tilemapInstance;
+        var previousEdgeTiles = new TileBase[previousEdgePositions.Length];
+            
+        foreach (var tilemap in EdgedTilemaps)
+        {
+            tilemap.SetTiles(previousEdgePositions, previousEdgeTiles);
+        }
     }
 }

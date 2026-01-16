@@ -41,7 +41,7 @@ public class FillToolAction : ToolbarAction
     {
         var bounds = TilePlacer.RectInt;
         
-        GameTile fillingTile = EditorState.Level.GetTile(start).gameTile;
+        GameTile fillingTile = EditorState.LevelInstance.GetTileOnAnyLayer(start).gameTile;
         Queue<Vector2Int> checks = new();
         HashSet<Vector2Int> positions = new();
 
@@ -58,7 +58,7 @@ public class FillToolAction : ToolbarAction
 
             if (!bounds.Contains(position) ||
                 positions.Contains(position) || 
-                EditorState.Level.GetTile(position).gameTile != fillingTile)
+                EditorState.LevelInstance.GetTileOnAnyLayer(position).gameTile != fillingTile)
             {
                 continue;
             }

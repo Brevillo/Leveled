@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
   spaceUtility: {fileID: 11400000, guid: 0a480216e2341450da0c4b745d3cfb44, type: 2}
+  tilePlacerReference: {fileID: 11400000, guid: 3c0fbe901aae74227b864883ec25e5c1, type: 2}

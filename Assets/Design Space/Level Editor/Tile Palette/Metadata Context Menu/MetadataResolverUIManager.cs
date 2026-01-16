@@ -18,11 +18,10 @@ public class MetadataResolverUIManager : MonoBehaviour
 
     private List<MetadataResolverUISection> sectionInstances;
 
-    private (Vector2Int position, TileData tile)[] ResolvableTilePositions(Vector2Int[] selection) =>
-        selection
-            .Select(position => (position, tile: tileEditorState.Level.GetTile(position)))
-            .Where(item => !item.tile.IsEmpty && item.tile.gameTile.MetadataResolvers.Count > 0)
-            .ToArray();
+    private (Vector2Int position, TileData tile)[] ResolvableTilePositions(Vector2Int[] selection) => selection
+        .Select(position => (position, tile: tileEditorState.LevelInstance.GetTileOnAnyLayer(position)))
+        .Where(item => !item.tile.IsEmpty && item.tile.gameTile.MetadataResolvers.Count > 0)
+        .ToArray();
 
     private void Awake()
     {

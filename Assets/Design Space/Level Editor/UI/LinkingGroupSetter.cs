@@ -52,7 +52,7 @@ public class LinkingGroupSetter : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(inputField.gameObject);
         
-        foreach (var linkingGroupID in editorState.Level
+        foreach (var linkingGroupID in editorState.LevelInstance
                      .GetAllMetadata<LinkingGroup>()
                      .GroupBy(group => group.groupID)
                      .Select(group => group.Key)

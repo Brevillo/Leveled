@@ -11,7 +11,7 @@ public abstract class EnumMetadataResolver<T> : MetadataResolver where T : struc
     public override string GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
     {
         var selectedEnums = selection
-            .GroupBy(position => tileEditorState.Level.GetTile(position).GetMetaData<T>())
+            .GroupBy(position => tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<T>())
             .Select(group => group.Key)
             .Where(e => (int)(object)e != 0)
             .ToArray();

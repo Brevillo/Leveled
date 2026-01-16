@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
-  m_Name: Copy
+  m_Name: New Layer
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 7292288212315272780, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validEditorStates: 1
-  tooltip: Copy
-  icon: {fileID: 21300000, guid: 02c92ddd0664e4a6b9b99f40f8143e55, type: 3}
+  tooltip: Reset Layer
+  icon: {fileID: 0}
