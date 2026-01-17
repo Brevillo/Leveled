@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class LevelInstance
 {
-    private readonly List<Grid<TileData>> layers = new();
-    private RectInt bounds;
+    private class LayerInstance
+    {
+        public readonly Metadata metadata = new();
+        public readonly Grid<TileData> grid = GetNewLayer();
 
-    private static Grid<TileData> GetNewLayer() => 
-        new DictionaryGrid();
-    // new ResizableGrid<TileData>(Vector2Int.one * 1000, Vector2Int.one * -500);
+        private static Grid<TileData> GetNewLayer() => 
+            new DictionaryGrid();
+        // new ResizableGrid<TileData>(Vector2Int.one * 1000, Vector2Int.one * -500);
+    } 
+    
+    private readonly List<LayerInstance> layers = new();
+    private RectInt bounds;
 
     public int GetNewLayerID() => layers.Count;
     
@@ -24,7 +30,7 @@ public class LevelInstance
 
         while (layerID >= layers.Count)
         {
-            layers.Add(GetNewLayer());
+            layers.Add(new());
         }
 
         return false;
@@ -35,13 +41,13 @@ public class LevelInstance
     /// </summary>
     public void SetTile(Vector2Int position, TileData tileData, int layerID)
     {
-        layers[layerID].SetTile(position, tileData);
+        layers[layerID].grid.SetTile(position, tileData);
     }
 
     public void UpdateBounds()
     {
         var allPositions = Layers
-            .SelectMany(item => item.AllPositions)
+            .SelectMany(item => item.grid.AllPositions)
             .ToArray();
 
         bounds = new()
@@ -57,7 +63,7 @@ public class LevelInstance
     {
         foreach (var layer in Layers)
         {
-            if (layer.TryGetTile(position, out var tileData))
+            if (layer.grid.TryGetTile(position, out var tileData))
             {
                 return tileData;
             }
@@ -67,14 +73,14 @@ public class LevelInstance
     }
 
     public TileData GetTile(Vector2Int position, int layerID) => layerID >= 0 && layerID < layers.Count 
-        ? layers[layerID].GetTileOrDefault(position)
+        ? layers[layerID].grid.GetTileOrDefault(position)
         : default;
 
     public int GetLayerIDAt(Vector2Int position)
     {
         for (int i = 0; i < layers.Count; i++)
         {
-            if (layers[i].TryGetTile(position, out var tileData) && !tileData.IsEmpty)
+            if (layers[i].grid.TryGetTile(position, out var tileData) && !tileData.IsEmpty)
             {
                 return i;
             }
@@ -85,20 +91,24 @@ public class LevelInstance
 
     public RectInt GetLayerRect(int layerID) => layerID < 0 || layerID > layers.Count
         ? default 
-        : layers[layerID].Rect;
+        : layers[layerID].grid.Rect;
 
-    private IEnumerable<Grid<TileData>> Layers => layers;
+    public Metadata GetLayerMetadata(int layerID) => layerID < 0 || layerID > layers.Count
+        ? null
+        : layers[layerID].metadata;
     
-    private IEnumerable<TileData> AllTiles => Layers.SelectMany(layer => layer.AllTiles);
+    private IEnumerable<LayerInstance> Layers => layers;
+    
+    private IEnumerable<TileData> AllTiles => Layers.SelectMany(layer => layer.grid.AllTiles);
 
     private IEnumerable<(Vector2Int position, TileData tileData)> AllTilePositions =>
-        Layers.SelectMany(layer => layer.AllTilePositions);
+        Layers.SelectMany(layer => layer.grid.AllTilePositions);
 
     public IEnumerable<int> AllLayerIDs => Enumerable.Range(0, layers.Count);
     
     public IEnumerable<TMetadata> GetAllMetadata<TMetadata>() =>
         AllTiles.Select(tileData => tileData.GetMetaData<TMetadata>());
-
+    
     public IEnumerable<Vector2Int> EntityPositions => AllTilePositions
         .Where(tile => tile.tileData.gameTile.HasEntity)
         .Select(tile => tile.position);
@@ -109,14 +119,14 @@ public class LevelInstance
         "Clear all tiles", 
         Layers.Select((layer, layerID) => 
             {
-                var positions = layer.AllPositions.ToArray();
+                var positions = layer.grid.AllPositions.ToArray();
                 
                 return (ChangeInfo)new TileChangeInfo(
                     "Clear all tiles on layer",
                     layerID,
                     positions,
                     positions
-                        .Select(position => layer.TryGetTile(position, out var tileData)
+                        .Select(position => layer.grid.TryGetTile(position, out var tileData)
                             ? tileData
                             : default)
                         .ToArray(), 
@@ -167,19 +177,19 @@ public class LevelInstance
     public LevelData GetLevelData() => new()
     {
         layers = Layers
-            .Where(layer => layer.AllTiles.Any())
+            .Where(layer => layer.grid.AllTiles.Any())
             .Select(layer => new LevelLayerData
             {
-                gridSize = layer.Rect.size + Vector2Int.one,
-                gameTileIds = layer.AllPositions
+                gridSize = layer.grid.Rect.size + Vector2Int.one,
+                gameTileIds = layer.grid.AllPositions
                     .Select(position => 
-                        layer.TryGetTile(position, out var tileData)
+                        layer.grid.TryGetTile(position, out var tileData)
                             ? tileData.gameTile.ID
                             : default)
                     .ToArray(),
-                minPosition = layer.Rect.min, 
-                metaData = new(layer.AllPositions
-                    .Select(position => new KeyValuePair<string, TileMetadata>(((SimpleVector2Int)position).ToString(), layer.GetTileOrDefault(position).metadata))
+                minPosition = layer.grid.Rect.min, 
+                metaData = new(layer.grid.AllPositions
+                    .Select(position => new KeyValuePair<string, Metadata>(((SimpleVector2Int)position).ToString(), layer.grid.GetTileOrDefault(position).metadata))
                     .Where(metaData => metaData.Value != null && metaData.Value.Count != 0)),
             })
             .ToArray(),

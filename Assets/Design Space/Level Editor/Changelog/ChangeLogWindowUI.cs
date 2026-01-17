@@ -139,7 +139,7 @@ public class ChangeLogWindowUI : MonoBehaviour
                 }
                 
                 redoEntries.Clear();
-                AddEntry(changelog.UndoLog.First().ToString());
+                AddEntry(changelog.UndoLog.First().description);
             }
                 break;
         }

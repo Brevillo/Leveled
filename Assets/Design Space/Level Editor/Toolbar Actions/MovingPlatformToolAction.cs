@@ -6,15 +6,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = CreateMenuPath + "Moving Platform")]
 public class MovingPlatformToolAction : ToolbarAction
 {
-    [SerializeField] private float layerSelectionRadius;
-    [SerializeField] private LayerMask layerSelectionMask;
-    
     private State state;
+    private PathInstance drawingPath;
+    private int pathDrawingLayer;
     
     private enum State
     {
         None,
         Selecting,
+        StartingPathDrawing,
+        DrawingPath,
     }
 
     protected override void OnActivated()
@@ -24,6 +25,11 @@ public class MovingPlatformToolAction : ToolbarAction
 
     protected override void OnDeactivated()
     {
+        if (state == State.DrawingPath)
+        {
+            
+        }
+        
         TilePlacer.SetSelectedLayer(-1);
     }
 
@@ -33,15 +39,64 @@ public class MovingPlatformToolAction : ToolbarAction
         {
             case State.None:
 
-                state = State.Selecting;
-                
+                int mouseLayer = MouseLayer;
+                if (mouseLayer > 0)
+                {
+                    state = State.StartingPathDrawing;
+                    pathDrawingLayer = mouseLayer;
+                }
+                else
+                {
+                    state = State.Selecting;
+                }
+
+                break;
+            
+            case State.DrawingPath:
+
+                switch (activeToolSide)
+                {
+                    case ToolSide.Primary:
+
+                        drawingPath.points.Add(SpaceUtility.MouseCell);
+                        
+                        break;
+                    
+                    case ToolSide.Secondary:
+                        
+                        blackboard.changelog.StartChangeBundle("New movement path");
+                        
+                        var existingPath = EditorState.LevelInstance.GetLayerMetadata(pathDrawingLayer)
+                            .GetValueOrDefault<PathInstance>();
+                    
+                        if (existingPath != null)
+                        {
+                            EditorState.ModifyLayerMetadata(
+                                pathDrawingLayer,
+                                existingPath,
+                                "Removed movement path",
+                                LayerMetadataChangeInfo.Type.Remove);
+                        } 
+
+                        EditorState.ModifyLayerMetadata(pathDrawingLayer, drawingPath, "Created movement path", LayerMetadataChangeInfo.Type.Add);
+                        
+                        blackboard.changelog.EndChangeBundle();
+                        
+                        drawingPath = null;
+                        pathDrawingLayer = -1;
+
+                        state = State.None;
+                        
+                        break;
+                }
+
                 break;
         }
     }
 
     protected override void OnUpdate()
     {
-        int mouseLayer = EditorState.LevelInstance.GetLayerIDAt(SpaceUtility.MouseCell);
+        int mouseLayer = MouseLayer;
         TilePlacer.SetSelectedLayer(-1);
 
         switch (state)
@@ -52,7 +107,14 @@ public class MovingPlatformToolAction : ToolbarAction
                 
                 break;
             
-            default:
+            case State.DrawingPath:
+
+                drawingPath.points[^1] = SpaceUtility.MouseCell;
+                
+                break;
+            
+            case State.None:
+            case State.StartingPathDrawing:
 
                 if (mouseLayer > 0 && !UIUtility.PointerOverUI)
                 {
@@ -78,8 +140,28 @@ public class MovingPlatformToolAction : ToolbarAction
                 blackboard.selection.Value = blackboard.hoverSelection;
                 EditorState.MoveTilesToLayer(blackboard.SelectionPositions.ToArray(), EditorState.LevelInstance.GetNewLayerID());
                 blackboard.selection.Value = default;
-        
+                
                 state = State.None;
+                
+                break;
+            
+            case State.StartingPathDrawing:
+
+                int mouseLayer = MouseLayer;
+
+                if (mouseLayer == pathDrawingLayer)
+                {
+                    state = State.DrawingPath;
+                    
+                    drawingPath = new();
+                    blackboard.pathingUIManagerReference.value.AddPath(drawingPath);
+                    drawingPath.points.Add(SpaceUtility.MouseCell);
+                    drawingPath.points.Add(SpaceUtility.MouseCell);
+                }
+                else
+                {
+                    state = State.None;
+                }
                 
                 break;
         }

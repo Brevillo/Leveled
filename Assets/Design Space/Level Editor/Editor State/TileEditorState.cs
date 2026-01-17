@@ -39,6 +39,13 @@ public class TileEditorState : GameService
         changelog.EndChangeBundle();
     }
 
+    public void ModifyLayerMetadata(int layerID, object metadata, string description, LayerMetadataChangeInfo.Type type) =>
+        changelog.SendChange(new LayerMetadataChangeInfo(
+            description,
+            layerID,
+            metadata,
+            type));
+    
     public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description, int layerID = 0) =>
         changelog.SendChange(new TileChangeInfo(
             description,
@@ -80,6 +87,15 @@ public class TileEditorState : GameService
                 }
 
                 LevelInstance.UpdateBounds();
+                
+                break;
+            
+            case LayerMetadataChangeInfo layerMetadataChangeInfo:
+
+                if (LevelInstance.UpdateLayers(layerMetadataChangeInfo.layerID)) return;
+
+                LevelInstance.GetLayerMetadata(layerMetadataChangeInfo.layerID)
+                    .SetValue(layerMetadataChangeInfo.metadataValue);
                 
                 break;
         }

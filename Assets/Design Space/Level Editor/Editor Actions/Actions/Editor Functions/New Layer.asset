@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActionReference: {fileID: 7292288212315272780, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validEditorStates: 1
-  tooltip: Reset Layer
+  tooltip: New Layer
   icon: {fileID: 0}

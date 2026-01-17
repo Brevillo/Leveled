@@ -28,7 +28,7 @@ public readonly struct SignContents
 public readonly struct TileData
 {
     public readonly GameTile gameTile;
-    public readonly TileMetadata metadata;
+    public readonly Metadata metadata;
 
     public T GetMetaData<T>() => metadata == null ? default : metadata.GetValueOrDefault<T>();
     
@@ -43,7 +43,7 @@ public readonly struct TileData
         }
     }
 
-    public TileData(GameTile gameTile, TileMetadata metadata)
+    public TileData(GameTile gameTile, Metadata metadata)
     {
         this.gameTile = gameTile;
         this.metadata = metadata;

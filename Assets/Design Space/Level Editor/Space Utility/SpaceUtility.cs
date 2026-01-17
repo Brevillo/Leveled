@@ -46,6 +46,25 @@ public class SpaceUtility : ScriptableObject
         this.grid = grid;
     }
     
+    #region To Screen
+
+    public Vector3 WorldToScreen(Vector3 position) => 
+        WindowToScreen(WorldToWindow(position));
+
+    public Vector3 ViewportToScreen(Vector3 position) =>
+        WindowToScreen(ViewportToWindow(position));
+
+    public Vector3 WindowToScreen(Vector3 position) =>
+        position * new Vector2(Screen.width, Screen.height);
+
+    public Vector3 CellToScreen(Vector2Int position) =>
+        WindowToScreen(CellToWindow(position));
+
+    public Vector3 CanvasToScreen(Vector3 position, RectTransform rectTransform) =>
+        WindowToScreen(CanvasToWindow(position, rectTransform));
+        
+    #endregion
+    
     #region Mouse Positions
     
     public Vector3 MouseScreen => Input.mousePosition;

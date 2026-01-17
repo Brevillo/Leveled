@@ -49,7 +49,7 @@ public abstract class ChangeloggedValue<T> : ChangeloggedValue
     public T Value
     {
         get => value;
-        set => SetValue(value, $"Changed '{changelogName}' from {this.value} to {value}");
+        set => SetValue(value, $"Changed {changelogName}");
     }
 
     public string ChangelogName => changelogName;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ChangeInfo
 {
-    protected readonly string description;
+    public readonly string description;
 
     public abstract ChangeInfo Reverted { get; }
 
@@ -12,8 +12,6 @@ public abstract class ChangeInfo
     {
         this.description = description;
     }
-
-    public override string ToString() => description;
 }
 
 public class ValueChangeInfo<T> : ChangeInfo
@@ -67,4 +65,31 @@ public class TileChangeInfo : ChangeInfo
     }
 
     public override ChangeInfo Reverted => new TileChangeInfo(description, layerID, positions, newTiles, previousTiles);
+}
+
+public class LayerMetadataChangeInfo : ChangeInfo
+{
+    public enum Type
+    {
+        Add,
+        Remove,
+    }
+
+    public readonly int layerID;
+    public readonly object metadataValue;
+    public readonly Type type;
+    
+    public LayerMetadataChangeInfo(string description, int layerID, object metadataValue, Type type) : base(description)
+    {
+        this.layerID = layerID;
+        this.metadataValue = metadataValue;
+        this.type = type;
+    }
+
+    public override ChangeInfo Reverted => new LayerMetadataChangeInfo(description, layerID, metadataValue, type switch
+    {
+        Type.Add => Type.Remove,
+        Type.Remove => Type.Add,
+        _ => throw new ArgumentOutOfRangeException(),
+    });
 }

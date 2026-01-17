@@ -10,6 +10,7 @@ public class ToolbarBlackboard : ScriptableObject
     public SpaceUtility spaceUtility;
     public TilePlacer tilePlacer;
     public LinkingGroupSetter linkingGroupSetter;
+    public PathingUIManagerReference pathingUIManagerReference;
     public Changelog changelog;
 
     public ChangeloggedToolbarAction activeTool;

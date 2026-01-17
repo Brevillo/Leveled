@@ -29,7 +29,7 @@ public class LevelLayerData
     [JsonProperty("gridSize")] public SimpleVector2Int gridSize;
     [JsonProperty("gameTileIds")] public int[] gameTileIds;
     [JsonProperty("minPosition")] public SimpleVector2Int minPosition;
-    [JsonProperty("metaData")] public Dictionary<string, TileMetadata> metaData;
+    [JsonProperty("metaData")] public Dictionary<string, Metadata> metaData;
     
     public Vector2Int[] AllPositions => Enumerable.Range(0, gridSize.x * gridSize.y)
         .Select(i => minPosition + new Vector2Int(i / gridSize.y, i % gridSize.y))
@@ -37,7 +37,7 @@ public class LevelLayerData
 }
 
 [JsonObject(MemberSerialization.OptIn)]
-public class TileMetadata
+public class Metadata
 {
     [JsonProperty("entries",
         ItemTypeNameHandling = TypeNameHandling.All,
@@ -62,6 +62,13 @@ public class TileMetadata
         if (typedEntries == null) return;
         
         typedEntries[value.GetType()] = value;
+    }
+
+    public void RemoveValue<T>()
+    {
+        if (typedEntries == null) return;
+
+        typedEntries.Remove(typeof(T));
     }
 }
 
