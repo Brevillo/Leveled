@@ -47,6 +47,7 @@ public abstract class ToolbarAction : ScriptableObject
     protected int MouseLayer => EditorState.LevelInstance.GetLayerIDAt(SpaceUtility.MouseCell);
     
     public EditorAction SetToolEditorAction => setToolEditorAction;
+    protected PathingUIManager PathingUIManager => blackboard.pathingUIManagerReference.value;
 
     public void InjectReferences(ToolbarBlackboard blackboard)
     {

@@ -51,6 +51,19 @@ public class Metadata
     private Dictionary<Type, object> typedEntries = new();
 
     public int Count => typedEntries?.Count ?? 0;
+
+    public bool TryGetValue<T>(out T value)
+    {
+        if (typedEntries != null && typedEntries.TryGetValue(typeof(T), out var untypedValue) &&
+            untypedValue is T typedValue)
+        {
+            value = typedValue;
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
     
     public T GetValueOrDefault<T>() =>
         typedEntries != null && typedEntries.TryGetValue(typeof(T), out var value) && value is T t 
@@ -64,12 +77,14 @@ public class Metadata
         typedEntries[value.GetType()] = value;
     }
 
-    public void RemoveValue<T>()
+    public void RemoveValue(object value)
     {
         if (typedEntries == null) return;
-
-        typedEntries.Remove(typeof(T));
+        
+        typedEntries.Remove(value.GetType());
     }
+
+    public bool HasValue<T>() => typedEntries != null && typedEntries.ContainsKey(typeof(T));
 }
 
 public struct SimpleVector2Int : IEquatable<SimpleVector2Int>

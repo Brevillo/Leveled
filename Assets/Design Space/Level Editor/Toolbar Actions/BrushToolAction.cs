@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 [CreateAssetMenu(menuName = CreateMenuPath + "Brush")]
 public class BrushToolAction : ToolbarAction
@@ -16,8 +17,6 @@ public class BrushToolAction : ToolbarAction
         brushedTiles.Clear();
         
         previousMouseCell = SpaceUtility.MouseCell;
-        
-        placedSound.Play();
     }
 
     protected override void OnPressed()
@@ -29,14 +28,24 @@ public class BrushToolAction : ToolbarAction
         var tiles = new TileData[positions.Length];
         Array.Fill(tiles, new(DrawingTile));
         
-        TilePlacer.PlaceTiles(positions, tiles);
-        brushedTiles.AddRange(positions);
-        
         if (positions.Length > 0 && current != previousMouseCell)
         {
-            placedSound.Play();
+            foreach (var position in positions)
+            {
+                var tile = EditorState.LevelInstance.GetTileOnAnyLayer(position);
+                
+                if (!tile.IsEmpty && tile.gameTile == DrawingTile) continue;
+
+                if (brushedTiles.Contains(position)) continue;
+                
+                placedSound.Play();
+                break;
+            }
         }
         
+        TilePlacer.PlaceTiles(positions, tiles);
+        brushedTiles.AddRange(positions);
+     
         previousMouseCell = current;
     }
 

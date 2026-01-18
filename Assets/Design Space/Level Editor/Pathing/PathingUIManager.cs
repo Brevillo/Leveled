@@ -9,13 +9,13 @@ public class PathInstance
 {
     public enum PathingType
     {
-        Forward,
-        PingPong,
-        Once,
+        PingPong = 0,
+        Forward = 1,
+        Once = 2,
     }
     
     public readonly List<Vector2Int> points = new();
-    public PathingType pathingType;
+    public PathingType pathingType = PathingType.PingPong;
 }
 
 public class PathingUIManager : MonoBehaviour
@@ -26,13 +26,20 @@ public class PathingUIManager : MonoBehaviour
     [SerializeField] private Transform edgesParent;
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Changelog changelog;
+    [SerializeField] private RectTransform previewNode;
+    [SerializeField] private RectTransform previewEdge;
+    [SerializeField] private RectTransform pathProperties;
+    [SerializeField] private TileEditorState tileEditorState;
     
     private Dictionary<PathInstance, PathUI> paths;
+    private int pathPropertiesLayer;
 
     private void Awake()
     {
         paths = new();
         changelog.ChangeEvent += OnChangeEvent;
+        
+        HidePreview();
     }
 
     private void OnDestroy()
@@ -44,8 +51,7 @@ public class PathingUIManager : MonoBehaviour
     {
         switch (changeInfo)
         {
-            case LayerMetadataChangeInfo layerMetadataChangeInfo 
-                when layerMetadataChangeInfo.metadataValue is PathInstance pathInstance:
+            case LayerMetadataChangeInfo { metadataValue: PathInstance pathInstance } layerMetadataChangeInfo:
 
                 if (layerMetadataChangeInfo.type == LayerMetadataChangeInfo.Type.Add)
                 {
@@ -58,6 +64,22 @@ public class PathingUIManager : MonoBehaviour
                 
                 break;
         }
+    }
+
+    public void HidePreview()
+    {
+        previewNode.gameObject.SetActive(false);
+        previewEdge.gameObject.SetActive(false);
+    }
+
+    public void UpdatePreview(Vector2Int position) => UpdatePreview(position, position);
+    public void UpdatePreview(Vector2Int previous, Vector2Int next)
+    {
+        previewNode.gameObject.SetActive(true);
+        previewEdge.gameObject.SetActive(true);
+        
+        SetNodePosition(next, previewNode);
+        SetEdgePosition(previous, next, previewEdge);
     }
 
     public void AddPath(PathInstance pathInstance)
@@ -75,12 +97,39 @@ public class PathingUIManager : MonoBehaviour
         paths.Remove(pathInstance);
     }
     
+    public void ShowPathProperties(int layerID) => pathPropertiesLayer = layerID;
+    public void HidePathProperties() => pathPropertiesLayer = -1;
+
     private void Update()
     {
         foreach (var path in paths.Values)
         {
             path.UpdatePlacement();
         }
+        
+        pathProperties.gameObject.SetActive(
+            pathPropertiesLayer != -1 
+            && tileEditorState.LevelInstance.GetLayerMetadata(pathPropertiesLayer).HasValue<PathInstance>());
+        
+        var layerRect = tileEditorState.LevelInstance.GetLayerRect(pathPropertiesLayer);
+        Vector2 rectMin = spaceUtility.CellToCanvas(layerRect.min, pathProperties);
+        Vector2 rectMax = spaceUtility.CellToCanvas(layerRect.max, pathProperties);
+        var layerRectCanvas = new Rect(rectMin, rectMax - rectMin);
+        
+        pathProperties.position = layerRectCanvas.center;
+    }
+
+    private void SetNodePosition(Vector2Int position, RectTransform node) =>
+        node.position = spaceUtility.CellToCanvas(position, node);
+
+    private void SetEdgePosition(Vector2Int previous, Vector2Int next, RectTransform edge)
+    {
+        Vector2 previousCanvas = spaceUtility.CellToCanvas(previous, edge);
+        Vector2 nextCanvas = spaceUtility.CellToCanvas(next, edge);
+        
+        edge.position = (previousCanvas + nextCanvas) / 2f;
+        edge.right = nextCanvas - previousCanvas;
+        edge.sizeDelta = Vector2.right * (nextCanvas - previousCanvas).magnitude;
     }
     
     private class PathUI
@@ -117,19 +166,15 @@ public class PathingUIManager : MonoBehaviour
             
             for (int i = 0; i < pathInstance.points.Count; i++)
             {
-                Vector2 point = context.spaceUtility.CellToCanvas(pathInstance.points[i], nodes[i]);
-                Vector2 next =
-                    context.spaceUtility.CellToCanvas(
-                        pathInstance.points[(i + 1) % pathInstance.points.Count], nodes[i]);
-                
-                nodes[i].position = point;
+                context.SetNodePosition(pathInstance.points[i], nodes[i]);
                 nodes[i].GetComponentInChildren<TextMeshProUGUI>().text = (i + 1).ToString();
 
                 if (i < pathInstance.points.Count - 1 || pathInstance.pathingType == PathInstance.PathingType.Forward)
                 {
-                    edges[i].position = (point + next) / 2f;
-                    edges[i].right = next - point;
-                    edges[i].sizeDelta = Vector2.right * (next - point).magnitude;
+                    context.SetEdgePosition(
+                        pathInstance.points[i],
+                        pathInstance.points[(i + 1) % pathInstance.points.Count],
+                        edges[i]);
                 }
             }
         }

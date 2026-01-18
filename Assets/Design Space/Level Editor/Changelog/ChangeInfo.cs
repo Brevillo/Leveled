@@ -93,3 +93,23 @@ public class LayerMetadataChangeInfo : ChangeInfo
         _ => throw new ArgumentOutOfRangeException(),
     });
 }
+
+public class LayerPathTypeChangeInfo : ChangeInfo
+{
+    public readonly int layerID;
+    public readonly PathInstance.PathingType previousType;
+    public readonly PathInstance.PathingType newType;
+    
+    public LayerPathTypeChangeInfo(
+        string description,
+        int layerID,
+        PathInstance.PathingType previousType,
+        PathInstance.PathingType newType) : base(description)
+    {
+        this.layerID = layerID;
+        this.previousType = previousType;
+        this.newType = newType;
+    }
+    
+    public override ChangeInfo Reverted => new LayerPathTypeChangeInfo(description, layerID, newType, previousType);
+}

@@ -18,7 +18,6 @@ public class TileEditorState : GameService
         var movingTiles = positions.Select(LevelInstance.GetTileOnAnyLayer).ToArray();
         var nullTiles = new TileData[positions.Length];
         
-        
         foreach (var layer in LevelInstance.AllLayerIDs)
         {
             if (layer == layerID) continue;
@@ -39,13 +38,6 @@ public class TileEditorState : GameService
         changelog.EndChangeBundle();
     }
 
-    public void ModifyLayerMetadata(int layerID, object metadata, string description, LayerMetadataChangeInfo.Type type) =>
-        changelog.SendChange(new LayerMetadataChangeInfo(
-            description,
-            layerID,
-            metadata,
-            type));
-    
     public void SetTiles(Vector2Int[] positions, TileData[] tiles, string description, int layerID = 0) =>
         changelog.SendChange(new TileChangeInfo(
             description,
@@ -94,9 +86,36 @@ public class TileEditorState : GameService
 
                 if (LevelInstance.UpdateLayers(layerMetadataChangeInfo.layerID)) return;
 
-                LevelInstance.GetLayerMetadata(layerMetadataChangeInfo.layerID)
-                    .SetValue(layerMetadataChangeInfo.metadataValue);
+                var layerMetadata = LevelInstance.GetLayerMetadata(layerMetadataChangeInfo.layerID);
                 
+                switch (layerMetadataChangeInfo.type)
+                {
+                    case LayerMetadataChangeInfo.Type.Add:
+                        
+                        layerMetadata.SetValue(layerMetadataChangeInfo.metadataValue);
+                        
+                        break;
+                    
+                    case LayerMetadataChangeInfo.Type.Remove:
+
+                        layerMetadata.RemoveValue(layerMetadataChangeInfo.metadataValue);
+                        
+                        break;
+                }
+                
+                break;
+            
+            case LayerPathTypeChangeInfo layerPathTypeChangeInfo:
+
+                if (LevelInstance.UpdateLayers(layerPathTypeChangeInfo.layerID)) return;
+
+                layerMetadata = LevelInstance.GetLayerMetadata(layerPathTypeChangeInfo.layerID);
+
+                if (layerMetadata.TryGetValue<PathInstance>(out var pathInstance))
+                {
+                    pathInstance.pathingType = layerPathTypeChangeInfo.newType;
+                }
+
                 break;
         }
     }

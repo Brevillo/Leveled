@@ -5,31 +5,64 @@ using UnityEngine.EventSystems;
 
 public static class UIUtility
 {
-    public static bool PointerOverUI
+    private static int uiLayer = LayerMask.NameToLayer("UI");
+
+    public static List<RaycastResult> GetPointerRaycastResults()
+    {
+        var eventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition,
+        };
+        var results = new List<RaycastResult>();
+
+        EventSystem.current.RaycastAll(eventData, results);
+        
+        results.Sort((a, b) =>
+        {
+            // Higher priority first
+            int result;
+
+            result = b.sortingLayer.CompareTo(a.sortingLayer);
+            if (result != 0) return result;
+
+            result = b.sortingOrder.CompareTo(a.sortingOrder);
+            if (result != 0) return result;
+
+            result = b.depth.CompareTo(a.depth);
+            if (result != 0) return result;
+
+            result = a.distance.CompareTo(b.distance);
+            if (result != 0) return result;
+
+            return a.index.CompareTo(b.index);
+        });
+
+        return results;
+    }
+
+    public static bool PointerOutsideOfScreen =>
+        Input.mousePosition.x < 0
+        || Input.mousePosition.x > Screen.width
+        || Input.mousePosition.y < 0
+        || Input.mousePosition.y > Screen.height;
+
+    public static bool PointerOverUI => 
+        PointerOutsideOfScreen 
+        || GetPointerRaycastResults().Any(result => result.gameObject.layer == uiLayer);
+
+    public static UILayer PointerOverUILayer
     {
         get
         {
-            Vector2 mousePosition = Input.mousePosition;
+            if (PointerOutsideOfScreen) return UILayer.None;
 
-            if (mousePosition.x < 0
-                || mousePosition.x > Screen.width
-                || mousePosition.y < 0
-                || mousePosition.y > Screen.height)
-            {
-                return true;
-            }
-            
-            int uiLayer = LayerMask.NameToLayer("UI");
-            
-            var eventData = new PointerEventData(EventSystem.current)
-            {
-                position = mousePosition,
-            };
-            var results = new List<RaycastResult>();
-            
-            EventSystem.current.RaycastAll(eventData, results);
+            var results = GetPointerRaycastResults();
 
-            return results.Any(result => result.gameObject.layer == uiLayer);
+            if (results.Count == 0 || results[0].gameObject.layer != uiLayer) return UILayer.None;
+
+            return results[0].gameObject.TryGetComponent(out OnUILayer onUILayer)
+                ? onUILayer.layer
+                : UILayer.Default;
         }
     }
 }

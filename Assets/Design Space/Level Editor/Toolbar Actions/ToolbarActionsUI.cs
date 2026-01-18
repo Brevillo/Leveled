@@ -31,7 +31,7 @@ public class ToolbarActionsUI : MonoBehaviour
         hoverSelection.SetSize(blackboard.hoverSelection, blackboard.snapHoverSelection);
         blackboard.snapHoverSelection = false;
         hoverSelection.gameObject.SetActive(//Cursor.visible &&
-                                            !UIUtility.PointerOverUI &&
+                                            UIUtility.PointerOverUILayer != UILayer.Default &&
                                             blackboard.hoverSelectionActive);
         
         tilemapBoundsOutline.SetSize(tilePlacer.RectInt);

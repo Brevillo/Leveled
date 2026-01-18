@@ -35,7 +35,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        bool pointerOverUI = UIUtility.PointerOverUI;
+        bool pointerOverUI = UIUtility.PointerOverUILayer == UILayer.Default;
         
         if (!pointerOverUI)
         {

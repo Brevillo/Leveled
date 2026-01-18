@@ -24,6 +24,8 @@ public class ToolbarBlackboard : ScriptableObject
     public bool snapHoverSelection;
     public GameStateManager gameStateManager;
 
+    public int editingLayer;
+    
     public IEnumerable<Vector2Int> SelectionPositions
     {
         get
