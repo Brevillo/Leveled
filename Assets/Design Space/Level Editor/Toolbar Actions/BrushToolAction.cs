@@ -17,6 +17,11 @@ public class BrushToolAction : ToolbarAction
         brushedTiles.Clear();
         
         previousMouseCell = SpaceUtility.MouseCell;
+
+        if (EditorState.LevelInstance.GetTileOnAnyLayer(previousMouseCell).gameTile != DrawingTile)
+        {
+            placedSound.Play();
+        }
     }
 
     protected override void OnPressed()

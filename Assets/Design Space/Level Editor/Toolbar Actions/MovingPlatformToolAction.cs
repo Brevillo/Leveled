@@ -119,13 +119,10 @@ public class MovingPlatformToolAction : ToolbarAction
         {
             case State.Selecting:
 
-                if (blackboard.hoverSelection.size != Vector2Int.one)
-                {
-                    blackboard.selection.Value = blackboard.hoverSelection;
-                    EditorState.MoveTilesToLayer(blackboard.SelectionPositions.ToArray(),
-                        EditorState.LevelInstance.GetNewLayerID());
-                    blackboard.selection.Value = default;
-                }
+                blackboard.selection.Value = blackboard.hoverSelection;
+                EditorState.MoveTilesToLayer(blackboard.SelectionPositions.ToArray(),
+                    EditorState.LevelInstance.GetNewLayerID());
+                blackboard.selection.Value = default;
 
                 state = State.None;
 

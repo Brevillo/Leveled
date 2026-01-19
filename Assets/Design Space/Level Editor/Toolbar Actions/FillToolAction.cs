@@ -14,6 +14,11 @@ public class FillToolAction : ToolbarAction
     {
         var fillPositions = GetFloodFillPositions(SpaceUtility.MouseCell);
         
+        if (EditorState.LevelInstance.GetTileOnAnyLayer(SpaceUtility.MouseCell).gameTile != DrawingTile)
+        {
+            placedSound.Play();
+        }
+        
         var tiles = new TileData[fillPositions.Length];
         Array.Fill(tiles, new(DrawingTile));
         
@@ -33,8 +38,6 @@ public class FillToolAction : ToolbarAction
         {
             EditorState.SetTiles(fillPositions, tiles, changelogMessage);
         }
-        
-        placedSound.Play();
     }
 
     private Vector2Int[] GetFloodFillPositions(Vector2Int start)

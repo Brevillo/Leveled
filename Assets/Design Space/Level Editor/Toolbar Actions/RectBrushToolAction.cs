@@ -31,11 +31,12 @@ public class RectBrushToolAction : ToolbarAction
         if (DrawingTile != null && DrawingTile.Linkable)
         {
             TilePlacer.PlaceTiles(positions, tiles);
+            var tile = DrawingTile;
 
             LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup =>
             {
                 var linkedTiles = new TileData[positions.Length];
-                Array.Fill(linkedTiles, new(DrawingTile, linkingGroup));
+                Array.Fill(linkedTiles, new(tile, linkingGroup));
                 
                 SetTiles(linkedTiles, positions);
             });

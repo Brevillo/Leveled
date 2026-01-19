@@ -53,36 +53,34 @@ public class MovingPlatform : MonoBehaviour
 
         var points = pathInstance.points;
         var type = pathInstance.pathingType;
-
-        Vector2Int origin = points[0];
         
-        Vector2 current = spaceUtility.CellToWorld(points[currentPointIndex] - origin);
+        Vector2 current = spaceUtility.CellToWorld(points[currentPointIndex]);
         Vector2 next = spaceUtility.CellToWorld(points[type switch
         {
             PathInstance.PathingType.PingPong => Mathf.Clamp(currentPointIndex + direction, 0, points.Count - 1),
             PathInstance.PathingType.Forward => (currentPointIndex + 1) % points.Count,
             PathInstance.PathingType.Once => Mathf.Min(currentPointIndex + 1, points.Count - 1),
             _ => throw new ArgumentOutOfRangeException(),
-        }] - origin);
+        }]);
 
         float segmentDuration = Vector2.Distance(current, next) / moveSpeed;
         movePercent += Time.deltaTime / segmentDuration;
-
-        transform.position = Vector2.Lerp(current, next, movePercent);
+        
+        Vector2 origin = spaceUtility.CellToWorld(points[0]);
+        transform.position = Vector2.Lerp(current, next, movePercent) - origin;
 
         if (movePercent >= 1f)
         {
             movePercent = 0f;
 
-            currentPointIndex++;
+            currentPointIndex += direction;
             
             switch (type)
             {
                 case PathInstance.PathingType.PingPong:
 
-                    if (currentPointIndex == points.Count)
+                    if (currentPointIndex == points.Count - 1 || currentPointIndex == 0)
                     {
-                        currentPointIndex--;
                         direction *= -1;
                     }
                     

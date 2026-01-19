@@ -574,7 +574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: {x: 0.5, y: 0.125}
   startOffset: {x: 0, y: 0}
-  endOffset: {x: 0, y: -0.375}
+  endOffset: {x: 0, y: -0.5}
   offsetsAsEdges: 1
   angle: 0
   contactFilter:
