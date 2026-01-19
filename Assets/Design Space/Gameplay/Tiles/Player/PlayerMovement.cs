@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float airAccel;
     [SerializeField] private float airDeccel;
     [SerializeField] private float groundDownForce;
-    [SerializeField] private BoxCaster2D groundFollow;
+    [SerializeField] private PhysicsContactSensor groundSensor;
 
     [Header("Jumping")] 
     [SerializeField] private InputActionReference jumpInput;
@@ -64,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private HeavyObject heavyObject;
     [SerializeField] private LevelResettable levelResettable;
     [SerializeField] private CheckpointEnjoyer checkpointEnjoyer;
-    [SerializeField] private VelocityResolver velocityResolver;
     
     #endregion
     
@@ -109,8 +108,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 Velocity
     {
-        get => velocityResolver.GetLiveVelocity(this);
-        set => velocityResolver.SetVelocity(this, value);
+        get => rigidbody.linearVelocity;
+        set => rigidbody.linearVelocity = value;
     }
     
     #endregion
@@ -144,12 +143,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnReset()
     {
         positionRecorder.AddPosition();
-
-        rigidbody.interpolation = RigidbodyInterpolation2D.None;
+        
         transform.position = checkpointEnjoyer.HasCheckpoint 
             ? checkpointEnjoyer.Checkpoint.transform.position
             : spawnPoint;
-        rigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
         
         Velocity = Vector2.zero;
      
@@ -329,9 +326,7 @@ public class PlayerMovement : MonoBehaviour
         public override void Exit()
         {
             Context.heavyObject.grounded = false;
-
-            Context.velocityResolver.UnsetVelocity(this);
-
+            
             base.Exit();
         }
     }
@@ -341,14 +336,17 @@ public class PlayerMovement : MonoBehaviour
         public override void Enter()
         {
             base.Enter();
-            
-            Context.velocityResolver.SetTotalVelocityY(Context, Mathf.Sqrt(2f * Context.jumpHeight * Context.jumpGravity));
+
+            float velocity = Mathf.Sqrt(2f * Context.jumpHeight * Context.jumpGravity);
+            VelocityY = velocity;
             
             Context.jumpBuffer.Reset();
             
             Context.jumpSound.Play();
 
             Context.jumpDamageSource.enabled = true;
+
+            Context.groundSensor.enabled = true;
         }
 
         public override void Update()
@@ -395,6 +393,8 @@ public class PlayerMovement : MonoBehaviour
         public override void Exit()
         {
             Context.jumpDamageSource.enabled = false;
+
+            Context.groundSensor.enabled = false;
 
             base.Exit();
         }

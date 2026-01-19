@@ -12,56 +12,36 @@ public class FallingPlatform : MonoBehaviour
     [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private float destroyOffScreenBuffer;
     [SerializeField] private TilePlacerReference tilePlacerReference;
-
-    private HashSet<VelocityResolver> activeResolvers;
+    
     private Coroutine fallCoroutine;
-
-    private void Awake()
-    {
-        activeResolvers = new();
-    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.collider.TryGetComponent(out VelocityResolver velocityResolver))
+        if (other.collider.TryGetComponent(out PlayerMovement player))
         {
-            activeResolvers.Add(velocityResolver);
-
-            if (fallCoroutine == null && other.collider.TryGetComponent(out PlayerMovement _) &&
-                velocityResolver.Rigidbody.linearVelocityY <= 0f)
+            if (fallCoroutine == null && other.collider.TryGetComponent(out Rigidbody2D playerRigidbody) &&
+                playerRigidbody.linearVelocityY <= 0f)
             {
                 fallCoroutine = StartCoroutine(Fall());
             }
         }
     }
-
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.collider.TryGetComponent(out VelocityResolver velocityResolver))
-        {
-            velocityResolver.UnsetVelocity(this);
-            activeResolvers.Remove(velocityResolver);
-        }
-    }
-
+    
     private IEnumerator Fall()
     {
         yield return new WaitForSeconds(fallDelay);
 
-        rigidbody.linearVelocityY = -startFallSpeed;
+        Vector2 velocity = Vector2.down * startFallSpeed;
         
         while (transform.position.y > tilePlacerReference.value.Rect.min.y - destroyOffScreenBuffer)
         {
-            rigidbody.linearVelocityY = Mathf.MoveTowards(
-                rigidbody.linearVelocityY,
+            velocity.y = Mathf.MoveTowards(
+                velocity.y,
                 -maxFallSpeed,
                 fallGravity * Time.deltaTime);
 
-            foreach (var resolver in activeResolvers)
-            {
-                resolver.SetVelocity(this, rigidbody.linearVelocity);
-            }
-
+            transform.position += (Vector3)velocity * Time.deltaTime;
+            
             yield return null;
         }
     }

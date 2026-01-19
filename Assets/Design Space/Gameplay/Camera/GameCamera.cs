@@ -10,12 +10,26 @@ public class GameCamera : MonoBehaviour
     [SerializeField] private TilePlacer placer;
     [SerializeField] private PerspectiveCameraPositioning cameraPositioning;
     [SerializeField] private Camera mainCamera;
-
+    [SerializeField] private UpdateType updateType;
+    
+    private enum UpdateType
+    {
+        Update,
+        LateUpdate,
+        FixedUpdate,
+    }
+    
     private Vector2 velocity;
     private float zoomVelocity;
+    
+    private void Update() => CameraMovement(UpdateType.Update);
+    private void LateUpdate() => CameraMovement(UpdateType.LateUpdate);
+    private void FixedUpdate() => CameraMovement(UpdateType.FixedUpdate);
 
-    private void LateUpdate()
+    private void CameraMovement(UpdateType updateType)
     {
+        if (this.updateType != updateType) return;
+        
         if (CameraTrackable.trackables.Count == 0) return;
         
         var trackableBounds = new Bounds(CameraTrackable.trackables[0].transform.position, Vector3.zero);
@@ -44,6 +58,6 @@ public class GameCamera : MonoBehaviour
 
         transform.position = position;
     }
-    
+
     private float GetZoomForSize(Vector2 size) => Mathf.Max(size.y, size.x * Screen.height / Screen.width);
 }

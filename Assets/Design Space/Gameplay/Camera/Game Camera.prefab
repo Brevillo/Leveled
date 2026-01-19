@@ -190,6 +190,7 @@ MonoBehaviour:
   placer: {fileID: 0}
   cameraPositioning: {fileID: 3792975523012079719}
   mainCamera: {fileID: 2949498457438175973}
+  updateType: 2
 --- !u!114 &3792975523012079719
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private Color normalLayerColor;
     [SerializeField] private Color dimmedLayerColor;
     [SerializeField] private float layerColorChangeSpeed;
-    [SerializeField] private float layerZOffset;
+    [SerializeField] private LevelLayer levelLayerPrefab;
 
     private List<Layer> tilemapLayers;
     private Vector3Int[] previousEdgePositions;
@@ -31,7 +31,7 @@ public class TilePlacer : MonoBehaviour
 
     private class Layer
     {
-        private readonly Transform parent;
+        private readonly LevelLayer parent;
         private readonly Dictionary<Tilemap, Tilemap> tilemapInstances;
         private readonly TilePlacer context;
         private readonly int layerID;
@@ -42,11 +42,9 @@ public class TilePlacer : MonoBehaviour
         {
             this.layerID = layerID;
             this.context = context;
-            var go = new GameObject($"Tilemap Layer {layerID}");
             
-            parent = go.transform;
-            parent.parent = context.tilemapsParent;
-            parent.localPosition = Vector3.forward * (context.layerZOffset * layerID);
+            parent = Instantiate(context.levelLayerPrefab, context.tilemapsParent);
+            parent.Initialize(layerID);
 
             tilemapInstances = new();
         }
@@ -81,7 +79,7 @@ public class TilePlacer : MonoBehaviour
             if (!tilemapInstances.TryGetValue(tilemapPrefab, out var tilemapInstance))
             {
                 // Create new tilemap instance
-                tilemapInstance = Instantiate(tilemapPrefab, parent);
+                tilemapInstance = Instantiate(tilemapPrefab, parent.transform);
                 tilemapInstances[tilemapPrefab] = tilemapInstance;
             }
 
