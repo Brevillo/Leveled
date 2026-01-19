@@ -12,7 +12,6 @@ public class DonutPlatform : MonoBehaviour
     [SerializeField] private float respawnDelay;
     [SerializeField] private CollisionAggregate2D standingDetection;
     [SerializeField] private CollisionAggregate2D respawnCheck;
-    [SerializeField] private new Rigidbody2D rigidbody;
     [SerializeField] private GameObject content;
     [SerializeField] private TilePlacerReference tilePlacerReference;
     [SerializeField] private new Collider2D collider;
@@ -26,6 +25,8 @@ public class DonutPlatform : MonoBehaviour
 
     private float startHeight;
 
+    private Vector2 velocity;
+
     private StateMachine stateMachine;
 
     private void Start()
@@ -34,18 +35,23 @@ public class DonutPlatform : MonoBehaviour
 
         stateMachine.AddState<Idle>(new());
         stateMachine.AddState<Falling>(new())
-            .AddTransition<Respawning>(() => rigidbody.position.y < tilePlacerReference.value.Rect.min.y);
+            .AddTransition<Respawning>(() => transform.position.y < tilePlacerReference.value.Rect.min.y);
         stateMachine.AddState<Respawning>(new())
             .AddTransition<Idle>(() => stateMachine.StateDuration > respawnDelay && !respawnCheck.CollisionTouching);
         
         stateMachine.InitializeAllStatesWithContext(this);
         
-        startHeight = rigidbody.position.y;
+        startHeight = transform.position.y;
     }
 
     private void Update()
     {
         stateMachine.Update(Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        transform.position += (Vector3)velocity * Time.deltaTime;
     }
 
     private class Idle : ContextStateBehavior<DonutPlatform>
@@ -58,11 +64,11 @@ public class DonutPlatform : MonoBehaviour
             fallTimer = 0f;
             fallTriggered = false;
             
-            Vector2 position = Context.rigidbody.position;
+            Vector2 position = Context.transform.position;
             position.y = Context.startHeight;
-            Context.rigidbody.position = position;
+            Context.transform.position = position;
 
-            Context.rigidbody.linearVelocityY = 0f;
+            Context.velocity.y = 0f;
 
             Context.collider.enabled = false;
             Context.collider.enabled = true;
@@ -106,7 +112,7 @@ public class DonutPlatform : MonoBehaviour
         
         public override void Update()
         {
-            Context.rigidbody.linearVelocityY = -Context.fallSpeed;
+            Context.velocity.y = -Context.fallSpeed;
         }
 
         public override void Exit()

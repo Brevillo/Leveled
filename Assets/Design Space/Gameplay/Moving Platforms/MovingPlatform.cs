@@ -12,8 +12,6 @@ public class MovingPlatform : MonoBehaviour
     private int direction = 1;
     private float movePercent;
 
-    private Rigidbody2D[] rigidbodies;
-
     private void Awake()
     {
         gameStateManager.EditorStateChanged += OnEditorStateChanged;
@@ -31,15 +29,6 @@ public class MovingPlatform : MonoBehaviour
             case EditorState.Editing:
 
                 transform.localPosition = Vector3.zero;
-
-                if (rigidbodies != null)
-                {
-                    foreach (var rigidbody in rigidbodies)
-                    {
-                        rigidbody.linearVelocity = Vector2.zero;
-                        rigidbody.transform.localPosition = Vector3.zero;
-                    }
-                }
                 
                 break;
             
@@ -48,8 +37,6 @@ public class MovingPlatform : MonoBehaviour
                 movePercent = 0f;
                 direction = 1;
                 currentPointIndex = 0;
-
-                rigidbodies = GetComponentsInChildren<Rigidbody2D>();
                 
                 break;
         }
@@ -80,12 +67,8 @@ public class MovingPlatform : MonoBehaviour
 
         float segmentDuration = Vector2.Distance(current, next) / moveSpeed;
         movePercent += Time.deltaTime / segmentDuration;
-        
-        foreach (var rigidbody in rigidbodies)
-        {
-            // rigidbody.linearVelocity = (next - current).normalized * moveSpeed;
-            rigidbody.transform.position = Vector2.Lerp(current, next, movePercent);
-        }
+
+        transform.position = Vector2.Lerp(current, next, movePercent);
 
         if (movePercent >= 1f)
         {
