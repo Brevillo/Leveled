@@ -162,23 +162,32 @@ public class TilePlacer : MonoBehaviour
     {
         ClearPreviousEdgeTiles();
 
-        PlaceTilesInternal(positions, tiles, layerID);
+        PlaceTilesOnLayer(positions, tiles, GetLayer(layerID));
         
         UpdateEdgeTiles();
-
         RefreshTilemaps();
-
-        StartCoroutine(WaitFrame());
-        IEnumerator WaitFrame()
-        {
-            yield return null;
-            RefreshTilemaps();
-        }
-        
         UpdateWalls();
     }
-    
-    private void PlaceTilesInternal(Vector2Int[] positions, TileData[] tiles, int layerID)
+
+    public void PlaceTilesLayerExclusive(Vector2Int[] positions, TileData[] tiles, int layerID = 0)
+    {
+        ClearPreviousEdgeTiles();
+
+        var nullTiles = new TileData[positions.Length];
+
+        var exclusiveLayer = GetLayer(layerID);
+        
+        foreach (var layer in tilemapLayers)
+        {
+            PlaceTilesOnLayer(positions, layer == exclusiveLayer ? tiles : nullTiles, layer);
+        }
+        
+        UpdateEdgeTiles();
+        RefreshTilemaps();
+        UpdateWalls();
+    }
+
+    private Layer GetLayer(int layerID)
     {
         // Add needed layers
         while (tilemapLayers.Count <= layerID)
@@ -186,8 +195,12 @@ public class TilePlacer : MonoBehaviour
             tilemapLayers.Add(new(this, tilemapLayers.Count));
         }
 
+        return tilemapLayers[layerID];
+    }
+    
+    private void PlaceTilesOnLayer(Vector2Int[] positions, TileData[] tiles, Layer layer)
+    {
         var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles)>();
-        var layer = tilemapLayers[layerID];
 
         // Sort tiles based on tilemap prefab
         for (int i = 0; i < positions.Length; i++)

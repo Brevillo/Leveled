@@ -43,7 +43,7 @@ public class BrushToolAction : ToolbarAction
             }
         }
         
-        TilePlacer.PlaceTiles(positions, tiles);
+        TilePlacer.PlaceTilesLayerExclusive(positions, tiles);
         brushedTiles.AddRange(positions);
      
         previousMouseCell = current;
@@ -66,8 +66,13 @@ public class BrushToolAction : ToolbarAction
     {
         var tiles = new TileData[brushedTiles.Count];
         Array.Fill(tiles, tileData);
+
+        var nullTiles = new TileData[brushedTiles.Count];
         
-        EditorState.SetTiles(brushedTiles.ToArray(), tiles, changelogMessage);
+        foreach (var layer in EditorState.LevelInstance.AllLayerIDs)
+        {
+            EditorState.SetTiles(brushedTiles.ToArray(), layer == 0 ? tiles : nullTiles, changelogMessage, layer);
+        }
         
         brushedTiles.Clear();
     }

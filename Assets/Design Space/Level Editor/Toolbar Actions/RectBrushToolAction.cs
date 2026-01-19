@@ -27,23 +27,32 @@ public class RectBrushToolAction : ToolbarAction
 
         var tiles = new TileData[positions.Length];
         Array.Fill(tiles, new(DrawingTile));
-    
+
         if (DrawingTile != null && DrawingTile.Linkable)
         {
             TilePlacer.PlaceTiles(positions, tiles);
-            
+
             LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup =>
             {
                 var linkedTiles = new TileData[positions.Length];
                 Array.Fill(linkedTiles, new(DrawingTile, linkingGroup));
                 
-                EditorState.SetTiles(positions, linkedTiles, changelogMessage);
+                SetTiles(linkedTiles, positions);
             });
         }
         else
         {
-            EditorState.SetTiles(positions, tiles, changelogMessage);
+            SetTiles(tiles, positions);
         }
+    }
 
+    private void SetTiles(TileData[] tiles, Vector2Int[] positions)
+    {
+        var nullTiles = new TileData[tiles.Length];
+        
+        foreach (var layer in EditorState.LevelInstance.AllLayerIDs)
+        {
+            EditorState.SetTiles(positions, layer == 0 ? tiles : nullTiles, changelogMessage, layer);
+        }
     }
 }
