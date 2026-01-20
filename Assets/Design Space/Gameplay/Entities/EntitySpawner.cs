@@ -12,22 +12,24 @@ public class EntitySpawner : MonoBehaviour
     [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private Vector2 spawnBuffer;
     
-    private List<TileEntity> managedEntities;
+    private List<Entity> managedEntities;
     private List<GameObject> activeEntities;
 
-    private class TileEntity
+    private class Entity
     {
         public readonly Vector2 position;
         private readonly TileData tileData;
+        private readonly int layerID;
         private readonly EntitySpawner spawner;
 
         private bool active;
         private GameObject instance;
         
-        public TileEntity(Vector2 position, TileData tileData, EntitySpawner spawner)
+        public Entity(Vector2 position, TileData tileData, int layerID, EntitySpawner spawner)
         {
             this.position = position;
             this.tileData = tileData;
+            this.layerID = layerID;
             this.spawner = spawner;
 
             if (tileData.gameTile.GlobalEntity)
@@ -54,13 +56,18 @@ public class EntitySpawner : MonoBehaviour
 
         private void SpawnEntity()
         {
-            instance = spawner.SpawnEntity(tileData.gameTile.Entity, position);
+            instance = spawner.SpawnEntity(tileData.gameTile.Entity, position, layerID);
         }
     }
 
-    public GameObject SpawnEntity(GameObject entityPrefab, Vector2 position)
+    public GameObject SpawnEntity(GameObject entityPrefab, Vector2 position, int layerID = 0)
     {
         var entityInstance = Instantiate(entityPrefab, position, Quaternion.identity, transform);
+
+        if (entityInstance.TryGetComponent(out TileEntity tileEntity))
+        {
+            tileEntity.layerID = layerID;
+        }
         
         activeEntities.Add(entityInstance);
         
@@ -93,8 +100,11 @@ public class EntitySpawner : MonoBehaviour
         {
             case EditorState.Playing:
 
-                managedEntities.AddRange(tileEditorState.LevelInstance.EntityPositions
-                    .Select(tile => new TileEntity(spaceUtility.CellToWorld(tile), tileEditorState.LevelInstance.GetTileOnAnyLayer(tile), this)));
+                foreach (var layer in tileEditorState.LevelInstance.AllLayerIDs)
+                {
+                    managedEntities.AddRange(tileEditorState.LevelInstance.GetLayerEntityPositions(layer)
+                        .Select(tile => new Entity(spaceUtility.CellToWorld(tile), tileEditorState.LevelInstance.GetTileOnAnyLayer(tile), layer, this)));
+                }
 
                 break;
             

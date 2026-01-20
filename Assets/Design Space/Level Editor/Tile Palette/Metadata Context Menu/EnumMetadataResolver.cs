@@ -2,13 +2,13 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public abstract class EnumMetadataResolver<T> : MetadataResolver where T : struct, Enum
+public abstract class EnumMetadataResolver<T> : StringMetadataResolver where T : struct, Enum
 {
-    public override object Transform(string metadata) => Enum.Parse<T>(metadata);
+    public override object Transform(object metadata) => Enum.Parse<T>((string)metadata);
 
     public override string[] GetOptions(TileEditorState tileEditorState) => Enum.GetNames(typeof(T));
 
-    public override string GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
+    public override object GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
     {
         var selectedEnums = selection
             .GroupBy(position => tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<T>())

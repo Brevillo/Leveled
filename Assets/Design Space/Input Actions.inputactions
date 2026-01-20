@@ -726,18 +726,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EnterPlayMode",
+                    "name": "ToggleGameState",
                     "type": "Button",
                     "id": "19cae6c5-a77d-47b2-a467-cc4063c2f1d1",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ExitPlayMode",
-                    "type": "Button",
-                    "id": "3a6e0855-72f7-4b78-92f5-56a6e1e3a9f4",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1355,22 +1346,22 @@
                 {
                     "name": "",
                     "id": "ad55f9a4-e95d-4ec2-88d4-990454d959c0",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EnterPlayMode",
+                    "action": "ToggleGameState",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "32b351fc-0b49-476b-8a87-5c01de5e8940",
-                    "path": "<Keyboard>/escape",
+                    "id": "43c22d64-3e20-4310-a50e-d71c5ab5e032",
+                    "path": "<Keyboard>/numpadEnter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ExitPlayMode",
+                    "action": "ToggleGameState",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

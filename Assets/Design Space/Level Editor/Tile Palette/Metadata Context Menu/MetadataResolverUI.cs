@@ -21,7 +21,7 @@ public class MetadataResolverUI : MonoBehaviour
         Initialized?.Invoke(selection);
     }
     
-    public void UpdateMetadata(string metadata)
+    public void UpdateMetadata(object metadata)
     {
         MetadataUpdated?.Invoke(metadataResolver.Transform(metadata));
     }

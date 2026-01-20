@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = CreateAssetMenuPath + "Linking Group")]
-public class LinkingGroupMetadataResolver : MetadataResolver
+public class LinkingGroupMetadataResolver : StringMetadataResolver
 {
     [SerializeField] private string[] defaultOptions;
     
@@ -15,20 +15,18 @@ public class LinkingGroupMetadataResolver : MetadataResolver
         .Select(group => group.Key)
         .ToArray();
 
-    public override string GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
+    public override object GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
     {
-        var selectedGroupIDs = selection
-            .GroupBy(position => tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<LinkingGroup>().groupID)
+        var selectedGroupID = selection
+            .GroupBy(position =>
+                tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<LinkingGroup>().groupID)
             .Select(group => group.Key)
             .Where(groupID => !string.IsNullOrEmpty(groupID))
-            .ToArray();
+            .DefaultIfEmpty("-")
+            .First();
 
-        string selected = selectedGroupIDs.Length == 1
-            ? selectedGroupIDs.First()
-            : "-";
-
-        return selected;
+        return selectedGroupID;
     }
     
-    public override object Transform(string metadata) => new LinkingGroup(metadata);
+    public override object Transform(object metadata) => new LinkingGroup((string)metadata);
 }

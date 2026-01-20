@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Changelog
   m_EditorClassIdentifier: 
   changeloggedValues:
-  - {fileID: 11400000, guid: 266eb6a3fec7e451eae698b510cd6733, type: 2}
   - {fileID: 11400000, guid: 205b30df3c4ae43869fb462ced13b6ec, type: 2}
   - {fileID: 11400000, guid: 58ea519e36a9d4f26bc866077d435a40, type: 2}
   - {fileID: 11400000, guid: 76232390be6f243fb9483dbee3d1baf0, type: 2}
   - {fileID: 11400000, guid: e1ae281ff8af648529ceae310150e4da, type: 2}
   - {fileID: 11400000, guid: ca88d80b471114714b98c5c36119fced, type: 2}
+  - {fileID: 11400000, guid: 266eb6a3fec7e451eae698b510cd6733, type: 2}

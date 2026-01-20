@@ -16,8 +16,6 @@ public class MetadataResolverUIStringID : MonoBehaviour
     [SerializeField] private TextMeshProUGUI placeholderTextDisplay;
     [SerializeField] private TileEditorState tileEditorState;
     
-    public event Action<string> OptionSelected;
-    
     private void Awake()
     {
         inputField.onSubmit.AddListener(SelectOption);
@@ -27,10 +25,9 @@ public class MetadataResolverUIStringID : MonoBehaviour
     
     public void Initialize(Vector2Int[] selection)
     {
-        var resolver = metadataResolverUI.Resolver;
+        var resolver = (StringMetadataResolver)metadataResolverUI.Resolver;
 
-        currentValueDisplay.text =
-            resolver.GetCurrentValue(selection, tileEditorState);
+        currentValueDisplay.text = resolver.GetCurrentValue<string>(selection, tileEditorState);
         
         placeholderTextDisplay.text = resolver.InputFieldPlaceholder;
         inputFieldContent.SetActive(placeholderTextDisplay.text != "");

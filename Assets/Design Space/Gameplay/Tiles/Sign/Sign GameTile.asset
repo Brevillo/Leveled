@@ -21,4 +21,5 @@ MonoBehaviour:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Sign (Comment)
   linkable: 0
-  metadataResolvers: []
+  metadataResolvers:
+  - {fileID: 11400000, guid: ff0f8779b603449438ee67c5845da672, type: 2}

@@ -8,6 +8,8 @@ public class LevelLayer : MonoBehaviour
 
     public Metadata Metadata => tileEditorState.LevelInstance.GetLayerMetadata(layerID);
     
+    public int LayerID => layerID;
+
     public void Initialize(int layerID)
     {
         this.layerID = layerID;

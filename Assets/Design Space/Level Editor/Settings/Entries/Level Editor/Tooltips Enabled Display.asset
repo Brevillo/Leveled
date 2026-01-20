@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effd25043600d49f0a8e3dde4fb5803a, type: 3}
   m_Name: Tooltips Enabled Display
   m_EditorClassIdentifier: 
-  displayName: Tooltips Enabled
+  displayName: Show Tooltips
   section: {fileID: 11400000, guid: 083cbdc6d89a247e2bda9ccdfa95e2ee, type: 2}
   setting: {fileID: 11400000, guid: d32e6f941173842c28ab154d2aeaedeb, type: 2}

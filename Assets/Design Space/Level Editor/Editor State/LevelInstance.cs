@@ -96,6 +96,12 @@ public class LevelInstance
     public Metadata GetLayerMetadata(int layerID) => layerID < 0 || layerID > layers.Count
         ? null
         : layers[layerID].metadata;
+
+    public IEnumerable<Vector2Int> GetLayerEntityPositions(int layerID) => layerID < 0 || layerID > layers.Count
+        ? null
+        : layers[layerID].grid.AllTilePositions
+            .Where(tile => tile.tileData.gameTile.HasEntity)
+            .Select(tile => tile.position);
     
     private IEnumerable<LayerInstance> Layers => layers;
     

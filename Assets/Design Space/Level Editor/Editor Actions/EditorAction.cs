@@ -9,7 +9,8 @@ public class EditorAction : ScriptableObject
     [SerializeField] private EditorState validEditorStates = EditorState.Editing;
     [SerializeField] private string tooltip;
     [SerializeField] private Sprite icon;
-    
+    [SerializeField] private bool showLongKeymap;
+        
     public event Action Action;
 
     private bool active;
@@ -39,7 +40,7 @@ public class EditorAction : ScriptableObject
 
             string bindingDisplay = inputActionReference.action.bindings[0].ToDisplayString();
 
-            if (bindingDisplay.Length > 1) return "";
+            if (bindingDisplay.Length > 1 && !showLongKeymap) return "";
 
             return bindingDisplay;
         }

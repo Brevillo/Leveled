@@ -52,6 +52,11 @@ public class Metadata
 
     public int Count => typedEntries?.Count ?? 0;
 
+    public Metadata GetCopy() => new Metadata
+    {
+        typedEntries = new(typedEntries),
+    };
+
     public bool TryGetValue<T>(out T value)
     {
         if (typedEntries != null && typedEntries.TryGetValue(typeof(T), out var untypedValue) &&

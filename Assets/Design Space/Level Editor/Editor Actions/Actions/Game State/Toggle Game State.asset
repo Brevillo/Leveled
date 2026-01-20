@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33d3651f775ca48abae9a3ef29b24d7d, type: 3}
   m_Name: Toggle Game State
   m_EditorClassIdentifier: 
-  inputActionReference: {fileID: 0}
+  inputActionReference: {fileID: -3429878075033818465, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   validEditorStates: 3
-  tooltip: 
+  tooltip: Toggle Play Mode
   icon: {fileID: 21300000, guid: 6e90087134519450584bb5dbc65eaae1, type: 3}
+  showLongKeymap: 1

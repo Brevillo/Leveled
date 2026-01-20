@@ -8,10 +8,6 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private RectTransform panel;
     [SerializeField] private RectTransform resizer;
     [SerializeField] private SpaceUtility spaceUtility;
-    [SerializeField] private Image background;
-    [SerializeField] private Color selectedColor;
-    [SerializeField] private Color idleColor;
-    [SerializeField] private float fadeInDistance;
     [SerializeField] private float defaultSnapWidth;
     [SerializeField] private float toggleMoveSpeed;
     [SerializeField] private float cameraAdjustAnchoring;
@@ -20,6 +16,9 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private Vector2 dragPositionDelta;
     private bool dragging;
     private float snapWidth;
+    
+    private float previousDragWidth;
+    private int dragDirection;
 
     private float targetWidth;
     private float widthVelocity;
@@ -35,21 +34,13 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         {
             float initialValue = resizer.anchoredPosition.x;
             
-            // spaceUtility.Camera.transform.position -=
-            //     (spaceUtility.CanvasToWorld(resizer.anchoredPosition, resizer) 
-            //      - spaceUtility.CanvasToWorld(Vector2.right * value, resizer)) * cameraAdjustAnchoring;
-            
-            // Resize camera rect
-            float resizerPosition = value / ScreenSize.x;
-            // spaceUtility.Camera.rect = new(resizerPosition, 0, 1 - resizerPosition, 1);
-            
             // Move panel
             resizer.anchoredPosition = Vector2.right * value;
             
             // Resize panel
-            Vector2 panelSize = panel.sizeDelta;
-            panelSize.x = value;
-            panel.sizeDelta = panelSize;
+            float realSize = Mathf.Max(value, defaultSnapWidth);
+            panel.sizeDelta = new Vector2(realSize, panel.sizeDelta.y);
+            panel.anchoredPosition = Vector2.left * (realSize - value);
 
             if (initialValue == 0 && value != 0)
             {
@@ -62,34 +53,35 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        snapWidth = defaultSnapWidth;
+        Width = targetWidth = snapWidth = defaultSnapWidth;
     }
     
     private void Update()
     {
         Width = Mathf.SmoothDamp(Width, targetWidth, ref widthVelocity, toggleMoveSpeed);
-
-        // Set background color
-        var rect = resizer.rect;
-        float mousePosition = spaceUtility.MouseWindow.x * ScreenSize.x - Width;
-        float distance = mousePosition < rect.center.x
-            ? Mathf.InverseLerp(rect.xMin, rect.xMin - fadeInDistance, mousePosition)
-            : Mathf.InverseLerp(rect.xMax, rect.xMax + fadeInDistance, mousePosition);
-        
-        background.color = Color.Lerp(selectedColor, idleColor, distance);
     }
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
         dragPositionDelta = resizer.anchoredPosition - ScreenSize * spaceUtility.MouseWindow;
+        previousDragWidth = Width;
+        dragDirection = 1;
         dragging = true;
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         Width = targetWidth = snapWidth = Mathf.Max(0, (spaceUtility.MouseWindow * ScreenSize + dragPositionDelta).x);
+
+        int newDragDirection = (Width - previousDragWidth).Sign0();
+        if (newDragDirection != 0)
+        {
+            dragDirection = newDragDirection;
+        }
+        
+        previousDragWidth = Width;
     }
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
@@ -109,6 +101,15 @@ public class PanelResizer : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         dragging = false;
+
+        if (Width < defaultSnapWidth)
+        {
+            targetWidth = dragDirection > 0f
+                ? defaultSnapWidth
+                : 0f;
+
+            snapWidth = defaultSnapWidth;
+        }
     }
 
     public void TogglePanel()

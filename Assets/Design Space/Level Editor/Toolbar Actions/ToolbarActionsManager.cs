@@ -20,6 +20,7 @@ public class ToolbarActionsManager : MonoBehaviour
     [SerializeField] private ToolbarActionPalette toolbarActionPalette;
     [SerializeField] private ToolbarBlackboard blackboard;
     [SerializeField] private GameStateManager gameStateManager;
+    [SerializeField] private ToolbarAction defaultBrushType;
     [Space]
     [SerializeField] private ToolInput primaryToolInput;
     [SerializeField] private ToolInput secondaryToolInput;
@@ -37,6 +38,8 @@ public class ToolbarActionsManager : MonoBehaviour
         blackboard.linkingGroupSetter = linkingGroupSetter;
         blackboard.ResetValues();
 
+        recentBrushType = defaultBrushType;
+        
         foreach (var toolbarAction in toolbarActionPalette.Actions)
         {
             toolbarAction.InjectReferences(blackboard);

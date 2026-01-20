@@ -11,8 +11,7 @@ public class EditorActionButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI keymap;
     [SerializeField] private UITooltip uiTooltip;
     [SerializeField] private BoolSetting showKeymap;
-    
-    private Button button;
+    [SerializeField] private Button button;
 
     public void SetEditorAction(EditorAction editorAction)
     {
@@ -35,11 +34,6 @@ public class EditorActionButton : MonoBehaviour
             uiTooltip.Contents = editorAction.Tooltip;
         }
         
-        if (button == null)
-        {
-            button = GetComponent<Button>();
-        }
-
         if (button != null)
         {
             button.onClick.AddListener(editorAction.InvokeAction);

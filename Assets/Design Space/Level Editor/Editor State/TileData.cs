@@ -20,11 +20,6 @@ public enum TileRotation
     Right,
 }
 
-public readonly struct SignContents
-{
-    public readonly string text;
-}
-
 public readonly struct TileData
 {
     public readonly GameTile gameTile;
@@ -54,7 +49,7 @@ public readonly struct TileData
 
     public TileData SetMetaData(object entry)
     {
-        var newMetadata = metadata ?? new();
+        var newMetadata = metadata?.GetCopy() ?? new();
         
         newMetadata.SetValue(entry);
         

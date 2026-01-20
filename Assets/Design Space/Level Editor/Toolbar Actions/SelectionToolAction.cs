@@ -105,7 +105,7 @@ public class SelectionToolAction : ToolbarAction
         {
             case State.Selecting:
 
-                if (CurrentSelection.size == Vector2Int.one)
+                if (CurrentSelection.size == Vector2Int.one && blackboard.selection.Value != default)
                 {
                     blackboard.Deselect();
                 }
