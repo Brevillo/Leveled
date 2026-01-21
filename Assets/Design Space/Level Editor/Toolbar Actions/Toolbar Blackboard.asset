@@ -16,18 +16,19 @@ MonoBehaviour:
   editorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   spaceUtility: {fileID: 11400000, guid: 0a480216e2341450da0c4b745d3cfb44, type: 2}
   tilePlacer: {fileID: 0}
-  linkingGroupSetter: {fileID: 0}
   pathingUIManagerReference: {fileID: 11400000, guid: 6a4a47b7d75db4feab6787b1e4744f5c, type: 2}
   changelog: {fileID: 11400000, guid: 21354a8fffa724f68adc9ce587fdea42, type: 2}
+  metadataResolverUIManagerReference: {fileID: 11400000, guid: 17451d909758e4564b1b24b077a1857a, type: 2}
   activeTool: {fileID: 11400000, guid: 266eb6a3fec7e451eae698b510cd6733, type: 2}
   primaryTile: {fileID: 11400000, guid: 205b30df3c4ae43869fb462ced13b6ec, type: 2}
   secondaryTile: {fileID: 11400000, guid: 58ea519e36a9d4f26bc866077d435a40, type: 2}
   selection: {fileID: 11400000, guid: ca88d80b471114714b98c5c36119fced, type: 2}
   hoverSelection:
-    x: 14
-    y: 17
+    x: 24
+    y: 32
     width: 1
     height: 1
   hoverSelectionActive: 1
   snapHoverSelection: 0
   gameStateManager: {fileID: 11400000, guid: d575dfdb8ec86429fa506fa03f1359ac, type: 2}
+  editingLayer: 0
