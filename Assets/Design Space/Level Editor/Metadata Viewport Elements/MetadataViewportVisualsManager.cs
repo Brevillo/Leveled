@@ -32,16 +32,10 @@ public class MetadataViewportVisualsManager : MonoBehaviour
 
     private void OnChangeEvent(ChangeInfo changeInfo)
     {
-        switch (changeInfo)
-        {
-            case TileChangeInfo tileChangeInfo:
 
-                foreach (var category in categories)
-                {
-                    category.UpdateManagedTiles(tileChangeInfo);
-                }
-                
-                break;
+        foreach (var category in categories)
+        {
+            category.UpdateManagedTiles(changeInfo);
         }
     }
     
@@ -109,28 +103,35 @@ public class MetadataViewportVisualsManager : MonoBehaviour
             elementsParent.SetParent(context.elementsParent);
         }
 
-        public void UpdateManagedTiles(TileChangeInfo tileChangeInfo)
+        public void UpdateManagedTiles(ChangeInfo changeInfo)
         {
-            for (int i = 0; i < tileChangeInfo.positions.Length; i++)
+            switch (changeInfo)
             {
-                Vector3Int position = new(
-                    tileChangeInfo.positions[i].x, tileChangeInfo.positions[i].y,
-                    tileChangeInfo.layerID);
-                
-                var newTile = tileChangeInfo.newTiles[i];
-
-                if (newTile.IsEmpty)
-                {
-                    metadataPositions.Remove(position);
-                }
-                else if (newTile.metadata != null && newTile.metadata.HasValue(data.MetadataType))
-                {
-                    if (metadataPositions.Add(position) &&
-                        elements.TryGetValue(position, out var element))
+                case TileChangeInfo tileChangeInfo:
+                    
+                    for (int i = 0; i < tileChangeInfo.positions.Length; i++)
                     {
-                        element.visual.UpdateVisual(newTile.metadata.GetValueOrDefault(data.MetadataType));
+                        Vector3Int position = new(
+                            tileChangeInfo.positions[i].x, tileChangeInfo.positions[i].y,
+                            tileChangeInfo.layerID);
+                        
+                        var newTile = tileChangeInfo.newTiles[i];
+
+                        if (newTile.IsEmpty)
+                        {
+                            metadataPositions.Remove(position);
+                        }
+                        else if (newTile.metadata != null && newTile.metadata.HasValue(data.MetadataType))
+                        {
+                            if (!metadataPositions.Add(position) &&
+                                elements.TryGetValue(position, out var element))
+                            {
+                                element.visual.UpdateVisual(newTile.metadata.GetValueOrDefault(data.MetadataType));
+                            }
+                        }
                     }
-                }
+                    
+                    break;
             }
         }
 
