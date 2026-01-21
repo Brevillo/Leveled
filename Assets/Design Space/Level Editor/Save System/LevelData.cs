@@ -69,10 +69,12 @@ public class Metadata
         value = default;
         return false;
     }
-    
-    public T GetValueOrDefault<T>() =>
-        typedEntries != null && typedEntries.TryGetValue(typeof(T), out var value) && value is T t 
-            ? t
+
+    public T GetValueOrDefault<T>() => GetValueOrDefault(typeof(T)) is T t ? t : default;
+        
+    public object GetValueOrDefault(Type type) =>
+        typedEntries != null && typedEntries.TryGetValue(type, out var value) 
+            ? value
             : default;
 
     public void SetValue(object value)
@@ -90,6 +92,7 @@ public class Metadata
     }
 
     public bool HasValue<T>() => typedEntries != null && typedEntries.ContainsKey(typeof(T));
+    public bool HasValue(Type type) => typedEntries != null && typedEntries.ContainsKey(type);
 }
 
 public struct SimpleVector2Int : IEquatable<SimpleVector2Int>

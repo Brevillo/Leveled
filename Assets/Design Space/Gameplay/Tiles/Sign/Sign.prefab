@@ -52,7 +52,7 @@ MonoBehaviour:
   tileEditorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
   uiContent: {fileID: 4083813560164399344}
   textDisplay: {fileID: 8405613532544271880}
-  fadeInDuration: 0.2
+  fadeInDuration: 0.1
   spaceUtility: {fileID: 11400000, guid: 0a480216e2341450da0c4b745d3cfb44, type: 2}
   touching: {fileID: 18790302243106091}
   tileEntity: {fileID: 3766677965950373837}
@@ -205,7 +205,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -432299279
-  m_SortingLayer: -17
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -8517934916895104127, guid: 84624f5665c8e4b61b739657ee6b8240, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
