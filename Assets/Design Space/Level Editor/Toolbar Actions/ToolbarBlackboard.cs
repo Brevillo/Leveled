@@ -9,9 +9,9 @@ public class ToolbarBlackboard : ScriptableObject
     public TileEditorState editorState;
     public SpaceUtility spaceUtility;
     public TilePlacer tilePlacer;
-    public LinkingGroupSetter linkingGroupSetter;
     public PathingUIManagerReference pathingUIManagerReference;
     public Changelog changelog;
+    public MetadataResolverUIManagerReference metadataResolverUIManagerReference;
 
     public ChangeloggedToolbarAction activeTool;
     public ChangeloggedGameTile primaryTile;

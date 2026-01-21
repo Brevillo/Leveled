@@ -17,7 +17,6 @@ public abstract class ToolbarAction : ScriptableObject
     protected SpaceUtility SpaceUtility => blackboard.spaceUtility;
     protected TileEditorState EditorState => blackboard.editorState;
     protected TilePlacer TilePlacer => blackboard.tilePlacer;
-    protected LinkingGroupSetter LinkingGroupSetter => blackboard.linkingGroupSetter;
     
     public string ToolName => toolName;
     

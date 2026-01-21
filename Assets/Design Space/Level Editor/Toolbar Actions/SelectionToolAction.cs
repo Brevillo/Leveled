@@ -109,7 +109,7 @@ public class SelectionToolAction : ToolbarAction
                 {
                     blackboard.Deselect();
                 }
-                else
+                else if (CurrentSelection.size != Vector2Int.one || activeToolSide != ToolSide.Secondary)
                 {
                     blackboard.selection.SetValue(CurrentSelection, "Created Selection");
                 } 

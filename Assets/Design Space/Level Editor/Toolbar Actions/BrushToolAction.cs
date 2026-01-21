@@ -56,19 +56,7 @@ public class BrushToolAction : ToolbarAction
 
     protected override void OnReleased() 
     {
-        if (DrawingTile != null && DrawingTile.Linkable)
-        {
-            var tile = DrawingTile;
-            LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup => SetTiles(new(tile, linkingGroup)));
-        }
-        else
-        {
-            SetTiles(new(DrawingTile));
-        }
-    }
-    
-    private void SetTiles(TileData tileData)
-    {
+        TileData tileData = new(DrawingTile);
         var tiles = new TileData[brushedTiles.Count];
         Array.Fill(tiles, tileData);
 
@@ -77,6 +65,11 @@ public class BrushToolAction : ToolbarAction
         foreach (var layer in EditorState.LevelInstance.AllLayerIDs)
         {
             EditorState.SetTiles(brushedTiles.ToArray(), layer == 0 ? tiles : nullTiles, changelogMessage, layer);
+        }
+
+        if (DrawingTile.MetadataResolvers.Count > 0)
+        {
+            blackboard.metadataResolverUIManagerReference.value.Open(brushedTiles.ToArray());
         }
         
         brushedTiles.Clear();

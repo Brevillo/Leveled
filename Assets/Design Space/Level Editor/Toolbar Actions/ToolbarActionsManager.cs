@@ -28,14 +28,12 @@ public class ToolbarActionsManager : MonoBehaviour
     [Space]
     [Header("References")]
     [SerializeField] private TilePlacer tilePlacer;
-    [SerializeField] private LinkingGroupSetter linkingGroupSetter;
     
     private ToolbarAction recentBrushType;
     
     private void Awake()
     {
         blackboard.tilePlacer = tilePlacer;
-        blackboard.linkingGroupSetter = linkingGroupSetter;
         blackboard.ResetValues();
 
         recentBrushType = defaultBrushType;

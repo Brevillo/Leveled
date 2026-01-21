@@ -24,19 +24,11 @@ public class FillToolAction : ToolbarAction
         
         TilePlacer.PlaceTiles(fillPositions, tiles);
 
-        if (DrawingTile != null && DrawingTile.Linkable)
+        EditorState.SetTiles(fillPositions, tiles, changelogMessage);
+        
+        if (DrawingTile.MetadataResolvers.Count > 0)
         {
-            LinkingGroupSetter.GetLinkingGroupAtMouse(linkingGroup =>
-            {
-                var linkedTiles = new TileData[fillPositions.Length];
-                Array.Fill(linkedTiles, new(DrawingTile, linkingGroup));
-                
-                EditorState.SetTiles(fillPositions, linkedTiles, changelogMessage);
-            });
-        }
-        else
-        {
-            EditorState.SetTiles(fillPositions, tiles, changelogMessage);
+            blackboard.metadataResolverUIManagerReference.value.Open(fillPositions);
         }
     }
 
