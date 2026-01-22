@@ -117,6 +117,19 @@ public class TileEditorState : GameService
                 }
 
                 break;
+            
+            case LayeredValueChangeInfo<PathInstance.ActivationType> activationTypeChangeInfo:
+
+                if (LevelInstance.UpdateLayers(activationTypeChangeInfo.layerID)) return;
+
+                layerMetadata = LevelInstance.GetLayerMetadata(activationTypeChangeInfo.layerID);
+
+                if (layerMetadata.TryGetValue(out pathInstance))
+                {
+                    pathInstance.activationType = activationTypeChangeInfo.newValue;
+                }
+
+                break;
         }
     }
     
