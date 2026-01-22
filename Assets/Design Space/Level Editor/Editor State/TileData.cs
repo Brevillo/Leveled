@@ -72,8 +72,7 @@ public readonly struct TileData
         this.gameTile = gameTile;
         this.metadata = metadata;
     }
-
-    public bool Linkable => gameTile != null && gameTile.Linkable;
+    
     public bool IsEmpty => gameTile == null || gameTile.IsNullTileBase;
 
     public TileData SetMetaData(object entry)

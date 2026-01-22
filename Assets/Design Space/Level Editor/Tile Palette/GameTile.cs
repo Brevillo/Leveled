@@ -12,14 +12,12 @@ public class GameTile : ScriptableObject
     [SerializeField] private bool globalEntity;
     [SerializeField] private List<Tilemap> tilemapPrefabs;
     [SerializeField] private string tooltip;
-    [SerializeField] private bool linkable;
     [SerializeField] private List<MetadataResolver> metadataResolvers;
 
     public int ID => id;
     public Sprite PaletteIcon => paletteIcon;
     public List<Tilemap> TilemapPrefabs => tilemapPrefabs;
     public string Tooltip => tooltip;
-    public bool Linkable => linkable;
 
     public bool IsNullTileBase => tileBase == null;
 
