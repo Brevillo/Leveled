@@ -74,8 +74,11 @@ TagManager:
   - name: Knirt and Sqirt
     uniqueID: 857251601
     locked: 0
-  - name: Womps
+  - name: Womp Womp
     uniqueID: 625086457
+    locked: 0
+  - name: Womp
+    uniqueID: 3463587519
     locked: 0
   - name: Wraith
     uniqueID: 3846928787
