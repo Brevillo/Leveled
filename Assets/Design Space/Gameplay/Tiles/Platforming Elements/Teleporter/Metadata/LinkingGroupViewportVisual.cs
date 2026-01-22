@@ -68,14 +68,14 @@ public class LinkingGroupViewportVisual : MonoBehaviour
 
         Vector2 startOffset = connectionCanvas - selfCanvas;
         startOffset *= 0.5f * Mathf.Min(
-            rectTransform.sizeDelta.x / Mathf.Abs(startOffset.x),
-            rectTransform.sizeDelta.y / Mathf.Abs(startOffset.y));
+            startOffset.x == 0f ? 1f : rectTransform.sizeDelta.x / Mathf.Abs(startOffset.x),
+            startOffset.y == 0f ? 1f : rectTransform.sizeDelta.y / Mathf.Abs(startOffset.y));
         Vector2 start = selfCanvas + startOffset;
 
         Vector2 endOffset = selfCanvas - connectionCanvas;
         endOffset *= 0.5f * Mathf.Min(
-            rectTransform.sizeDelta.x / Mathf.Abs(endOffset.x),
-            rectTransform.sizeDelta.y / Mathf.Abs(endOffset.y));
+            endOffset.x == 0f ? 1f : rectTransform.sizeDelta.x / Mathf.Abs(endOffset.x),
+            endOffset.y == 0f ? 1f : rectTransform.sizeDelta.y / Mathf.Abs(endOffset.y));
         Vector2 end = connectionCanvas + endOffset;
 
         Vector2 startToEnd = (end - start).normalized;

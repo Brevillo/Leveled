@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c99d2280274434b0393adfe743caac, type: 3}
   m_Name: Show Linking Group
   m_EditorClassIdentifier: 
+  defaultValue: 1
   changelogName: Show Linking Group
+  log: 0

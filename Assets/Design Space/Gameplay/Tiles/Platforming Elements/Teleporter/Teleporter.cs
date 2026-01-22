@@ -52,7 +52,7 @@ public class Teleporter : MonoBehaviour
         
         foreach (var self in teleporters.Values)
         {
-            self.connection = teleporters.GetValueOrDefault(connections[tileEntity.CellPosition]);
+            self.connection = teleporters.GetValueOrDefault(connections[self.tileEntity.CellPosition]);
         }
     }
 }
