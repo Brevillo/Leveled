@@ -72,9 +72,9 @@ public class LevelInstance
         return default;
     }
 
-    public TileData GetTile(Vector2Int position, int layerID) => layerID >= 0 && layerID < layers.Count 
-        ? layers[layerID].grid.GetTileOrDefault(position)
-        : default;
+    public TileData GetTile(Vector2Int position, int layerID) => layerID < 0 || layerID >= layers.Count 
+        ? default
+        : layers[layerID].grid.GetTileOrDefault(position);
 
     public int GetLayerIDAt(Vector2Int position)
     {
@@ -89,15 +89,15 @@ public class LevelInstance
         return -1;
     }
 
-    public RectInt GetLayerRect(int layerID) => layerID < 0 || layerID > layers.Count
+    public RectInt GetLayerRect(int layerID) => layerID < 0 || layerID >= layers.Count
         ? default 
         : layers[layerID].grid.Rect;
 
-    public Metadata GetLayerMetadata(int layerID) => layerID < 0 || layerID > layers.Count
+    public Metadata GetLayerMetadata(int layerID) => layerID < 0 || layerID >= layers.Count
         ? null
         : layers[layerID].metadata;
 
-    public IEnumerable<Vector2Int> GetLayerEntityPositions(int layerID) => layerID < 0 || layerID > layers.Count
+    public IEnumerable<Vector2Int> GetLayerEntityPositions(int layerID) => layerID < 0 || layerID >= layers.Count
         ? null
         : layers[layerID].grid.AllTilePositions
             .Where(tile => tile.tileData.gameTile.HasEntity)

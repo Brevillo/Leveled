@@ -6,16 +6,16 @@ using UnityEngine.UI;
 
 public class PathPropertiesDisplay : MonoBehaviour
 {
-    [SerializeField] private Image loopingTypeDisplay;
-    [SerializeField] private EnumSpriteMapping<PathInstance.LoopingType> loopingTypeSprites;
-    [SerializeField] private Image activationTypeDisplay;
-    [SerializeField] private EnumSpriteMapping<PathInstance.ActivationType> activationTypeSprites;
+    [SerializeField] private EnumSpriteMapping<PathInstance.LoopingType> loopingType;
+    [SerializeField] private EnumSpriteMapping<PathInstance.ActivationType> activationType;
     [SerializeField] private ToolbarBlackboard toolbarBlackboard;
     [SerializeField] private TileEditorState tileEditorState;
 
     [Serializable]
     private class EnumSpriteMapping<T> where T : Enum
     {
+        [SerializeField] private Image enumDisplay;
+        [SerializeField] private UITooltip tooltip;
         [SerializeField] private List<Mapping> mappings;
         
         [Serializable]
@@ -23,20 +23,28 @@ public class PathPropertiesDisplay : MonoBehaviour
         {
             public T value;
             public Sprite sprite;
+            public string tooltip;
         }
 
-        public Sprite GetSprite(T value) => mappings.FirstOrDefault(item => item.value.Equals(value)).sprite;
+        public void SetValue(T value)
+        {
+            var mapping = mappings.FirstOrDefault(item => item.value.Equals(value));
+            
+            enumDisplay.sprite = mapping.sprite;
+            tooltip.Contents = mapping.tooltip;
+        }
     }
     
     private void Update()
     {
-        if (!tileEditorState.LevelInstance.GetLayerMetadata(toolbarBlackboard.editingLayer)
-                .TryGetValue(out PathInstance pathInstance))
+        var metadata = tileEditorState.LevelInstance.GetLayerMetadata(toolbarBlackboard.editingLayer);
+        
+        if (metadata == null || !metadata.TryGetValue(out PathInstance pathInstance))
         {
             return;
         }
 
-        loopingTypeDisplay.sprite = loopingTypeSprites.GetSprite(pathInstance.loopingType);
-        activationTypeDisplay.sprite = activationTypeSprites.GetSprite(pathInstance.activationType);
+        loopingType.SetValue(pathInstance.loopingType);
+        activationType.SetValue(pathInstance.activationType);
     }
 }

@@ -13,6 +13,8 @@ public class MovingPlatform : MonoBehaviour
     private float movePercent;
     private bool active;
 
+    private PhysicsContactParent[] physicsContactParents;
+
     private void Awake()
     {
         gameStateManager.EditorStateChanged += OnEditorStateChanged;
@@ -30,17 +32,40 @@ public class MovingPlatform : MonoBehaviour
             case EditorState.Editing:
 
                 transform.localPosition = Vector3.zero;
+
+                foreach (var physicsContactParent in physicsContactParents)
+                {
+                    physicsContactParent.ChildAdded -= OnChildAdded;
+                }
                 
                 break;
-            
+
             case EditorState.Playing:
-                
+
                 movePercent = 0f;
                 direction = 1;
                 currentPointIndex = 0;
                 active = false;
+
+                physicsContactParents = GetComponentsInChildren<PhysicsContactParent>();
+                
+                foreach (var physicsContactParent in physicsContactParents)
+                {
+                    physicsContactParent.ChildAdded += OnChildAdded;
+                }
                 
                 break;
+        }
+    }
+
+    private void OnChildAdded(PhysicsContactChild child)
+    {
+        if (!levelLayer.Metadata.TryGetValue(out PathInstance pathInstance) ||
+            pathInstance.activationType is not PathInstance.ActivationType.TouchStart) return;
+        
+        if (child.TryGetComponent(out PlayerMovement _))
+        {
+            active = true;
         }
     }
 
@@ -101,17 +126,6 @@ public class MovingPlatform : MonoBehaviour
                     
                     break;
             }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (!levelLayer.Metadata.TryGetValue(out PathInstance pathInstance) ||
-            pathInstance.activationType is not PathInstance.ActivationType.TouchStart) return;
-        
-        if (other.collider.TryGetComponent(out PlayerMovement _))
-        {
-            active = true;
         }
     }
 }
