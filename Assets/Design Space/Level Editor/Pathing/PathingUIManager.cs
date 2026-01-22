@@ -7,15 +7,22 @@ using Object = UnityEngine.Object;
 
 public class PathInstance
 {
-    public enum PathingType
+    public enum LoopingType
     {
         PingPong = 0,
         Forward = 1,
         Once = 2,
     }
+
+    public enum ActivationType
+    {
+        Automatic = 0,
+        TouchStart = 1,
+    }
     
     public readonly List<Vector2Int> points = new();
-    public PathingType pathingType = PathingType.PingPong;
+    public LoopingType loopingType = LoopingType.PingPong;
+    public ActivationType activationType;
 }
 
 public class PathingUIManager : MonoBehaviour
@@ -112,11 +119,12 @@ public class PathingUIManager : MonoBehaviour
             && tileEditorState.LevelInstance.GetLayerMetadata(pathPropertiesLayer).HasValue<PathInstance>());
         
         var layerRect = tileEditorState.LevelInstance.GetLayerRect(pathPropertiesLayer);
+        Vector2 offset = spaceUtility.CellToCanvas(layerRect.min - Vector2Int.one, pathProperties);
         Vector2 rectMin = spaceUtility.CellToCanvas(layerRect.min, pathProperties);
         Vector2 rectMax = spaceUtility.CellToCanvas(layerRect.max, pathProperties);
-        var layerRectCanvas = new Rect(rectMin, rectMax - rectMin);
+        var layerRectCanvas = new Rect((rectMin + offset) / 2f, rectMax - offset);
         
-        pathProperties.position = layerRectCanvas.center;
+        pathProperties.position = new(layerRectCanvas.center.x, layerRectCanvas.yMin);
     }
 
     private void SetNodePosition(Vector2Int position, RectTransform node) =>
@@ -159,7 +167,7 @@ public class PathingUIManager : MonoBehaviour
                 context.pathingNodePrefab,
                 context.nodesParent);
             UpdateCount(
-                Mathf.Max(0, pathInstance.points.Count + (pathInstance.pathingType == PathInstance.PathingType.Forward ? 0 : -1)),
+                Mathf.Max(0, pathInstance.points.Count + (pathInstance.loopingType == PathInstance.LoopingType.Forward ? 0 : -1)),
                 edges, 
                 context.pathingEdgePrefab, 
                 context.edgesParent);
@@ -169,7 +177,7 @@ public class PathingUIManager : MonoBehaviour
                 context.SetNodePosition(pathInstance.points[i], nodes[i]);
                 nodes[i].GetComponentInChildren<TextMeshProUGUI>().text = (i + 1).ToString();
 
-                if (i < pathInstance.points.Count - 1 || pathInstance.pathingType == PathInstance.PathingType.Forward)
+                if (i < pathInstance.points.Count - 1 || pathInstance.loopingType == PathInstance.LoopingType.Forward)
                 {
                     context.SetEdgePosition(
                         pathInstance.points[i],

@@ -66,7 +66,7 @@ public class EntitySpawner : MonoBehaviour
 
         if (entityInstance.TryGetComponent(out TileEntity tileEntity))
         {
-            tileEntity.layerID = layerID;
+            tileEntity.Initialize(layerID, spaceUtility.WorldToCell(position));
         }
         
         activeEntities.Add(entityInstance);

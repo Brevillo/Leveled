@@ -26,6 +26,7 @@ public class MovingPlatformToolAction : ToolbarAction
     {
         TilePlacer.SetSelectedLayer(-1);
         PathingUIManager.HidePreview();
+        PathingUIManager.HidePathProperties();
     }
 
     protected override void OnDown()
@@ -155,7 +156,7 @@ public class MovingPlatformToolAction : ToolbarAction
 
                     if (drawingPath.points.Contains(mouseCell))
                     {
-                        drawingPath.pathingType = PathInstance.PathingType.Forward;
+                        drawingPath.loopingType = PathInstance.LoopingType.Forward;
                         CompletePath();
                     }
                     else
@@ -210,16 +211,29 @@ public class MovingPlatformToolAction : ToolbarAction
         }
     }
 
-    public void TogglePathType()
+    public void ToggleLoopingType()
     {
         if (EditorState.LevelInstance.GetLayerMetadata(blackboard.editingLayer)
             .TryGetValue(out PathInstance path))
         {
-            blackboard.changelog.SendChange(new LayerPathTypeChangeInfo(
-                "Changed path type",
+            blackboard.changelog.SendChange(new LayeredValueChangeInfo<PathInstance.LoopingType>(
+                "Changed looping type",
                 blackboard.editingLayer,
-                path.pathingType,
-                path.pathingType.IncrementEnum()));
+                path.loopingType,
+                path.loopingType.IncrementEnum()));
+        }
+    }
+    
+    public void ToggleActivationType()
+    {
+        if (EditorState.LevelInstance.GetLayerMetadata(blackboard.editingLayer)
+            .TryGetValue(out PathInstance path))
+        {
+            blackboard.changelog.SendChange(new LayeredValueChangeInfo<PathInstance.ActivationType>(
+                "Changed activation type",
+                blackboard.editingLayer,
+                path.activationType,
+                path.activationType.IncrementEnum()));
         }
     }
 }

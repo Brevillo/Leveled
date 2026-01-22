@@ -7,44 +7,30 @@ using UnityEngine.Events;
 public class Teleporter : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
-    [SerializeField] private SpriteRenderer arrow;
     [SerializeField] private UnityEvent onTeleport;
-    [SerializeField] private ChangeloggedBool showLinkingGroups;
-    [SerializeField] private Changelog changelog;
     [SerializeField] private SpaceUtility spaceUtility;
+    [SerializeField] private TileEntity tileEntity;
 
     private Teleporter connection;
-    private LinkingGroup linkingGroup;
+    
+    private readonly List<Teleportable> ignore = new();
 
-    private List<Teleportable> ignore = new();
-    
-    private static readonly List<Teleporter> teleporters = new();
-    
-    private void OnEnable()
+    private static readonly Dictionary<Vector2Int, Teleporter> teleporters = new();
+
+    private void Awake()
     {
-        changelog.ChangeEvent += OnChangeEvent;
-        
-        teleporters.Add(this);
-        RecalculateAllConnections();
+        tileEntity.Initialized += OnInitialized;
     }
-    
-    private void OnDisable()
-    {
-        changelog.ChangeEvent -= OnChangeEvent;
 
-        teleporters.Remove(this);
+    private void OnInitialized()
+    {
+        teleporters.Add(tileEntity.CellPosition, this);
         RecalculateAllConnections();
     }
 
-    private void OnChangeEvent(ChangeInfo changeInfo)
+    private void OnDestroy()
     {
-        if (arrow == null)
-        {
-            return;
-        }
-        
-        arrow.gameObject.SetActive(showLinkingGroups.Value);
-        
+        teleporters.Remove(tileEntity.CellPosition);
         RecalculateAllConnections();
     }
     
@@ -59,48 +45,14 @@ public class Teleporter : MonoBehaviour
             onTeleport.Invoke();
         }
     }
-
+    
     private void RecalculateAllConnections()
     {
-        foreach (var teleporter in teleporters)
-        {
-            teleporter.linkingGroup = editorState.LevelInstance.GetTileOnAnyLayer(spaceUtility.WorldToCell(teleporter.transform.position))
-                .GetMetaData<LinkingGroup>();
-        }
+        var connections = LinkingGroup.GetAllConnections(editorState.LevelInstance);
         
-        foreach (var self in teleporters)
+        foreach (var self in teleporters.Values)
         {
-            self.connection = teleporters
-                .Where(teleporter => teleporter.linkingGroup.groupID == self.linkingGroup.groupID && teleporter != self)
-                .OrderBy(teleporter => Vector3.Distance(teleporter.transform.position, self.transform.position))
-                .FirstOrDefault();
-            
-            self.UpdateConnectionArrow();
-        }
-    }    
-    
-    private void UpdateConnectionArrow()
-    {
-        if (connection != null && showLinkingGroups.Value)
-        {
-            Vector2 self = transform.position + Vector3.up * 0.5f;
-            Vector2 other = connection.transform.position + Vector3.down * 0.5f;
-            float distance = Vector2.Distance(self, other);
-            
-            other = distance == 0
-                ? other
-                : self + (other - self) / distance * (distance - 0.5f);
-            
-            arrow.size = new(Vector3.Distance(other, self) / arrow.transform.localScale.x, 1);
-            arrow.transform.SetPositionAndRotation(
-                (self + other) / 2f,
-                Quaternion.FromToRotation(Vector2.right, other - self));
-            
-            arrow.gameObject.SetActive(true);
-        }
-        else
-        {
-            arrow.gameObject.SetActive(false);
+            self.connection = teleporters.GetValueOrDefault(connections[tileEntity.CellPosition]);
         }
     }
 }

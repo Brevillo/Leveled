@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff85eec5ef644f09738c16ee7bedbd3, type: 3}
   m_Name: Active Tool
   m_EditorClassIdentifier: 
-  defaultValue: {fileID: 11400000, guid: 7653619b9e4e94328a35d9259d0d2e7f, type: 2}
+  defaultValue: {fileID: 11400000, guid: 3c93551cdcc3540769e9ade9e81b3bd1, type: 2}
   changelogName: Active Tool
   log: 0

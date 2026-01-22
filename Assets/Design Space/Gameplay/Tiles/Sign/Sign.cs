@@ -18,7 +18,7 @@ public class Sign : MonoBehaviour
     {
         var cellPosition = spaceUtility.WorldToCell(transform.position);
 
-        signData = tileEditorState.LevelInstance.GetTile(cellPosition, tileEntity.layerID)
+        signData = tileEditorState.LevelInstance.GetTile(cellPosition, tileEntity.LayerID)
             .GetMetaData<SignData>();
         
         textDisplay.text = signData.text;

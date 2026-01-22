@@ -105,15 +105,15 @@ public class TileEditorState : GameService
                 
                 break;
             
-            case LayerPathTypeChangeInfo layerPathTypeChangeInfo:
+            case LayeredValueChangeInfo<PathInstance.LoopingType> loopingTypeChangeInfo:
 
-                if (LevelInstance.UpdateLayers(layerPathTypeChangeInfo.layerID)) return;
+                if (LevelInstance.UpdateLayers(loopingTypeChangeInfo.layerID)) return;
 
-                layerMetadata = LevelInstance.GetLayerMetadata(layerPathTypeChangeInfo.layerID);
+                layerMetadata = LevelInstance.GetLayerMetadata(loopingTypeChangeInfo.layerID);
 
                 if (layerMetadata.TryGetValue<PathInstance>(out var pathInstance))
                 {
-                    pathInstance.pathingType = layerPathTypeChangeInfo.newType;
+                    pathInstance.loopingType = loopingTypeChangeInfo.newValue;
                 }
 
                 break;

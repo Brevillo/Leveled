@@ -11,6 +11,7 @@ public class MovingPlatform : MonoBehaviour
     private int currentPointIndex;
     private int direction = 1;
     private float movePercent;
+    private bool active;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class MovingPlatform : MonoBehaviour
                 movePercent = 0f;
                 direction = 1;
                 currentPointIndex = 0;
+                active = false;
                 
                 break;
         }
@@ -46,20 +48,21 @@ public class MovingPlatform : MonoBehaviour
     {
         if (gameStateManager.EditorState != EditorState.Playing 
             || !levelLayer.Metadata.TryGetValue(out PathInstance pathInstance)
-            || pathInstance.points.Count == 0)
+            || pathInstance.points.Count == 0
+            || (!active && pathInstance.activationType == PathInstance.ActivationType.TouchStart))
         {
             return;
         }
 
         var points = pathInstance.points;
-        var type = pathInstance.pathingType;
+        var type = pathInstance.loopingType;
         
         Vector2 current = spaceUtility.CellToWorld(points[currentPointIndex]);
         Vector2 next = spaceUtility.CellToWorld(points[type switch
         {
-            PathInstance.PathingType.PingPong => Mathf.Clamp(currentPointIndex + direction, 0, points.Count - 1),
-            PathInstance.PathingType.Forward => (currentPointIndex + 1) % points.Count,
-            PathInstance.PathingType.Once => Mathf.Min(currentPointIndex + 1, points.Count - 1),
+            PathInstance.LoopingType.PingPong => Mathf.Clamp(currentPointIndex + direction, 0, points.Count - 1),
+            PathInstance.LoopingType.Forward => (currentPointIndex + 1) % points.Count,
+            PathInstance.LoopingType.Once => Mathf.Min(currentPointIndex + 1, points.Count - 1),
             _ => throw new ArgumentOutOfRangeException(),
         }]);
 
@@ -77,7 +80,7 @@ public class MovingPlatform : MonoBehaviour
             
             switch (type)
             {
-                case PathInstance.PathingType.PingPong:
+                case PathInstance.LoopingType.PingPong:
 
                     if (currentPointIndex == points.Count - 1 || currentPointIndex == 0)
                     {
@@ -86,18 +89,29 @@ public class MovingPlatform : MonoBehaviour
                     
                     break;
                 
-                case PathInstance.PathingType.Forward:
+                case PathInstance.LoopingType.Forward:
 
                     currentPointIndex %= points.Count;
                     
                     break;
                 
-                case PathInstance.PathingType.Once:
+                case PathInstance.LoopingType.Once:
 
                     currentPointIndex = Mathf.Min(currentPointIndex, points.Count - 1);
                     
                     break;
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (!levelLayer.Metadata.TryGetValue(out PathInstance pathInstance) ||
+            pathInstance.activationType is not PathInstance.ActivationType.TouchStart) return;
+        
+        if (other.collider.TryGetComponent(out PlayerMovement _))
+        {
+            active = true;
         }
     }
 }

@@ -9,10 +9,10 @@ public class SignDataViewportVisual : MonoBehaviour
 
     private void Awake()
     {
-        metadataViewportVisual.VisualUpdated += MetadataViewportVisualOnVisualUpdated;
+        metadataViewportVisual.MetadataUpdated += OnMetadataUpdated;
     }
 
-    private void MetadataViewportVisualOnVisualUpdated(object metadata)
+    private void OnMetadataUpdated(object metadata)
     {
         textDisplay.text = ((SignData)metadata).text;
     }

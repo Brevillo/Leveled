@@ -51,11 +51,11 @@ Material:
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
     m_Colors:
-    - _Cell_Size: {r: 42.62558, g: 42.62555, b: 0, a: 0}
+    - _Cell_Size: {r: 90.00049, g: 90.00012, b: 0, a: 0}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
     - _Line_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.2}
     - _Max_Cell_Size: {r: 60, g: 60, b: 0, a: 0}
     - _Min_Cell_Size: {r: 8, g: 8, b: 0, a: 0}
-    - _Origin: {r: -457.98157, g: -988.594, b: 0, a: 0}
+    - _Origin: {r: -2150.541, g: -1445.9825, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public readonly struct LinkingGroup
 {
@@ -9,6 +10,34 @@ public readonly struct LinkingGroup
     public LinkingGroup(string groupID)
     {
         this.groupID = groupID;
+    }
+
+    public static Dictionary<Vector2Int, Vector2Int> GetAllConnections(LevelInstance levelInstance)
+    {
+        Dictionary<string, List<Vector2Int>> linkedPositions = new();
+        
+        foreach (var position in levelInstance.EntityPositions)
+        {
+            var metadata = levelInstance.GetTileOnAnyLayer(position).metadata;
+            if (metadata != null && metadata.TryGetValue<LinkingGroup>(out var linkingGroup))
+            {
+                if (!linkedPositions.TryGetValue(linkingGroup.groupID, out var positions))
+                {
+                    positions = new();
+                    linkedPositions.Add(linkingGroup.groupID, positions);
+                }
+                
+                positions.Add(position);
+            }
+        }
+
+        return new(linkedPositions
+            .SelectMany(group => group.Value
+                .Select(position => new KeyValuePair<Vector2Int, Vector2Int>(position, group.Value
+                    .Where(other => other != position)
+                    .OrderBy(other => ((Vector2)(other - position)).sqrMagnitude)
+                    .DefaultIfEmpty(position)
+                    .First()))));
     }
 }
 

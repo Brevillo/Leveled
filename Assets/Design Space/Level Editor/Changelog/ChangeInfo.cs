@@ -94,22 +94,18 @@ public class LayerMetadataChangeInfo : ChangeInfo
     });
 }
 
-public class LayerPathTypeChangeInfo : ChangeInfo
+public class LayeredValueChangeInfo<T> : ChangeInfo
 {
     public readonly int layerID;
-    public readonly PathInstance.PathingType previousType;
-    public readonly PathInstance.PathingType newType;
-    
-    public LayerPathTypeChangeInfo(
-        string description,
-        int layerID,
-        PathInstance.PathingType previousType,
-        PathInstance.PathingType newType) : base(description)
+    public readonly T previousValue;
+    public readonly T newValue;
+
+    public LayeredValueChangeInfo(string description, int layerID, T previousValue, T newValue) : base(description)
     {
         this.layerID = layerID;
-        this.previousType = previousType;
-        this.newType = newType;
+        this.previousValue = previousValue;
+        this.newValue = newValue;
     }
-    
-    public override ChangeInfo Reverted => new LayerPathTypeChangeInfo(description, layerID, newType, previousType);
+
+    public override ChangeInfo Reverted => new LayeredValueChangeInfo<T>(description, layerID, newValue, previousValue);
 }

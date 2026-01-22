@@ -15,10 +15,10 @@ MonoBehaviour:
   id: 6
   paletteIcon: {fileID: 849109395259260800, guid: 28c1c57e5f68844f5bdde8002129e813, type: 3}
   tileBase: {fileID: 11400000, guid: 02bf4be99963b45e88abae7e7135f94a, type: 2}
-  entity: {fileID: 0}
+  entity: {fileID: 8072397385723173511, guid: 42e4ebe7bdae340ec95255c1c6b30d9a, type: 3}
   globalEntity: 0
   tilemapPrefabs:
-  - {fileID: 7211183380168987404, guid: 2f19f837b29f34517b85ce979ca2be21, type: 3}
+  - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Teleporter
   linkable: 1
   metadataResolvers:

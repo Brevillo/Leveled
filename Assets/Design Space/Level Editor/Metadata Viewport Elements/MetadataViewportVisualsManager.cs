@@ -126,7 +126,7 @@ public class MetadataViewportVisualsManager : MonoBehaviour
                             if (!metadataPositions.Add(position) &&
                                 elements.TryGetValue(position, out var element))
                             {
-                                element.visual.UpdateVisual(newTile.metadata.GetValueOrDefault(data.MetadataType));
+                                element.visual.UpdateMetadata(newTile.metadata.GetValueOrDefault(data.MetadataType));
                             }
                         }
                     }
@@ -146,19 +146,20 @@ public class MetadataViewportVisualsManager : MonoBehaviour
             foreach (var position in metadataPositions)
             {
                 if (!elements.ContainsKey(position)
-                    && windowRect.Contains((Vector2)context.spaceUtility.CellToWindow((Vector2Int)position)))
+                    && (windowRect.Contains((Vector2)context.spaceUtility.CellToWindow((Vector2Int)position)) || !data.ViewportCulling))
                 {
                     var element = new Element(this);
                     elements.Add(position, element);
+                    element.visual.Initialize((Vector2Int)position, position.z);
 
-                    element.visual.UpdateVisual(context.tileEditorState.LevelInstance
+                    element.visual.UpdateMetadata(context.tileEditorState.LevelInstance
                         .GetTile((Vector2Int)position, position.z).metadata.GetValueOrDefault(data.MetadataType));
                 }
             }
 
             foreach (var position in elements.Keys.ToArray())
             {
-                if (!windowRect.Contains(context.spaceUtility.CellToWindow((Vector2Int)position)) || !metadataPositions.Contains(position))
+                if (!(windowRect.Contains(context.spaceUtility.CellToWindow((Vector2Int)position)) || !data.ViewportCulling) || !metadataPositions.Contains(position))
                 {
                     elements[position].poolable.Return();
                     elements.Remove(position);
@@ -167,10 +168,23 @@ public class MetadataViewportVisualsManager : MonoBehaviour
         
             foreach (var (position, element) in elements)
             {
-                Vector3 windowPoint = context.spaceUtility.WorldToWindow(context.spaceUtility.CellToWorld((Vector2Int)position) + Vector3.down * 0.5f);
-                element.transform.position = context.spaceUtility.GetCanvas(element.transform).pixelRect.size * windowPoint;
-            
-                element.transform.gameObject.SetActive(data.ShowVisuals);
+                if (data.ShowVisuals)
+                {
+                    Vector2 canvasPosition = context.spaceUtility.CellToCanvas((Vector2Int)position, element.transform);
+                    Vector2 offset =
+                        context.spaceUtility.CellToCanvas((Vector2Int)position - Vector2Int.one, element.transform);
+                    
+                    element.transform.position = canvasPosition;
+                    element.transform.sizeDelta = canvasPosition - offset;
+                    
+                    element.visual.UpdatePosition();
+                    
+                    element.transform.gameObject.SetActive(true);
+                }
+                else
+                {
+                    element.transform.gameObject.SetActive(false);
+                }
             }
         }
     }
