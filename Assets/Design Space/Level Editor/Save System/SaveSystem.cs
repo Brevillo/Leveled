@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 #if UNITY_EDITOR
@@ -182,6 +183,29 @@ public abstract class SaveSystem<TData>
     }
     
     #endregion
+}
+
+public class EnumWithTypeConverter : JsonConverter
+{
+    public override bool CanConvert(Type objectType)
+        => objectType.IsEnum;
+
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    {
+        writer.WriteStartObject();
+        writer.WritePropertyName("$type");
+        writer.WriteValue(value.GetType().AssemblyQualifiedName);
+        writer.WritePropertyName("value");
+        writer.WriteValue(value.ToString());
+        writer.WriteEndObject();
+    }
+
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    {
+        var jo = JObject.Load(reader);
+        var type = Type.GetType((string)jo["$type"]);
+        return Enum.Parse(type, (string)jo["value"]);
+    }
 }
 
 #if UNITY_EDITOR

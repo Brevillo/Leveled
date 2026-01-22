@@ -162,7 +162,7 @@ public class TilePlacer : MonoBehaviour
     {
         ClearPreviousEdgeTiles();
 
-        PlaceTilesOnLayer(positions, tiles, GetLayer(layerID));
+        PlaceTilesOnLayer(positions, tiles, GetLayer(layerID), layerID);
         
         UpdateEdgeTiles();
         RefreshTilemaps();
@@ -179,7 +179,7 @@ public class TilePlacer : MonoBehaviour
         
         foreach (var layer in tilemapLayers)
         {
-            PlaceTilesOnLayer(positions, layer == exclusiveLayer ? tiles : nullTiles, layer);
+            PlaceTilesOnLayer(positions, layer == exclusiveLayer ? tiles : nullTiles, layer, layerID);
         }
         
         UpdateEdgeTiles();
@@ -198,9 +198,9 @@ public class TilePlacer : MonoBehaviour
         return tilemapLayers[layerID];
     }
     
-    private void PlaceTilesOnLayer(Vector2Int[] positions, TileData[] tiles, Layer layer)
+    private void PlaceTilesOnLayer(Vector2Int[] positions, TileData[] tiles, Layer layer, int layerID)
     {
-        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles)>();
+        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles, List<TileRotation> rotations)>();
 
         // Sort tiles based on tilemap prefab
         for (int i = 0; i < positions.Length; i++)
@@ -213,12 +213,13 @@ public class TilePlacer : MonoBehaviour
             {
                 if (!tilemapInstanceData.TryGetValue(tilemapInstance, out var tilemapData))
                 {
-                    tilemapData = (new(), new());
+                    tilemapData = (new(), new(), new());
                     tilemapInstanceData.Add(tilemapInstance, tilemapData);
                 }
-                
+
                 tilemapData.positions.Add((Vector3Int)positions[i]);
                 tilemapData.tiles.Add(tile.gameTile.TileBase);
+                tilemapData.rotations.Add(tile.GetMetaData<EnumStruct<TileRotation>>().value);
             }
         }
 
@@ -232,14 +233,29 @@ public class TilePlacer : MonoBehaviour
         }
         
         // Set tiles
-        foreach (var (tilemap, (vector3Ints, tileBases)) in tilemapInstanceData)
+        foreach (var (tilemap, (vector2Ints, tileBases, tileRotations)) in tilemapInstanceData)
         {
-            var tilemapPositions = vector3Ints.ToArray();
+            var tilemapPositions = vector2Ints.ToArray();
             var tilemapTiles = tileBases.ToArray();
 
             if (tilemap != null)
             {
                 tilemap.SetTiles(tilemapPositions, tilemapTiles);
+            }
+
+            for (int i = 0; i < tileRotations.Count; i++)
+            {
+                if (tileRotations[i] == TileRotation.Up) continue;
+
+                var rotation = Quaternion.AngleAxis(tileRotations[i] switch
+                {
+                    TileRotation.Down => 180f,
+                    TileRotation.Left => 90f,
+                    TileRotation.Right => -90f,
+                    _ => 0f,
+                }, Vector3.forward);
+                
+                tilemap.SetTransformMatrix(vector2Ints[i], Matrix4x4.Rotate(rotation));
             }
         }
     }

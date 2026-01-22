@@ -56,13 +56,21 @@ public class EntitySpawner : MonoBehaviour
 
         private void SpawnEntity()
         {
-            instance = spawner.SpawnEntity(tileData.gameTile.Entity, position, layerID);
+            var rotation = Quaternion.AngleAxis(tileData.GetMetaData<EnumStruct<TileRotation>>().value switch
+            {
+                TileRotation.Down => 180f,
+                TileRotation.Left => 90f,
+                TileRotation.Right => -90f,
+                _ => 0f,
+            }, Vector3.forward);
+            
+            instance = spawner.SpawnEntity(tileData.gameTile.Entity, position, rotation, layerID);
         }
     }
 
-    public GameObject SpawnEntity(GameObject entityPrefab, Vector2 position, int layerID = 0)
+    public GameObject SpawnEntity(GameObject entityPrefab, Vector2 position, Quaternion rotation, int layerID = 0)
     {
-        var entityInstance = Instantiate(entityPrefab, position, Quaternion.identity, transform);
+        var entityInstance = Instantiate(entityPrefab, position, rotation, transform);
 
         if (entityInstance.TryGetComponent(out TileEntity tileEntity))
         {

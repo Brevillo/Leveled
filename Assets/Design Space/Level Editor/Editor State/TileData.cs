@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using UnityEngine;
 
 public readonly struct LinkingGroup
@@ -43,10 +46,20 @@ public readonly struct LinkingGroup
 
 public enum TileRotation
 {
-    Up,
-    Down,
-    Left,
-    Right,
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3,
+}
+
+public readonly struct EnumStruct<T>
+{
+    public readonly T value;
+
+    public EnumStruct(T value)
+    {
+        this.value = value;
+    }
 }
 
 public readonly struct TileData

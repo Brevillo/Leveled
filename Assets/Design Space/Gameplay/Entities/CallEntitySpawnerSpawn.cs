@@ -8,6 +8,6 @@ public class CallEntitySpawnerSpawn : MonoBehaviour
 
     public void Spawn()
     {
-        entitySpawner.value.SpawnEntity(entityPrefab, spawnPosition.position);
+        entitySpawner.value.SpawnEntity(entityPrefab, spawnPosition.position, Quaternion.identity);
     }
 }
