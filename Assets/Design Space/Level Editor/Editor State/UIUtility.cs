@@ -47,7 +47,7 @@ public static class UIUtility
         || Input.mousePosition.y > Screen.height;
 
     public static bool PointerOverUI => 
-        PointerOutsideOfScreen 
+        PointerOutsideOfScreen
         || GetPointerRaycastResults().Any(result => result.gameObject.layer == uiLayer);
 
     public static UILayer PointerOverUILayer
@@ -60,9 +60,18 @@ public static class UIUtility
 
             if (results.Count == 0 || results[0].gameObject.layer != uiLayer) return UILayer.None;
 
-            return results[0].gameObject.TryGetComponent(out OnUILayer onUILayer)
-                ? onUILayer.layer
-                : UILayer.Default;
+            var gameObject = results[0].gameObject;
+            
+            if (gameObject.TryGetComponent(out OnUILayer onUILayer))
+            {
+                return onUILayer.layer;
+            }
+
+            var parentUILayer = gameObject.GetComponentInParent<OnUILayer>();
+
+            if (parentUILayer != null) return parentUILayer.layer;
+            
+            return UILayer.Default;
         }
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class MetadataResolverUIManager : MonoBehaviour
 {
@@ -15,8 +17,11 @@ public class MetadataResolverUIManager : MonoBehaviour
     [SerializeField] private GameObject noPropertiesContent;
     [SerializeField] private EditorAction openMetadataEditor;
     [SerializeField] private ToolbarBlackboard toolbarBlackboard;
+    [SerializeField] private CanvasGroup unselectedDarkening;
+    [SerializeField] private float unselectedDarkeningPercent;
 
     private List<MetadataResolverUISection> sectionInstances;
+    private Vector2 cellPivotWorld;
 
     private (Vector2Int position, TileData tile)[] ResolvableTilePositions(Vector2Int[] selection) => selection
         .Select(position => (position, tile: tileEditorState.LevelInstance.GetTileOnAnyLayer(position)))
@@ -47,7 +52,12 @@ public class MetadataResolverUIManager : MonoBehaviour
 
     public void Open(Vector2Int[] selection)
     {
-        windowPivot.position = spaceUtility.MouseCanvas(windowPivot);
+        var selectionRectInt = toolbarBlackboard.selection.Value;
+
+        cellPivotWorld = selectionRectInt != default
+            ? (spaceUtility.CellToWorld(selectionRectInt.max - Vector2Int.one) +
+               spaceUtility.CellToWorld(new(selectionRectInt.xMax - 1, selectionRectInt.yMin))) / 2f
+            : spaceUtility.MouseCellCenterWorld;
         
         ClearSections();
         
@@ -115,11 +125,37 @@ public class MetadataResolverUIManager : MonoBehaviour
         }
     }
 
+    public void Close(BaseEventData baseEventData)
+    {
+        var pointerEventData = (ExtendedPointerEventData)baseEventData;
+        
+        if (pointerEventData.button is PointerEventData.InputButton.Left or PointerEventData.InputButton.Right)
+        {
+            Close();
+        }
+    }
+    
     public void Close()
     {
         content.SetActive(false);
 
         ClearSections();
+    }
+
+    private void Update()
+    {
+        if (content.activeSelf)
+        {
+            windowPivot.position = spaceUtility.WorldToCanvas(
+                cellPivotWorld + Vector2.right * spaceUtility.Grid.cellSize / 2f,
+                windowPivot);
+
+            unselectedDarkening.alpha = unselectedDarkeningPercent;
+        }
+        else
+        {
+            unselectedDarkening.alpha = 0f;
+        }
     }
 
     private void ClearSections()

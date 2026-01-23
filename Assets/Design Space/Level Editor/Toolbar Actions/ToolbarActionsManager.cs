@@ -156,7 +156,8 @@ public class ToolbarActionsManager : MonoBehaviour
     {
         [SerializeField] private InputActionReference toolInput;
         [SerializeField] private ToolbarAction overrideAction;
-
+        [SerializeField] private bool allowOverViewportLayer;
+        
         private ToolbarActionsManager manager;
         private ToolSide toolSide;
         [NonSerialized]
@@ -189,9 +190,11 @@ public class ToolbarActionsManager : MonoBehaviour
 
         private void OnToolDown(InputAction.CallbackContext context)
         {
-            if (UIUtility.PointerOverUI
-                || manager.gameStateManager.EditorState != EditorState.Editing
-                || allToolInputs.Exists(input => input.pressed))
+            var uiLayer = UIUtility.PointerOverUILayer;
+            if (uiLayer == UILayer.Default
+                || (uiLayer == UILayer.Viewport && !allowOverViewportLayer)
+               || manager.gameStateManager.EditorState != EditorState.Editing
+               || allToolInputs.Exists(input => input.pressed))
             {
                 return;
             }

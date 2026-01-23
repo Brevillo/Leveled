@@ -20,4 +20,5 @@ MonoBehaviour:
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Question Block
-  linkable: 0
+  metadataResolvers:
+  - {fileID: 11400000, guid: d93dd714d25a24b33b4de1edde3918c0, type: 2}

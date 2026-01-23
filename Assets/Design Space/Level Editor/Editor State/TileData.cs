@@ -44,6 +44,16 @@ public readonly struct LinkingGroup
     }
 }
 
+public readonly struct GameTileID
+{
+    public readonly int value;
+    
+    public GameTileID(int value)
+    {
+        this.value = value;
+    }
+}
+
 public enum TileOrientation
 {
     Up = 0,

@@ -16,7 +16,7 @@ public class MetadataResolverUI : MonoBehaviour
     public void Initialize(MetadataResolver resolver, Vector2Int[] selection)
     {
         metadataResolver = resolver;
-        labelDisplay.text = metadataResolver.FieldName;
+        labelDisplay.text = $"{metadataResolver.FieldName}{(selection.Length > 1 ? "s" : "")}";
         
         Initialized?.Invoke(selection);
     }

@@ -220,7 +220,9 @@ public class SpaceUtility : ScriptableObject
 
     #endregion
     
-    public Canvas GetCanvas(RectTransform rectTransform)
+    #endregion
+    
+    public static Canvas GetCanvas(RectTransform rectTransform)
     {
         if (canvases.TryGetValue(rectTransform, out var canvas))
         {
@@ -234,7 +236,23 @@ public class SpaceUtility : ScriptableObject
         return canvas;
     }
 
-    private readonly Dictionary<RectTransform, Canvas> canvases = new();
+    private static readonly Dictionary<RectTransform, Canvas> canvases = new();
     
-    #endregion
+    public static void ReParentPreserveRect(RectTransform transform, Transform parent)
+    {
+        Canvas.ForceUpdateCanvases();
+
+        Vector2 size = transform.rect.size;
+        Vector3 worldPos = transform.position;
+
+        transform.SetParent(parent, false);
+
+        transform.anchorMin = transform.anchorMax = new Vector2(0.5f, 0.5f);
+        transform.pivot = new Vector2(0.5f, 0.5f);
+
+        transform.position = worldPos;
+        transform.sizeDelta = size;
+
+        transform.SetAsLastSibling();
+    }
 }

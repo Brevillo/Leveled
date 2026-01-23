@@ -26,12 +26,12 @@ public class ToolbarActionsUI : MonoBehaviour
         previousSelectionSize = newSelectionSize;
         
         selectionOutline.SetSize(blackboard.selection.Value);
-        selectionOutline.gameObject.SetActive(blackboard.selection.Value != default && gameStateManager.EditorState == EditorState.Editing);
+        selectionOutline.gameObject.SetActive(blackboard.selection.Value != default && gameStateManager.EditorState is not EditorState.Playing);
 
         hoverSelection.SetSize(blackboard.hoverSelection, blackboard.snapHoverSelection);
         blackboard.snapHoverSelection = false;
         hoverSelection.gameObject.SetActive(//Cursor.visible &&
-                                            UIUtility.PointerOverUILayer != UILayer.Default &&
+                                            UIUtility.PointerOverUILayer == UILayer.None &&
                                             blackboard.hoverSelectionActive);
         
         tilemapBoundsOutline.SetSize(tilePlacer.RectInt);

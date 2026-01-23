@@ -15,9 +15,8 @@ public class LinkingGroupMetadataResolver : StringMetadataResolver
         .Select(group => group.Key)
         .ToArray();
 
-    public override object GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState)
-    {
-        var selectedGroupID = selection
+    public override object GetCurrentValue(Vector2Int[] selection, TileEditorState tileEditorState) =>
+        selection
             .GroupBy(position =>
                 tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<LinkingGroup>().groupID)
             .Select(group => group.Key)
@@ -25,8 +24,5 @@ public class LinkingGroupMetadataResolver : StringMetadataResolver
             .DefaultIfEmpty("-")
             .First();
 
-        return selectedGroupID;
-    }
-    
     public override object Transform(object metadata) => new LinkingGroup((string)metadata);
 }

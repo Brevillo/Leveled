@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1562073753812448322}
   - component: {fileID: 3186266167991727689}
   - component: {fileID: 5145208274653777568}
+  - component: {fileID: 6500188475180147247}
   m_Layer: 5
   m_Name: Section
   m_TagString: Untagged
@@ -120,6 +121,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6500188475180147247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990942186430352454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 0
 --- !u!1 &4668334883187126247
 GameObject:
   m_ObjectHideFlags: 0

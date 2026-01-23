@@ -20,10 +20,24 @@ public class MetadataResolverUIStringID : MonoBehaviour
     {
         inputField.onSubmit.AddListener(SelectOption);
         
-        metadataResolverUI.Initialized += Initialize;
+        metadataResolverUI.Initialized += OnInitialized;
+    }
+
+    private void Start()
+    {
+        popup.SetActive(false);
+        
+        var popupTransform = (RectTransform)popup.transform;
+        var parent = SpaceUtility.GetCanvas(popupTransform).transform;
+        SpaceUtility.ReParentPreserveRect(popupTransform, parent);
     }
     
-    public void Initialize(Vector2Int[] selection)
+    private void OnDestroy()
+    {
+        Destroy(popup);
+    }
+    
+    private void OnInitialized(Vector2Int[] selection)
     {
         var resolver = (StringMetadataResolver)metadataResolverUI.Resolver;
 
@@ -49,12 +63,7 @@ public class MetadataResolverUIStringID : MonoBehaviour
 
         CloseValueEditor();
     }
-
-    private void Start()
-    {
-        popup.SetActive(false);
-    }
-
+    
     public void OpenValueEditor()
     {
         previousValueDisplay.text = currentValueDisplay.text;
