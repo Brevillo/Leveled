@@ -200,7 +200,7 @@ public class TilePlacer : MonoBehaviour
     
     private void PlaceTilesOnLayer(Vector2Int[] positions, TileData[] tiles, Layer layer, int layerID)
     {
-        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles, List<TileRotation> rotations)>();
+        var tilemapInstanceData = new Dictionary<Tilemap, (List<Vector3Int> positions, List<TileBase> tiles, List<TileOrientation> rotations)>();
 
         // Sort tiles based on tilemap prefab
         for (int i = 0; i < positions.Length; i++)
@@ -219,7 +219,7 @@ public class TilePlacer : MonoBehaviour
 
                 tilemapData.positions.Add((Vector3Int)positions[i]);
                 tilemapData.tiles.Add(tile.gameTile.TileBase);
-                tilemapData.rotations.Add(tile.GetMetaData<EnumStruct<TileRotation>>().value);
+                tilemapData.rotations.Add(tile.GetMetaData<EnumStruct<TileOrientation>>().value);
             }
         }
 
@@ -245,13 +245,13 @@ public class TilePlacer : MonoBehaviour
 
             for (int i = 0; i < tileRotations.Count; i++)
             {
-                if (tileRotations[i] == TileRotation.Up) continue;
+                if (tileRotations[i] == TileOrientation.Up) continue;
 
                 var rotation = Quaternion.AngleAxis(tileRotations[i] switch
                 {
-                    TileRotation.Down => 180f,
-                    TileRotation.Left => 90f,
-                    TileRotation.Right => -90f,
+                    TileOrientation.Down => 180f,
+                    TileOrientation.Left => 90f,
+                    TileOrientation.Right => -90f,
                     _ => 0f,
                 }, Vector3.forward);
                 

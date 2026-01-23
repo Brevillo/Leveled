@@ -8,7 +8,6 @@ public class Teleporter : MonoBehaviour
 {
     [SerializeField] private TileEditorState editorState;
     [SerializeField] private UnityEvent onTeleport;
-    [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private TileEntity tileEntity;
 
     private Teleporter connection;

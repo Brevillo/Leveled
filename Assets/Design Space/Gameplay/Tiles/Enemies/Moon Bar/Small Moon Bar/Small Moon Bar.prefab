@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3196276266937543527}
   - component: {fileID: 6391023643166197936}
+  - component: {fileID: 1786302278377687718}
   m_Layer: 0
   m_Name: Small Moon Bar
   m_TagString: Untagged
@@ -47,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 4.5
-  rotationDirection: 1
   rotationSpeed: 80
   moonSpacing: 0.75
   firstMoonOffset: 1
@@ -58,6 +58,20 @@ MonoBehaviour:
   planetWiggleSpeed: 1
   planetWiggleAmplitude: 0.25
   planetPivot: {fileID: 3610674644367855061}
+  tileEntity: {fileID: 1786302278377687718}
+  tileEditorState: {fileID: 11400000, guid: e0f2ee705d86c460a805ef9f0e76fe92, type: 2}
+--- !u!114 &1786302278377687718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199891500583357772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504e87e968d534fd481305c41238c515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5019229359493138971
 GameObject:
   m_ObjectHideFlags: 0

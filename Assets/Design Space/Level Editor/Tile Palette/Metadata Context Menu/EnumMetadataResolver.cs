@@ -13,12 +13,15 @@ public abstract class EnumMetadataResolver<T> : StringMetadataResolver where T :
         var selectedEnums = selection
             .GroupBy(position => tileEditorState.LevelInstance.GetTileOnAnyLayer(position).GetMetaData<EnumStruct<T>>())
             .Select(group => group.Key)
-            .Where(e => (int)(object)e.value != 0)
             .ToArray();
 
-        string selected = selectedEnums.Length == 1
-            ? selectedEnums.First().value.ToString()
-            : "-";
+        string selected 
+            = selectedEnums.Length switch
+            {
+                0 => ((T)(object)0).ToString(),
+                1 => selectedEnums.First().value.ToString(),
+                _ => "-",
+            };
 
         return selected;
     }

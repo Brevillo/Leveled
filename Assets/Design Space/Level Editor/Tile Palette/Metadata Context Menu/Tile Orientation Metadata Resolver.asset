@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d425563422f4b3eaf6ae5258a3554bc, type: 3}
-  m_Name: Tile Rotation Metadata Resolver
+  m_Name: Tile Orientation Metadata Resolver
   m_EditorClassIdentifier: 
-  fieldName: Rotation
+  fieldName: Orientation
   uiEntry: {fileID: 4731740944710711690, guid: de9b7c2d3683c47edb5a564c552339e0, type: 3}
   inputFieldPlaceholder: 

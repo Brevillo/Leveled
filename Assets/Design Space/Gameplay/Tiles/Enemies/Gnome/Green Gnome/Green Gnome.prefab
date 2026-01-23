@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 1344083231790918072}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -107,7 +107,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 414800095
-  m_SortingLayer: -6
+  m_SortingLayer: -18
   m_SortingOrder: 0
   m_Sprite: {fileID: -2535901058958154764, guid: f29c0073f079d46c9a5d56417fea68bb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -234,6 +234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTypes:
   - {fileID: 11400000, guid: 94575c919661340caa4cff70387a7034, type: 2}
+  noDamageToFallingPlayer: 0
+  validDamageRanges: []
   damageDealt:
     m_PersistentCalls:
       m_Calls: []

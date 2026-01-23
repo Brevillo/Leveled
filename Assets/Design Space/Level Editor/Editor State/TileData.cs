@@ -44,7 +44,7 @@ public readonly struct LinkingGroup
     }
 }
 
-public enum TileRotation
+public enum TileOrientation
 {
     Up = 0,
     Down = 1,
@@ -52,7 +52,13 @@ public enum TileRotation
     Right = 3,
 }
 
-public readonly struct EnumStruct<T>
+public enum TileRotationDirection
+{
+    Clockwise = 0,
+    Counterclockwise = 1,
+}
+    
+public readonly struct EnumStruct<T> : IEquatable<EnumStruct<T>>
 {
     public readonly T value;
 
@@ -60,6 +66,10 @@ public readonly struct EnumStruct<T>
     {
         this.value = value;
     }
+
+    public bool Equals(EnumStruct<T> other) => EqualityComparer<T>.Default.Equals(value, other.value);
+    public override bool Equals(object obj) => obj is EnumStruct<T> other && Equals(other);
+    public override int GetHashCode() => EqualityComparer<T>.Default.GetHashCode(value);
 }
 
 public readonly struct TileData

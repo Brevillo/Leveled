@@ -20,4 +20,5 @@ MonoBehaviour:
   tilemapPrefabs:
   - {fileID: 7211183380168987404, guid: 17e29e4a0d0d44bd2b06f9b8c373177c, type: 3}
   tooltip: Small Moon Bar
-  linkable: 0
+  metadataResolvers:
+  - {fileID: 11400000, guid: c875e3b6c3cef4675a419e8fbe2cf301, type: 2}

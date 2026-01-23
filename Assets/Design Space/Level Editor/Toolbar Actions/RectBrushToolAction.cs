@@ -30,10 +30,14 @@ public class RectBrushToolAction : ToolbarAction
 
         var nullTiles = new TileData[tiles.Length];
         
+        blackboard.changelog.StartChangeBundle(changelogMessage);
+        
         foreach (var layer in EditorState.LevelInstance.AllLayerIDs)
         {
-            EditorState.SetTiles(positions, layer == 0 ? tiles : nullTiles, changelogMessage, layer);
+            EditorState.SetTiles(positions, layer == 0 ? tiles : nullTiles, "Set tiles on layer", layer);
         }
+        
+        blackboard.changelog.EndChangeBundle();
 
         if (DrawingTile.MetadataResolvers.Count > 0)
         {

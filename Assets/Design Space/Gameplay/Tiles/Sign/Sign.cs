@@ -8,7 +8,6 @@ public class Sign : MonoBehaviour
     [SerializeField] private CanvasGroup uiContent;
     [SerializeField] private TextMeshProUGUI textDisplay;
     [SerializeField] private float fadeInDuration;
-    [SerializeField] private SpaceUtility spaceUtility;
     [SerializeField] private CollisionAggregate2D touching;
     [SerializeField] private TileEntity tileEntity;
     
@@ -16,9 +15,7 @@ public class Sign : MonoBehaviour
     
     private void Start()
     {
-        var cellPosition = spaceUtility.WorldToCell(transform.position);
-
-        signData = tileEditorState.LevelInstance.GetTile(cellPosition, tileEntity.LayerID)
+        signData = tileEditorState.LevelInstance.GetTile(tileEntity.CellPosition, tileEntity.LayerID)
             .GetMetaData<SignData>();
         
         textDisplay.text = signData.text;

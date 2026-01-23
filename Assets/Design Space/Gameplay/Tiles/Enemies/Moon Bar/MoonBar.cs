@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public class MoonBar : MonoBehaviour
 {
     [SerializeField] private float length;
-    [SerializeField] private int rotationDirection;
     [Space]
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float moonSpacing; 
@@ -18,11 +17,14 @@ public class MoonBar : MonoBehaviour
     [SerializeField] private float planetWiggleSpeed;
     [SerializeField] private float planetWiggleAmplitude;
     [SerializeField] private Transform planetPivot;
+    [SerializeField] private TileEntity tileEntity;
+    [SerializeField] private TileEditorState tileEditorState;
 
     private SpriteRenderer[] moons;
     private Vector2[] moonPerlinSeeds;
     private Vector2 planetPerlinSeed;
     private float angle;
+    private int direction;
 
     private int MoonCount => Mathf.FloorToInt((length - firstMoonOffset) / moonSpacing);
     
@@ -35,11 +37,18 @@ public class MoonBar : MonoBehaviour
         moonPerlinSeeds = Enumerable.Range(0, MoonCount).Select(_ => Random.insideUnitCircle * 1000f).ToArray();
 
         planetPerlinSeed = Random.insideUnitCircle * 1000f;
+        
+        direction = (tileEntity.Metadata?.GetValueOrDefault<EnumStruct<TileRotationDirection>>().value ?? default) switch
+        {
+            TileRotationDirection.Clockwise => -1,
+            TileRotationDirection.Counterclockwise => 1,
+            _ => -1,
+        };
     }
 
     private void Update()
     {
-        angle = (angle + rotationSpeed * rotationDirection * Time.deltaTime) % 360f;
+        angle = (angle + rotationSpeed * direction * Time.deltaTime) % 360f;
 
         float rads = angle * Mathf.Deg2Rad;
 
