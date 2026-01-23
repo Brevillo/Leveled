@@ -13168,58 +13168,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926671590}
     m_Modifications:
-    - target: {fileID: 279091521037102197, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 279091521037102197, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_fontSize
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.a
-      value: 0.9490196
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.b
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.g
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.r
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.w
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.x
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.y
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.z
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975356923096694812, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -9173703381430546336, guid: dfe5236cc34c04640a42ff2258232ceb, type: 3}
-    - target: {fileID: 3412403880334736296, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: contents
-      value: Open/Close Settings
-      objectReference: {fileID: 0}
-    - target: {fileID: 4718672607318880941, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -3010277289180905540, guid: ac956d193dd4a4eaf9b64afaee7f076e, type: 2}
     - target: {fileID: 5849826969349476297, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
       propertyPath: m_Name
       value: Discord
@@ -15834,58 +15782,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926671590}
     m_Modifications:
-    - target: {fileID: 279091521037102197, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 279091521037102197, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_fontSize
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.a
-      value: 0.9490196
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.b
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.g
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Color.r
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.w
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.x
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.y
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 840602102206900635, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_RaycastPadding.z
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975356923096694812, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 66bbe5379d3514017b410a020af21445, type: 3}
-    - target: {fileID: 3412403880334736296, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: contents
-      value: Open/Close Settings
-      objectReference: {fileID: 0}
-    - target: {fileID: 4718672607318880941, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -3010277289180905540, guid: ac956d193dd4a4eaf9b64afaee7f076e, type: 2}
     - target: {fileID: 5849826969349476297, guid: 6b82bac2132a545e4bc9f224934864ab, type: 3}
       propertyPath: m_Name
       value: Feedback
@@ -17525,6 +17421,7 @@ GameObject:
   - component: {fileID: 1681799136}
   - component: {fileID: 1681799135}
   - component: {fileID: 1681799139}
+  - component: {fileID: 1681799140}
   m_Layer: 5
   m_Name: Level Name
   m_TagString: Untagged
@@ -17736,6 +17633,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1681799140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681799133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 0
 --- !u!1 &1691677693
 GameObject:
   m_ObjectHideFlags: 0
